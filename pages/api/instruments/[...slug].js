@@ -15,6 +15,7 @@ async function getPvValue(pv) {
 }
 
 export default async function handler(req, res) {
+  console.log(process.env.NODE_EPICS_CA_LIBCA)
   console.log(req.query.slug);
 
   let instrument = req.query.slug;
@@ -26,10 +27,20 @@ export default async function handler(req, res) {
   console.log(inst_pvs_prefix);
 
   let runstate_pv = inst_pvs_prefix + "RUNSTATE";
-  console.log(runstate_pv)
+  let runnumber_pv = inst_pvs_prefix + "RUNNUMBER";
+  console.log(runstate_pv);
 
-  await getPvValue(runstate_pv).then(function(value) {
-    console.log(value)
+  let promises = [];
+  var runstate = getPvValue(runstate_pv);
+  var runnum = getPvValue(runnumber_pv)
+  console.log(runstate)
+  promises.push[runstate]
+  promises.push[runnum]
+
+  console.log(promises);
+
+  Promise.all(promises).then((values) => {
+    console.log(values)
     res.status(200).json({
       config_name: "Base",
       groups: {
@@ -919,14 +930,14 @@ export default async function handler(req, res) {
       inst_pvs: {
         RUNSTATE: {
           status: "Connected",
-          value: value,
+          value: values[0],
           alarm: "",
           visibility: true,
           rc_enabled: "NO",
         },
         RUNNUMBER: {
           status: "Connected",
-          value: "00073615",
+          value: values[1],
           alarm: "",
           visibility: true,
           rc_enabled: "NO",
