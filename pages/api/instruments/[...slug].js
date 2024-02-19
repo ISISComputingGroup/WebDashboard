@@ -15,7 +15,6 @@ async function getPvValue(pv) {
 }
 
 export default async function handler(req, res) {
-  console.log(process.env.NODE_EPICS_CA_LIBCA)
   console.log(req.query.slug);
 
   let instrument = req.query.slug;
@@ -28,16 +27,10 @@ export default async function handler(req, res) {
 
   let runstate_pv = inst_pvs_prefix + "RUNSTATE";
   let runnumber_pv = inst_pvs_prefix + "RUNNUMBER";
+  let starttime_pv = inst_pvs_prefix + "STARTTIME";
   console.log(runstate_pv);
 
-  let promises = [];
-  var runstate = getPvValue(runstate_pv);
-  var runnum = getPvValue(runnumber_pv)
-  console.log(runstate)
-  promises.push[runstate]
-  promises.push[runnum]
-
-  console.log(promises);
+  var promises = [CA.get(runstate_pv), CA.get(runnumber_pv), CA.get(starttime_pv)]
 
   Promise.all(promises).then((values) => {
     console.log(values)
@@ -965,7 +958,7 @@ export default async function handler(req, res) {
         },
         STARTTIME: {
           status: "Connected",
-          value: "Fri 16-Feb-2024 14:31:39",
+          value: values[2],
           alarm: "",
           visibility: true,
           rc_enabled: "NO",
