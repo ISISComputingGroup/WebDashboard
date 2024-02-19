@@ -28,9 +28,11 @@ export default async function handler(req, res) {
   let runstate_pv = inst_pvs_prefix + "RUNSTATE";
   let runnumber_pv = inst_pvs_prefix + "RUNNUMBER";
   let starttime_pv = inst_pvs_prefix + "STARTTIME";
+  let title_pv = inst_pvs_prefix + "TITLE";
+  let goodframes_pv = inst_pvs_prefix + "GOODFRAMES";
   console.log(runstate_pv);
 
-  var promises = [CA.get(runstate_pv), CA.get(runnumber_pv), CA.get(starttime_pv)]
+  var promises = [getPvValue(runstate_pv), getPvValue(runnumber_pv), getPvValue(starttime_pv), getPvValue(title_pv), getPvValue(goodframes_pv)]
 
   Promise.all(promises).then((values) => {
     console.log(values)
@@ -944,7 +946,7 @@ export default async function handler(req, res) {
         },
         TITLE: {
           status: "Connected",
-          value: "D2O G=8.23 F=-10 beam-blocker hg=80 th=2.3 ['SM2']=0.0",
+          value: values[3],
           alarm: "",
           visibility: true,
           rc_enabled: "NO",
@@ -979,7 +981,7 @@ export default async function handler(req, res) {
         },
         GOODFRAMES: {
           status: "Connected",
-          value: "4306",
+          value: values[4],
           alarm: "",
           visibility: true,
           rc_enabled: "NO",
