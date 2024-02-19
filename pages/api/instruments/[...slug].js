@@ -11,6 +11,7 @@ async function getPvValue(pv) {
   } catch (error) {
     console.error(`get failed due to ${error}`);
   }
+  //TODO do we need to set a timeout here?
   return PVVal;
 }
 
@@ -32,9 +33,7 @@ export default async function handler(req, res) {
   let goodframes_pv = inst_pvs_prefix + "GOODFRAMES";
   console.log(runstate_pv);
 
-  var promises = [getPvValue(runstate_pv), getPvValue(runnumber_pv), getPvValue(starttime_pv), getPvValue(title_pv), getPvValue(goodframes_pv)]
-
-  Promise.all(promises).then((values) => {
+  return Promise.all([getPvValue(runstate_pv), getPvValue(runnumber_pv), getPvValue(starttime_pv), getPvValue(title_pv), getPvValue(goodframes_pv)]).then((values) => {
     console.log(values)
     res.status(200).json({
       config_name: "Base",
@@ -1264,9 +1263,12 @@ export default async function handler(req, res) {
       time_diff: 10,
       out_of_sync: false,
     });
-
   }
-  )
+  ).catch(function(err) {
+    //TODO res.status something actually useful here
+    console.log(err.message)
+    res.status(404)
+  })
 
 
 
