@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "set NODE_EPICS_CA_LIBCA=\\Instrument\\Apps\\EPICS\\base\\master\\bin\\windows-x64\\ca.dll&& next dev",
+    "dev": "cross-env NODE_EPICS_CA_LIBCA=\\Instrument\\Apps\\EPICS\\base\\master\\bin\\windows-x64\\ca.dll next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "cross-env": "^7.0.3",
     "next": "14.1.0",
     "node-epics-ca": "^0.2.2",
     "react": "^18",
