@@ -27,8 +27,8 @@ export default function TopBar({ instPvs, slug }) {
       className="w-full bg-gray-700 text-black rounded-lg text-md "
     >
       <div id="inst_name">
-        <h2 class={`text-center bg-green-500 p-4 text-xl rounded-t-md`}>
-          {slug} is <span>{instPvs["RUNSTATE"]["value"]}</span>
+        <h2 class={`text-center bg-green-500 p-4 text-xl rounded-t-lg`}>
+          {slug[0].toUpperCase()} is <span>{instPvs["RUNSTATE"]["value"]}</span>
         </h2>
       </div>
       <div className="flex-col flex items-center justify-center">
