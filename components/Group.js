@@ -50,7 +50,7 @@ export default function Group({ groupName, group }) {
           {Object.entries(visible_blocks).map(([blockName, block]) => (
             <tr
               key={blockName}
-              className="border-b border-blue-gray-200 transition duration-300 hover:bg-gray-100 hover:text-black"
+              className="border-b border-blue-gray-200 transition duration-100 hover:bg-gray-100 hover:text-black"
             >
               <td className="py-1 px-4">{blockName}</td>
               <td className="py-1 px-4">{block["value"]}</td>
