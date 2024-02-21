@@ -23,7 +23,7 @@ export default function Instrument() {
 
   useEffect(() => {
     if (router.query.slug) {
-      console.log(router.query.slug);
+      // console.log(router.query.slug);
       getInstrument(router.query.slug)
         .then((response) => response.json())
         .then((resData) => {
@@ -35,6 +35,10 @@ export default function Instrument() {
     }
   }, [router.query.slug]);
 
+  if (!slug || !data) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <main
       className={`flex min-h-screen bg-white flex-col items-center justify-start  ${inter.className}`}
@@ -42,7 +46,8 @@ export default function Instrument() {
       <div className="p-8 w-full mx-auto max-w-7xl">
         <div className="text-left mb-4">
           <h1 className="text-black text-2xl">
-            Instrument: <span className="font-semibold">{slug}</span>
+            Instrument:{" "}
+            <span className="font-semibold">{slug[0].toUpperCase()}</span>
           </h1>
           <h1 className="text-black text-lg">
             Config: <span className="font-semibold">{configName}</span>

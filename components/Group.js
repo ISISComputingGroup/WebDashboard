@@ -3,7 +3,6 @@ export default function Group({ groupName, group }) {
     return <h1>Loading...</h1>;
   }
 
-  console.log(group);
   //   {
   //     "KEYENCE": {
   //         "status": "Connected",
