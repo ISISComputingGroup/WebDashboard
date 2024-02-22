@@ -21,9 +21,9 @@ io.on("connection", async (socket) => {
   const pvList = [
     "AC:TS1:BEAM:CURR",
     "AC:TS2:BEAM:CURR",
-    "AC:SYNCH:BEAM:CURR",
-    "AC:SYNCH:FREQ",
-    "AC:TS1:FREQ",
+    "IN:INTER:MOT:MTR0505.RBV",
+    "IN:INTER:MOT:MTR0604.RBV",
+    "IN:INTER:MOT:MTR0506.RBV",
   ];
 
   // Create monitors for each PV in the list
