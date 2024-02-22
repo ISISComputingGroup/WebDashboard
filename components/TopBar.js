@@ -29,20 +29,23 @@ const TopBar = ({ instPvs, slug }) => {
     });
 
     // find the pv with its id and make bg greenf or 2 seconds
-    const pv = document.getElementById(data["pvName"]);
+    // const pv = document.getElementById(data["pvName"] + "_VALUE");
 
-    if (!pv) return;
+    // if (!pv) return;
 
-    pv.classList.add(
-      "bg-green-500",
-      "transition-all",
-      "duration-1000",
-      "ease-in-out"
-    );
+    // pv.classList.add(
+    //   // "bg-green-500",
+    //   "transition-all",
+    //   // "duration-1000",
+    //   "ease-in-out",
+    //   "font-bold"
+    // );
 
-    setTimeout(() => {
-      pv.classList.remove("bg-green-500");
-    }, 1000);
+    // setTimeout(() => {
+    //   // pv.classList.remove("bg-green-500");
+    //   pv.classList.remove("transition-all");
+    //   pv.classList.remove("font-bold");
+    // }, 2000);
   };
 
   const [socket, setSocket] = useState(null);
@@ -150,7 +153,7 @@ const TopBar = ({ instPvs, slug }) => {
   return (
     <div
       id="top_bar"
-      className="w-full bg-gray-700 text-black rounded-lg text-md"
+      className="w-full bg-white  shadow-lg text-black rounded-xl text-md"
     >
       <div id="inst_name">
         <h2 className={`text-center bg-green-500 p-4 text-xl rounded-t-lg`}>
@@ -159,15 +162,44 @@ const TopBar = ({ instPvs, slug }) => {
         {/* <h1 className="text-center text-white bg-gray-400 border-gray-500 border-2 p-3 font-semibold px-7">
          
         </h1> */}
-        <div className="bg-gray-200">
-          <h2>Inst Data:</h2>
-          <ul>
+        <div className="bg-gray-50 border-2 border-gray-800 m-4 p-4 shadow-md w-1/2">
+          <h2 className="px-4 font-semibold text-lg ">Test Data:</h2>
+          <table className="text-sm w-full table-fixed ">
+            <thead>
+              <tr className="bg-blue-gray-100 text-gray-700">
+                <th className="py-3 px-4 text-left">Name</th>
+                <th className="py-3 px-4 text-left">Value</th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-200 ">
+              {Object.keys(instData).map((pv) => (
+                <tr
+                  id={pv}
+                  key={pv}
+                  className="border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+                >
+                  <td className="py-1 px-4">{pv}</td>
+                  <td id={pv + "_VALUE"} className="py-1 px-4">
+                    {instData[pv]["value"]}
+                  </td>
+                </tr>
+                // <tr
+                //   key={block[0]}
+                //   className="border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+                // >
+                //   <td className="py-1 px-4">{block[0]}</td>
+                //   <td className="py-1 px-4">{block[1]["value"]}</td>
+                // </tr>
+              ))}
+            </tbody>
+          </table>
+          {/* <ul>
             {Object.keys(instData).map((pv) => (
               <li id={pv} key={pv}>
                 {pv}: {instData[pv]["value"]}
               </li>
             ))}
-          </ul>
+          </ul> */}
         </div>
       </div>
       <div className="flex-col flex items-center justify-center">
