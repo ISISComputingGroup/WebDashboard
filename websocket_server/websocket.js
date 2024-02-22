@@ -98,6 +98,7 @@ io.on("connection", async (socket) => {
     console.log("instruments size"+instruments.size)
 
     instruments.forEach((inst)=>{
+      //TODO this does not work
       console.log(inst)
       if (inst.inst_name == data) {
         inst.getCachedValuesForSocket(socket)
