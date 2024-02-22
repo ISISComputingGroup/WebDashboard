@@ -17,15 +17,36 @@ io.on("connection", async (socket) => {
     console.log("User " + socket.id + " requests " + data);
   });
 
-  (async () => {
-    const pv = await CA.monitor("AC:TS1:BEAM:CURR");
-    // Handle PV value changes
-    function handlePVChange(data) {
-      socket.emit("instData", data);
-    }
+  // List of PV names to monitor
+  const pvList = [
+    "AC:TS1:BEAM:CURR",
+    "AC:TS2:BEAM:CURR",
+    "AC:SYNCH:BEAM:CURR",
+    "AC:SYNCH:FREQ",
+    "AC:TS1:FREQ",
+  ];
 
-    pv.on("value", handlePVChange);
-  })();
+  // Create monitors for each PV in the list
+  const pvMonitors = await Promise.all(
+    pvList.map((pvName) => CA.monitor(pvName))
+  );
+
+  // Handle PV value changes for each monitor
+  function handlePVChange(index) {
+    return function (data) {
+      const pvInfo = {
+        pvName: pvList[index],
+        value: data,
+        // Add more information as needed
+      };
+      socket.emit("instData", pvInfo);
+    };
+  }
+
+  // Attach event listeners for value changes for each PV
+  pvMonitors.forEach((pvMonitor, index) => {
+    pvMonitor.on("value", handlePVChange(index));
+  });
 
   socket.on("disconnect", () => {
     console.log("user disconnected");

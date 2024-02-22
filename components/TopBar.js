@@ -7,15 +7,73 @@ const TopBar = ({ instPvs, slug }) => {
   }
 
   // socket work
-  const [instData, setInstData] = useState(null);
+  const [instData, setInstData] = useState({});
 
-  const updateInstData = (data) => {
-    setInstData(data);
+  const updateInstData = async (data) => {
+    //  const pvInfo = {
+    //   pvName: pvList[index],
+    //   value: data,
+    //   // Add more information as needed
+    // };
+
+    // is what data is
+
+    // check if the data is already in the state
+    // if it is, update it
+    // if it isn't, add it
+    await setInstData((prevData) => {
+      return {
+        ...prevData,
+        [data["pvName"]]: data,
+      };
+    });
+
+    // find the pv with its id and make bg greenf or 2 seconds
+    const pv = document.getElementById(data["pvName"]);
+
+    if (!pv) return;
+
+    pv.classList.add(
+      "bg-green-500",
+      "transition-all",
+      "duration-1000",
+      "ease-in-out"
+    );
+
+    setTimeout(() => {
+      pv.classList.remove("bg-green-500");
+    }, 1000);
   };
 
-  const socket = io("http://localhost:5000");
+  const [socket, setSocket] = useState(null);
+  // const socket = io("http://localhost:5000");
 
-  const startGrabbingData = useCallback(() => {
+  useEffect(() => {
+    if (!socket) {
+      setSocket(io("http://localhost:5000"));
+    }
+
+    return () => {
+      socket?.disconnect();
+    };
+  }, [socket]);
+
+  const startGrabbingData = () => {
+    socket.on("connect", () => {
+      console.log("Connected to server as  " + socket.id);
+      socket.emit("intitalRequest", slug[0]);
+    });
+
+    socket.on("instData", (data) => {
+      console.log("InstData received:", data);
+      // update the data structure to be displayed in the top bar
+      updateInstData(data);
+    });
+  };
+
+  useEffect(() => {
+    if (!socket) return;
+
     socket.on("connect", () => {
       console.log("Connected to server as " + socket.id);
       socket.emit("intitalRequest", slug[0]);
@@ -26,14 +84,19 @@ const TopBar = ({ instPvs, slug }) => {
       // update the data structure to be displayed in the top bar
       updateInstData(data);
     });
-  });
 
-  useEffect(() => {
-    startGrabbingData();
     return () => {
-      socket.disconnect();
+      socket.off("connect");
+      socket.off("instData");
     };
-  }, []);
+  }, [socket]);
+
+  // useEffect(() => {
+  //   startGrabbingData();
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   // template work
   // create some pvs just so we can see the tables etc and develop the page
@@ -93,9 +156,19 @@ const TopBar = ({ instPvs, slug }) => {
         <h2 className={`text-center bg-green-500 p-4 text-xl rounded-t-lg`}>
           {slug[0].toUpperCase()} is <span>{instPvs["RUNSTATE"]["value"]}</span>
         </h2>
-        <h1 className="text-center text-white bg-gray-400 border-gray-500 border-2 p-3 font-semibold px-7">
-          {instData ? instData : "Loading..."}
-        </h1>
+        {/* <h1 className="text-center text-white bg-gray-400 border-gray-500 border-2 p-3 font-semibold px-7">
+         
+        </h1> */}
+        <div className="bg-gray-200">
+          <h2>Inst Data:</h2>
+          <ul>
+            {Object.keys(instData).map((pv) => (
+              <li id={pv} key={pv}>
+                {pv}: {instData[pv]["value"]}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
       <div className="flex-col flex items-center justify-center">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 overflow-x-auto   w-full">
