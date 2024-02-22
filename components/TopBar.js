@@ -155,14 +155,19 @@ const TopBar = ({ instPvs, slug }) => {
       id="top_bar"
       className="w-full bg-white  shadow-lg text-black rounded-xl text-md"
     >
-      <div id="inst_name">
-        <h2 className={`text-center bg-green-500 p-4 text-xl rounded-t-lg`}>
+      <div
+        id="inst_name"
+        className="w-full flex justify-center items-center flex-col"
+      >
+        <h2
+          className={`text-center bg-green-500 p-4 text-xl rounded-t-lg w-full`}
+        >
           {slug[0].toUpperCase()} is <span>{instPvs["RUNSTATE"]["value"]}</span>
         </h2>
         {/* <h1 className="text-center text-white bg-gray-400 border-gray-500 border-2 p-3 font-semibold px-7">
          
         </h1> */}
-        <div className="bg-gray-50 border-2 border-gray-800 m-4 p-4 shadow-md w-1/2">
+        <div className="bg-gray-50 border-2 border-gray-800 m-4 p-4 shadow-md ">
           <h2 className="px-4 font-semibold text-lg ">Test Data:</h2>
           <table className="text-sm w-full table-fixed ">
             <thead>
@@ -183,32 +188,17 @@ const TopBar = ({ instPvs, slug }) => {
                     {instData[pv]["value"]}
                   </td>
                 </tr>
-                // <tr
-                //   key={block[0]}
-                //   className="border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
-                // >
-                //   <td className="py-1 px-4">{block[0]}</td>
-                //   <td className="py-1 px-4">{block[1]["value"]}</td>
-                // </tr>
               ))}
             </tbody>
           </table>
-          {/* <ul>
-            {Object.keys(instData).map((pv) => (
-              <li id={pv} key={pv}>
-                {pv}: {instData[pv]["value"]}
-              </li>
-            ))}
-          </ul> */}
         </div>
       </div>
       <div className="flex-col flex items-center justify-center">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 overflow-x-auto   w-full">
-          <div className="bg-gray-200">
-            <h1 className="text-lg w-full text-white bg-gray-400 border-gray-500 border-2 p-3 font-semibold px-7">
-              Soft
-            </h1>
-            <div className="relative">
+          <div className="bg-gray-50 border-2 border-gray-800 m-4 p-4 shadow-md ">
+            <h2 className=" font-semibold text-xl ">Soft</h2>
+
+            <div className="relative my">
               <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                 <svg
                   className="w-4 h-4 text-gray-500 dark:text-gray-400"
@@ -232,37 +222,34 @@ const TopBar = ({ instPvs, slug }) => {
                 value={search}
                 id="search"
                 autoComplete="off"
-                className="block w-full p-4 ps-10 text-sm text-gray-900  bg-gray-50 focus:ring-blue-500  "
+                className="block w-full p-2 ps-10 text-sm text-gray-900  bg-gray-100   "
                 placeholder="Search for PV name"
               />
             </div>
-            <div className={`text-sm bg-gray-200 `}>
-              <table className="text-sm">
-                <thead>
-                  <tr className="bg-blue-gray-100 text-gray-700">
-                    <th className="py-3 px-4 text-left">Name</th>
-                    <th className="py-3 px-4 text-left">Value</th>
+            <table className="text-sm w-full table-fixed ">
+              <thead>
+                <tr className="bg-blue-gray-100 text-gray-700">
+                  <th className="py-3  text-left">Name</th>
+                  <th className="py-3 text-left">Value</th>
+                </tr>
+              </thead>
+              <tbody className="text-gray-200 ">
+                {filteredPv1.map((block) => (
+                  <tr
+                    key={block[0]}
+                    className="border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+                  >
+                    <td className="py-1">{block[0]}</td>
+                    <td className="py-1 ">{block[1]["value"]}</td>
                   </tr>
-                </thead>
-                <tbody className="text-gray-200 ">
-                  {filteredPv1.map((block) => (
-                    <tr
-                      key={block[0]}
-                      className="border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
-                    >
-                      <td className="py-1 px-4">{block[0]}</td>
-                      <td className="py-1 px-4">{block[1]["value"]}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
 
-          <div className="bg-gray-200">
-            <h1 className="text-lg w-full text-white bg-gray-400 border-gray-500 border-2 p-3 font-semibold px-7">
-              Technical
-            </h1>
+          <div className="bg-gray-50 border-2 border-gray-800 m-4 p-4 shadow-md ">
+            <h2 className=" font-semibold text-xl ">Technical</h2>
+
             <div className="relative">
               <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                 <svg
@@ -287,37 +274,34 @@ const TopBar = ({ instPvs, slug }) => {
                 value={search2}
                 id="search2"
                 autoComplete="off"
-                className="block w-full p-4 ps-10 text-sm text-gray-900  bg-gray-50 focus:ring-blue-500  "
+                className="block w-full p-2 ps-10 text-sm text-gray-900  bg-gray-100 focus:ring-blue-500  "
                 placeholder="Search for PV name"
               />
             </div>
-            <div className={`p-3 bg-gray-200 `}>
-              <table className="text-sm">
-                <thead>
-                  <tr className="bg-blue-gray-100 text-gray-700">
-                    <th className="py-3 px-4 text-left">Name</th>
-                    <th className="py-3 px-4 text-left">Value</th>
+            <table className="text-sm w-full table-fixed ">
+              <thead>
+                <tr className="bg-blue-gray-100 text-gray-700">
+                  <th className="py-3  text-left">Name</th>
+                  <th className="py-3  text-left">Value</th>
+                </tr>
+              </thead>
+              <tbody className="text-gray-200 ">
+                {filteredPv2.map((block) => (
+                  <tr
+                    key={block[0]}
+                    className="border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+                  >
+                    <td className="py-1 ">{block[0]}</td>
+                    <td className="py-1 ">{block[1]["value"]}</td>
                   </tr>
-                </thead>
-                <tbody className="text-gray-200 ">
-                  {filteredPv2.map((block) => (
-                    <tr
-                      key={block[0]}
-                      className="border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
-                    >
-                      <td className="py-1 px-4">{block[0]}</td>
-                      <td className="py-1 px-4">{block[1]["value"]}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
 
-          <div className="bg-gray-200">
-            <h1 className="text-lg w-full text-white bg-gray-400 border-gray-500 border-2 p-3 font-semibold px-7">
-              Time
-            </h1>
+          <div className="bg-gray-50 border-2 border-gray-800 m-4 p-4 shadow-md ">
+            <h2 className=" font-semibold text-xl ">Time</h2>
+
             <div className="relative">
               <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                 <svg
@@ -342,31 +326,29 @@ const TopBar = ({ instPvs, slug }) => {
                 value={search3}
                 id="search3"
                 autoComplete="off"
-                className="block w-full p-4 ps-10 text-sm text-gray-900  bg-gray-50 focus:ring-blue-500  "
+                className="block w-full p-2 ps-10 text-sm text-gray-900  bg-gray-100 focus:ring-blue-500  "
                 placeholder="Search for PV name"
               />
             </div>
-            <div className={`p-3 bg-gray-200 `}>
-              <table className="text-sm">
-                <thead>
-                  <tr className="bg-blue-gray-100 text-gray-700">
-                    <th className="py-3 px-4 text-left">Name</th>
-                    <th className="py-3 px-4 text-left">Value</th>
+            <table className="text-sm w-full table-fixed ">
+              <thead>
+                <tr className="bg-blue-gray-100 text-gray-700">
+                  <th className="py-3  text-left">Name</th>
+                  <th className="py-3  text-left">Value</th>
+                </tr>
+              </thead>
+              <tbody className="text-gray-200 ">
+                {filteredPv3.map((block) => (
+                  <tr
+                    key={block[0]}
+                    className="border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+                  >
+                    <td className="py-1 ">{block[0]}</td>
+                    <td className="py-1 ">{block[1]["value"]}</td>
                   </tr>
-                </thead>
-                <tbody className="text-gray-200 ">
-                  {filteredPv3.map((block) => (
-                    <tr
-                      key={block[0]}
-                      className="border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
-                    >
-                      <td className="py-1 px-4">{block[0]}</td>
-                      <td className="py-1 px-4">{block[1]["value"]}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
