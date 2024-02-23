@@ -2,25 +2,10 @@ import React, { useState, useCallback, useEffect } from "react";
 import io from "socket.io-client";
 
 const TopBar = ({ instPvs, slug }) => {
-  if (!instPvs || !slug) {
-    return <h1>Loading...</h1>;
-  }
-
   // socket work
   const [instData, setInstData] = useState({});
 
   const updateInstData = async (data) => {
-    //  const pvInfo = {
-    //   pvName: pvList[index],
-    //   value: data,
-    //   // Add more information as needed
-    // };
-
-    // is what data is
-
-    // check if the data is already in the state
-    // if it is, update it
-    // if it isn't, add it
     await setInstData((prevData) => {
       return {
         ...prevData,
@@ -29,23 +14,27 @@ const TopBar = ({ instPvs, slug }) => {
     });
 
     // find the pv with its id and make bg greenf or 2 seconds
-    // const pv = document.getElementById(data["pvName"] + "_VALUE");
+    const pv = document.getElementById(data["pvName"] + "_VALUE");
 
-    // if (!pv) return;
+    if (!pv) return;
 
-    // pv.classList.add(
-    //   // "bg-green-500",
-    //   "transition-all",
-    //   // "duration-1000",
-    //   "ease-in-out",
-    //   "font-bold"
-    // );
+    // if pv already has a green bg, dont do anything
+    if (pv.classList.contains("text-green-500")) return;
+    pv.classList.remove("text-transparent");
+    pv.classList.add(
+      // "bg-green-500",
+      // "transition-all",
+      "text-green-500"
+      // "duration-1000",
+      // "ease-in-out",
+      // "font-bold"
+    );
 
-    // setTimeout(() => {
-    //   // pv.classList.remove("bg-green-500");
-    //   pv.classList.remove("transition-all");
-    //   pv.classList.remove("font-bold");
-    // }, 2000);
+    setTimeout(() => {
+      // pv.classList.remove("bg-green-500");
+      pv.classList.remove("text-green-500");
+      pv.classList.add("text-transparent");
+    }, 2000);
   };
 
   const [socket, setSocket] = useState(null);
@@ -103,28 +92,6 @@ const TopBar = ({ instPvs, slug }) => {
   // }, []);
 
   // template work
-  // create some pvs just so we can see the tables etc and develop the page
-  const pvs = Object.entries(instPvs);
-  const pvLength = pvs.length;
-  // Example of item in a pvSet:
-  // [
-  //     "RUNSTATE",
-  //     {
-  //         "status": "Connected",
-  //         "value": 1,
-  //         "alarm": "",
-  //         "visibility": true,
-  //         "rc_enabled": "NO"
-  //     }
-  // ],
-  const pvSet1 = pvs.slice(0, Math.floor(pvLength / 3));
-  const pvSet2 = pvs.slice(
-    Math.floor(pvLength / 3),
-    Math.floor((pvLength / 3) * 2)
-  );
-  const pvSet3 = pvs.slice(Math.floor((pvLength / 3) * 2), pvLength);
-
-  // search functionality, will be split into components later to not have this repetition
   const [search, setSearch] = useState("");
   const [search2, setSearch2] = useState("");
   const [search3, setSearch3] = useState("");
@@ -139,17 +106,55 @@ const TopBar = ({ instPvs, slug }) => {
     setSearch3(event.target.value);
   };
 
-  const filteredPv3 = pvSet3.filter(([block]) => {
-    return block.toLowerCase().includes(search3.toLowerCase());
-  });
+  const [filteredPv1, setFilteredPv1] = useState([]);
+  const [filteredPv2, setFilteredPv2] = useState([]);
+  const [filteredPv3, setFilteredPv3] = useState([]);
 
-  const filteredPv2 = pvSet2.filter(([block]) => {
-    return block.toLowerCase().includes(search2.toLowerCase());
-  });
+  // create some pvs just so we can see the tables etc and develop the page
+  useEffect(() => {
+    const pvs = Object.entries(instPvs);
+    const pvLength = pvs.length;
+    // Example of item in a pvSet:
+    // [
+    //     "RUNSTATE",
+    //     {
+    //         "status": "Connected",
+    //         "value": 1,
+    //         "alarm": "",
+    //         "visibility": true,
+    //         "rc_enabled": "NO"
+    //     }
+    // ],
+    const pvSet1 = pvs.slice(0, Math.floor(pvLength / 3));
+    const pvSet2 = pvs.slice(
+      Math.floor(pvLength / 3),
+      Math.floor((pvLength / 3) * 2)
+    );
+    const pvSet3 = pvs.slice(Math.floor((pvLength / 3) * 2), pvLength);
 
-  const filteredPv1 = pvSet1.filter(([block]) => {
-    return block.toLowerCase().includes(search.toLowerCase());
-  });
+    // search functionality, will be split into components later to not have this repetition
+
+    setFilteredPv1(
+      pvSet1.filter(([block]) => {
+        return block.toLowerCase().includes(search.toLowerCase());
+      })
+    );
+
+    setFilteredPv2(
+      pvSet2.filter(([block]) => {
+        return block.toLowerCase().includes(search2.toLowerCase());
+      })
+    );
+    setFilteredPv3(
+      pvSet3.filter(([block]) => {
+        return block.toLowerCase().includes(search2.toLowerCase());
+      })
+    );
+  }, []);
+
+  if (!instPvs || !instData) {
+    return <LoadingSkeleton />;
+  }
 
   return (
     <div
@@ -185,8 +190,17 @@ const TopBar = ({ instPvs, slug }) => {
                   className="border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
                 >
                   <td className="py-1 px-4">{pv}</td>
-                  <td id={pv + "_VALUE"} className="py-1 px-4">
-                    {instData[pv]["value"]}
+                  <td className="py-1 px-4 flex justify-between items-center">
+                    <span>{instData[pv]["value"]}</span>
+                    <svg
+                      id={pv + "_VALUE"}
+                      className="min-w-2 min-h-2 max-w-2 max-h-2 transition-all text-transparent"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle cx="12" cy="12" r="12" />
+                    </svg>
                   </td>
                 </tr>
               ))}

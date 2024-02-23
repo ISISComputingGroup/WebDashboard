@@ -16,6 +16,10 @@ To deploy this project run the following commands
 ### In the root dir
 
 ```bash
+  npm install
+```
+
+```bash
   npm run dev
 ```
 
