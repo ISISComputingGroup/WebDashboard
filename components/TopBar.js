@@ -65,6 +65,7 @@ const TopBar = ({ instPvs, slug }) => {
     socket.on("connect", () => {
       console.log("Connected to server as  " + socket.id);
       socket.emit("intitalRequest", slug[0]);
+      updateInstData(data);
     });
 
     socket.on("instData", (data) => {
