@@ -25,7 +25,7 @@ export default function Home() {
             <div className="mb-4 space-x-0 md:space-x-2 md:mb-8">
               <Link
                 href="/instruments/inter"
-                className="inline-flex items-center justify-center border-4 border-white focus:border-green-400 transition-all duration-20 w-full px-6 py-3 mb-2 text-lg text-white bg-green-400 hover:bg-green-500 rounded-2xl sm:w-auto sm:mb-0"
+                className="inline-flex items-center justify-center border-4 border-gray-100 focus:border-green-400 transition-all duration-20 w-full px-6 py-3 mb-2 text-lg text-white bg-green-400 hover:bg-green-500 rounded-2xl sm:w-auto sm:mb-0"
               >
                 View instruments
                 <svg
@@ -43,7 +43,7 @@ export default function Home() {
               </Link>
               <Link
                 href="/"
-                className="inline-flex items-center transition-all duration-200 border-4 border-white focus:border-gray-300 justify-center w-full px-6 py-3 mb-2 text-lg bg-gray-300 hover:bg-gray-400 rounded-2xl sm:w-auto sm:mb-0"
+                className="inline-flex items-center transition-all duration-200 border-4 border-gray-100 focus:border-gray-300 justify-center w-full px-6 py-3 mb-2 text-lg bg-gray-300 hover:bg-gray-400 rounded-2xl sm:w-auto sm:mb-0"
               >
                 Learn More
                 <svg

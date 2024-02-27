@@ -3,6 +3,9 @@ export default function Group({ groupName, group }) {
     return <h1>Loading...</h1>;
   }
 
+  console.log("GROUPPPPPP");
+  console.log(group);
+
   //   {
   //     "KEYENCE": {
   //         "status": "Connected",
@@ -26,18 +29,18 @@ export default function Group({ groupName, group }) {
   //     }
   // }
 
-  const visible_blocks = Object.fromEntries(
-    Object.entries(group).filter(([_, block]) => block["visibility"])
-  );
+  // const visible_blocks = Object.fromEntries(
+  //   Object.entries(group).filter(([_, block]) => block["visibility"])
+  // );
 
-  const hidden_blocks = Object.fromEntries(
-    Object.entries(group).filter(([_, block]) => !block["visibility"])
-  );
+  // const hidden_blocks = Object.fromEntries(
+  //   Object.entries(group).filter(([_, block]) => !block["visibility"])
+  // );
 
   return (
     <div className="w-full bg-gray-700 shadow-md rounded-xl flex flex-col overflow-x-auto">
       <h1 className="p-4 bg-gray-600 rounded-t-lg min-w-full">{groupName}</h1>
-      <table className="text-sm">
+      <table className="text-sm table-fixed">
         <thead>
           <tr className="bg-blue-gray-100 text-gray-100">
             <th className="py-3 px-4 text-left">Block Name</th>
@@ -46,14 +49,26 @@ export default function Group({ groupName, group }) {
           </tr>
         </thead>
         <tbody className="text-gray-200 ">
-          {Object.entries(visible_blocks).map(([blockName, block]) => (
+          {group.map(({ name, pv }) => (
             <tr
-              key={blockName}
+              key={name}
               className="border-b border-blue-gray-200 transition duration-100 hover:bg-gray-100 hover:text-black"
             >
-              <td className="py-1 px-4">{blockName}</td>
-              <td className="py-1 px-4">{block["value"]}</td>
-              <td className="py-1 px-4">{block["rc_inrange"]}</td>
+              <td className="py-1 px-4">{name}</td>
+
+              <td className="py-1 px-4 flex justify-between items-center">
+                <span id={pv + "_VALUE_1"}></span>
+                <svg
+                  id={pv + "_CIRCLE"}
+                  className="min-w-2 min-h-2 max-w-2 max-h-2 transition-all text-transparent"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <circle cx="12" cy="12" r="12" />
+                </svg>
+              </td>
+              <td className="py-1 px-4">N/A</td>
             </tr>
           ))}
         </tbody>

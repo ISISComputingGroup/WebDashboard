@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import io from "socket.io-client";
 
-const TopBar = ({ instPvs, slug }) => {
+const TopBar = ({ socket, instName }) => {
   // socket work
   const [instData, setInstData] = useState({});
 
@@ -37,44 +37,11 @@ const TopBar = ({ instPvs, slug }) => {
     }, 2000);
   };
 
-  const [socket, setSocket] = useState(null);
-  // const socket = io("http://localhost:5000");
-
-  useEffect(() => {
-    if (!socket) {
-      setSocket(io("http://localhost:5000"));
-    }
-
-    return () => {
-      socket?.disconnect();
-    };
-  }, [socket]);
-
-  const startGrabbingData = () => {
-    socket.on("connect", () => {
-      console.log("Connected to server as  " + socket.id);
-      socket.emit("intitalRequest", slug[0]);
-      updateInstData(data);
-    });
-
-    socket.on("instData", (data) => {
-      console.log("InstData received:", data);
-      // update the data structure to be displayed in the top bar
-      updateInstData(data);
-    });
-  };
-
   useEffect(() => {
     if (!socket) return;
 
-    socket.on("connect", () => {
-      console.log("Connected to server as " + socket.id);
-      socket.emit("intitalRequest", slug[0]);
-    });
-
     socket.on("instData", (data) => {
-      console.log("InstData received:", data);
-      // update the data structure to be displayed in the top bar
+      // console.log("InstData received:", data);
       updateInstData(data);
     });
 
@@ -84,75 +51,68 @@ const TopBar = ({ instPvs, slug }) => {
     };
   }, [socket]);
 
+  // template work
+  // const [search, setSearch] = useState("");
+  // const [search2, setSearch2] = useState("");
+  // const [search3, setSearch3] = useState("");
+
+  // const handleSearch = (event) => {
+  //   setSearch(event.target.value);
+  // };
+  // const handleSearch2 = (event) => {
+  //   setSearch2(event.target.value);
+  // };
+  // const handleSearch3 = (event) => {
+  //   setSearch3(event.target.value);
+  // };
+
+  // const [filteredPv1, setFilteredPv1] = useState([]);
+  // const [filteredPv2, setFilteredPv2] = useState([]);
+  // const [filteredPv3, setFilteredPv3] = useState([]);
+
+  // // create some pvs just so we can see the tables etc and develop the page
   // useEffect(() => {
-  //   startGrabbingData();
-  //   return () => {
-  //     socket.disconnect();
-  //   };
+  //   const pvs = Object.entries(instPvs);
+  //   const pvLength = pvs.length;
+  //   // Example of item in a pvSet:
+  //   // [
+  //   //     "RUNSTATE",
+  //   //     {
+  //   //         "status": "Connected",
+  //   //         "value": 1,
+  //   //         "alarm": "",
+  //   //         "visibility": true,
+  //   //         "rc_enabled": "NO"
+  //   //     }
+  //   // ],
+  //   const pvSet1 = instData.slice(0, Math.floor(pvLength / 3));
+  //   const pvSet2 = instData.slice(
+  //     Math.floor(pvLength / 3),
+  //     Math.floor((pvLength / 3) * 2)
+  //   );
+  //   const pvSet3 = instData.slice(Math.floor((pvLength / 3) * 2), pvLength);
+
+  //   // search functionality, will be split into components later to not have this repetition
+
+  //   setFilteredPv1(
+  //     pvSet1.filter(([block]) => {
+  //       return block.toLowerCase().includes(search.toLowerCase());
+  //     })
+  //   );
+
+  //   setFilteredPv2(
+  //     pvSet2.filter(([block]) => {
+  //       return block.toLowerCase().includes(search2.toLowerCase());
+  //     })
+  //   );
+  //   setFilteredPv3(
+  //     pvSet3.filter(([block]) => {
+  //       return block.toLowerCase().includes(search2.toLowerCase());
+  //     })
+  //   );
   // }, []);
 
-  // template work
-  const [search, setSearch] = useState("");
-  const [search2, setSearch2] = useState("");
-  const [search3, setSearch3] = useState("");
-
-  const handleSearch = (event) => {
-    setSearch(event.target.value);
-  };
-  const handleSearch2 = (event) => {
-    setSearch2(event.target.value);
-  };
-  const handleSearch3 = (event) => {
-    setSearch3(event.target.value);
-  };
-
-  const [filteredPv1, setFilteredPv1] = useState([]);
-  const [filteredPv2, setFilteredPv2] = useState([]);
-  const [filteredPv3, setFilteredPv3] = useState([]);
-
-  // create some pvs just so we can see the tables etc and develop the page
-  useEffect(() => {
-    const pvs = Object.entries(instPvs);
-    const pvLength = pvs.length;
-    // Example of item in a pvSet:
-    // [
-    //     "RUNSTATE",
-    //     {
-    //         "status": "Connected",
-    //         "value": 1,
-    //         "alarm": "",
-    //         "visibility": true,
-    //         "rc_enabled": "NO"
-    //     }
-    // ],
-    const pvSet1 = pvs.slice(0, Math.floor(pvLength / 3));
-    const pvSet2 = pvs.slice(
-      Math.floor(pvLength / 3),
-      Math.floor((pvLength / 3) * 2)
-    );
-    const pvSet3 = pvs.slice(Math.floor((pvLength / 3) * 2), pvLength);
-
-    // search functionality, will be split into components later to not have this repetition
-
-    setFilteredPv1(
-      pvSet1.filter(([block]) => {
-        return block.toLowerCase().includes(search.toLowerCase());
-      })
-    );
-
-    setFilteredPv2(
-      pvSet2.filter(([block]) => {
-        return block.toLowerCase().includes(search2.toLowerCase());
-      })
-    );
-    setFilteredPv3(
-      pvSet3.filter(([block]) => {
-        return block.toLowerCase().includes(search2.toLowerCase());
-      })
-    );
-  }, []);
-
-  if (!instPvs || !instData) {
+  if (!socket || !instData) {
     return <LoadingSkeleton />;
   }
 
@@ -161,6 +121,14 @@ const TopBar = ({ instPvs, slug }) => {
       id="top_bar"
       className="w-full bg-white  shadow-lg text-black rounded-xl text-md"
     >
+      <div className="text-left mb-4">
+        <h1 className="text-black text-2xl">
+          Instrument: <span className="font-semibold">{instName}</span>
+        </h1>
+        <h1 className="text-black text-lg">
+          Config: <span className="font-semibold">CONFIG</span>
+        </h1>
+      </div>
       <div
         id="inst_name"
         className="w-full flex justify-center items-center flex-col"
@@ -168,7 +136,7 @@ const TopBar = ({ instPvs, slug }) => {
         <h2
           className={`text-center bg-green-500 p-4 text-xl rounded-t-lg w-full`}
         >
-          {slug[0].toUpperCase()} is <span>{instPvs["RUNSTATE"]["value"]}</span>
+          {instName} is <span>WHO CAEES</span>
         </h2>
         {/* <h1 className="text-center text-white bg-gray-400 border-gray-500 border-2 p-3 font-semibold px-7">
          
@@ -207,7 +175,7 @@ const TopBar = ({ instPvs, slug }) => {
             </tbody>
           </table>
         </div>
-      </div>
+        {/* </div>
       <div className="flex-col flex items-center justify-center">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 overflow-x-auto   w-full">
           <div className="bg-gray-50 border-2 border-gray-800 m-4 p-4 shadow-md ">
@@ -365,7 +333,7 @@ const TopBar = ({ instPvs, slug }) => {
               </tbody>
             </table>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
