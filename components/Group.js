@@ -56,8 +56,11 @@ export default function Group({ groupName, group }) {
             >
               <td className="py-1 px-4">{name}</td>
 
-              <td className="py-1 px-4 flex justify-between items-center">
+              <td className="py-1 px-4 ">
                 <span id={pv + "_VALUE_1"}></span>
+              </td>
+              <td className="py-1 px-4 flex justify-between items-center">
+                <span id={pv + "_VALUE_RC"}></span>
                 <svg
                   id={pv + "_CIRCLE"}
                   className="min-w-2 min-h-2 max-w-2 max-h-2 transition-all text-transparent"
@@ -68,7 +71,6 @@ export default function Group({ groupName, group }) {
                   <circle cx="12" cy="12" r="12" />
                 </svg>
               </td>
-              <td className="py-1 px-4">N/A</td>
             </tr>
           ))}
         </tbody>

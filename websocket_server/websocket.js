@@ -178,6 +178,9 @@ class Instrument {
           this.groupMap[this.groupMap.length - 1].blocks.push({
             name: newBlock.name,
             pv: newBlock.pv,
+            rc: newBlock.runcontrol,
+            lowlimit: newBlock.lowlimit,
+            highlimit: newBlock.highlimit,
           });
         }
       }
@@ -215,12 +218,15 @@ class Instrument {
             block.pv,
             (data) => {
               console.log(`value for ${block.pv} is ${data}`);
-              this.groupCache.set(block.pv, data);
               const pvInfo = {
                 pvName: block.pv,
                 value: data,
+                runcontrol: block.rc,
+                lowlimit: block.lowlimit,
+                highlimit: block.highlimit,
                 // Add more information as needed. We might need to do another CA.get here to find out things like run control values
               };
+              this.groupCache.set(block.pv, pvInfo);
               for (const [socket, inst] of sockets.entries()) {
                 // console.log("socket "+socket+" inst "+inst+" data "+data + "this inst "+this.inst_name)
                 if (inst == this.inst_name) {
@@ -286,8 +292,11 @@ class Instrument {
     for (const [pvName, data] of this.groupCache.entries()) {
       console.log(`emitting FROM CACHE ${pvName} value of ${data}`);
       const pvInfo = {
-        pvName,
-        value: data,
+        pvName: data.pvName,
+        value: data.value,
+        runcontrol: data.runcontrol,
+        lowlimit: data.lowlimit,
+        highlimit: data.highlimit,
         // Add more information as needed. We might need to do another CA.get here to find out things like run control values
       };
       //console.log(`emitting ${pvName} value of ${data}`);
@@ -329,31 +338,31 @@ class Instrument {
 async function startUp() {
   //TODO use the CS:INSTLIST for this and group appropriately
   const instrumentNames = [
-    // "imat",
+    "imat",
     "inter",
-    // "let",
-    // "sandals",
-    // "polref",
-    // "larmor",
-    // "wish",
-    // "enginx",
-    // "gem",
-    // "ines",
-    // "pearl",
-    // "polaris",
-    // "alf",
-    // "crisp",
-    // "loq",
-    // "sans2d",
-    // "offspec",
-    // "surf",
-    // "zoom",
-    // "iris",
+    "let",
+    "sandals",
+    "polref",
+    "larmor",
+    "wish",
+    "enginx",
+    "gem",
+    "ines",
+    "pearl",
+    "polaris",
+    "alf",
+    "crisp",
+    "loq",
+    "sans2d",
+    "offspec",
+    "surf",
+    "zoom",
+    "iris",
     // "iris_setup",
-    // "osiris",
-    // "tosca",
-    // "vesuvio",
-    // "emu",
+    "osiris",
+    "tosca",
+    "vesuvio",
+    "emu",
   ];
   const instruments = [];
 

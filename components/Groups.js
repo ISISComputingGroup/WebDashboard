@@ -67,18 +67,36 @@ export default function Groups({ socket }) {
     });
 
     socket.on("groupPV", async (data) => {
+      console.log("GROUPDATA received:", data);
       // console.log("GROUPDATA received:", data);
       // update the data structure to be displayed in the top bar
       // append the data to the groups array
 
       const pvEl = document.getElementById(data["pvName"] + "_VALUE_1");
+      const pvRC = document.getElementById(data["pvName"] + "_VALUE_RC");
 
       if (pvEl) {
         pvEl.innerHTML = data["value"];
-        if (data["pvName"] === "IN:INTER:MOT:MTR0404") {
-          console.log("PV VALUE: ", data["value"]);
-        }
       }
+
+      if (pvRC) {
+        let inRange;
+        // if (data["runcontrol"] == "true") {
+        // console.log("RC VALUE: ", data["runcontrol"]);
+        inRange =
+          data["value"] <= data["highlimit"] &&
+          data["value"] >= data["lowlimit"];
+        inRange = data["highlimit"] == data["lowlimit"] ? true : inRange;
+        // } else {
+        //   inRange = "N/A";
+        // }
+        pvRC.innerHTML = inRange;
+      }
+
+      // if {data["runcontrol"] {
+      //   const rcEl = document.getElementById(data["pvName"] + "_RC");
+      //   rcEl.innerHTML = data["runcontrol"];
+      // }
 
       const pv = document.getElementById(data["pvName"] + "_CIRCLE");
 
