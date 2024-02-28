@@ -123,7 +123,8 @@ const TopBar = ({ socket, instName }) => {
     >
       <div className="text-left mb-4">
         <h1 className="text-black text-2xl">
-          Instrument: <span className="font-semibold">{instName}</span>
+          Instrument:{" "}
+          <span className="font-semibold">{instName.toUpperCase()}</span>
         </h1>
         <h1 className="text-black text-lg">
           Config: <span className="font-semibold">CONFIG</span>
@@ -136,7 +137,7 @@ const TopBar = ({ socket, instName }) => {
         <h2
           className={`text-center bg-green-500 p-4 text-xl rounded-t-lg w-full`}
         >
-          {instName} is{" "}
+          {instName.toUpperCase()} is{" "}
           <span>
             {instData["IN:" + instName.toUpperCase() + ":DAE:RUNSTATE"] &&
               instData["IN:" + instName.toUpperCase() + ":DAE:RUNSTATE"][
