@@ -36,6 +36,16 @@ export default function wstest() {
         "tosca",
         "vesuvio",
         "emu",
+        "musr",
+        "nimrod",
+        "wish_setup",
+        "chronus",
+        "motion",
+        "maps",
+        "merlin",
+        "scidemo",
+        "rikenfe",
+        "muonfe",
       ];
 
 
@@ -72,7 +82,6 @@ class Instrument {
           [`${this.prefix}DAE:MONITORTO`]: false,
           [`${this.prefix}DAE:NUMSPECTRA`]: false,
           [`${this.prefix}DAE:NUMTIMECHANNELS`]: false,
-          //todo users and title - these might not be available over CA?
         })
       );
     }
