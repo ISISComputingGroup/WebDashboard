@@ -63,13 +63,18 @@ class Instrument {
         Object.entries({
           [`${this.prefix}DAE:RUNSTATE`]: true,
           [`${this.prefix}DAE:RUNNUMBER`]: false,
+          [`${this.prefix}DAE:IRUNNUMBER`]: false,
           [`${this.prefix}DAE:STARTTIME`]: false,
           [`${this.prefix}DAE:TITLE`]: false,
+          [`${this.prefix}DAE:TITLE:DISPLAY`]: false,
           [`${this.prefix}DAE:GOODFRAMES`]: false,
           [`${this.prefix}DAE:GOODFRAMES_PD`]: false,
           [`${this.prefix}DAE:MONITORCOUNTS`]: false,
           [`${this.prefix}DAE:RUNDURATION`]: false,
           [`${this.prefix}DAE:RUNDURATION_PD`]: false,
+          [`${this.prefix}DAE:_USERNAME`]: false,
+          [`${this.prefix}DAE:_USERNAME:SP`]: false,
+          [`${this.prefix}DAE:_USERNAME:SP:RBV`]: false,
           [`${this.prefix}DAE:RAWFRAMES`]: false,
           [`${this.prefix}DAE:RAWFRAMES_PD`]: false,
           [`${this.prefix}DAE:PERIOD`]: false,
@@ -77,11 +82,45 @@ class Instrument {
           [`${this.prefix}DAE:GOODUAH`]: false,
           [`${this.prefix}DAE:GOODUAH_PD`]: false,
           [`${this.prefix}DAE:COUNTRATE`]: false,
-          [`${this.prefix}DAE:MONITORSPECTRUM`]: false,
-          [`${this.prefix}DAE:MONITORFROM`]: false,
-          [`${this.prefix}DAE:MONITORTO`]: false,
-          [`${this.prefix}DAE:NUMSPECTRA`]: false,
-          [`${this.prefix}DAE:NUMTIMECHANNELS`]: false,
+          [`${this.prefix}DAE:NPRATIO`]: false,
+          [`${this.prefix}DAE:DAETIMINGSOURCE`]: false,
+          [`${this.prefix}DAE:PERIODTYPE`]: false,
+        //   [`${this.prefix}CS:BLOCKSERVER:GET_CURR_CONFIG_DETAILS`]: false,
+
+        //   [`${this.prefix}DAE:NUMTIMECHANNELS`]: false,
+        //   [`${this.prefix}DAE:DAEMEMORYUSED`]: false,
+        //   [`${this.prefix}DAE:NUMSPECTRA`]: false, 
+        //   [`${this.prefix}DAE:MONITORCOUNTS`]: false,
+        //   [`${this.prefix}DAE:PERIODSEQ`]: false,
+        //   [`${this.prefix}DAE:BEAMCURRENT`]: false,
+        //   [`${this.prefix}DAE:TOTALUAMPS`]: false,
+        //   [`${this.prefix}DAE:MEVENTS`]: false,
+        //   [`${this.prefix}DAE:TOTALDAECOUNTS`]: false,
+        //   [`${this.prefix}DAE:EVENTMODEFRACTION`]: false,
+        //   [`${this.prefix}DAE:EVENTMODEBUFUSED`]: false,
+        //   [`${this.prefix}DAE:MONITORSPECTRUM`]: false,
+        //   [`${this.prefix}DAE:MONITORFROM`]: false,
+        //   [`${this.prefix}DAE:MONITORTO`]: false,
+        //   [`${this.prefix}DAE:NUMSPECTRA`]: false,
+        //   [`${this.prefix}DAE:NUMTIMECHANNELS`]: false,
+        //   [`${this.prefix}DAE:RUNSTATE_STR`]: false,
+
+        //   [`${this.prefix}DAE:STATETRANS`]: false,
+
+        //   [`${this.prefix}DAE:STATE:CHANGING`]: false,
+
+        //   [`${this.prefix}DAE:STATETRANS:TIME`]: false,
+
+        // //   [`${this.prefix}DAE:VETOSTATUS`]: false,
+        //   [`${this.prefix}DAE:VETOPC`]: false,
+        //   [`${this.prefix}DAE:ALLMSGS`]: false,
+        //   [`${this.prefix}DAE:SPECTRA_FILE`]: false,
+        //   [`${this.prefix}DAE:DETECTOR_FILE`]: false,
+        //   [`${this.prefix}DAE:WIRING_FILE`]: false,
+        //   [`${this.prefix}DAE:ERRMSGS`]: false,
+        //   [`${this.prefix}DAE:WIRING_DIR`]: false,
+        //   [`${this.prefix}DAE:WIRINGTABLES`]: false,
+
         })
       );
     }
@@ -100,10 +139,17 @@ for (var inst of instrumentNames) {
         allpvs.push(pv);
     }
   }
+  
 
-  allpvs.push("sim://sine")
 
-  console.log(allpvs.length)
+
+//   allpvs.push("sim://sine")
+
+  console.log(allpvs.length);
+
+  let raw = allpvs.at(0);
+
+
 
   
     useEffect(() => {
@@ -125,6 +171,16 @@ for (var inst of instrumentNames) {
              else {
             pvVal = updatedPV.value
         }
+        // if (updatedPV.pv == "IN:IMAT:CS:BLOCKSERVER:GET_CURR_CONFIG_DETAILS" && updatedPV.text != null){
+        //     let raw = updatedPV.text;
+        //     console.log(raw)
+        //     let toascii = Buffer.from(raw, 'hex');
+        //     console.log("TO ASCII:")
+        //     console.log(toascii);
+
+
+        // }
+
         setMonitoredPVs(prevMonitoredPVs => ({
             ...prevMonitoredPVs,
             [updatedPVName]: pvVal
