@@ -29,12 +29,12 @@ export default function NavBar() {
                   >
                     Instruments
                   </Link>
-                  <Link
+                  {/* <Link
                     href="/how-to-use"
                     className="text-gray-700  font-semibold  text-left hover:text-blue-600 transition-all duration-200"
                   >
                     How to use
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
 
@@ -106,12 +106,12 @@ export default function NavBar() {
                   >
                     Instruments
                   </Link>
-                  <Link
+                  {/* <Link
                     href="/how-to-use"
                     className="text-gray-700  font-semibold  text-left hover:text-blue-600 transition-all duration-200"
                   >
                     How to use
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
             </div>
