@@ -17,6 +17,7 @@ export default function Home() {
     "vesuvio",
     "emu",
   ];
+// TODO: use the instlist (on a websocket?) for all this
 
   const reflecInsts = ["imat", "inter", "let", "sandals", "polref", "larmor"];
 
