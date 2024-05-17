@@ -36,7 +36,15 @@ const { exec } = require("child_process");
         res.status(500).json(`error: command returned no output`); // or throw an error, depending on your use case
         return
       }
-      res.status(200).json(stdout);
+
+      let sliced = stdout.slice(0, stdout.length-2)
+
+      // let backslashesremoved = sliced.replace(/\\/g, '')
+
+      let backslashesremoved = JSON.parse(sliced);
+
+
+      res.status(200).json(backslashesremoved);
     } catch (error) {
       console.error("Error:", error.message);
       res.status(500).json(error); // or throw an error, depending on your use case
