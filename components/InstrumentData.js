@@ -27,7 +27,7 @@ export default function InstrumentData() {
 
 
   //   // sub to config PV
-    
+
   //   // based on config PV reload/set group/block data array and subscriptions
 
   //   //permanent subscriptions
@@ -38,8 +38,8 @@ export default function InstrumentData() {
   //   //dictionary of pv names for blocks etc -> websocket last data
 
 
-  
-    
+
+
   // }, [router.query.slug]);
 
   const [monitoredPVs, setMonitoredPVs] = useState([]);
@@ -50,96 +50,104 @@ export default function InstrumentData() {
 
   useEffect(() => {
 
-  if (!router.query.slug || !router.query.slug[0] ) {
-    return;
-  }
-  setInstrument_name_upper(router.query.slug[0].toUpperCase())
-  setSlug(router.query.slug);
-  console.log(router.query.slug);
-  setInstName(router.query.slug[0]);
-  setPrefix(`IN:${instrument_name_upper}:`)
+    if (!router.query.slug || !router.query.slug[0]) {
+      return;
+    }
+    setInstrument_name_upper(a => {
 
-}, [router.query.slug])
+      setSlug(router.query.slug);
+      console.log(router.query.slug);
+      setInstName(router.query.slug[0]);
+      setPrefix(`IN:${router.query.slug[0].toUpperCase()}:`)
 
-  
+      return router.query.slug[0].toUpperCase();
+
+    })
+
+
+  }, [router.query.slug])
+
+
 
 
   useEffect(() => {
 
-    if (!instrument_name_upper) {
+    if (!instrument_name_upper || !prefix) {
       return;
     }
 
-   
-
-      // prefix - TODO move this to function - will not work on dev machines, long named insts/setup machines etc. 
-  
-  const perm_pvs = [
-    `${prefix}${CONFIG_DETAILS}`,
-    `${prefix}DAE:RUNSTATE`,
-    "sim://sine:"
-    // all the other dae/topbar pvs here
-  ]
 
 
-  const topBarMap = new Map(
-    Object.entries({
-      [`${prefix}DAE:RUNSTATE`]: "Run state",
-      [`${prefix}DAE:RUNNUMBER`]: "Run number",
-      [`${prefix}DAE:STARTTIME`]: "Start number",
-      [`${prefix}DAE:TITLE`]: "Title",
-      [`${prefix}DAE:TITLE:DISPLAY`]: "",
-      [`${prefix}DAE:GOODFRAMES`]: "",
-      [`${prefix}DAE:GOODFRAMES_PD`]: "",
-      [`${prefix}DAE:MONITORCOUNTS`]: "",
-      [`${prefix}DAE:RUNDURATION`]: "",
-      // [`${prefix}DAE:RUNDURATION_PD`]: "",
-      [`${prefix}DAE:_USERNAME`]: "",
-      [`${prefix}DAE:RAWFRAMES`]: "",
-      // [`${prefix}DAE:RAWFRAMES_PD`]: "",
-      // [`${prefix}DAE:PERIOD`]: "",
-      // [`${prefix}DAE:NUMPERIODS`]: "",
-      // [`${prefix}DAE:GOODUAH`]: "",
-      // [`${prefix}DAE:GOODUAH_PD`]: "",
-      // [`${prefix}DAE:COUNTRATE`]: "",
-      // [`${prefix}DAE:NPRATIO`]: "",
-      // [`${prefix}DAE:DAETIMINGSOURCE`]: "",
-      // [`${prefix}DAE:PERIODTYPE`]: "",
-      // [`${prefix}DAE:NUMTIMECHANNELS`]: "",
-      // [`${prefix}DAE:DAEMEMORYUSED`]: "",
-      // [`${prefix}DAE:NUMSPECTRA`]: "", 
-      // [`${prefix}DAE:MONITORCOUNTS`]: "",
-      // [`${prefix}DAE:PERIODSEQ`]: "",
-      [`${prefix}DAE:BEAMCURRENT`]: "",
-      [`${prefix}DAE:TOTALUAMPS`]: "",
-      // [`${prefix}DAE:MEVENTS`]: "",
-      // [`${prefix}DAE:TOTALDAECOUNTS`]: "",
-      // [`${prefix}DAE:EVENTMODEFRACTION`]: "",
-      // [`${prefix}DAE:EVENTMODEBUFUSED`]: "",
-      // [`${prefix}DAE:MONITORSPECTRUM`]: "",
-      // [`${prefix}DAE:MONITORFROM`]: "",
-      // [`${prefix}DAE:MONITORTO`]: "",
-      // [`${prefix}DAE:NUMSPECTRA`]: "",
-      // [`${prefix}DAE:NUMTIMECHANNELS`]: "",
-      // [`${prefix}DAE:RUNSTATE_STR`]: "",
-      // [`${prefix}DAE:STATETRANS`]: "",
-      // [`${prefix}DAE:STATE:CHANGING`]: "",
-      // [`${prefix}DAE:STATETRANS:TIME`]: "",
-      // [`${prefix}DAE:VETOSTATUS`]: "",
-      // [`${prefix}DAE:VETOPC`]: "",
-      // [`sim://sine`]: "",
+    // prefix - TODO move this to function - will not work on dev machines, long named insts/setup machines etc. 
 
-    })
-  );
+    const perm_pvs = [
+      `${prefix}${CONFIG_DETAILS}`,
+      `${prefix}DAE:RUNSTATE`,
+      "sim://sine:"
+      // all the other dae/topbar pvs here
+    ]
 
 
-  for (const pv of topBarMap.keys()) {
-    console.log("subscribing to " + pv)
-    sendJsonMessage({ "type": "subscribe", "pvs": [pv] })
+    const topBarMap = new Map(
+      Object.entries({
+        [`${prefix}DAE:RUNSTATE`]: "Run state",
+        [`${prefix}DAE:RUNNUMBER`]: "Run number",
+        [`${prefix}DAE:STARTTIME`]: "Start number",
+        [`${prefix}DAE:TITLE`]: "Title",
+        [`${prefix}DAE:TITLE:DISPLAY`]: "",
+        [`${prefix}DAE:GOODFRAMES`]: "",
+        [`${prefix}DAE:GOODFRAMES_PD`]: "",
+        [`${prefix}DAE:MONITORCOUNTS`]: "",
+        [`${prefix}DAE:RUNDURATION`]: "",
+        // [`${prefix}DAE:RUNDURATION_PD`]: "",
+        [`${prefix}DAE:_USERNAME`]: "",
+        [`${prefix}DAE:RAWFRAMES`]: "",
+        // [`${prefix}DAE:RAWFRAMES_PD`]: "",
+        // [`${prefix}DAE:PERIOD`]: "",
+        // [`${prefix}DAE:NUMPERIODS`]: "",
+        // [`${prefix}DAE:GOODUAH`]: "",
+        // [`${prefix}DAE:GOODUAH_PD`]: "",
+        // [`${prefix}DAE:COUNTRATE`]: "",
+        // [`${prefix}DAE:NPRATIO`]: "",
+        // [`${prefix}DAE:DAETIMINGSOURCE`]: "",
+        // [`${prefix}DAE:PERIODTYPE`]: "",
+        // [`${prefix}DAE:NUMTIMECHANNELS`]: "",
+        // [`${prefix}DAE:DAEMEMORYUSED`]: "",
+        // [`${prefix}DAE:NUMSPECTRA`]: "", 
+        // [`${prefix}DAE:MONITORCOUNTS`]: "",
+        // [`${prefix}DAE:PERIODSEQ`]: "",
+        [`${prefix}DAE:BEAMCURRENT`]: "",
+        [`${prefix}DAE:TOTALUAMPS`]: "",
+        // [`${prefix}DAE:MEVENTS`]: "",
+        // [`${prefix}DAE:TOTALDAECOUNTS`]: "",
+        // [`${prefix}DAE:EVENTMODEFRACTION`]: "",
+        // [`${prefix}DAE:EVENTMODEBUFUSED`]: "",
+        // [`${prefix}DAE:MONITORSPECTRUM`]: "",
+        // [`${prefix}DAE:MONITORFROM`]: "",
+        // [`${prefix}DAE:MONITORTO`]: "",
+        // [`${prefix}DAE:NUMSPECTRA`]: "",
+        // [`${prefix}DAE:NUMTIMECHANNELS`]: "",
+        // [`${prefix}DAE:RUNSTATE_STR`]: "",
+        // [`${prefix}DAE:STATETRANS`]: "",
+        // [`${prefix}DAE:STATE:CHANGING`]: "",
+        // [`${prefix}DAE:STATETRANS:TIME`]: "",
+        // [`${prefix}DAE:VETOSTATUS`]: "",
+        // [`${prefix}DAE:VETOPC`]: "",
+        // [`sim://sine`]: "",
 
-  }
+      })
+    );
 
-  sendJsonMessage({ "type": "subscribe", "pvs": [`${prefix}${CONFIG_DETAILS}`]});
+
+    for (const pv of topBarMap.keys()) {
+      // console.log("subscribing to " + pv)
+      sendJsonMessage({ "type": "subscribe", "pvs": [pv] })
+
+    }
+
+    sendJsonMessage({ "type": "subscribe", "pvs": [`${prefix}${CONFIG_DETAILS}`] });
+
+    sendJsonMessage({ "type": "subscribe", "pvs": [`${prefix}DAE:RUNSTATE_STR`] });
 
   }, [router.query.slug, sendJsonMessage, instrument_name_upper, prefix])
 
@@ -149,42 +157,49 @@ export default function InstrumentData() {
       return;
     }
 
-   
-  console.log(lastJsonMessage)
+
+    // console.log(lastJsonMessage)
     if (lastJsonMessage !== null) {
-      console.log(lastJsonMessage)
-        const updatedPV = lastJsonMessage;
-        const updatedPVName = updatedPV.pv;
-        let pvVal;
-        if (updatedPV.value == null) {
-            pvVal = updatedPV.text
-        }
-         else {
+      // console.log(lastJsonMessage)
+      const updatedPV = lastJsonMessage;
+      const updatedPVName = updatedPV.pv;
+      let pvVal;
+      if (updatedPV.value == null) {
+        pvVal = updatedPV.text
+      }
+      else {
         pvVal = updatedPV.value
 
 
-    }
-    if (updatedPV.pv == `${prefix}${CONFIG_DETAILS}` && updatedPV.text != null){
+      }
+      if (updatedPV.pv == `${prefix}${CONFIG_DETAILS}` && updatedPV.text != null) {
         let raw = updatedPV.text;
 
-        
+        fetch("/api/decompress", {
+          method: 'POST', 
+          body: raw
+        }).then(response => console.log(response.text()))
+
+
+
+
         //TODO send API request to decompress here
         //TODO clear existing array for blocks
         //TODO reset subscriptions and setup new ones
 
 
-    }
+      }
 
-    
-    setMonitoredPVs(prevMonitoredPVs => ({
-          ...prevMonitoredPVs,
-          [updatedPVName]: pvVal
+
+      setMonitoredPVs(prevMonitoredPVs => ({
+        ...prevMonitoredPVs,
+        [updatedPVName]: pvVal
       }));
 
       const pv = document.getElementById(updatedPVName + "_VALUE");
 
       if (!pv) return;
-  
+
       // if pv already has a green bg, dont do anything
       if (pv.classList.contains("text-green-500")) return;
       pv.classList.remove("text-transparent");
@@ -196,27 +211,27 @@ export default function InstrumentData() {
         // "ease-in-out",
         // "font-bold"
       );
-  
+
       setTimeout(() => {
         // pv.classList.remove("bg-green-500");
         pv.classList.remove("text-green-500");
         pv.classList.add("text-transparent");
       }, 2000);
 
-    // setMonitoredPVs(prevMonitoredPVs => ({
-    //     ...prevMonitoredPVs,
-    //     [updatedPVName]: pvVal
-    // }));
-        }
-}, [ sendJsonMessage, lastJsonMessage, instrument_name_upper, prefix])
+      // setMonitoredPVs(prevMonitoredPVs => ({
+      //     ...prevMonitoredPVs,
+      //     [updatedPVName]: pvVal
+      // }));
+    }
+  }, [sendJsonMessage, lastJsonMessage, instrument_name_upper, prefix])
 
 
-  if ( !slug || !instName) {
+  if (!slug || !instName) {
     return <h1>Loading...</h1>;
   }
   return (
     <div className="p-8 w-full mx-auto max-w-7xl">
-      <TopBar monitoredPVs={monitoredPVs} instName={instName}/>
+      <TopBar monitoredPVs={monitoredPVs} instName={instName} />
       <Groups />
     </div>
   );

@@ -18,7 +18,7 @@ const { exec } = require("child_process");
       return
     }
 
-    const command = `C:\\Instrument\\Apps\\EPICS\\support\\utilities\\master\\bin\\windows-x64\\uzhex.exe ` + reqBuffer;
+    const command = `C:\\Instrument\\Apps\\python3\\python.exe -c "import binascii;import zlib;print(zlib.decompress(binascii.unhexlify('${reqBuffer}')).decode())" `;
 
     // Promisify the exec function to use async/await
     const execAsync = util.promisify(exec);
@@ -39,7 +39,7 @@ const { exec } = require("child_process");
       res.status(200).json(stdout);
     } catch (error) {
       console.error("Error:", error.message);
-      res.status(500).json(error.message); // or throw an error, depending on your use case
+      res.status(500).json(error); // or throw an error, depending on your use case
       return
     }
   }
