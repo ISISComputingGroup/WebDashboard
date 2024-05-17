@@ -6,7 +6,10 @@ import useWebSocket from "react-use-websocket";
 
 export default function wstest() {
 
-    const { sendJsonMessage, lastJsonMessage } = useWebSocket("ws://localhost:8080/pvws/pv", {
+  const socketURL = process.env.NEXT_PUBLIC_WS_URL;
+  console.log(`WS URL IS ${socketURL}`)
+
+    const { sendJsonMessage, lastJsonMessage } = useWebSocket(socketURL, {
         shouldReconnect: (closeEvent) => true
     })
 

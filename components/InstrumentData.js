@@ -3,7 +3,6 @@ import TopBar from "./TopBar";
 import Groups from "./Groups";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import io from "socket.io-client";
 
 export default function InstrumentData() {
   // set up the different states for the instrument data
@@ -11,7 +10,7 @@ export default function InstrumentData() {
 
   const router = useRouter();
   const [slug, setSlug] = useState(null);
-  const socketURL = "ws://localhost:8080/pvws/pv:";
+  const socketURL = process.env.NEXT_PUBLIC_WS_URL;
   const [instName, setInstName] = useState(null);
 
 
@@ -73,6 +72,8 @@ export default function InstrumentData() {
       }
       if (updatedPV.pv == `${prefix}${CONFIG_DETAILS}` && updatedPV.text != null){
           let raw = updatedPV.text;
+
+          
           //TODO send API request to decompress here
           //TODO clear existing array for blocks
           //TODO reset subscriptions and setup new ones
