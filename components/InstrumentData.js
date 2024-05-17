@@ -134,6 +134,7 @@ export default function InstrumentData() {
 
 
       if (updatedPVName == `${currentInstrument.prefix}${CONFIG_DETAILS}` && updatedPV.text != null) {
+        // config change, reset instrument groups 
         let raw = updatedPV.text;
 
         fetch("/api/decompress", {
@@ -195,11 +196,13 @@ export default function InstrumentData() {
       } else {
 
         let pvVal;
-      if (updatedPV.value == null) {
+      if (updatedPV.text != null) {
         pvVal = updatedPV.text
       }
-      else {
+      else if (updatedPV.value != null) {
         pvVal = updatedPV.value
+      } else {
+
       }
 
       if (pvVal) {
