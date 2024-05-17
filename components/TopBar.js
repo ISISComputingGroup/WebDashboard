@@ -6,6 +6,8 @@ const TopBar = ({ monitoredPVs, instName }) => {
     return "";
   }
 
+  console.log(monitoredPVs)
+
   return (
     <div
       id="top_bar"
@@ -29,7 +31,7 @@ const TopBar = ({ monitoredPVs, instName }) => {
         >
           {instName.toUpperCase()} is{" "}
           <span>
-            {monitoredPVs["IN:" + instName.toUpperCase() + ":DAE:RUNSTATE_STR"] 
+            {monitoredPVs["Run state STR"] 
               }
           </span>
         </h2>

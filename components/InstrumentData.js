@@ -39,6 +39,7 @@ class Instrument {
     this.topBarMap = new Map(
       Object.entries({
         [`${this.prefix}DAE:RUNSTATE`]: "Run state",
+        [`${this.prefix}DAE:RUNSTATE_STR`]: "Run state STR",
         [`${this.prefix}DAE:RUNNUMBER`]: "Run number",
         [`${this.prefix}DAE:STARTTIME`]: "Start number",
         [`${this.prefix}DAE:TITLE`]: "Title",

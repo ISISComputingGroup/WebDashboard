@@ -27,9 +27,9 @@ export default function Group({group }) {
                 <span id={pv.human_readable_name + "_VALUE"}>{pv.value}</span>
               </td>
               <td className="py-1 px-4 flex justify-between items-center">
-                <span id={pv + "_VALUE_RC"}></span>
+                <span id={pv.human_readable_name + "_VALUE_RC"}>{pv.runcontrol_enabled}</span>
                 <svg
-                  id={pv + "_CIRCLE"}
+                  id={pv.human_readable_name + "_CIRCLE"}
                   className="min-w-2 min-h-2 max-w-2 max-h-2 transition-all text-transparent"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
