@@ -20,6 +20,7 @@ To deploy this project run the following commands
 NEXT_PUBLIC_WS_URL=ws://<hostname>:<port>/pvws/pv
 ```
 
+To start, use: 
 ```bash
   npm install
 ```
