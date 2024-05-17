@@ -58,6 +58,7 @@ export default function InstrumentData() {
       setSlug(router.query.slug);
       console.log(router.query.slug);
       setInstName(router.query.slug[0]);
+      // TODO: use the instlist for this - it's not going to work for dev machines
       setPrefix(`IN:${router.query.slug[0].toUpperCase()}:`)
 
       return router.query.slug[0].toUpperCase();
@@ -75,17 +76,6 @@ export default function InstrumentData() {
     if (!instrument_name_upper || !prefix) {
       return;
     }
-
-
-
-    // prefix - TODO move this to function - will not work on dev machines, long named insts/setup machines etc. 
-
-    const perm_pvs = [
-      `${prefix}${CONFIG_DETAILS}`,
-      `${prefix}DAE:RUNSTATE`,
-      "sim://sine:"
-      // all the other dae/topbar pvs here
-    ]
 
 
     const topBarMap = new Map(
