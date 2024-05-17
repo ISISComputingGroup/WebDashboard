@@ -44,22 +44,35 @@ export default function InstrumentData() {
 
   const [monitoredPVs, setMonitoredPVs] = useState([]);
 
+  const [instrument_name_upper, setInstrument_name_upper] = useState("");
+  const CONFIG_DETAILS = "CS:BLOCKSERVER:GET_CURR_CONFIG_DETAILS";
+  const [prefix, setPrefix] = useState("");
 
   useEffect(() => {
 
-    if (!router.query.slug || !router.query.slug[0] ) {
+  if (!router.query.slug || !router.query.slug[0] ) {
+    return;
+  }
+  setInstrument_name_upper(router.query.slug[0].toUpperCase())
+  setSlug(router.query.slug);
+  console.log(router.query.slug);
+  setInstName(router.query.slug[0]);
+  setPrefix(`IN:${instrument_name_upper}:`)
+
+}, [router.query.slug])
+
+  
+
+
+  useEffect(() => {
+
+    if (!instrument_name_upper) {
       return;
     }
-    setSlug(router.query.slug);
-    console.log(router.query.slug);
-    setInstName(router.query.slug[0]);
+
+   
 
       // prefix - TODO move this to function - will not work on dev machines, long named insts/setup machines etc. 
-  const instrument_name_upper = router.query.slug[0].toUpperCase();
-
-  const prefix = `IN:${instrument_name_upper}:`;
-
-  const CONFIG_DETAILS = "CS:BLOCKSERVER:GET_CURR_CONFIG_DETAILS";
   
   const perm_pvs = [
     `${prefix}${CONFIG_DETAILS}`,
@@ -80,43 +93,41 @@ export default function InstrumentData() {
       [`${prefix}DAE:GOODFRAMES_PD`]: "",
       [`${prefix}DAE:MONITORCOUNTS`]: "",
       [`${prefix}DAE:RUNDURATION`]: "",
-      [`${prefix}DAE:RUNDURATION_PD`]: "",
+      // [`${prefix}DAE:RUNDURATION_PD`]: "",
       [`${prefix}DAE:_USERNAME`]: "",
-      [`${prefix}DAE:_USERNAME:SP`]: "",
-      [`${prefix}DAE:_USERNAME:SP:RBV`]: "",
       [`${prefix}DAE:RAWFRAMES`]: "",
-      [`${prefix}DAE:RAWFRAMES_PD`]: "",
-      [`${prefix}DAE:PERIOD`]: "",
-      [`${prefix}DAE:NUMPERIODS`]: "",
-      [`${prefix}DAE:GOODUAH`]: "",
-      [`${prefix}DAE:GOODUAH_PD`]: "",
-      [`${prefix}DAE:COUNTRATE`]: "",
-      [`${prefix}DAE:NPRATIO`]: "",
-      [`${prefix}DAE:DAETIMINGSOURCE`]: "",
-      [`${prefix}DAE:PERIODTYPE`]: "",
-      [`${prefix}DAE:NUMTIMECHANNELS`]: "",
-      [`${prefix}DAE:DAEMEMORYUSED`]: "",
-      [`${prefix}DAE:NUMSPECTRA`]: "", 
-      [`${prefix}DAE:MONITORCOUNTS`]: "",
-      [`${prefix}DAE:PERIODSEQ`]: "",
+      // [`${prefix}DAE:RAWFRAMES_PD`]: "",
+      // [`${prefix}DAE:PERIOD`]: "",
+      // [`${prefix}DAE:NUMPERIODS`]: "",
+      // [`${prefix}DAE:GOODUAH`]: "",
+      // [`${prefix}DAE:GOODUAH_PD`]: "",
+      // [`${prefix}DAE:COUNTRATE`]: "",
+      // [`${prefix}DAE:NPRATIO`]: "",
+      // [`${prefix}DAE:DAETIMINGSOURCE`]: "",
+      // [`${prefix}DAE:PERIODTYPE`]: "",
+      // [`${prefix}DAE:NUMTIMECHANNELS`]: "",
+      // [`${prefix}DAE:DAEMEMORYUSED`]: "",
+      // [`${prefix}DAE:NUMSPECTRA`]: "", 
+      // [`${prefix}DAE:MONITORCOUNTS`]: "",
+      // [`${prefix}DAE:PERIODSEQ`]: "",
       [`${prefix}DAE:BEAMCURRENT`]: "",
       [`${prefix}DAE:TOTALUAMPS`]: "",
-      [`${prefix}DAE:MEVENTS`]: "",
-      [`${prefix}DAE:TOTALDAECOUNTS`]: "",
-      [`${prefix}DAE:EVENTMODEFRACTION`]: "",
-      [`${prefix}DAE:EVENTMODEBUFUSED`]: "",
-      [`${prefix}DAE:MONITORSPECTRUM`]: "",
-      [`${prefix}DAE:MONITORFROM`]: "",
-      [`${prefix}DAE:MONITORTO`]: "",
-      [`${prefix}DAE:NUMSPECTRA`]: "",
-      [`${prefix}DAE:NUMTIMECHANNELS`]: "",
-      [`${prefix}DAE:RUNSTATE_STR`]: "",
-      [`${prefix}DAE:STATETRANS`]: "",
-      [`${prefix}DAE:STATE:CHANGING`]: "",
-      [`${prefix}DAE:STATETRANS:TIME`]: "",
-      [`${prefix}DAE:VETOSTATUS`]: "",
-      [`${prefix}DAE:VETOPC`]: "",
-      [`sim://sine`]: "",
+      // [`${prefix}DAE:MEVENTS`]: "",
+      // [`${prefix}DAE:TOTALDAECOUNTS`]: "",
+      // [`${prefix}DAE:EVENTMODEFRACTION`]: "",
+      // [`${prefix}DAE:EVENTMODEBUFUSED`]: "",
+      // [`${prefix}DAE:MONITORSPECTRUM`]: "",
+      // [`${prefix}DAE:MONITORFROM`]: "",
+      // [`${prefix}DAE:MONITORTO`]: "",
+      // [`${prefix}DAE:NUMSPECTRA`]: "",
+      // [`${prefix}DAE:NUMTIMECHANNELS`]: "",
+      // [`${prefix}DAE:RUNSTATE_STR`]: "",
+      // [`${prefix}DAE:STATETRANS`]: "",
+      // [`${prefix}DAE:STATE:CHANGING`]: "",
+      // [`${prefix}DAE:STATETRANS:TIME`]: "",
+      // [`${prefix}DAE:VETOSTATUS`]: "",
+      // [`${prefix}DAE:VETOPC`]: "",
+      // [`sim://sine`]: "",
 
     })
   );
@@ -128,9 +139,16 @@ export default function InstrumentData() {
 
   }
 
-  }, [router.query.slug, sendJsonMessage])
+  sendJsonMessage({ "type": "subscribe", "pvs": [`${prefix}${CONFIG_DETAILS}`]});
+
+  }, [router.query.slug, sendJsonMessage, instrument_name_upper, prefix])
 
   useEffect(() => {
+
+    if (!instrument_name_upper) {
+      return;
+    }
+
    
   console.log(lastJsonMessage)
     if (lastJsonMessage !== null) {
@@ -146,16 +164,16 @@ export default function InstrumentData() {
 
 
     }
-    // if (updatedPV.pv == `${prefix}${CONFIG_DETAILS}` && updatedPV.text != null){
-    //     let raw = updatedPV.text;
+    if (updatedPV.pv == `${prefix}${CONFIG_DETAILS}` && updatedPV.text != null){
+        let raw = updatedPV.text;
 
         
-    //     //TODO send API request to decompress here
-    //     //TODO clear existing array for blocks
-    //     //TODO reset subscriptions and setup new ones
+        //TODO send API request to decompress here
+        //TODO clear existing array for blocks
+        //TODO reset subscriptions and setup new ones
 
 
-    // }
+    }
 
     
     setMonitoredPVs(prevMonitoredPVs => ({
@@ -190,7 +208,7 @@ export default function InstrumentData() {
     //     [updatedPVName]: pvVal
     // }));
         }
-}, [ sendJsonMessage, lastJsonMessage])
+}, [ sendJsonMessage, lastJsonMessage, instrument_name_upper, prefix])
 
 
   if ( !slug || !instName) {

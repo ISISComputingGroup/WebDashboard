@@ -33,10 +33,8 @@ const TopBar = ({ monitoredPVs, instName }) => {
         >
           {instName.toUpperCase()} is{" "}
           <span>
-            {monitoredPVs["IN:" + instName.toUpperCase() + ":DAE:RUNSTATE"] &&
-              monitoredPVs["IN:" + instName.toUpperCase() + ":DAE:RUNSTATE"][
-                "value"
-              ]}
+            {monitoredPVs["IN:" + instName.toUpperCase() + ":DAE:RUNSTATE_STR"] 
+              }
           </span>
         </h2>
         {/* <h1 className="text-center text-white bg-gray-400 border-gray-500 border-2 p-3 font-semibold px-7">
