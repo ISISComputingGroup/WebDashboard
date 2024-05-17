@@ -1,6 +1,15 @@
 const util = require("util");
 const { exec } = require("child_process");
 
+
+/**
+ * This is a function that dehexes long PVs and returns their string representation. 
+ * At some point this will be redundant as we will just dehex+unzip on the client side,
+ * but for now i'm too lazy to figure that out so just send a GET with the body of the pv val and this will unscramble it
+ * @param {*} req the request - set GET body to raw pv value
+ * @param {*} res 500 if error, 200 with string if not
+ * @returns null
+ */
   export default async function handler(req, res) {
     const reqBuffer = Buffer(req.body);
 
