@@ -1,4 +1,5 @@
 export default function Group({group }) {
+  // console.log(group)
   if (!group ) {
     return <h1>Loading...</h1>;
   }
@@ -23,7 +24,7 @@ export default function Group({group }) {
               <td className="py-1 px-4">{pv.human_readable_name}</td>
 
               <td className="py-1 px-4 ">
-                <span id={pv + "_VALUE_1"}>{pv.value}</span>
+                <span id={pv.human_readable_name + "_VALUE"}>{pv.value}</span>
               </td>
               <td className="py-1 px-4 flex justify-between items-center">
                 <span id={pv + "_VALUE_RC"}></span>

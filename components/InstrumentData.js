@@ -214,36 +214,53 @@ export default function InstrumentData() {
 
         // console.log(currentInstrument.groups)
 
-        // for (const group in currentInstrument.groups) {
-        //   console.log("FUCKKKKKKKKKK ")
-        //   console.log(group)
+        // consol
 
-        // }
+        for (const group of currentInstrument.groups) {
+          // console.log(group)
+          for (const block of group.blocks) {
+
+            console.log("block: " + block.human_readable_name + "updatedpvname: " + updatedPVName )
+            if (currentInstrument.prefix + "CS:SB:" + block.human_readable_name == updatedPVName) {
+              console.log("got here")
+              block.value = pvVal
+
+              const pv = document.getElementById(block.human_readable_name + "_CIRCLE");
+
+              if (!pv) return;
+        
+              if (pv.classList.contains("text-green-500")) return;
+              pv.classList.remove("text-transparent");
+              pv.classList.add(
+        
+                "text-green-500"
+        
+              );
+        
+              setTimeout(() => {
+                pv.classList.remove("text-green-500");
+                pv.classList.add("text-transparent");
+              }, 2000);
+
+
+            }
+          }
+
+        }
 
 
 
       }
+
+      
+
+
     }
       
       }
 
 
-      const pv = document.getElementById(updatedPVName + "_VALUE");
-
-      if (!pv) return;
-
-      if (pv.classList.contains("text-green-500")) return;
-      pv.classList.remove("text-transparent");
-      pv.classList.add(
-
-        "text-green-500"
-
-      );
-
-      setTimeout(() => {
-        pv.classList.remove("text-green-500");
-        pv.classList.add("text-transparent");
-      }, 2000);
+      
 
     
   }, [lastJsonMessage])
