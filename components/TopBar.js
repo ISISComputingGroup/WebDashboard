@@ -2,10 +2,6 @@ import React, { useState, useCallback, useEffect } from "react";
 import io from "socket.io-client";
 
 const TopBar = ({ monitoredPVs, instName }) => {
-
-  console.log(monitoredPVs)
-  console.log(instName)
-
   if (!monitoredPVs) {
     return "";
   }

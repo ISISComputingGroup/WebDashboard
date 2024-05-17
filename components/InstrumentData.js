@@ -42,16 +42,15 @@ class Instrument {
         [`${this.prefix}DAE:RUNNUMBER`]: "Run number",
         [`${this.prefix}DAE:STARTTIME`]: "Start number",
         [`${this.prefix}DAE:TITLE`]: "Title",
-        [`${this.prefix}DAE:TITLE:DISPLAY`]: "",
-        [`${this.prefix}DAE:GOODFRAMES`]: "",
-        [`${this.prefix}DAE:GOODFRAMES_PD`]: "",
-        [`${this.prefix}DAE:MONITORCOUNTS`]: "",
-        [`${this.prefix}DAE:RUNDURATION`]: "",
-        [`${this.prefix}DAE:_USERNAME`]: "",
-        [`${this.prefix}DAE:RAWFRAMES`]: "",
-        [`${this.prefix}DAE:BEAMCURRENT`]: "",
-        [`${this.prefix}DAE:TOTALUAMPS`]: "",
-        // [`sim://sine`]: "",
+        [`${this.prefix}DAE:GOODFRAMES`]: "a",
+        [`${this.prefix}DAE:GOODFRAMES_PD`]: "v",
+        [`${this.prefix}DAE:MONITORCOUNTS`]: "s",
+        [`${this.prefix}DAE:RUNDURATION`]: "d",
+        [`${this.prefix}DAE:_USERNAME`]: "e",
+        [`${this.prefix}DAE:RAWFRAMES`]: "gh",
+        [`${this.prefix}DAE:BEAMCURRENT`]: "d",
+        [`${this.prefix}DAE:TOTALUAMPS`]: "total uamps",
+        [`sim://sine`]: "sine",
 
       })
     );
@@ -124,22 +123,6 @@ export default function InstrumentData() {
 
 
 
-
-  useEffect(() => {
-
-    if (!currentInstrument) {
-      return;
-    }
-
-
-    for (const group of currentInstrument.groups) {
-      for (const block of group.blocks) {
-        sendJsonMessage({ "type": "subscribe", "pvs": [block.pvaddress] });
-      }
-    }
-
-  }, [router.query.slug, sendJsonMessage, currentInstrument])
-
   useEffect(() => {
 
     if (!lastJsonMessage) {
@@ -161,22 +144,23 @@ export default function InstrumentData() {
           //create PV objects for currentinstrument.groups
             //subscribe to pvs
         const ConfigOutput = response;
+        // console.log(response)
           const blocks = ConfigOutput.blocks;
       const groups = ConfigOutput.groups;
       
+          // console.log(groups)
 
-      if (!currentInstrument.groups || currentInstrument) {
-        return;
-      }
-      
-      console.log(currentInstrument);
+     
+      // console.log(currentInstrument);
 
-      console.log(groups)
+      // console.log(groups)
+
+      currentInstrument.groups = [];
 
       for (const group of groups) {
         const groupName = group.name;
         const groupBlocks = group.blocks;
-        // const groupComponent = group.component;
+        // const groupComponent = group.component
 
 
         currentInstrument.groups.push({
@@ -184,10 +168,12 @@ export default function InstrumentData() {
           blocks: [],
         });
 
+        // console.log(currentInstrument)
+
         for (const block of groupBlocks) {
-          console.log("Block:", block);
+          // console.log("Block:", block);
           const newBlock = blocks.find((b) => b.name === block);
-          console.log("NewBlock:", newBlock);
+          // console.log("NewBlock:", newBlock);
 
           const completePV = new PV(newBlock.pv);
           completePV.human_readable_name = newBlock.name;
@@ -197,7 +183,11 @@ export default function InstrumentData() {
           completePV.visible = newBlock.visible;
 
           currentInstrument.groups[currentInstrument.groups.length - 1].blocks.push(completePV);
+          sendJsonMessage({ "type": "subscribe", "pvs": [currentInstrument.prefix + "CS:SB:" + completePV.human_readable_name] })
         }
+
+        
+
       }
 
         })
@@ -213,13 +203,24 @@ export default function InstrumentData() {
 
       if (pvVal) {
 
-      console.log(updatedPVName)
-      console.log(currentInstrument.topBarMap)
+
       if (currentInstrument.topBarMap.has(updatedPVName)) {
-        currentInstrument.topBarPVs[updatedPVName] = pvVal;
+        // This is a top bar PV
+        const human_readable_name = currentInstrument.topBarMap.get(updatedPVName)
+        currentInstrument.topBarPVs[human_readable_name] = pvVal;
         
       } else { 
         //check if in groups
+
+        // console.log(currentInstrument.groups)
+
+        // for (const group in currentInstrument.groups) {
+        //   console.log("FUCKKKKKKKKKK ")
+        //   console.log(group)
+
+        // }
+
+
 
       }
     }
@@ -254,7 +255,7 @@ export default function InstrumentData() {
   return (
     <div className="p-8 w-full mx-auto max-w-7xl">
       <TopBar monitoredPVs={currentInstrument.topBarPVs} instName={instName} />
-      <Groups />
+      <Groups groupsMap={currentInstrument.groups} />
     </div>
   );
 }
