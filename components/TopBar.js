@@ -1,12 +1,10 @@
-import React, { useState, useCallback, useEffect } from "react";
-import io from "socket.io-client";
 
 const TopBar = ({ monitoredPVs, instName }) => {
   if (!monitoredPVs) {
     return "";
   }
 
-  console.log(monitoredPVs)
+  // console.log(monitoredPVs)
 
   return (
     <div

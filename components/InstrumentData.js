@@ -64,6 +64,8 @@ class Instrument {
 
 }
 
+let lastUpdate = "";
+
 export default function InstrumentData() {
   // set up the different states for the instrument data
   // const [socket, setSocket] = useState(null);
@@ -101,7 +103,7 @@ export default function InstrumentData() {
     }
     setInstrument_name_upper(a => {
 
-      console.log(router.query.slug);
+      // console.log(router.query.slug);
       setInstName(router.query.slug[0]);
 
       let instrument = new Instrument(router.query.slug[0].toUpperCase())
@@ -135,6 +137,13 @@ export default function InstrumentData() {
 
       if (updatedPVName == `${currentInstrument.prefix}${CONFIG_DETAILS}` && updatedPV.text != null) {
         // config change, reset instrument groups 
+        if (updatedPV.text == lastUpdate) {
+          //config hasnt actually changed
+          return
+        }
+        lastUpdate = updatedPV.text
+
+        console.log("config changed")
         let raw = updatedPV.text;
 
         fetch("/api/decompress", {
@@ -195,22 +204,24 @@ export default function InstrumentData() {
         })
       } else {
 
-        let pvVal;
+      let pvVal;
       if (updatedPV.text != null) {
+        //string
         pvVal = updatedPV.text
       }
       else if (updatedPV.value != null) {
+        //anything else
         pvVal = updatedPV.value
       } else {
-
+          return
       }
 
-      if (pvVal) {
 
 
       if (currentInstrument.topBarMap.has(updatedPVName)) {
         // This is a top bar PV
         const human_readable_name = currentInstrument.topBarMap.get(updatedPVName)
+        
         currentInstrument.topBarPVs[human_readable_name] = pvVal;
         
       } else { 
@@ -224,9 +235,9 @@ export default function InstrumentData() {
           // console.log(group)
           for (const block of group.blocks) {
 
-            console.log("block: " + block.human_readable_name + "updatedpvname: " + updatedPVName )
+            // console.log("block: " + block.human_readable_name + "updatedpvname: " + updatedPVName )
             if (currentInstrument.prefix + "CS:SB:" + block.human_readable_name == updatedPVName) {
-              console.log("got here")
+              // console.log("got here")
               block.value = pvVal
 
               const pv = document.getElementById(block.human_readable_name + "_CIRCLE");
@@ -259,7 +270,7 @@ export default function InstrumentData() {
       
 
 
-    }
+    
       
       }
 
