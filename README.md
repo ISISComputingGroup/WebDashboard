@@ -8,7 +8,7 @@ Allows monitoring of instrument PVs via a web page.
 
 **Client:** NextJS, TailwindCSS
 
-**Server:** NextJS, pvws
+**Server:** NextJS, NestJS, pvws
 
 ## Deployment
 
