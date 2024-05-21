@@ -1,39 +1,38 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/frontend/node_modules
-/frontend/.pnp
-/frontend.pnp.js
-/frontend.yarn/install-state.gz
+apps/frontend/node_modules
+apps/frontend/.pnp
+/apps/frontend.pnp.js
+/apps/frontend.yarn/install-state.gz
 
 # testing
-/frontend/coverage
+/apps/frontend/coverage
 
 # next.js
-/frontend/.next/
-/frontend/out/
+/apps/frontend/.next
+/apps/frontend/out
 
-# production
-/frontend/build
+/apps/frontend/build
 
 # misc
-/frontend/.DS_Store
-/frontend/*.pem
+/apps/frontend/.DS_Store
+/apps/frontend/*.pem
 
 # debug
-/frontend/npm-debug.log*
-/frontend/yarn-debug.log*
-/frontend/yarn-error.log*
+/apps/frontend/npm-debug.log*
+/apps/frontend/yarn-debug.log*
+/apps/frontend/yarn-error.log*
 
 # local env files
-/frontend/.env*.local
+/apps/frontend/.env*.local
 
 # vercel
-/frontend/.vercel
+/apps/frontend/.vercel
 
 # typescript
-/frontend/*.tsbuildinfo
-/frontend/next-env.d.ts
+/apps/frontend/*.tsbuildinfo
+/apps/frontend/next-env.d.ts
 
 .turbo
 node_modules
