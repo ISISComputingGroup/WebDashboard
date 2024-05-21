@@ -148,6 +148,10 @@ export default function WallDisplay() {
             <h1 className="w-full text-left text-black font-semibold text-3xl mt-2 py-2 ">
               Jenkins Jobs:
             </h1>{" "}
+            <p className="text-lg text-left w-full text-black">
+              Tip: Open the jobs into a{" "}
+              <span className="font-bold underline">new tab</span> only
+            </p>
             <iframe
               className="w-full h-[400px] border-2 border-gray-100 rounded-lg shadow-sm hover:shadow-lg hover:border-black transition-all duration-200"
               src="https://epics-jenkins.isis.rl.ac.uk/plugin/jenkinswalldisplay/walldisplay.html?viewName=WallDisplay&amp;jenkinsUrl=https%3A%2F%2Fepics-jenkins.isis.rl.ac.uk%2F"

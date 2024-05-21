@@ -8,36 +8,40 @@ export default function NavBar() {
         <div className="container mx-auto px-4 w-full max-w-7xl">
           <div className="flex justify-between items-center py-4 w-full">
             <div className="flex  justify-start w-full ">
-              <Link href="/" className="flex items-center justify-center ">
+              <Link
+                href="/"
+                className="flex items-center justify-center hover:scale-110 transition transition-scale duration-200 "
+              >
                 <img
                   src="/ibex_logo.png"
                   alt="IBEX Logo"
                   className="h-16 w-auto"
                 />
               </Link>
-              <div className="flex flex-col justify-center items-center divide-y">
+              <div className="flex flex-col justify-center items-center ">
                 <Link
                   href="/"
-                  className="text-left text-lg w-full transition-all duration-200 font-semibold  py-2 text-black hover:text-blue-600"
+                  className="text-left text-lg w-full transition-all duration-200 font-semibold  py-2 text-black hover:text-gray-300"
                 >
                   IBEX Web Dashboard
                 </Link>
+                <hr class="h-[1px] rounded bg-gray-300 border-0 w-full " />
                 <div className="flex items-start  justify-left text-left w-full text-lg">
                   <Link
                     href="/instruments"
-                    className="text-gray-700  font-semibold  text-left hover:text-blue-600 mr-4 transition-all duration-200"
+                    className="text-gray-700  font-semibold  text-left hover:text-gray-300 mr-4 transition-all duration-200"
                   >
                     Instrument statuses
                   </Link>
                   <Link
                     href="/how-to-use"
-                    className="text-gray-700  font-semibold  text-left hover:text-blue-600 mr-4 transition-all duration-200"
+                    className="text-gray-700  font-semibold  text-left hover:text-gray-300 mr-4 transition-all duration-200"
                   >
                     The Wall
                   </Link>
                   <Link
                     href="/how-to-use"
-                    className="text-gray-700  font-semibold  text-left hover:text-blue-600 mr-4 transition-all duration-200"
+                    className="text-gray-700  font-semibold  text-left hover:text-gray-300 mr-4 transition-all duration-200"
                   >
                     Help
                   </Link>
@@ -48,6 +52,9 @@ export default function NavBar() {
                     How to use
                   </Link> */}
                 </div>
+                <p className="text-md text-left w-full text-gray-600">
+                  Made by Experiment Controls at ISIS
+                </p>
               </div>
 
               <div className="flex items-center justify-end"></div>
