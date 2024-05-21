@@ -14,14 +14,14 @@ export default function Footer() {
               Instruments
             </Link>
           </div>
-          <div className="px-5 py-2">
+          {/* <div className="px-5 py-2">
             <Link
               href="#"
               className="text-base leading-6 text-gray-500 hover:text-gray-900"
             >
               How to use
             </Link>
-          </div>
+          </div> */}
           <div className="px-5 py-2">
             <Link
               href="#"

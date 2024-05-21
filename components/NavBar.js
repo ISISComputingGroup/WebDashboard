@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function NavBar() {
   return (
     <>
-      <div className="bg-gray-100 shadow w-full hidden sm:flex  ">
+      <div className="bg-white shadow w-full hidden sm:flex  ">
         <div className="container mx-auto px-4 w-full max-w-7xl">
           <div className="flex justify-between items-center py-4 w-full">
             <div className="flex  justify-start w-full ">
@@ -27,7 +27,19 @@ export default function NavBar() {
                     href="/instruments"
                     className="text-gray-700  font-semibold  text-left hover:text-blue-600 mr-4 transition-all duration-200"
                   >
-                    Instruments
+                    Instrument statuses
+                  </Link>
+                  <Link
+                    href="/how-to-use"
+                    className="text-gray-700  font-semibold  text-left hover:text-blue-600 mr-4 transition-all duration-200"
+                  >
+                    The Wall
+                  </Link>
+                  <Link
+                    href="/how-to-use"
+                    className="text-gray-700  font-semibold  text-left hover:text-blue-600 mr-4 transition-all duration-200"
+                  >
+                    Help
                   </Link>
                   {/* <Link
                     href="/how-to-use"
@@ -104,14 +116,20 @@ export default function NavBar() {
                     href="/instruments"
                     className="text-gray-700  font-semibold  text-left hover:text-blue-600 mr-4 transition-all duration-200"
                   >
-                    Instruments
+                    Instrument statuses
                   </Link>
-                  {/* <Link
+                  <Link
                     href="/how-to-use"
                     className="text-gray-700  font-semibold  text-left hover:text-blue-600 transition-all duration-200"
                   >
-                    How to use
-                  </Link> */}
+                    The Wall
+                  </Link>
+                  <Link
+                    href="/how-to-use"
+                    className="text-gray-700  font-semibold  text-left hover:text-blue-600 transition-all duration-200"
+                  >
+                    Help
+                  </Link>
                 </div>
               </div>
             </div>
