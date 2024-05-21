@@ -11,6 +11,8 @@ function getStatusColor(status) {
       return "bg-[#DAA520]";
     case "PROCESSING":
       return "bg-[#FFFF00]";
+    case "VETOING":
+      return "bg-[#FFFF00]";
     case "SETUP":
       return "bg-[#ADD8E6]";
     default:
@@ -28,6 +30,8 @@ function getForegroundColor(status) {
       return "text-white";
     case "PROCESSING":
       return "text-black";
+    case "VETOING":
+      return "text-black";
     case "SETUP":
       return "text-white";
     default:
@@ -44,14 +48,20 @@ export default function WallCard({ instrument }) {
         instrument.status
       )}
 
+
+
+
 `}
     >
-      <div className="flex items-center justify-center w-20 min-w-min h-8">
+      <Link
+        href={"instruments/" + instrument.name.toLowerCase()}
+        className="flex items-center justify-center w-20 min-w-min h-8"
+      >
         <div className="flex flex-col justify-center items-center">
           <span className="text-md font-bold">{instrument.name}</span>
           <span className="text-xs text-gray-700">{instrument.status}</span>
         </div>
-      </div>
+      </Link>
     </motion.div>
   );
 }

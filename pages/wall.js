@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import useWebSocket from "react-use-websocket";
 import InstrumentWallCard from "../components/InstrumentWallCard";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -10,69 +11,162 @@ export default function WallDisplay() {
   const [TS2Data, setTS2Data] = useState([]);
   const [miscData, setMiscData] = useState([]);
 
+  const runstatePV = "DAE:RUNSTATE_STR";
+
   useEffect(() => {
     setTS1Data([
-      { name: "ALF", status: "SETUP" },
-      { name: "CRISP", status: "PROCESSING" },
-      { name: "EMMA-A", status: "SETUP" },
-      { name: "EMU", status: "RUNNING" },
-      { name: "ENGINX", status: "RUNNING" },
-      { name: "GEM", status: "RUNNING" },
-      { name: "HIFI-CRYOMAG", status: "RUNNING" },
-      { name: "HRPD", status: "RUNNING" },
-      { name: "INES", status: "SETUP" },
-      { name: "IRIS", status: "RUNNING" },
-      { name: "LOQ", status: "SETUP" },
-      { name: "MAPS", status: "RUNNING" },
-      { name: "MARI", status: "RUNNING" },
-      { name: "MERLIN", status: "WAITING" },
-      { name: "MUONFE", status: "SETUP" },
-      { name: "OSIRIS", status: "WAITING" },
-      { name: "PEARL", status: "RUNNING" },
-      { name: "POLARIS", status: "RUNNING" },
-      { name: "RIKENFE", status: "SETUP" },
-      { name: "SANDALS", status: "RUNNING" },
-      { name: "SCIDEMO", status: "SETUP" },
-      { name: "SURF", status: "SETUP" },
-      { name: "TOSCA", status: "RUNNING" },
-      { name: "VESUVIO", status: "RUNNING" },
+      { name: "ALF", status: "", pv: "IN:ALF:" + runstatePV },
+      { name: "CRISP", status: "", pv: "IN:CRISP:" + runstatePV },
+      { name: "EMMA", status: "", pv: "IN:EMMA:" + runstatePV },
+      { name: "EMMA-A", status: "", pv: "IN:EMMA-A:" + runstatePV },
+      { name: "EMU", status: "", pv: "IN:EMU:" + runstatePV },
+      { name: "ENGINX", status: "", pv: "IN:ENGINX:" + runstatePV },
+      { name: "GEM", status: "", pv: "IN:GEM:" + runstatePV },
+      {
+        name: "HIFI-CRYOMAG",
+        status: "",
+        pv: "IN:HIFI-CRYOMAG:" + runstatePV,
+      },
+      { name: "HRPD", status: "", pv: "IN:HRPD:" + runstatePV },
+      { name: "INES", status: "", pv: "IN:INES:" + runstatePV },
+      { name: "IRIS", status: "", pv: "IN:IRIS:" + runstatePV },
+      { name: "LOQ", status: "", pv: "IN:LOQ:" + runstatePV },
+      { name: "MAPS", status: "", pv: "IN:MAPS:" + runstatePV },
+      { name: "MARI", status: "", pv: "IN:MARI:" + runstatePV },
+      { name: "MERLIN", status: "", pv: "IN:MERLIN:" + runstatePV },
+      { name: "MUONFE", status: "", pv: "IN:MUONFE:" + runstatePV },
+      { name: "OSIRIS", status: "", pv: "IN:OSIRIS:" + runstatePV },
+      { name: "PEARL", status: "", pv: "IN:PEARL:" + runstatePV },
+      { name: "POLARIS", status: "", pv: "IN:POLARIS:" + runstatePV },
+      { name: "RIKENFE", status: "", pv: "IN:RIKENFE:" + runstatePV },
+      { name: "SANDALS", status: "", pv: "IN:SANDALS:" + runstatePV },
+      { name: "SCIDEMO", status: "", pv: "IN:SCIDEMO:" + runstatePV },
+      { name: "SURF", status: "", pv: "IN:SURF:" + runstatePV },
+      { name: "TOSCA", status: "", pv: "IN:TOSCA:" + runstatePV },
+      { name: "VESUVIO", status: "", pv: "IN:VESUVIO:" + runstatePV },
     ]);
 
     setTS2Data([
-      { name: "IMAT", status: "RUNNING" },
-      { name: "INTER", status: "RUNNING" },
-      { name: "LARMOR", status: "SETUP" },
-      { name: "LET", status: "RUNNING" },
-      { name: "NIMROD", status: "RUNNING" },
-      { name: "OFFSPEC", status: "RUNNING" },
-      { name: "POLREF", status: "RUNNING" },
-      { name: "SANS2D", status: "RUNNING" },
-      { name: "WISH", status: "RUNNING" },
-      { name: "ZOOM", status: "RUNNING" },
+      { name: "IMAT", status: "", pv: "IN:IMAT:" + runstatePV },
+      { name: "INTER", status: "", pv: "IN:INTER:" + runstatePV },
+      { name: "LARMOR", status: "", pv: "IN:LARMOR:" + runstatePV },
+      { name: "LET", status: "", pv: "IN:LET:" + runstatePV },
+      { name: "NIMROD", status: "", pv: "IN:NIMROD:" + runstatePV },
+      { name: "OFFSPEC", status: "", pv: "IN:OFFSPEC:" + runstatePV },
+      { name: "POLREF", status: "", pv: "IN:POLREF:" + runstatePV },
+      { name: "SANS2D", status: "", pv: "IN:SANS2D:" + runstatePV },
+      { name: "WISH", status: "", pv: "IN:WISH:" + runstatePV },
+      { name: "ZOOM", status: "", pv: "IN:ZOOM:" + runstatePV },
     ]);
 
     setMiscData([
-      { name: "ARGUS", status: "UNKNOWN" },
-      { name: "CHIPIR", status: "UNKNOWN" },
-      { name: "CHRONUS", status: "RUNNING" },
-      { name: "CRYOLAB_R80", status: "SETUP" },
-      { name: "DCLAB", status: "UNKNOWN" },
-      { name: "DEMO", status: "UNKNOWN" },
-      { name: "DETMON", status: "UNKNOWN" },
-      { name: "ENGINX_SETUP", status: "UNKNOWN" },
-      { name: "HIFI", status: "UNKNOWN" },
-      { name: "HRPD_SETUP", status: "PROCESSING" },
-      { name: "IBEXGUITEST", status: "UNKNOWN" },
-      { name: "IRIS_SETUP", status: "SETUP" },
-      { name: "MOTION", status: "UNKNOWN" },
-      { name: "MUSR", status: "RUNNING" },
-      { name: "PEARL_SETUP", status: "SETUP" },
-      { name: "SELAB", status: "SETUP" },
-      { name: "SOFTMAT", status: "SETUP" },
-      { name: "SXD", status: "UNKNOWN" },
-      { name: "WISH_SETUP", status: "SETUP" },
+      { name: "ARGUS", status: "", pv: "IN:ARGUS:" + runstatePV },
+      { name: "CHIPIR", status: "", pv: "IN:CHIPIR:" + runstatePV },
+      { name: "CHRONUS", status: "", pv: "IN:CHRONUS:" + runstatePV },
+      {
+        name: "CRYOLAB_R80",
+        status: "",
+        pv: "IN:CRYOLAB_R80:" + runstatePV,
+      },
+      { name: "DCLAB", status: "", pv: "IN:DCLAB:" + runstatePV },
+      { name: "DEMO", status: "", pv: "IN:DEMO:" + runstatePV },
+      { name: "DETMON", status: "", pv: "IN:DETMON:" + runstatePV },
+      {
+        name: "ENGINX_",
+        status: "",
+        pv: "IN:ENGINX_:" + runstatePV,
+      },
+      { name: "HIFI", status: "", pv: "IN:HIFI:" + runstatePV },
+      {
+        name: "HRPD_",
+        status: "",
+        pv: "IN:HRPD_:" + runstatePV,
+      },
+      {
+        name: "IBEXGUITEST",
+        status: "",
+        pv: "IN:IBEXGUITEST:" + runstatePV,
+      },
+      {
+        name: "IRIS_",
+        status: "",
+        pv: "IN:IRIS_:" + runstatePV,
+      },
+      { name: "MOTION", status: "", pv: "IN:MOTION:" + runstatePV },
+      { name: "MUSR", status: "", pv: "IN:MUSR:" + runstatePV },
+      {
+        name: "PEARL_",
+        status: "",
+        pv: "IN:PEARL_:" + runstatePV,
+      },
+      { name: "SELAB", status: "", pv: "IN:SELAB:" + runstatePV },
+      { name: "SOFTMAT", status: "", pv: "IN:SOFTMAT:" + runstatePV },
+      { name: "SXD", status: "", pv: "IN:SXD:" + runstatePV },
+      {
+        name: "WISH_",
+        status: "",
+        pv: "IN:WISH_:" + runstatePV,
+      },
     ]);
   }, []);
+
+  const socketURL = process.env.NEXT_PUBLIC_WS_URL;
+
+  const { sendJsonMessage, lastJsonMessage } = useWebSocket(socketURL, {
+    shouldReconnect: (closeEvent) => true,
+  });
+
+  // subscribe to the pv's
+  useEffect(() => {
+    const pvList = [...TS1Data, ...TS2Data, ...miscData].map(
+      (instrument) => instrument.pv
+    );
+
+    pvList.forEach((pv) => {
+      sendJsonMessage({ type: "subscribe", pvs: [pv] });
+    });
+  }, [TS1Data, TS2Data, miscData, sendJsonMessage]);
+
+  useEffect(() => {
+    if (!lastJsonMessage) {
+      return;
+    }
+
+    const message = lastJsonMessage;
+
+    const pv = message.pv;
+    const value = message.text;
+
+    const instrument = [...TS1Data, ...TS2Data, ...miscData].find(
+      (instrument) => instrument.pv === pv
+    );
+
+    if (!instrument) {
+      return;
+    }
+
+    const newInstrument = { ...instrument, status: value };
+
+    if (TS1Data.find((instrument) => instrument.pv === pv)) {
+      setTS1Data((prev) =>
+        prev.map((instrument) =>
+          instrument.pv === pv ? newInstrument : instrument
+        )
+      );
+    } else if (TS2Data.find((instrument) => instrument.pv === pv)) {
+      setTS2Data((prev) =>
+        prev.map((instrument) =>
+          instrument.pv === pv ? newInstrument : instrument
+        )
+      );
+    } else if (miscData.find((instrument) => instrument.pv === pv)) {
+      setMiscData((prev) =>
+        prev.map((instrument) =>
+          instrument.pv === pv ? newInstrument : instrument
+        )
+      );
+    }
+  }, [lastJsonMessage, TS1Data, TS2Data, miscData]);
 
   return (
     <main
