@@ -1,38 +1,69 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Node modules
+/node_modules
+/frontend/node_modules
+/backend/node_modules
 
-# dependencies
-apps/frontend/node_modules
-apps/frontend/.pnp
-/apps/frontend.pnp.js
-/apps/frontend.yarn/install-state.gz
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# testing
-/apps/frontend/coverage
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# next.js
+# Dependency directories
 /apps/frontend/.next
-/apps/frontend/out
+frontend/out
+frontend/build
+backend/dist
+backend/.turbo
+turbo
 
-/apps/frontend/build
+# Next.js
+frontend/.next
+frontend/out
+frontend/build
 
-# misc
-/apps/frontend/.DS_Store
-/apps/frontend/*.pem
+# NestJS
+backend/dist
 
-# debug
-/apps/frontend/npm-debug.log*
-/apps/frontend/yarn-debug.log*
-/apps/frontend/yarn-error.log*
+# Build artifacts
+frontend/.next/
+frontend/out/
+frontend/build/
+backend/dist/
+backend/node_modules/
 
-# local env files
-/apps/frontend/.env*.local
+# OS generated files
+.DS_Store
+Thumbs.db
 
-# vercel
-/apps/frontend/.vercel
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
 
-# typescript
-/apps/frontend/*.tsbuildinfo
-/apps/frontend/next-env.d.ts
-
+# Ignore TurboRepo cache
 .turbo
-node_modules
+turbo
+
+# Ignore lock files
+yarn.lock
+pnpm-lock.yaml
+package-lock.json
+
+# Miscellaneous
+npm-debug.log
+.yarn-integrity
+.pnp.*
+
+morgan.log

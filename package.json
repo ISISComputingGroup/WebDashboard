@@ -25,5 +25,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "author": "ISIS Neutron and Muon Source Experiment Controls",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "morgan": "^1.10.0"
+  }
 }
