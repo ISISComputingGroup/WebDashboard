@@ -10,9 +10,9 @@ import { LoggerMiddleware } from './logger.middleware';
   controllers: [AppController],
   providers: [AppService],
 })
-// export class AppModule {}
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('pvs');
-  }
-}
+export class AppModule {}
+// export class AppModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer.apply(LoggerMiddleware).forRoutes('pvs');
+//   }
+// }
