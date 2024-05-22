@@ -1,42 +1,36 @@
 import { Inter } from "next/font/google";
 import Link from "next/link";
-
+import InstList from "@/components/InstList";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const theRestInsts = [
-    "loq",
-    "sans2d",
-    "offspec",
-    "surf",
-    "zoom",
-    "iris",
-    // "iris_setup",
-    "osiris",
-    "tosca",
-    "vesuvio",
-    "emu",
-  ];
-// TODO: use the instlist (on a websocket?) for all this
 
-  const reflecInsts = ["imat", "inter", "let", "sandals", "polref", "larmor"];
+  let instList = InstList();
 
-  const muonsInsts = [
-    "wish",
-    "enginx",
-    "gem",
-    "ines",
-    "pearl",
-    "polaris",
-    "alf",
-    "crisp",
-  ];
+  if (!instList) {
+    return <h1>Loading...</h1>;
+  }
 
-  const instruments = [
-    ["Reflectometry", reflecInsts],
-    ["Muons", muonsInsts],
-    ["The rest", theRestInsts],
-  ];
+  instList = Array.from(instList);
+
+  let instruments = new Map();
+
+  for (let inst of instList) {
+    let groups = inst["groups"];
+    let name = inst["name"];
+    let scheduled = inst["isScheduled"];
+
+    // todo show these separately? 
+    // if (! inst["isScheduled"])
+    //   break;
+
+    for (let group of groups) {
+      if (!instruments.has(group)) {
+        instruments.set(group, new Array());
+      }
+      instruments.get(group).push(name);
+    }
+  }
 
   return (
     <main
@@ -49,17 +43,17 @@ export default function Home() {
           </h1>
 
           <div className="flex mt-12 flex-col justify-center items-center space-y-4 ">
-            {instruments.map((instrument) => {
+            {[...instruments].map(([group, insts]) => {
               return (
                 <div
-                  key={instrument[0]}
+                  key={group}
                   className="flex flex-col justify-center items-center w-full "
                 >
                   <h1 className="text-6xl text-black text-left w-full">
-                    {instrument[0]}
+                    {group}
                   </h1>
                   <div className="flex-wrap flex justify-left items-center  w-full mx-auto text-left md:text-center">
-                    {instrument[1].map((instrument) => {
+                    {insts.map((instrument) => {
                       return (
                         <Link
                           href={`/instruments/${instrument}`}
@@ -75,20 +69,6 @@ export default function Home() {
                 </div>
               );
             })}
-            {/* //   <div className="flex flex-col justify-center items-center divide-y">
-          //   <h1>{title}</h1>
-          // <div className="flex-wrap flex justify-between w-full mx-auto text-left md:w-11/12 xl:w-9/12 md:text-center">
-          //   {instruments.map((instrument) => {
-          //     return (
-          //       <Link href={`/instruments/${instrument}`} key={instrument}>
-          //         <h1 className="text-4xl font-extrabold leading-none transition-all hover:text-blue-500 tracking-normal text-black md:text-6xl md:tracking-tight">
-          //           {instrument}
-          //         </h1>
-          //       </Link>
-          //     );
-          //   })}
-          // </div>
-          // </div> */}
           </div>
         </div>
       </section>
