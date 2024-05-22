@@ -1,3 +1,5 @@
+import { getForegroundColor, getStatusColor } from "./getRunstateColours";
+
 
 const TopBar = ({ monitoredPVs, instName }) => {
   if (!monitoredPVs) {
@@ -25,7 +27,12 @@ const TopBar = ({ monitoredPVs, instName }) => {
         className="w-full flex justify-center items-center flex-col"
       >
         <h2
-          className={`text-center bg-green-500 p-4 text-xl rounded-t-lg w-full`}
+          className={`text-center p-4 text-xl rounded-t-lg w-full 
+          ${getStatusColor(monitoredPVs["Run state STR"] )} ${getForegroundColor(
+            monitoredPVs["Run state STR"] 
+          )}
+          
+          `}
         >
           {instName.toUpperCase()} is{" "}
           <span>
