@@ -36,7 +36,7 @@ const TopBar = ({ monitoredPVs, instName }) => {
         >
           {instName.toUpperCase()} is{" "}
           <span>
-            {monitoredPVs["Run state STR"] 
+            {monitoredPVs["Run state STR"]  || "UNKNOWN"
               }
           </span>
         </h2>
