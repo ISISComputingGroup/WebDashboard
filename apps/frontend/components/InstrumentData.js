@@ -165,6 +165,7 @@ export default function InstrumentData() {
 
           currentInstrument.groups = [];
 
+          if (groups) {
           for (const group of groups) {
             const groupName = group.name;
             const groupBlocks = group.blocks;
@@ -202,6 +203,7 @@ export default function InstrumentData() {
               });
             }
           }
+        }
         });
     } else {
       let pvVal;
@@ -266,7 +268,7 @@ export default function InstrumentData() {
   return (
     <div className="p-8 w-full mx-auto max-w-7xl">
       <TopBar monitoredPVs={currentInstrument.topBarPVs} instName={instName} />
-      <Groups groupsMap={currentInstrument.groups} />
+      <Groups groupsMap={currentInstrument.groups} instName={instName} />
     </div>
   );
 }

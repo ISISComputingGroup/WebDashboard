@@ -137,7 +137,11 @@ export default function WallDisplay() {
     const message = lastJsonMessage;
 
     const pv = message.pv;
-    const value = message.text;
+    let value = message.text;
+
+    if (!value) {
+      value = "UNKNOWN";
+    }
 
     const instrument = [...TS1Data, ...TS2Data, ...miscData].find(
       (instrument) => instrument.pv === pv
