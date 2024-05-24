@@ -165,6 +165,7 @@ export default function InstrumentData() {
 
           currentInstrument.groups = [];
 
+          if (groups) {
           for (const group of groups) {
             const groupName = group.name;
             const groupBlocks = group.blocks;
@@ -202,6 +203,7 @@ export default function InstrumentData() {
               });
             }
           }
+        }
         });
     } else {
       let pvVal;
