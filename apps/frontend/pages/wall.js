@@ -15,6 +15,8 @@ export default function WallDisplay() {
 
   useEffect(() => {
     setTS1Data([
+      { name: "NDW2455", status: "", pv: "TE:NDW2455:" + runstatePV },
+      { name: "NDW1836", status: "", pv: "TE:NDW1836:" + runstatePV },
       { name: "ALF", status: "", pv: "IN:ALF:" + runstatePV },
       { name: "CRISP", status: "", pv: "IN:CRISP:" + runstatePV },
       { name: "EMMA", status: "", pv: "IN:EMMA:" + runstatePV },
@@ -72,15 +74,15 @@ export default function WallDisplay() {
       { name: "DEMO", status: "", pv: "IN:DEMO:" + runstatePV },
       { name: "DETMON", status: "", pv: "IN:DETMON:" + runstatePV },
       {
-        name: "ENGINX_UNKNOWN",
+        name: "ENGINX_SETUP",
         status: "",
-        pv: "IN:ENGINX_UNKNOWN:" + runstatePV,
+        pv: "IN:ENGINX_SETUP:" + runstatePV,
       },
       { name: "HIFI", status: "", pv: "IN:HIFI:" + runstatePV },
       {
-        name: "HRPD_UNKNOWN",
+        name: "HRPD_SETUP",
         status: "",
-        pv: "IN:HRPD_UNKNOWN:" + runstatePV,
+        pv: "IN:HRPD_SETUP:" + runstatePV,
       },
       {
         name: "IBEXGUITEST",
@@ -88,24 +90,24 @@ export default function WallDisplay() {
         pv: "IN:IBEXGUITEST:" + runstatePV,
       },
       {
-        name: "IRIS_UNKNOWN",
+        name: "IRIS_SETUP",
         status: "",
-        pv: "IN:IRIS_UNKNOWN:" + runstatePV,
+        pv: "IN:IRIS_SETUP:" + runstatePV,
       },
       { name: "MOTION", status: "", pv: "IN:MOTION:" + runstatePV },
       { name: "MUSR", status: "", pv: "IN:MUSR:" + runstatePV },
       {
-        name: "PEARL_UNKNOWN",
+        name: "PEARL_SETUP",
         status: "",
-        pv: "IN:PEARL_UNKNOWN:" + runstatePV,
+        pv: "IN:PEARL_SETUP:" + runstatePV,
       },
       { name: "SELAB", status: "", pv: "IN:SELAB:" + runstatePV },
       { name: "SOFTMAT", status: "", pv: "IN:SOFTMAT:" + runstatePV },
       { name: "SXD", status: "", pv: "IN:SXD:" + runstatePV },
       {
-        name: "WISH_UNKNOWN",
+        name: "WISH_SETUP",
         status: "",
-        pv: "IN:WISH_UNKNOWN:" + runstatePV,
+        pv: "IN:WISH_SETUP:" + runstatePV,
       },
     ]);
   }, []);
@@ -172,7 +174,7 @@ export default function WallDisplay() {
     <main
       className={`flex min-h-screen bg-gray-100 flex-col items-center justify-between ${inter.className}`}
     >
-      <section className=" rounded-xl w-full  px-4 md:p-12 w-full px-8 md:px-0 md:w-2/3  ">
+      <section className=" rounded-xl w-full  px-4 md:p-12 w-full  md:px-0 md:w-2/3  ">
         <div className="mx-auto ">
           <div className="w-full mx-auto text-left">
             {/* <div className="mb-8 flex flex-col text-4xl font-extrabold leading-none tracking-normal text-gray-900 md:text-6xl md:tracking-tight"> */}
@@ -236,7 +238,7 @@ export default function WallDisplay() {
             </div>
           </div>
 
-          <hr class="h-[2px] rounded my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+          <hr className="h-[2px] rounded my-8 bg-gray-200 border-0 dark:bg-gray-700" />
 
           <div className="flex flex-col justify-center items-center">
             <h1 className="w-full text-left text-black font-semibold text-3xl mt-2 py-2 ">
