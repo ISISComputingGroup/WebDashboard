@@ -29,7 +29,7 @@ export default function Home() {
 
                 <Link
                   href="/instruments/"
-                  class="relative inline-flex gap-4 items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-200 bg-gray-900 font-pj rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                  class="relative inline-flex gap-4 items-center justify-center px-8 py-4 text-lg font-bold text-gray-900 dark:text-white transition-all duration-200 bg-white dark:bg-gray-900 font-pj rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 dark:focus:ring-gray-900"
                   target="_self"
                   role="button"
                 >
@@ -134,13 +134,15 @@ export default function Home() {
                     </span>
 
                     <h1 class="text-xl font-semibold text-zinc-700 capitalize dark:text-white">
-                      elegant Dark Mode
+                      Neutron and Muon Source of STFC
                     </h1>
 
                     <p class="text-zinc-500 dark:text-zinc-300">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Provident ab nulla quod dignissimos vel non corrupti
-                      doloribus voluptatum eveniet
+                      The Science and Technology Facilities Council (STFC)
+                      operates world-class neutron and muon sources, providing
+                      advanced research capabilities for scientists across
+                      various disciplines. These facilities enable the study of
+                      materials at the atomic level.
                     </p>
 
                     <a
@@ -186,13 +188,16 @@ export default function Home() {
                     </span>
 
                     <h1 class="text-xl font-semibold text-zinc-700 capitalize dark:text-white">
-                      Easy to customiztions
+                      IBEX Control System
                     </h1>
 
                     <p class="text-zinc-500 dark:text-zinc-300">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Provident ab nulla quod dignissimos vel non corrupti
-                      doloribus voluptatum eveniet
+                      The IBEX Control System is used to manage and control the
+                      instruments at the neutron and muon sources of STFC. It
+                      provides a user-friendly interface for scientists to
+                      configure experiments, monitor data collection, and adjust
+                      parameters in real-time, ensuring precise and efficient
+                      operation.
                     </p>
 
                     <a
@@ -238,16 +243,18 @@ export default function Home() {
                     </span>
 
                     <h1 class="text-xl font-semibold text-zinc-700 capitalize dark:text-white">
-                      Simple & clean designs
+                      Data Flow from PHOEBUS to Users
                     </h1>
 
                     <p class="text-zinc-500 dark:text-zinc-300">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Provident ab nulla quod dignissimos vel non corrupti
-                      doloribus voluptatum eveniet
+                      Data from experiments is collected and processed by the
+                      PHOEBUS system, which uses PV WebSockets to stream
+                      real-time data to users' PCs. This ensures immediate
+                      access to experimental results and facilitates quick
+                      analysis and adjustments.
                     </p>
 
-                    <a
+                    <Link
                       href="#"
                       class="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-500"
                     >
@@ -265,7 +272,7 @@ export default function Home() {
                           d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
                         />
                       </svg>
-                    </a>
+                    </Link>
                   </motion.div>
                 </div>
               </div>
