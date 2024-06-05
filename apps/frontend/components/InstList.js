@@ -6,6 +6,7 @@ const INSTLIST_PV = "CS:INSTLIST";
 
 export default function InstList() {
   const socketURL = process.env.NEXT_PUBLIC_WS_URL;
+  const backendHost = process.env.NEXT_PUBLIC_BACKEND_HOST;
 
   const { sendJsonMessage, lastJsonMessage } = useWebSocket(socketURL, {
     shouldReconnect: (closeEvent) => true,
@@ -21,7 +22,7 @@ export default function InstList() {
   useEffect(() => {
     if (lastJsonMessage !== null) {
 
-      fetch("http://localhost:3001/pvs/dehex", {
+      fetch(`http://${backendHost}:3001/pvs/dehex`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
