@@ -66,6 +66,7 @@ export default function InstrumentData() {
 
   const router = useRouter();
   const socketURL = process.env.NEXT_PUBLIC_WS_URL;
+  const backendHost = process.env.NEXT_PUBLIC_BACKEND_HOST;
   const [instName, setInstName] = useState(null);
 
   const { sendJsonMessage, lastJsonMessage } = useWebSocket(socketURL, {
@@ -138,7 +139,7 @@ export default function InstrumentData() {
       let raw = updatedPV.text;
       console.log(raw);
 
-      fetch("http://localhost:3001/pvs/dehex", {
+      fetch(`http://${backendHost}:3001/pvs/dehex`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
