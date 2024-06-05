@@ -26,7 +26,7 @@ export default function Group({ group, instName }) {
             >
               <td className="py-1 px-4">
                 <a
-                  class="underline"
+                  className="underline"
                   href={
                     grafana_stub +
                     pv.human_readable_name +
