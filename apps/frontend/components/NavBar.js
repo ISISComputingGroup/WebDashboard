@@ -21,17 +21,17 @@ export default function NavBar() {
               <div className="flex flex-col justify-center items-center ">
                 <Link
                   href="/"
-                  className="text-left text-lg w-full transition-all duration-200 font-semibold  py-2 text-black hover:text-gray-300"
+                  className="text-left text-md w-full transition-all duration-200 font-semibold  py-2 text-black hover:text-gray-300"
                 >
                   IBEX Web Dashboard
                 </Link>
                 <hr className="h-[1px] rounded bg-gray-300 border-0 w-full " />
-                <div className="flex items-start  justify-left text-left w-full text-lg">
+                <div className="flex items-start  justify-left text-left w-full text-md">
                   <Link
                     href="/instruments"
                     className="text-gray-700  font-semibold  text-left hover:text-gray-300 mr-4 transition-all duration-200"
                   >
-                    Instrument statuses 🚦
+                    Instrument status 🚦
                   </Link>
                   <Link
                     href="/wall"
@@ -115,11 +115,11 @@ export default function NavBar() {
               <div className="flex flex-col justify-center items-center divide-y">
                 <Link
                   href="/"
-                  className="text-left text-lg w-full transition-all duration-200 font-semibold  py-2 text-black hover:text-blue-600"
+                  className="text-left text-md w-full transition-all duration-200 font-semibold  py-2 text-black hover:text-blue-600"
                 >
                   IBEX Web Dashboard
                 </Link>
-                <div className="flex items-start  justify-left text-left w-full text-lg">
+                <div className="flex items-start  justify-left text-left w-full text-md">
                   <Link
                     href="/instruments"
                     className="text-gray-700  font-semibold  text-left hover:text-blue-600 mr-4 transition-all duration-200"

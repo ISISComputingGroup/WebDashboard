@@ -1,7 +1,7 @@
 export function getForegroundColor(status) {
   switch (status) {
     case "UNKNOWN":
-      return "text-white";
+      return "text-black";
     case "PAUSED":
       return "text-white";
     case "PAUSING":
@@ -9,7 +9,7 @@ export function getForegroundColor(status) {
     case "RESUMING":
       return "text-white";
     case "RUNNING":
-      return "text-white";
+      return "text-black";
     case "BEGINNING":
       return "text-white";
     case "ENDING":
@@ -21,14 +21,15 @@ export function getForegroundColor(status) {
     case "VETOING":
       return "text-black";
     case "SETUP":
-      return "text-white";
+      return "text-black";
     default:
       return "text-white";
   }
-}export function getStatusColor(status) {
+}
+export function getStatusColor(status) {
   switch (status) {
     case "UNKNOWN":
-      return "bg-yellow-500";
+      return "bg-[#F08080]";
     case "PAUSED":
       return "bg-red-500";
     case "PAUSING":
@@ -53,4 +54,3 @@ export function getForegroundColor(status) {
       return "bg-gray-500";
   }
 }
-
