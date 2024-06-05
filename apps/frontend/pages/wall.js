@@ -182,11 +182,11 @@ export default function WallDisplay() {
 
   return (
     <main
-      className={`flex min-h-screen bg-gray-100 flex-col items-center justify-between ${inter.className}`}
+      className={`flex min-h-screen bg-white dark:bg-zinc-800 flex-col items-center justify-between ${inter.className}`}
     >
-      <section className=" rounded-xl w-full  px-4 p-8 w-full  md:px-0 md:w-3/4  ">
-        <div className="mx-auto ">
-          <div className="w-full mx-auto text-left">
+      <section className=" rounded-xl w-full  w-full  md:px-0 md:w-3/4 my-4 ">
+        <div className="mx-auto  ">
+          <div className="w-full mx-auto text-left flex justify-center items-center p-8 dark:bg-zinc-900 rounded-xl">
             {/* <div className="mb-8 flex flex-col text-4xl font-extrabold leading-none tracking-normal text-gray-900 md:text-6xl md:tracking-tight"> */}
             {/* <h1>Experiment Controls</h1>{" "} */}
 
@@ -206,11 +206,11 @@ export default function WallDisplay() {
               id="status"
               className="flex flex-col justify-center items-center"
             >
-              <h1 className="w-full text-left text-black font-semibold text-2xl   ">
+              <h1 className="w-full text-left text-black dark:text-white font-semibold text-2xl   ">
                 Instrument Status:
               </h1>{" "}
               <div className="flex flex-col justify-center items-start w-full">
-                <h1 className="w-full text-left text-gray-600 font-semibold text-md mt-2 py-2 ">
+                <h1 className="w-full text-left text-gray-600 dark:text-gray-200 font-semibold text-md mt-2 py-2 ">
                   Target Station 1:
                 </h1>{" "}
                 <div className="flex flex-wrap gap-1">
@@ -223,7 +223,7 @@ export default function WallDisplay() {
                 </div>
               </div>
               <div className="flex flex-col justify-center items-start w-full">
-                <h1 className="w-full text-left text-gray-600 font-semibold text-md mt-2 py-2 ">
+                <h1 className="w-full text-left text-gray-600 dark:text-gray-200 font-semibold text-md mt-2 py-2 ">
                   Target Station 2:
                 </h1>{" "}
                 <div className="flex flex-wrap gap-1">
@@ -236,7 +236,7 @@ export default function WallDisplay() {
                 </div>
               </div>
               <div className="flex flex-col justify-center items-start w-full">
-                <h1 className="w-full text-left text-gray-600 font-semibold text-md mt-2 py-2 ">
+                <h1 className="w-full text-left text-gray-600 dark:text-gray-200 font-semibold text-md mt-2 py-2 ">
                   Miscellaneous:
                 </h1>{" "}
                 <div className="flex flex-wrap gap-1 ">
@@ -251,18 +251,18 @@ export default function WallDisplay() {
             </div>
           </div>
 
-          <hr className="h-[2px] rounded my-4 bg-gray-200 border-0 dark:bg-gray-700" />
+          <hr className="h-[2px] rounded my-4 bg-gray-200 border-0 dark:bg-gray-600" />
 
           <div className="flex flex-col justify-center items-center">
-            <h1 className="w-full text-left text-black font-semibold text-2xl   ">
+            <h1 className="w-full text-left text-black dark:text-white font-semibold text-2xl   ">
               Jenkins Jobs:
             </h1>{" "}
-            <p className="text-md text-left w-full text-black">
+            <p className="text-md text-left w-full text-black dark:text-white">
               Tip: Open the jobs into a{" "}
               <span className="font-bold underline">new tab</span> only
             </p>
             <iframe
-              className="w-full h-[300px] border-2 border-gray-100 rounded-lg shadow-sm hover:shadow-lg hover:border-black transition-all duration-200"
+              className="w-full h-[300px] mt-4 border-2 border-gray-100 dark:border-black rounded-lg shadow-sm hover:shadow-lg hover:border-black dark:hover:border-white transition-all duration-200"
               src="https://epics-jenkins.isis.rl.ac.uk/plugin/jenkinswalldisplay/walldisplay.html?viewName=WallDisplay&amp;jenkinsUrl=https%3A%2F%2Fepics-jenkins.isis.rl.ac.uk%2F"
             ></iframe>
           </div>

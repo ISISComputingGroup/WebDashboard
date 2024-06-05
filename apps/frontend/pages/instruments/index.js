@@ -4,7 +4,6 @@ import InstList from "@/components/InstList";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-
   let instList = InstList();
 
   if (!instList) {
@@ -20,7 +19,7 @@ export default function Home() {
     let name = inst["name"];
     let scheduled = inst["isScheduled"];
 
-    // todo show these separately? 
+    // todo show these separately?
     // if (! inst["isScheduled"])
     //   break;
 
@@ -34,11 +33,11 @@ export default function Home() {
 
   return (
     <main
-      className={`flex min-h-screen bg-gray-100 flex-col items-center justify-between ${inter.className}`}
+      className={`flex min-h-screen bg-gray-100 dark:bg-zinc-800  flex-col items-center justify-between ${inter.className}`}
     >
       <section className="  flex flex-col items-start justify-center rounded-xl w-full  p-12 ">
         <div className=" mx-auto max-w-2/3">
-          <h1 className="text-4xl font-extrabold text-left leading-none tracking-normal text-gray-900 md:text-6xl md:tracking-tight">
+          <h1 className="text-4xl font-extrabold text-left leading-none tracking-normal text-gray-900 dark:text-white md:text-6xl md:tracking-tight">
             Instrument Dashboards
           </h1>
 
@@ -49,7 +48,7 @@ export default function Home() {
                   key={group}
                   className="flex flex-col justify-center items-center w-full "
                 >
-                  <h1 className="text-4xl text-black text-left w-full">
+                  <h1 className="text-4xl text-black dark:text-gray-100 text-left w-full">
                     {group}
                   </h1>
                   <div className="flex-wrap flex justify-left items-center  w-full mx-auto text-left md:text-center">
@@ -59,7 +58,7 @@ export default function Home() {
                           href={`/instruments/${instrument}`}
                           key={instrument}
                         >
-                          <h1 className="text-1xl font-bold text-left mr-4 w-full leading-none transition-all hover:text-blue-500 tracking-normal text-black md:text-4xl md:tracking-tight">
+                          <h1 className="text-1xl font-bold text-left mr-4 w-full leading-none transition-all hover:text-blue-500 tracking-normal text-black dark:text-white md:text-4xl md:tracking-tight">
                             {instrument}
                           </h1>
                         </Link>
