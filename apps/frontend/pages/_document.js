@@ -5,13 +5,11 @@ import ThemeContext from "@/components/ThemeContext";
 import { useState } from "react";
 
 export default function Document() {
-  const [themeClass, setThemeClass] = useState("light"); // change the default here
-
   return (
     <Html lang="en">
       <Head />
       {/* <ThemeContext.Provider value={{ themeClass, setThemeClass }}> */}
-      <body>
+      <body className="dark">
         <NavBar />
         <Main />
         <Footer />
