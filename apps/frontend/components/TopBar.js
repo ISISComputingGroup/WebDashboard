@@ -47,8 +47,8 @@ const TopBar = ({ monitoredPVs, instName }) => {
               : "UNKNOWN"}
           </span>
         </h2>
-        <div className="bg-gray-50 border-2 border-gray-800 m-4 p-4 shadow-md ">
-          <table className="text-sm w-full table-fixed ">
+        <div className="bg-gray-50 border-2 border-gray-800 m-4 p-4 shadow-md flex flex-col">
+          <table className="text-sm w-full table-fixed flex">
             <thead>
               <tr className="bg-blue-gray-100 text-gray-700"></tr>
             </thead>
@@ -80,12 +80,12 @@ function getMonitoredPVs(index, monitoredPVs) {
           key={pv}
           className="border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
         >
-          <td className="py-1 px-4">{pv}</td>
+          <td className="py-1 px-4 flex">{pv}:</td>
           <td className="py-1 px-4 flex justify-between items-center">
-            <span>{pvarr[0]}</span>
+            <span className="font-light">{pvarr[0]}</span>
             <svg
               id={pv + "_VALUE"}
-              className="min-w-2 min-h-2 max-w-2 max-h-2 transition-all text-transparent"
+              className="min-w-2 min-h-2 max-w-2 max-h-2 transition-all text-transparent text-sm"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
               viewBox="0 0 24 24"
