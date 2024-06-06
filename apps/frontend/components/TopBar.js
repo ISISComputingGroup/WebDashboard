@@ -2,11 +2,13 @@ import { getForegroundColor, getStatusColor } from "./getRunstateColours";
 
 
 const TopBar = ({ monitoredPVs, instName }) => {
-  if (!monitoredPVs) {
+  console.log(monitoredPVs)
+  if (!monitoredPVs || !monitoredPVs.size) {
     return "";
   }
 
-  // console.log(monitoredPVs)
+
+
 
   return (
     <div
@@ -28,8 +30,8 @@ const TopBar = ({ monitoredPVs, instName }) => {
       >
         <h2
           className={`text-center p-4 text-xl rounded-t-lg w-full 
-          ${getStatusColor(monitoredPVs["Run state STR"] )} ${getForegroundColor(
-            monitoredPVs["Run state STR"] 
+          ${getStatusColor(monitoredPVs.get("Run state STR")[0] )} ${getForegroundColor(
+            monitoredPVs.get("Run state STR")[0]
           )}
           
           `}

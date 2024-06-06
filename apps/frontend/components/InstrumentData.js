@@ -32,22 +32,29 @@ class Instrument {
   constructor(instrumentName) {
     this.prefix = `IN:${instrumentName}:`;
 
+
+    // PV name: [human readable name, column in top bar(null is monitor but don't show)]
     this.topBarMap = new Map(
       Object.entries({
-        [`${this.prefix}DAE:RUNSTATE`]: "Run state",
-        [`${this.prefix}DAE:RUNSTATE_STR`]: "Run state STR",
-        [`${this.prefix}DAE:RUNNUMBER`]: "Run number",
-        [`${this.prefix}DAE:STARTTIME`]: "Start number",
-        [`${this.prefix}DAE:TITLE`]: "Title",
-        [`${this.prefix}DAE:GOODFRAMES`]: "a",
-        [`${this.prefix}DAE:GOODFRAMES_PD`]: "v",
-        [`${this.prefix}DAE:MONITORCOUNTS`]: "s",
-        [`${this.prefix}DAE:RUNDURATION`]: "d",
-        [`${this.prefix}DAE:_USERNAME`]: "e",
-        [`${this.prefix}DAE:RAWFRAMES`]: "gh",
-        [`${this.prefix}DAE:BEAMCURRENT`]: "d",
-        [`${this.prefix}DAE:TOTALUAMPS`]: "total uamps",
-        [`sim://sine`]: "sine",
+        [`${this.prefix}DAE:RUNSTATE`]: ["Run state", null],
+        [`${this.prefix}DAE:RUNSTATE_STR`]: ["Run state STR", null],
+        [`${this.prefix}DAE:RUNNUMBER`]: ["Run number", null],
+        [`${this.prefix}DAE:STARTTIME`]: ["Start number", null],
+        [`${this.prefix}DAE:TITLE`]: ["Title", 0],
+        [`${this.prefix}DAE:_USERNAME`]: ["Users",0],
+
+        [`${this.prefix}DAE:GOODFRAMES`]: ["Good frames", 1],
+        [`${this.prefix}DAE:RAWFRAMES`]: ["Raw frames", 1],
+        [`${this.prefix}DAE:BEAMCURRENT`]: ["Current(uamps)", 1],
+        [`${this.prefix}DAE:TOTALUAMPS`]: ["Total(uamps)", 1],
+        [`${this.prefix}DAE:MONITORCOUNTS`]: ["Monitor counts", 1],
+
+        [`${this.prefix}DAE:GOODFRAMES`]: ["Start time", 2],
+        [`${this.prefix}DAE:RAWFRAMES`]: ["Run time", 2],
+        [`${this.prefix}DAE:BEAMCURRENT`]: ["Period", 2],
+        [`${this.prefix}DAE:TOTALUAMPS`]: ["Num periods", 2],
+
+        [`sim://sine`]: ["sine", null],
       })
     );
 
@@ -220,10 +227,13 @@ export default function InstrumentData() {
 
       if (currentInstrument.topBarMap.has(updatedPVName)) {
         // This is a top bar PV
-        const human_readable_name =
-          currentInstrument.topBarMap.get(updatedPVName);
 
-        currentInstrument.topBarPVs[human_readable_name] = pvVal;
+        const pv =
+          currentInstrument.topBarMap.get(updatedPVName);
+        const human_readable_name = pv[0];
+        const col = pv[1];
+
+        currentInstrument.topBarPVs.set(human_readable_name, [pvVal, col]) ;
       } else {
         //check if in groups
 
