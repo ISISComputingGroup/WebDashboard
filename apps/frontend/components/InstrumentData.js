@@ -32,22 +32,32 @@ class Instrument {
   constructor(instrumentName) {
     this.prefix = `IN:${instrumentName}:`;
 
+    // PV name: [human readable name, column in top bar(null is monitor but don't show)]
     this.topBarMap = new Map(
       Object.entries({
-        [`${this.prefix}DAE:RUNSTATE`]: "Run state",
-        [`${this.prefix}DAE:RUNSTATE_STR`]: "Run state STR",
-        [`${this.prefix}DAE:RUNNUMBER`]: "Run number",
-        [`${this.prefix}DAE:STARTTIME`]: "Start number",
-        [`${this.prefix}DAE:TITLE`]: "Title",
-        [`${this.prefix}DAE:GOODFRAMES`]: "a",
-        [`${this.prefix}DAE:GOODFRAMES_PD`]: "v",
-        [`${this.prefix}DAE:MONITORCOUNTS`]: "s",
-        [`${this.prefix}DAE:RUNDURATION`]: "d",
-        [`${this.prefix}DAE:_USERNAME`]: "e",
-        [`${this.prefix}DAE:RAWFRAMES`]: "gh",
-        [`${this.prefix}DAE:BEAMCURRENT`]: "d",
-        [`${this.prefix}DAE:TOTALUAMPS`]: "total uamps",
-        [`sim://sine`]: "sine",
+        [`${this.prefix}CS:BLOCKSERVER:CURR_CONFIG_NAME`]: [
+          "Config name",
+          null,
+        ],
+        [`${this.prefix}DAE:RUNSTATE`]: ["Run state", null],
+        [`${this.prefix}DAE:RUNSTATE_STR`]: ["Run state STR", null],
+        [`${this.prefix}DAE:RUNNUMBER`]: ["Run number", null],
+        [`${this.prefix}DAE:STARTTIME`]: ["Start number", null],
+        [`${this.prefix}DAE:TITLE`]: ["Title", 0],
+        [`${this.prefix}DAE:_USERNAME`]: ["Users", 0],
+
+        [`${this.prefix}DAE:GOODFRAMES`]: ["Good frames", 1],
+        [`${this.prefix}DAE:RAWFRAMES`]: ["Raw frames", 1],
+        [`${this.prefix}DAE:BEAMCURRENT`]: ["Current(uamps)", 1],
+        [`${this.prefix}DAE:TOTALUAMPS`]: ["Total(uamps)", 1],
+        [`${this.prefix}DAE:MONITORCOUNTS`]: ["Monitor counts", 1],
+
+        [`${this.prefix}DAE:STARTTIME`]: ["Start time", 2],
+        [`${this.prefix}DAE:RUNDURATION_PD`]: ["Run time", 2],
+        [`${this.prefix}DAE:PERIOD`]: ["Period", 2],
+        [`${this.prefix}DAE:NUMPERIODS`]: ["Num periods", 2],
+
+        [`sim://sine`]: ["sine", null],
       })
     );
 
@@ -167,44 +177,44 @@ export default function InstrumentData() {
           currentInstrument.groups = [];
 
           if (groups) {
-          for (const group of groups) {
-            const groupName = group.name;
-            const groupBlocks = group.blocks;
-            // const groupComponent = group.component
+            for (const group of groups) {
+              const groupName = group.name;
+              const groupBlocks = group.blocks;
+              // const groupComponent = group.component
 
-            currentInstrument.groups.push({
-              name: groupName,
-              blocks: [],
-            });
-
-            // console.log(currentInstrument)
-
-            for (const block of groupBlocks) {
-              // console.log("Block:", block);
-              const newBlock = blocks.find((b) => b.name === block);
-              // console.log("NewBlock:", newBlock);
-
-              const completePV = new PV(newBlock.pv);
-              completePV.human_readable_name = newBlock.name;
-              completePV.runcontrol_enabled = newBlock.runcontrol;
-              completePV.low_rc = newBlock.lowlimit;
-              completePV.high_rc = newBlock.highlimit;
-              completePV.visible = newBlock.visible;
-
-              currentInstrument.groups[
-                currentInstrument.groups.length - 1
-              ].blocks.push(completePV);
-              sendJsonMessage({
-                type: "subscribe",
-                pvs: [
-                  currentInstrument.prefix +
-                    "CS:SB:" +
-                    completePV.human_readable_name,
-                ],
+              currentInstrument.groups.push({
+                name: groupName,
+                blocks: [],
               });
+
+              // console.log(currentInstrument)
+
+              for (const block of groupBlocks) {
+                // console.log("Block:", block);
+                const newBlock = blocks.find((b) => b.name === block);
+                // console.log("NewBlock:", newBlock);
+
+                const completePV = new PV(newBlock.pv);
+                completePV.human_readable_name = newBlock.name;
+                completePV.runcontrol_enabled = newBlock.runcontrol;
+                completePV.low_rc = newBlock.lowlimit;
+                completePV.high_rc = newBlock.highlimit;
+                completePV.visible = newBlock.visible;
+
+                currentInstrument.groups[
+                  currentInstrument.groups.length - 1
+                ].blocks.push(completePV);
+                sendJsonMessage({
+                  type: "subscribe",
+                  pvs: [
+                    currentInstrument.prefix +
+                      "CS:SB:" +
+                      completePV.human_readable_name,
+                  ],
+                });
+              }
             }
           }
-        }
         });
     } else {
       let pvVal;
@@ -220,10 +230,12 @@ export default function InstrumentData() {
 
       if (currentInstrument.topBarMap.has(updatedPVName)) {
         // This is a top bar PV
-        const human_readable_name =
-          currentInstrument.topBarMap.get(updatedPVName);
 
-        currentInstrument.topBarPVs[human_readable_name] = pvVal;
+        const pv = currentInstrument.topBarMap.get(updatedPVName);
+        const human_readable_name = pv[0];
+        const col = pv[1];
+
+        currentInstrument.topBarPVs.set(human_readable_name, [pvVal, col]);
       } else {
         //check if in groups
 
