@@ -106,6 +106,12 @@ export default function NavBar() {
         </Link>
         <Link
           className="block py-2 px-3 rounded text-black dark:text-white hover:text-white hover:bg-zinc-800"
+          href="https://www.isis.stfc.ac.uk/Pages/Beam-Status.aspx" target="_blank"
+        >
+          Beam status
+        </Link>
+        <Link
+          className="block py-2 px-3 rounded text-black dark:text-white hover:text-white hover:bg-zinc-800"
           href="https://github.com/ISISComputingGroup/WebDashboard"
         >
           <svg
