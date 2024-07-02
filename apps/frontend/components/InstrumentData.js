@@ -4,6 +4,9 @@ import Groups from "./Groups";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useWebSocket from "react-use-websocket";
+import pako from "pako";
+import binascii from "binascii";
+
 
 class PV {
   constructor(pvaddress) {
@@ -147,75 +150,66 @@ export default function InstrumentData() {
 
       console.log("config changed");
       let raw = updatedPV.text;
-      console.log(raw);
 
-      fetch(`http://${backendHost}:3001/pvs/dehex`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
 
-        body: JSON.stringify({ data: raw }),
-      })
-        .then((response) => response.json())
-        .then((response) => {
-          console.log(response);
-          //parse it here
-          //create PV objects for currentinstrument.groups
-          //subscribe to pvs
-          const ConfigOutput = response;
-          // console.log(response)
-          const blocks = ConfigOutput.blocks;
-          const groups = ConfigOutput.groups;
+      // DEHEX
+      const unhexed = binascii.unhexlify(raw);
+      const charData = unhexed.split('').map(function(x){return x.charCodeAt(0); });
+      // convert to binary
+      const binData = new Uint8Array(charData);
+      const res = pako.inflate(binData, {to: "string"});
+      const response = JSON.parse(res);
 
-          // console.log(groups)
+      //parse it here
+      //create PV objects for currentinstrument.groups
+      //subscribe to pvs
+      const ConfigOutput = response;
+      // console.log(response)
+      const blocks = ConfigOutput.blocks;
+      const groups = ConfigOutput.groups;
 
-          // console.log(currentInstrument);
+      currentInstrument.groups = [];
 
-          // console.log(groups)
+      if (groups) {
+        for (const group of groups) {
+          const groupName = group.name;
+          const groupBlocks = group.blocks;
+          // const groupComponent = group.component
 
-          currentInstrument.groups = [];
+          currentInstrument.groups.push({
+            name: groupName,
+            blocks: [],
+          });
 
-          if (groups) {
-            for (const group of groups) {
-              const groupName = group.name;
-              const groupBlocks = group.blocks;
-              // const groupComponent = group.component
+          // console.log(currentInstrument)
 
-              currentInstrument.groups.push({
-                name: groupName,
-                blocks: [],
-              });
+          for (const block of groupBlocks) {
+            // console.log("Block:", block);
+            const newBlock = blocks.find((b) => b.name === block);
+            // console.log("NewBlock:", newBlock);
 
-              // console.log(currentInstrument)
+            const completePV = new PV(newBlock.pv);
+            completePV.human_readable_name = newBlock.name;
+            completePV.runcontrol_enabled = newBlock.runcontrol;
+            completePV.low_rc = newBlock.lowlimit;
+            completePV.high_rc = newBlock.highlimit;
+            completePV.visible = newBlock.visible;
 
-              for (const block of groupBlocks) {
-                // console.log("Block:", block);
-                const newBlock = blocks.find((b) => b.name === block);
-                // console.log("NewBlock:", newBlock);
-
-                const completePV = new PV(newBlock.pv);
-                completePV.human_readable_name = newBlock.name;
-                completePV.runcontrol_enabled = newBlock.runcontrol;
-                completePV.low_rc = newBlock.lowlimit;
-                completePV.high_rc = newBlock.highlimit;
-                completePV.visible = newBlock.visible;
-
-                currentInstrument.groups[
-                  currentInstrument.groups.length - 1
-                ].blocks.push(completePV);
-                sendJsonMessage({
-                  type: "subscribe",
-                  pvs: [
-                    currentInstrument.prefix +
-                      "CS:SB:" +
-                      completePV.human_readable_name,
-                  ],
-                });
-              }
-            }
+            currentInstrument.groups[
+              currentInstrument.groups.length - 1
+            ].blocks.push(completePV);
+            sendJsonMessage({
+              type: "subscribe",
+              pvs: [
+                currentInstrument.prefix +
+                  "CS:SB:" +
+                  completePV.human_readable_name,
+              ],
+            });
           }
-        });
+        }
+      }
+  
     } else {
       let pvVal;
       if (updatedPV.text != null) {

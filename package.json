@@ -27,7 +27,9 @@
   "author": "ISIS Neutron and Muon Source Experiment Controls",
   "license": "ISC",
   "dependencies": {
+    "binascii": "^0.0.2",
     "morgan": "^1.10.0",
+    "pako": "^2.1.0",
     "use-local-storage": "^3.0.0"
   }
 }
