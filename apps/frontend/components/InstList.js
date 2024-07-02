@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import useWebSocket from "react-use-websocket";
-
+import { dehex } from "./dehex";
 
 const INSTLIST_PV = "CS:INSTLIST";
 
 export default function InstList() {
   const socketURL = process.env.NEXT_PUBLIC_WS_URL;
-  const backendHost = process.env.NEXT_PUBLIC_BACKEND_HOST;
 
   const { sendJsonMessage, lastJsonMessage } = useWebSocket(socketURL, {
     shouldReconnect: (closeEvent) => true,
@@ -20,21 +19,10 @@ export default function InstList() {
   const [instList, setInstlist] = useState(null);
 
   useEffect(() => {
-    if (lastJsonMessage !== null) {
-
-      fetch(`http://${backendHost}:3001/pvs/dehex`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        body: JSON.stringify({ data: lastJsonMessage.text }),
-      }).then((response) => response.json()).then((response) => {
+    if (lastJsonMessage !== null && lastJsonMessage.text != null) {
+        const response = JSON.parse(dehex(lastJsonMessage.text))
         setInstlist(response);
         console.log(response)
-      }
-    )
-
     }
   }, [lastJsonMessage]);
 
