@@ -4,8 +4,7 @@ import Groups from "./Groups";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useWebSocket from "react-use-websocket";
-import pako from "pako";
-import binascii from "binascii";
+import { dehex } from "./dehex";
 
 
 class PV {
@@ -79,7 +78,6 @@ export default function InstrumentData() {
 
   const router = useRouter();
   const socketURL = process.env.NEXT_PUBLIC_WS_URL;
-  const backendHost = process.env.NEXT_PUBLIC_BACKEND_HOST;
   const [instName, setInstName] = useState(null);
 
   const { sendJsonMessage, lastJsonMessage } = useWebSocket(socketURL, {
@@ -151,13 +149,7 @@ export default function InstrumentData() {
       console.log("config changed");
       let raw = updatedPV.text;
 
-
-      // DEHEX
-      const unhexed = binascii.unhexlify(raw);
-      const charData = unhexed.split('').map(function(x){return x.charCodeAt(0); });
-      // convert to binary
-      const binData = new Uint8Array(charData);
-      const res = pako.inflate(binData, {to: "string"});
+      const res = dehex(raw);
       const response = JSON.parse(res);
 
       //parse it here
