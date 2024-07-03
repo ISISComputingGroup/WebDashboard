@@ -67,3 +67,4 @@ npm-debug.log
 .pnp.*
 
 morgan.log
+.next/
