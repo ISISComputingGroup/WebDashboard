@@ -5,6 +5,12 @@ export default function Group({ group, instName, showHiddenBlocks }) {
     return <h1>Loading...</h1>;
   }
 
+  // Check if all the blocks in this group are hidden. If so, hide the group. 
+  let blocksAllHidden = group.blocks.map(block => block.visible).every(v => v==false)
+  if (blocksAllHidden && showHiddenBlocks == false) {
+    return;
+  }
+
   return (
     <div className="w-full bg-gray-700 shadow-md rounded-xl flex flex-col overflow-x-auto">
       <h1 className="p-4 bg-gray-600 rounded-t-lg min-w-full">{group.name}</h1>
