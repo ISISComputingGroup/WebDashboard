@@ -1,4 +1,5 @@
 import Block from "./Block";
+import { checkIfAllBlocksInGroupAreHidden } from "./GroupUtils";
 
 export default function Group({ group, instName, showHiddenBlocks }) {
   if (!group) {
@@ -6,8 +7,7 @@ export default function Group({ group, instName, showHiddenBlocks }) {
   }
 
   // Check if all the blocks in this group are hidden. If so, hide the group. 
-  let blocksAllHidden = group.blocks.map(block => block.visible).every(v => v==false)
-  if (blocksAllHidden && showHiddenBlocks == false) {
+  if (checkIfAllBlocksInGroupAreHidden(group) && showHiddenBlocks == false) {
     return;
   }
 
