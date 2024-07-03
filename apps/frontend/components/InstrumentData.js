@@ -222,7 +222,19 @@ export default function InstrumentData() {
               currentInstrument.prefix + "CS:SB:" + block.human_readable_name ==
               updatedPVName
             ) {
-              block.value = pvVal;
+              let prec = updatedPV.precision;
+
+              if (prec != null && prec > 0 && !block.precision) {
+                // this is likely the first update, and contains precision information - store this in the block for later truncation (see below)
+                block.precision = prec;
+              }
+
+              if (block.precision && typeof pvVal == "number") {
+                // if a block has precision truncate it here
+                block.value = pvVal.toPrecision(block.precision);
+              } else {
+                block.value = pvVal;
+              }
 
               const pv = document.getElementById(
                 block.human_readable_name + "_CIRCLE"
