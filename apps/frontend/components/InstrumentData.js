@@ -236,6 +236,15 @@ export default function InstrumentData() {
                 block.value = pvVal;
               }
 
+              if (updatedPV.units) {
+                block.units = updatedPV.units
+              }
+
+              if (block.units) {
+                block.value += " ";
+                block.value += block.units;
+              }
+
               const pv = document.getElementById(
                 block.human_readable_name + "_CIRCLE"
               );
