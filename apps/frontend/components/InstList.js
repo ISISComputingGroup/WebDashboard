@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useWebSocket from "react-use-websocket";
-import { dehex } from "./dehex";
+import { dehex_and_decompress } from "./dehex_and_decompress";
 
 const INSTLIST_PV = "CS:INSTLIST";
 
@@ -20,7 +20,7 @@ export default function InstList() {
 
   useEffect(() => {
     if (lastJsonMessage !== null && lastJsonMessage.text != null) {
-        const response = JSON.parse(dehex(lastJsonMessage.text))
+        const response = JSON.parse(dehex_and_decompress(lastJsonMessage.text))
         setInstlist(response);
         console.log(response)
     }

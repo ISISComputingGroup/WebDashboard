@@ -2,11 +2,12 @@ import pako from "pako";
 import binascii from "binascii";
 
 /**
- * dehex - synonymous to dehex_and_decompress in inst_servers
+ * dehex_and_decompress
+ * - synonymous to dehex_and_decompress in inst_servers
  * @param {*} input raw data
  * @returns dehexed and decompressed data (you can choose to JSON parse it or not afterwards)
  */
-export function dehex(input) {
+export function dehex_and_decompress(input) {
       // DEHEX
       const unhexed = binascii.unhexlify(input);
       const charData = unhexed.split('').map(function(x){return x.charCodeAt(0); });

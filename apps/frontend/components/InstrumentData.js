@@ -4,7 +4,7 @@ import Groups from "./Groups";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useWebSocket from "react-use-websocket";
-import { dehex } from "./dehex";
+import { dehex_and_decompress } from "./dehex_and_decompress";
 
 
 class PV {
@@ -149,7 +149,7 @@ export default function InstrumentData() {
       console.log("config changed");
       let raw = updatedPV.text;
 
-      const res = dehex(raw);
+      const res = dehex_and_decompress(raw);
       const response = JSON.parse(res);
 
       //parse it here
