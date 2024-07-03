@@ -16,8 +16,6 @@ export default function WallDisplay() {
   useEffect(() => {
     setTS1Data(
       [
-        { name: "NDW2455", status: "", pv: "TE:NDW2455:" + runstatePV },
-        { name: "NDW1836", status: "", pv: "TE:NDW1836:" + runstatePV },
         { name: "ALF", status: "", pv: "IN:ALF:" + runstatePV },
         { name: "CRISP", status: "", pv: "IN:CRISP:" + runstatePV },
         { name: "EMMA", status: "", pv: "IN:EMMA:" + runstatePV },
@@ -184,24 +182,9 @@ export default function WallDisplay() {
     <main
       className={`flex min-h-screen bg-white dark:bg-zinc-800 flex-col items-center justify-between ${inter.className}`}
     >
-      <section className=" rounded-xl w-full  w-full  md:px-0 md:w-3/4 my-4 ">
+      <section className=" rounded-xl w-full  w-full  md:px-0 md:w-11/12 my-4 ">
         <div className="mx-auto  ">
           <div className="w-full mx-auto text-left flex justify-center items-center p-8 dark:bg-zinc-900 rounded-xl">
-            {/* <div className="mb-8 flex flex-col text-4xl font-extrabold leading-none tracking-normal text-gray-900 md:text-6xl md:tracking-tight"> */}
-            {/* <h1>Experiment Controls</h1>{" "} */}
-
-            {/* <h1 className="block w-full mt-2 py-2  ">
-                🧱
-                <span className="text-transparent mx-2 bg-clip-text leading-12 bg-gradient-to-r from-green-400 to-purple-500 lg:inline">
-                  The Wall
-                </span>
-              </h1> */}
-            {/* <span>around your product ?</span> */}
-            {/* </div> */}
-            {/* <p className="px-0 mb-8 text-lg text-gray-600 md:text-xl lg:px-24">
-              Use this page to monitor the status of the instruments and Jenkins
-              jobs
-            </p> */}
             <div
               id="status"
               className="flex flex-col justify-center items-center"

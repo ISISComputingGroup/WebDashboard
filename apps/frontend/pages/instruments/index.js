@@ -17,11 +17,6 @@ export default function Home() {
   for (let inst of instList) {
     let groups = inst["groups"];
     let name = inst["name"];
-    let scheduled = inst["isScheduled"];
-
-    // todo show these separately?
-    // if (! inst["isScheduled"])
-    //   break;
 
     for (let group of groups) {
       if (!instruments.has(group)) {
@@ -35,13 +30,13 @@ export default function Home() {
     <main
       className={`flex min-h-screen bg-gray-100 dark:bg-zinc-800  flex-col items-center justify-between ${inter.className}`}
     >
-      <section className="  flex flex-col items-start justify-center rounded-xl w-full  p-12 ">
+      <section className="  flex flex-col items-start justify-center rounded-xl w-full  p-6 ">
         <div className=" mx-auto max-w-2/3">
           <h1 className="text-4xl font-extrabold text-left leading-none tracking-normal text-gray-900 dark:text-white md:text-6xl md:tracking-tight">
             Instrument Dashboards
           </h1>
 
-          <div className="flex mt-12 flex-col justify-center items-center space-y-4 ">
+          <div className="flex mt-6 flex-col justify-center items-center space-y-4 ">
             {[...instruments].map(([group, insts]) => {
               return (
                 <div

@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import useWebSocket from "react-use-websocket";
 import { dehex_and_decompress } from "./dehex_and_decompress";
 
-
 class PV {
   constructor(pvaddress) {
     this.pvaddress = pvaddress;
@@ -104,7 +103,6 @@ export default function InstrumentData() {
       return;
     }
     setInstrument_name_upper((a) => {
-      // console.log(router.query.slug);
       setInstName(router.query.slug[0]);
 
       let instrument = new Instrument(router.query.slug[0].toUpperCase());
@@ -156,7 +154,6 @@ export default function InstrumentData() {
       //create PV objects for currentinstrument.groups
       //subscribe to pvs
       const ConfigOutput = response;
-      // console.log(response)
       const blocks = ConfigOutput.blocks;
       const groups = ConfigOutput.groups;
 
@@ -166,19 +163,14 @@ export default function InstrumentData() {
         for (const group of groups) {
           const groupName = group.name;
           const groupBlocks = group.blocks;
-          // const groupComponent = group.component
 
           currentInstrument.groups.push({
             name: groupName,
             blocks: [],
           });
 
-          // console.log(currentInstrument)
-
           for (const block of groupBlocks) {
-            // console.log("Block:", block);
             const newBlock = blocks.find((b) => b.name === block);
-            // console.log("NewBlock:", newBlock);
 
             const completePV = new PV(newBlock.pv);
             completePV.human_readable_name = newBlock.name;
@@ -201,7 +193,6 @@ export default function InstrumentData() {
           }
         }
       }
-  
     } else {
       let pvVal;
       if (updatedPV.text != null) {
@@ -223,21 +214,14 @@ export default function InstrumentData() {
 
         currentInstrument.topBarPVs.set(human_readable_name, [pvVal, col]);
       } else {
-        //check if in groups
-
-        // console.log(currentInstrument.groups)
-
-        // consol
+        // This is a block - check if in groups
 
         for (const group of currentInstrument.groups) {
-          // console.log(group)
           for (const block of group.blocks) {
-            // console.log("block: " + block.human_readable_name + "updatedpvname: " + updatedPVName )
             if (
               currentInstrument.prefix + "CS:SB:" + block.human_readable_name ==
               updatedPVName
             ) {
-              // console.log("got here")
               block.value = pvVal;
 
               const pv = document.getElementById(
@@ -261,13 +245,36 @@ export default function InstrumentData() {
     }
   }, [lastJsonMessage]);
 
+  const [showHiddenBlocks, setShowHiddenBlocks] = useState(false);
+  const onShowHiddenBlocksCheckboxChange = () => {
+    setShowHiddenBlocks(!showHiddenBlocks);
+  };
+
   if (!instName) {
     return <h1>Loading...</h1>;
   }
   return (
     <div className="p-8 w-full mx-auto max-w-7xl">
       <TopBar monitoredPVs={currentInstrument.topBarPVs} instName={instName} />
-      <Groups groupsMap={currentInstrument.groups} instName={instName} />
+      <Groups
+        groupsMap={currentInstrument.groups}
+        instName={instName}
+        showHiddenBlocks={showHiddenBlocks}
+      />
+      <div className="pt-4">
+        <label class="inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            checked={showHiddenBlocks}
+            onChange={onShowHiddenBlocksCheckboxChange}
+            class="sr-only peer"
+          />
+          <div class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+          <span class="ms-3 text-sm font-medium text-gray-900">
+            Show hidden blocks?
+          </span>
+        </label>
+      </div>
     </div>
   );
 }
