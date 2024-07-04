@@ -26,7 +26,7 @@ export default function Block(pv, instName, showHiddenBlocks) {
       </td>
 
       <td className="py-1 px-4 ">
-        <span id={pv.human_readable_name + "_VALUE"}>{pv.value}</span>
+        <span id={pv.human_readable_name + "_VALUE"}>{pv.value} {(pv.units != null) && pv.units}</span>
       </td>
       <td className="py-1 px-4 flex justify-between items-center">
         <span id={pv.human_readable_name + "_VALUE_RC"}>
