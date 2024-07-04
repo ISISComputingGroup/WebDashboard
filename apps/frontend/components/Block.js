@@ -26,7 +26,7 @@ export default function Block(pv, instName, showHiddenBlocks) {
       </td>
 
       <td className="py-1 px-4 ">
-        <span id={pv.human_readable_name + "_VALUE"}>{pv.value} {(pv.units != null) && pv.units} <p className="text-red-600">{(pv.severity != "NONE") && pv.severity}</p>  </span>
+        <span id={pv.human_readable_name + "_VALUE"}>{pv.value} {(pv.units != null) && pv.units} <a href="https://github.com/ISISComputingGroup/ibex_user_manual/wiki/Blocks#alarms" className="text-red-600">{(pv.severity != "NONE") && pv.severity}</a>  </span>
       </td>
       <td className="py-1 px-4 flex justify-between items-center">
         <span id={pv.human_readable_name + "_VALUE_RC"}>
