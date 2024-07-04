@@ -240,6 +240,10 @@ export default function InstrumentData() {
                 block.units = updatedPV.units
               }
 
+              if (updatedPV.severity) {
+                block.severity = updatedPV.severity;
+              }
+
               const pv = document.getElementById(
                 block.human_readable_name + "_CIRCLE"
               );
