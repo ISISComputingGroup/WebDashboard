@@ -30,8 +30,8 @@ class PV {
 }
 
 class Instrument {
-  constructor(instrumentName) {
-    this.prefix = `IN:${instrumentName}:`;
+  constructor(prefix) {
+    this.prefix = prefix;
 
     // PV name: [human readable name, column in top bar(null is monitor but don't show)]
     this.topBarMap = new Map(
@@ -59,6 +59,7 @@ class Instrument {
         [`${this.prefix}DAE:NUMPERIODS`]: ["Num periods", 2],
 
         [`sim://sine`]: ["sine", null],
+        [`CS:INSTLIST`]: ["instlist", null],
       })
     );
 
@@ -73,7 +74,6 @@ let lastUpdate = "";
 
 export default function InstrumentData() {
   // set up the different states for the instrument data
-  // const [socket, setSocket] = useState(null);
 
   const router = useRouter();
   const socketURL = process.env.NEXT_PUBLIC_WS_URL;
@@ -83,48 +83,59 @@ export default function InstrumentData() {
     shouldReconnect: (closeEvent) => true,
   });
 
-  //   // sub to config PV
-
-  //   // based on config PV reload/set group/block data array and subscriptions
-
-  //   //permanent subscriptions
-  //   //dae shit
-  //   //blocks
-
-  //   //adhoc subscriptions
-  //   //dictionary of pv names for blocks etc -> websocket last data
-
-  const [instrument_name_upper, setInstrument_name_upper] = useState("");
   const CONFIG_DETAILS = "CS:BLOCKSERVER:GET_CURR_CONFIG_DETAILS";
+  const [instlist, setInstlist] = useState(null);
   const [currentInstrument, setCurrentInstrument] = useState(null);
 
   useEffect(() => {
     if (!router.query.slug || !router.query.slug[0]) {
       return;
     }
-    setInstrument_name_upper((a) => {
-      setInstName(router.query.slug[0]);
 
-      let instrument = new Instrument(router.query.slug[0].toUpperCase());
+    setInstName(router.query.slug[0]);
+
+    sendJsonMessage({
+      type: "subscribe",
+      pvs: ["CS:INSTLIST"],
+    });
+
+  }, [router.query.slug, sendJsonMessage]);
+
+
+  useEffect(() => {
+    if (!instName) {
+      return;
+    }
+
+    if (instlist == null) {
+      return;
+    }
+
+    let prefix = "";
+
+    for (const item of instlist) {
+      if (item["name"] == instName.toUpperCase()) {
+        prefix = item["pvPrefix"];
+      }
+    }
+    if (!prefix) {
+      // not on the instlist, or the instlist is not available. Try to guess it's a developer machine
+      prefix = "TE:" + instName.toUpperCase() + ":";
+    }
+
+    if (!currentInstrument) {
+      let instrument = new Instrument(prefix);
       setCurrentInstrument(instrument);
-
-      let prefix = `IN:${router.query.slug[0].toUpperCase()}:`;
 
       sendJsonMessage({
         type: "subscribe",
         pvs: [`${prefix}${CONFIG_DETAILS}`],
       });
-      sendJsonMessage({
-        type: "subscribe",
-        pvs: [`${prefix}DAE:RUNSTATE_STR`],
-      });
       for (const pv of instrument.topBarMap.keys()) {
         sendJsonMessage({ type: "subscribe", pvs: [pv] });
       }
-
-      return router.query.slug[0].toUpperCase();
-    });
-  }, [router.query.slug, sendJsonMessage]);
+    }
+  }, [instlist, instName, sendJsonMessage]);
 
   useEffect(() => {
     if (!lastJsonMessage) {
@@ -132,6 +143,14 @@ export default function InstrumentData() {
     }
     const updatedPV = lastJsonMessage;
     const updatedPVName = updatedPV.pv;
+
+    if (updatedPVName == "CS:INSTLIST" && updatedPV.text != null) {
+      setInstlist(JSON.parse(dehex_and_decompress(updatedPV.text)));
+    }
+
+    if (!currentInstrument) {
+      return;
+    }
 
     if (
       updatedPVName == `${currentInstrument.prefix}${CONFIG_DETAILS}` &&
@@ -237,7 +256,7 @@ export default function InstrumentData() {
               }
 
               if (updatedPV.units) {
-                block.units = updatedPV.units
+                block.units = updatedPV.units;
               }
 
               if (updatedPV.severity) {
@@ -263,14 +282,14 @@ export default function InstrumentData() {
         }
       }
     }
-  }, [lastJsonMessage]);
+  }, [lastJsonMessage, currentInstrument, sendJsonMessage]);
 
   const [showHiddenBlocks, setShowHiddenBlocks] = useState(false);
   const onShowHiddenBlocksCheckboxChange = () => {
     setShowHiddenBlocks(!showHiddenBlocks);
   };
 
-  if (!instName) {
+  if (!instName || !currentInstrument) {
     return <h1>Loading...</h1>;
   }
   return (
