@@ -239,21 +239,8 @@ export default function InstrumentData() {
 
         for (const group of currentInstrument.groups) {
           for (const block of group.blocks) {
-            if (
-              updatedPVName.startsWith(currentInstrument.prefix + "CS:SB:" + block.human_readable_name)
-            ) {
-
-
-              if (updatedPVName.endsWith("RC:INRANGE")) {
-                block.runcontrol_inrange = updatedPV.text == "YES";
-                return;
-              }
-
-              if (updatedPVName.endsWith("RC:ENABLE")) {
-                block.runcontrol_enabled = updatedPV.text == "YES";
-                return;
-              }
-
+            let block_full_pv_name = currentInstrument.prefix + "CS:SB:" + block.human_readable_name
+            if (updatedPVName == block_full_pv_name) {
               let prec = updatedPV.precision;
 
               if (prec != null && prec > 0 && !block.precision) {
@@ -290,6 +277,13 @@ export default function InstrumentData() {
                 pv.classList.remove("text-green-500");
                 pv.classList.add("text-transparent");
               }, 2000);
+            } else if (updatedPVName == block_full_pv_name + ":RC:INRANGE") {
+              block.runcontrol_inrange = updatedPV.value == 1;
+              return;
+            }
+            else if (updatedPVName == block_full_pv_name + ":RC:ENABLE") {
+              block.runcontrol_enabled = updatedPV.value == 1;
+              return;
             }
           }
         }
