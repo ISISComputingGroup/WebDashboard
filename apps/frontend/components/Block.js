@@ -30,7 +30,9 @@ export default function Block(pv, instName, showHiddenBlocks) {
       </td>
       <td className="py-1 px-4 flex justify-between items-center">
         <span id={pv.human_readable_name + "_VALUE_RC"}>
-          {pv.runcontrol_enabled}
+          
+          {pv.runcontrol_enabled && (pv.runcontrol_inrange ? "✅" : "❌")
+          }
         </span>
         <svg
           id={pv.human_readable_name + "_CIRCLE"}

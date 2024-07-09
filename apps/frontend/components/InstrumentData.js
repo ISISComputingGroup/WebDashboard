@@ -22,6 +22,7 @@ class PV {
     this.alarm_high = null;
     this.value = null;
     this.runcontrol_enabled = null;
+    this.runcontrol_inrange = null;
     this.visible = null;
     this.suspend_on_invald = null;
     this.low_rc = null;
@@ -201,12 +202,13 @@ export default function InstrumentData() {
             currentInstrument.groups[
               currentInstrument.groups.length - 1
             ].blocks.push(completePV);
+            const block_address = currentInstrument.prefix + "CS:SB:" + completePV.human_readable_name;
             sendJsonMessage({
               type: "subscribe",
               pvs: [
-                currentInstrument.prefix +
-                  "CS:SB:" +
-                  completePV.human_readable_name,
+                block_address,
+                block_address + ":RC:ENABLE",
+                block_address + ":RC:INRANGE",
               ],
             });
           }
@@ -238,9 +240,20 @@ export default function InstrumentData() {
         for (const group of currentInstrument.groups) {
           for (const block of group.blocks) {
             if (
-              currentInstrument.prefix + "CS:SB:" + block.human_readable_name ==
-              updatedPVName
+              updatedPVName.startsWith(currentInstrument.prefix + "CS:SB:" + block.human_readable_name)
             ) {
+
+
+              if (updatedPVName.endsWith("RC:INRANGE")) {
+                block.runcontrol_inrange = updatedPV.text == "YES";
+                return;
+              }
+
+              if (updatedPVName.endsWith("RC:ENABLE")) {
+                block.runcontrol_enabled = updatedPV.text == "YES";
+                return;
+              }
+
               let prec = updatedPV.precision;
 
               if (prec != null && prec > 0 && !block.precision) {
