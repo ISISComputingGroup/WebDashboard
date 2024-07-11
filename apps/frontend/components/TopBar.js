@@ -1,9 +1,10 @@
 import { getForegroundColor, getStatusColor } from "./getRunstateColours";
 
-const runStateStr = "Run state STR";
+const runStateStr = "Run state";
 const configName = "Config name";
 
-const TopBar = ({ monitoredPVs, instName, configName, runStateStr }) => {
+const TopBar = ({ monitoredPVs, instName, runInfoPVs }) => {
+
   if (!monitoredPVs || !monitoredPVs.size) {
     return (
       <h1 className="text-lg w-full text-white bg-gray-400 border-gray-500 border-2 p-3 font-semibold px-7 animate-pulse">
@@ -11,6 +12,7 @@ const TopBar = ({ monitoredPVs, instName, configName, runStateStr }) => {
       </h1>
     );
   }
+
 
   return (
     <div
@@ -23,12 +25,7 @@ const TopBar = ({ monitoredPVs, instName, configName, runStateStr }) => {
           <span className="font-semibold">{instName.toUpperCase()}</span>
         </h1>
         <h1 className="text-black text-lg">
-          Config:{" "}
-          <span className="font-semibold">
-            {monitoredPVs.has(configName)
-              ? monitoredPVs.get(configName)[0]
-              : "UNKNOWN"}
-          </span>
+          Config: <span className="font-semibold">{(runInfoPVs.has(configName) ? runInfoPVs.get(configName) : "UNKNOWN")}</span>
         </h1>
       </div>
       <div
@@ -37,9 +34,9 @@ const TopBar = ({ monitoredPVs, instName, configName, runStateStr }) => {
       >
         <h2
           className={`text-center p-4 text-xl rounded-t-lg w-full 
-          ${getStatusColor(runStateStr ? monitoredPVs.get(runStateStr)[0] : "UNKNOWN")} ${getForegroundColor(
-            monitoredPVs.has(runStateStr)
-              ? monitoredPVs.get(runStateStr)[0]
+          ${getStatusColor(runInfoPVs.has(runStateStr) ? runInfoPVs.get(runStateStr) : "UNKNOWN")} ${getForegroundColor(
+            runInfoPVs.has(runStateStr)
+              ? runInfoPVs.get(runStateStr)
               : "UNKNOWN"
           )}
           
@@ -47,8 +44,8 @@ const TopBar = ({ monitoredPVs, instName, configName, runStateStr }) => {
         >
           {instName.toUpperCase()} is{" "}
           <span>
-            {monitoredPVs.has(runStateStr)
-              ? monitoredPVs.get(runStateStr)[0]
+            {runInfoPVs.has(runStateStr)
+              ? runInfoPVs.get(runStateStr)
               : "UNKNOWN"}
           </span>
         </h2>
@@ -75,17 +72,21 @@ const TopBar = ({ monitoredPVs, instName, configName, runStateStr }) => {
   );
 };
 
+
+
 function getMonitoredPVs(index, monitoredPVs) {
   let dom = [];
 
-  for (var i = 0; i <= 3; i++) {
+  for (var i = 0 ; i <= 3; i++ ) {
+
     for (const pvarr of monitoredPVs.values()) {
       const col = pvarr[1];
       const row = pvarr[0];
 
       if (col == index && row == i) {
-        const label = pvarr[2];
-        const value = pvarr[3];
+
+            const label = pvarr[2]
+    const value = pvarr[3]
 
         dom.push(
           <tr
@@ -108,9 +109,15 @@ function getMonitoredPVs(index, monitoredPVs) {
             </td>
           </tr>
         );
+
       }
-    }
+
+
+
+
+
   }
+}
   return dom;
 }
 

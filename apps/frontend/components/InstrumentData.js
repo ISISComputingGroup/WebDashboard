@@ -55,36 +55,34 @@ class Instrument {
   }))
 
     // PV name: [human readable name, column in top bar(null is monitor but don't show)]
-    this.topBarMap = new Map(
+    this.runInfoMap = new Map(
       Object.entries({
-        [`${this.prefix}CS:BLOCKSERVER:CURR_CONFIG_NAME`]: [
-          "Config name",
-          null,
-        ],
-        [`${this.prefix}DAE:RUNSTATE`]: ["Run state", null],
-        [`${this.prefix}DAE:RUNSTATE_STR`]: ["Run state STR", null],
-        [`${this.prefix}DAE:RUNNUMBER`]: ["Run number", null],
-        [`${this.prefix}DAE:STARTTIME`]: ["Start number", null],
-        [`${this.prefix}DAE:TITLE`]: ["Title", 0],
-        [`${this.prefix}DAE:_USERNAME`]: ["Users", 0],
+        [`${this.prefix}CS:BLOCKSERVER:CURR_CONFIG_NAME`]: "Config name",
+        [`${this.prefix}DAE:RUNSTATE_STR`]: "Run state",
+        [`${this.prefix}DAE:RUNNUMBER`]: "Run number",
+        [`${this.prefix}DAE:STARTTIME`]: "Start number",
+        [`${this.prefix}DAE:TITLE`]: "Title",
+        [`${this.prefix}DAE:_USERNAME`]: "Users",
 
-        [`${this.prefix}DAE:GOODFRAMES`]: ["Good frames", 1],
-        [`${this.prefix}DAE:RAWFRAMES`]: ["Raw frames", 1],
-        [`${this.prefix}DAE:BEAMCURRENT`]: ["Current(uamps)", 1],
-        [`${this.prefix}DAE:TOTALUAMPS`]: ["Total(uamps)", 1],
-        [`${this.prefix}DAE:MONITORCOUNTS`]: ["Monitor counts", 1],
+        [`${this.prefix}DAE:GOODFRAMES`]: "Good frames",
+        [`${this.prefix}DAE:RAWFRAMES`]: "Raw frames",
+        [`${this.prefix}DAE:BEAMCURRENT`]: "Current(uamps)",
+        [`${this.prefix}DAE:TOTALUAMPS`]: "Total(uamps)",
+        [`${this.prefix}DAE:MONITORCOUNTS`]: "Monitor counts",
 
-        [`${this.prefix}DAE:STARTTIME`]: ["Start time", 2],
-        [`${this.prefix}DAE:RUNDURATION_PD`]: ["Run time", 2],
-        [`${this.prefix}DAE:PERIOD`]: ["Period", 2],
-        [`${this.prefix}DAE:NUMPERIODS`]: ["Num periods", 2],
+        [`${this.prefix}DAE:STARTTIME`]: "Start time",
+        [`${this.prefix}DAE:RUNDURATION_PD`]: "Run time",
+        [`${this.prefix}DAE:PERIOD`]: "Period",
+        [`${this.prefix}DAE:NUMPERIODS`]: "Num periods",
 
-        [`sim://sine`]: ["sine", null],
-        [`CS:INSTLIST`]: ["instlist", null],
       })
     );
 
+    // (label) PV address  : [row, col, label, value]
     this.topBarPVs = new Map();
+
+    // Human Readable name : value 
+    this.runInfoPVs = new Map();
 
     this.groups = [];
     this.configname = null;
@@ -159,6 +157,11 @@ export default function InstrumentData() {
 
       // subscribe to top bar label PVs 
       for (const pv of instrument.dictLongerInstPVs.keys()) {
+        sendJsonMessage({ type: "subscribe", pvs: [pv] });
+      }
+
+      // subscribe to run info PVs
+      for (const pv of instrument.runInfoMap.keys()) {
         sendJsonMessage({ type: "subscribe", pvs: [pv] });
       }
 
@@ -282,6 +285,8 @@ export default function InstrumentData() {
           }
         }
 
+      } else if (currentInstrument.runInfoMap.has(updatedPVName)) {
+        currentInstrument.runInfoPVs.set(currentInstrument.runInfoMap.get(updatedPVName), pvVal)
       } else {
         // This is a block - check if in groups
 
@@ -349,7 +354,7 @@ export default function InstrumentData() {
   }
   return (
     <div className="p-8 w-full mx-auto max-w-7xl">
-      <TopBar monitoredPVs={currentInstrument.topBarPVs} instName={instName} configName={currentInstrument.configName} runStateStr={currentInstrument.runStateStr} />
+      <TopBar monitoredPVs={currentInstrument.topBarPVs} instName={instName} runInfoPVs={currentInstrument.runInfoPVs} />
       <Groups
         groupsMap={currentInstrument.groups}
         instName={instName}
