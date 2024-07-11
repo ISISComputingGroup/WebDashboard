@@ -63,18 +63,30 @@ class Instrument {
         [`${this.prefix}DAE:STARTTIME`]: "Start number",
         [`${this.prefix}DAE:TITLE`]: "Title",
         [`${this.prefix}DAE:_USERNAME`]: "Users",
-
         [`${this.prefix}DAE:GOODFRAMES`]: "Good frames",
-        [`${this.prefix}DAE:RAWFRAMES`]: "Raw frames",
+        [`${this.prefix}DAE:RAWFRAMES`]: "Raw frames (Total)",
+        [`${this.prefix}DAE:RAWFRAMES_PD`]: "Raw frames (Period)",
         [`${this.prefix}DAE:BEAMCURRENT`]: "Current(uamps)",
         [`${this.prefix}DAE:TOTALUAMPS`]: "Total(uamps)",
         [`${this.prefix}DAE:MONITORCOUNTS`]: "Monitor counts",
-
+        [`${this.prefix}DAE:MONITORSPECTRUM`]: "Monitor Spectrum",
+        [`${this.prefix}DAE:MONITORFROM`]: "Monitor From",
+        [`${this.prefix}DAE:MONITORTO`]: "Monitor To",
+        [`${this.prefix}DAE:SHUTTER`]: "Shutter Status",
+        [`${this.prefix}DAE:NUMSPECTRA`]: "Number of Spectra",
+        [`${this.prefix}DAE:NUMTIMECHANNELS`]: "Number of Time Channels",
+        [`${this.prefix}DAE:SIM_MODE`]: "DAE Simulation Mode", 
+        [`${this.prefix}DAE:TIME_OF_DAY`]: "Instrument Time",
         [`${this.prefix}DAE:STARTTIME`]: "Start time",
         [`${this.prefix}DAE:RUNDURATION_PD`]: "Run time",
         [`${this.prefix}DAE:PERIOD`]: "Period",
         [`${this.prefix}DAE:NUMPERIODS`]: "Num periods",
-
+        [`${this.prefix}DAE:COUNTRATE`]: "Count Rate",
+        [`${this.prefix}DAE:_RBNUMBER`]: "RB Number",
+        [`${this.prefix}DAE:RUNDURATION`]: "Total Run Time",
+        [`${this.prefix}DAE:RUNDURATION_PD`]: "Period Run Time",
+        [`${this.prefix}DAE:PERIODSEQ`]: "Period Sequence",
+        [`${this.prefix}DAE:DAEMEMORYUSED`]: "DAE Memory Used",
       })
     );
 
@@ -151,6 +163,7 @@ export default function InstrumentData() {
         pvs: [`${prefix}${CONFIG_DETAILS}`],
       });
 
+      // subscribe to the top bar (column 0) PVs
       for (const pv of instrument.columnZeroPVs.keys()){
         sendJsonMessage({ type: "subscribe", pvs: [pv] });
       }
@@ -297,7 +310,7 @@ export default function InstrumentData() {
               let prec = updatedPV.precision;
 
               if (prec != null && prec > 0 && !block.precision) {
-                // this is likely the first update, and contains precision information - store this in the block for later truncation (see below)
+                // this is likely the first update, and contains precision information which is not repeated on a normal value update - store this in the block for later truncation (see below)
                 block.precision = prec;
               }
 
@@ -361,15 +374,15 @@ export default function InstrumentData() {
         showHiddenBlocks={showHiddenBlocks}
       />
       <div className="pt-4">
-        <label class="inline-flex items-center cursor-pointer">
+        <label className="inline-flex items-center cursor-pointer">
           <input
             type="checkbox"
             checked={showHiddenBlocks}
             onChange={onShowHiddenBlocksCheckboxChange}
-            class="sr-only peer"
+            className="sr-only peer"
           />
-          <div class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-          <span class="ms-3 text-sm font-medium text-gray-900">
+          <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+          <span className="ms-3 text-sm font-medium text-gray-900">
             Show hidden blocks?
           </span>
         </label>
