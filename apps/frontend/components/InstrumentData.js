@@ -30,9 +30,29 @@ class PV {
   }
 }
 
+const DASHBOARD = "CS:DASHBOARD:TAB:"
+
 class Instrument {
   constructor(prefix) {
     this.prefix = prefix;
+    this.dashboard_prefix = `${this.prefix}${DASHBOARD}`
+
+    this.columnZeroPVs = new Map(
+      Object.entries({
+        [`${this.prefix}DAE:TITLE`]: "Title:",
+        [`${this.prefix}DAE:_USERNAME`]: "Users:",
+      })
+    )
+
+    this.dictLongerInstPVs = new Map(
+      Object.entries({
+      [`${this.dashboard_prefix}1:1:LABEL`] : `${this.dashboard_prefix}1:1:VALUE`,
+      [`${this.dashboard_prefix}2:1:LABEL`] : `${this.dashboard_prefix}2:1:VALUE`,
+      [`${this.dashboard_prefix}3:1:LABEL`] : `${this.dashboard_prefix}3:1:VALUE`,
+      [`${this.dashboard_prefix}1:2:LABEL`] : `${this.dashboard_prefix}1:2:VALUE`,
+      [`${this.dashboard_prefix}2:2:LABEL`] : `${this.dashboard_prefix}2:2:VALUE`,
+      [`${this.dashboard_prefix}3:2:LABEL`] : `${this.dashboard_prefix}3:2:VALUE`,
+  }))
 
     // PV name: [human readable name, column in top bar(null is monitor but don't show)]
     this.topBarMap = new Map(
@@ -132,9 +152,17 @@ export default function InstrumentData() {
         type: "subscribe",
         pvs: [`${prefix}${CONFIG_DETAILS}`],
       });
-      for (const pv of instrument.topBarMap.keys()) {
+
+      for (const pv of instrument.columnZeroPVs.keys()){
         sendJsonMessage({ type: "subscribe", pvs: [pv] });
       }
+
+      // subscribe to top bar label PVs 
+      for (const pv of instrument.dictLongerInstPVs.keys()) {
+        sendJsonMessage({ type: "subscribe", pvs: [pv] });
+      }
+
+
     }
   }, [instlist, instName, sendJsonMessage]);
 
@@ -226,14 +254,34 @@ export default function InstrumentData() {
         return;
       }
 
-      if (currentInstrument.topBarMap.has(updatedPVName)) {
-        // This is a top bar PV
+      if (currentInstrument.dictLongerInstPVs.has(updatedPVName)) {
+        // This is a top bar label PV
+        if (!currentInstrument.topBarPVs.has(updatedPVName) && updatedPV.text) {
+          let prefixRemoved = updatedPVName.split(currentInstrument.dashboard_prefix)[1]
+          let row = prefixRemoved[0]
+          let col = prefixRemoved[2]
+          currentInstrument.topBarPVs.set(updatedPVName, [row, col, updatedPV.text, null]);
+          // first update, lets now subscribe to the 'value' part of the dashboard label
+          let value_pv = currentInstrument.dictLongerInstPVs.get(updatedPVName)
+          sendJsonMessage({
+            type: "subscribe",
+            pvs: [
+              value_pv
+            ],
+          });
+        }
+      } else if (currentInstrument.columnZeroPVs.has(updatedPVName)) {
+        // this is a top bar column zero value
+        const row = updatedPVName.endsWith("TITLE") ? 0 : 1; // if title, column 1
+        currentInstrument.topBarPVs.set(updatedPVName, [row, 0, currentInstrument.columnZeroPVs.get(updatedPVName), updatedPV.text]);
+      } else if(Array.from(currentInstrument.dictLongerInstPVs.values()).includes(updatedPVName)) {
+        // this is a top bar value
+        for (const [labelPV, valuePV] of currentInstrument.dictLongerInstPVs) {
+          if (valuePV == updatedPVName){
+            currentInstrument.topBarPVs.get(labelPV)[3] = updatedPV.text;
+          }
+        }
 
-        const pv = currentInstrument.topBarMap.get(updatedPVName);
-        const human_readable_name = pv[0];
-        const col = pv[1];
-
-        currentInstrument.topBarPVs.set(human_readable_name, [pvVal, col]);
       } else {
         // This is a block - check if in groups
 
@@ -301,7 +349,7 @@ export default function InstrumentData() {
   }
   return (
     <div className="p-8 w-full mx-auto max-w-7xl">
-      <TopBar monitoredPVs={currentInstrument.topBarPVs} instName={instName} />
+      <TopBar monitoredPVs={currentInstrument.topBarPVs} instName={instName} configName={currentInstrument.configName} runStateStr={currentInstrument.runStateStr} />
       <Groups
         groupsMap={currentInstrument.groups}
         instName={instName}
