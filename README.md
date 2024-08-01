@@ -6,9 +6,9 @@ Allows monitoring of instrument PVs via a web page.
 
 ## Tech Stack
 
-**Client:** NextJS, TailwindCSS
+**Frontend:** NextJS, TailwindCSS
 
-**Server:** NextJS, NestJS, pvws
+**Backend:** [pvws](https://github.com/ornl-epics/pvws)
 
 ## Deployment
 

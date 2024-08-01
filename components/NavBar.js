@@ -67,7 +67,7 @@ export default function NavBar() {
         className="flex items-center gap-4 bg-white dark:bg-[#18171e] rounded-lg px-4"
       >
         <Image
-          src="/ibex_logo.png"
+          src="/IBEX_logo.png"
           alt="IBEX Logo"
           className="h-16 w-auto"
           height={100}
