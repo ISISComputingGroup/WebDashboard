@@ -41,7 +41,7 @@ class Instrument {
       Object.entries({
         [`${this.prefix}DAE:TITLE`]: "Title:",
         [`${this.prefix}DAE:_USERNAME`]: "Users:",
-      }),
+      })
     );
 
     this.dictLongerInstPVs = new Map(
@@ -52,7 +52,7 @@ class Instrument {
         [`${this.dashboard_prefix}1:2:LABEL`]: `${this.dashboard_prefix}1:2:VALUE`,
         [`${this.dashboard_prefix}2:2:LABEL`]: `${this.dashboard_prefix}2:2:VALUE`,
         [`${this.dashboard_prefix}3:2:LABEL`]: `${this.dashboard_prefix}3:2:VALUE`,
-      }),
+      })
     );
 
     // PV name: [human readable name, column in top bar(null is monitor but don't show)]
@@ -88,7 +88,7 @@ class Instrument {
         [`${this.prefix}DAE:RUNDURATION_PD`]: "Period Run Time",
         [`${this.prefix}DAE:PERIODSEQ`]: "Period Sequence",
         [`${this.prefix}DAE:DAEMEMORYUSED`]: "DAE Memory Used",
-      }),
+      })
     );
 
     // (label) PV address  : [row, col, label, value]
@@ -109,7 +109,7 @@ export default function InstrumentData() {
 
   const router = useRouter();
   const socketURL = process.env.NEXT_PUBLIC_WS_URL;
-  const [instName, setInstName] = useState(null);
+  let instName = "";
 
   const { sendJsonMessage, lastJsonMessage } = useWebSocket(socketURL, {
     shouldReconnect: (closeEvent) => true,
@@ -120,24 +120,12 @@ export default function InstrumentData() {
   const [currentInstrument, setCurrentInstrument] = useState(null);
 
   useEffect(() => {
-    if (!router.query.slug || !router.query.slug[0]) {
-      return;
-    }
-
-    setInstName(router.query.slug[0]);
-
     sendJsonMessage({
       type: "subscribe",
       pvs: ["CS:INSTLIST"],
     });
-  }, [router.query.slug, sendJsonMessage]);
 
-  useEffect(() => {
-    if (!instName) {
-      return;
-    }
-
-    if (instlist == null) {
+    if (instName == "" || instlist == null) {
       return;
     }
 
@@ -177,7 +165,7 @@ export default function InstrumentData() {
         sendJsonMessage({ type: "subscribe", pvs: [pv] });
       }
     }
-  }, [instlist, instName, sendJsonMessage]);
+  }, [instlist, instName, sendJsonMessage, currentInstrument]);
 
   useEffect(() => {
     if (!lastJsonMessage) {
@@ -274,7 +262,7 @@ export default function InstrumentData() {
         // This is a top bar label PV
         if (!currentInstrument.topBarPVs.has(updatedPVName) && updatedPV.text) {
           let prefixRemoved = updatedPVName.split(
-            currentInstrument.dashboard_prefix,
+            currentInstrument.dashboard_prefix
           )[1];
           let row = prefixRemoved[0];
           let col = prefixRemoved[2];
@@ -302,7 +290,7 @@ export default function InstrumentData() {
         ]);
       } else if (
         Array.from(currentInstrument.dictLongerInstPVs.values()).includes(
-          updatedPVName,
+          updatedPVName
         )
       ) {
         // this is a top bar value
@@ -314,7 +302,7 @@ export default function InstrumentData() {
       } else if (currentInstrument.runInfoMap.has(updatedPVName)) {
         currentInstrument.runInfoPVs.set(
           currentInstrument.runInfoMap.get(updatedPVName),
-          pvVal,
+          pvVal
         );
       } else {
         // This is a block - check if in groups
@@ -347,7 +335,7 @@ export default function InstrumentData() {
               }
 
               const pv = document.getElementById(
-                block.human_readable_name + "_CIRCLE",
+                block.human_readable_name + "_CIRCLE"
               );
 
               if (!pv) return;
@@ -377,6 +365,10 @@ export default function InstrumentData() {
   const onShowHiddenBlocksCheckboxChange = () => {
     setShowHiddenBlocks(!showHiddenBlocks);
   };
+
+  if (router.query.slug) {
+    instName = router.query.slug[0];
+  }
 
   if (!instName || !currentInstrument) {
     return <h1>Loading...</h1>;
