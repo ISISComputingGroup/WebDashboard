@@ -1,4 +1,4 @@
-export function getForegroundColor(status) {
+export function getForegroundColor(status:string):string {
   switch (status) {
     case "UNKNOWN":
       return "text-black";
@@ -26,7 +26,7 @@ export function getForegroundColor(status) {
       return "text-white";
   }
 }
-export function getStatusColor(status) {
+export function getStatusColor(status:string):string {
   switch (status) {
     case "UNKNOWN":
       return "bg-[#F08080]";
