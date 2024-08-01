@@ -13,7 +13,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "dependencies": {
-    "binascii": "^0.0.2",
+    "@types/pako": "^2.0.3",
     "cross-env": "^7.0.3",
     "framer-motion": "^11.2.5",
     "next": "^14.2.5",

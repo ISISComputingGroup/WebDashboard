@@ -1,6 +1,7 @@
+import React from "react";
 import Group from "./Group";
 
-export default function Groups({ groupsMap, instName, showHiddenBlocks }) {
+export default function Groups({ groupsMap, instName, showHiddenBlocks }: {groupsMap:Array<object>, instName:string, showHiddenBlocks:boolean}) {
   if (!groupsMap) {
     return <h1>Loading...</h1>;
   }

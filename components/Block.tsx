@@ -1,7 +1,7 @@
 const grafana_stub =
   "https://shadow.nd.rl.ac.uk/grafana/d/wMlwwaHMk/block-history?viewPanel=2&orgId=1&var-block=";
 
-export default function Block(pv, instName, showHiddenBlocks) {
+export default function Block(pv:any, instName:string, showHiddenBlocks:boolean) {
   if (!pv.visible && !showHiddenBlocks) {
     return;
   }

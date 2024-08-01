@@ -1,13 +1,15 @@
 import { checkIfAllBlocksInGroupAreHidden } from "./GroupUtils";
 
 class MockGroup {
-    constructor(blocks) {
+    blocks: MockBlock[];
+    constructor(blocks:Array<MockBlock>) {
         this.blocks = blocks
     }
 }
 
 class MockBlock {
-    constructor(visible){
+    visible: boolean;
+    constructor(visible:boolean){
         this.visible = visible
     }
 }
