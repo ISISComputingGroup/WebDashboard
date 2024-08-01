@@ -45,7 +45,7 @@ export default function WallDisplay() {
         { name: "SURF", status: "", pv: "IN:SURF:" + runstatePV },
         { name: "TOSCA", status: "", pv: "IN:TOSCA:" + runstatePV },
         { name: "VESUVIO", status: "", pv: "IN:VESUVIO:" + runstatePV },
-      ].sort((a, b) => a.name.localeCompare(b.name))
+      ].sort((a, b) => a.name.localeCompare(b.name)),
     );
 
     setTS2Data(
@@ -60,7 +60,7 @@ export default function WallDisplay() {
         { name: "SANS2D", status: "", pv: "IN:SANS2D:" + runstatePV },
         { name: "WISH", status: "", pv: "IN:WISH:" + runstatePV },
         { name: "ZOOM", status: "", pv: "IN:ZOOM:" + runstatePV },
-      ].sort((a, b) => a.name.localeCompare(b.name))
+      ].sort((a, b) => a.name.localeCompare(b.name)),
     );
 
     setMiscData(
@@ -112,7 +112,7 @@ export default function WallDisplay() {
           status: "",
           pv: "IN:WISH_SETUP:" + runstatePV,
         },
-      ].sort((a, b) => a.name.localeCompare(b.name))
+      ].sort((a, b) => a.name.localeCompare(b.name)),
     );
   }, []);
 
@@ -125,7 +125,7 @@ export default function WallDisplay() {
   // subscribe to the pv's
   useEffect(() => {
     const pvList = [...TS1Data, ...TS2Data, ...miscData].map(
-      (instrument) => instrument.pv
+      (instrument) => instrument.pv,
     );
 
     pvList.forEach((pv) => {
@@ -148,7 +148,7 @@ export default function WallDisplay() {
     }
 
     const instrument = [...TS1Data, ...TS2Data, ...miscData].find(
-      (instrument) => instrument.pv === pv
+      (instrument) => instrument.pv === pv,
     );
 
     if (!instrument) {
@@ -160,20 +160,20 @@ export default function WallDisplay() {
     if (TS1Data.find((instrument) => instrument.pv === pv)) {
       setTS1Data((prev) =>
         prev.map((instrument) =>
-          instrument.pv === pv ? newInstrument : instrument
-        )
+          instrument.pv === pv ? newInstrument : instrument,
+        ),
       );
     } else if (TS2Data.find((instrument) => instrument.pv === pv)) {
       setTS2Data((prev) =>
         prev.map((instrument) =>
-          instrument.pv === pv ? newInstrument : instrument
-        )
+          instrument.pv === pv ? newInstrument : instrument,
+        ),
       );
     } else if (miscData.find((instrument) => instrument.pv === pv)) {
       setMiscData((prev) =>
         prev.map((instrument) =>
-          instrument.pv === pv ? newInstrument : instrument
-        )
+          instrument.pv === pv ? newInstrument : instrument,
+        ),
       );
     }
   }, [lastJsonMessage, TS1Data, TS2Data, miscData]);

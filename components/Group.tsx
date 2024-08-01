@@ -2,12 +2,20 @@ import React from "react";
 import Block from "./Block";
 import { checkIfAllBlocksInGroupAreHidden } from "./GroupUtils";
 
-export default function Group({ group, instName, showHiddenBlocks }: {group:object, instName:string, showHiddenBlocks:boolean}) {
+export default function Group({
+  group,
+  instName,
+  showHiddenBlocks,
+}: {
+  group: object;
+  instName: string;
+  showHiddenBlocks: boolean;
+}) {
   if (!group) {
     return <h1>Loading...</h1>;
   }
 
-  // Check if all the blocks in this group are hidden. If so, hide the group. 
+  // Check if all the blocks in this group are hidden. If so, hide the group.
   if (checkIfAllBlocksInGroupAreHidden(group) && showHiddenBlocks == false) {
     return;
   }

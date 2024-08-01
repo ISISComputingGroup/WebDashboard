@@ -1,7 +1,11 @@
 const grafana_stub =
   "https://shadow.nd.rl.ac.uk/grafana/d/wMlwwaHMk/block-history?viewPanel=2&orgId=1&var-block=";
 
-export default function Block(pv:any, instName:string, showHiddenBlocks:boolean) {
+export default function Block(
+  pv: any,
+  instName: string,
+  showHiddenBlocks: boolean,
+) {
   if (!pv.visible && !showHiddenBlocks) {
     return;
   }
@@ -26,13 +30,19 @@ export default function Block(pv:any, instName:string, showHiddenBlocks:boolean)
       </td>
 
       <td className="py-1 px-4 ">
-        <span id={pv.human_readable_name + "_VALUE"}>{pv.value} {(pv.units != null) && pv.units} <a href="https://github.com/ISISComputingGroup/ibex_user_manual/wiki/Blocks#alarms" className="text-red-600">{(pv.severity != "NONE") && pv.severity}</a>  </span>
+        <span id={pv.human_readable_name + "_VALUE"}>
+          {pv.value} {pv.units != null && pv.units}{" "}
+          <a
+            href="https://github.com/ISISComputingGroup/ibex_user_manual/wiki/Blocks#alarms"
+            className="text-red-600"
+          >
+            {pv.severity != "NONE" && pv.severity}
+          </a>{" "}
+        </span>
       </td>
       <td className="py-1 px-4 flex justify-between items-center">
         <span id={pv.human_readable_name + "_VALUE_RC"}>
-          
-          {pv.runcontrol_enabled && (pv.runcontrol_inrange ? "✅" : "❌")
-          }
+          {pv.runcontrol_enabled && (pv.runcontrol_inrange ? "✅" : "❌")}
         </span>
         <svg
           id={pv.human_readable_name + "_CIRCLE"}

@@ -15,7 +15,7 @@ function unhexlify(str: string): string {
  * @returns dehexed and decompressed data (you can choose to JSON parse it or not afterwards)
  */
 export function dehex_and_decompress(
-  input: string
+  input: string,
 ): string | Uint8Array | undefined {
   // DEHEX
   const unhexed = unhexlify(input);

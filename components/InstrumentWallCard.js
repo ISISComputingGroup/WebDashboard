@@ -8,7 +8,7 @@ export default function WallCard({ instrument }) {
       whileHover={{ y: -10 }}
       className={`flex items-center justify-between p-3  rounded-lg shadow-sm border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
       ${getStatusColor(instrument.status)} ${getForegroundColor(
-        instrument.status
+        instrument.status,
       )}
 
 

@@ -30,29 +30,30 @@ class PV {
   }
 }
 
-const DASHBOARD = "CS:DASHBOARD:TAB:"
+const DASHBOARD = "CS:DASHBOARD:TAB:";
 
 class Instrument {
   constructor(prefix) {
     this.prefix = prefix;
-    this.dashboard_prefix = `${this.prefix}${DASHBOARD}`
+    this.dashboard_prefix = `${this.prefix}${DASHBOARD}`;
 
     this.columnZeroPVs = new Map(
       Object.entries({
         [`${this.prefix}DAE:TITLE`]: "Title:",
         [`${this.prefix}DAE:_USERNAME`]: "Users:",
-      })
-    )
+      }),
+    );
 
     this.dictLongerInstPVs = new Map(
       Object.entries({
-      [`${this.dashboard_prefix}1:1:LABEL`] : `${this.dashboard_prefix}1:1:VALUE`,
-      [`${this.dashboard_prefix}2:1:LABEL`] : `${this.dashboard_prefix}2:1:VALUE`,
-      [`${this.dashboard_prefix}3:1:LABEL`] : `${this.dashboard_prefix}3:1:VALUE`,
-      [`${this.dashboard_prefix}1:2:LABEL`] : `${this.dashboard_prefix}1:2:VALUE`,
-      [`${this.dashboard_prefix}2:2:LABEL`] : `${this.dashboard_prefix}2:2:VALUE`,
-      [`${this.dashboard_prefix}3:2:LABEL`] : `${this.dashboard_prefix}3:2:VALUE`,
-  }))
+        [`${this.dashboard_prefix}1:1:LABEL`]: `${this.dashboard_prefix}1:1:VALUE`,
+        [`${this.dashboard_prefix}2:1:LABEL`]: `${this.dashboard_prefix}2:1:VALUE`,
+        [`${this.dashboard_prefix}3:1:LABEL`]: `${this.dashboard_prefix}3:1:VALUE`,
+        [`${this.dashboard_prefix}1:2:LABEL`]: `${this.dashboard_prefix}1:2:VALUE`,
+        [`${this.dashboard_prefix}2:2:LABEL`]: `${this.dashboard_prefix}2:2:VALUE`,
+        [`${this.dashboard_prefix}3:2:LABEL`]: `${this.dashboard_prefix}3:2:VALUE`,
+      }),
+    );
 
     // PV name: [human readable name, column in top bar(null is monitor but don't show)]
     this.runInfoMap = new Map(
@@ -75,7 +76,7 @@ class Instrument {
         [`${this.prefix}DAE:SHUTTER`]: "Shutter Status",
         [`${this.prefix}DAE:NUMSPECTRA`]: "Number of Spectra",
         [`${this.prefix}DAE:NUMTIMECHANNELS`]: "Number of Time Channels",
-        [`${this.prefix}DAE:SIM_MODE`]: "DAE Simulation Mode", 
+        [`${this.prefix}DAE:SIM_MODE`]: "DAE Simulation Mode",
         [`${this.prefix}DAE:TIME_OF_DAY`]: "Instrument Time",
         [`${this.prefix}DAE:STARTTIME`]: "Start time",
         [`${this.prefix}DAE:RUNDURATION_PD`]: "Run time",
@@ -87,13 +88,13 @@ class Instrument {
         [`${this.prefix}DAE:RUNDURATION_PD`]: "Period Run Time",
         [`${this.prefix}DAE:PERIODSEQ`]: "Period Sequence",
         [`${this.prefix}DAE:DAEMEMORYUSED`]: "DAE Memory Used",
-      })
+      }),
     );
 
     // (label) PV address  : [row, col, label, value]
     this.topBarPVs = new Map();
 
-    // Human Readable name : value 
+    // Human Readable name : value
     this.runInfoPVs = new Map();
 
     this.groups = [];
@@ -129,9 +130,7 @@ export default function InstrumentData() {
       type: "subscribe",
       pvs: ["CS:INSTLIST"],
     });
-
   }, [router.query.slug, sendJsonMessage]);
-
 
   useEffect(() => {
     if (!instName) {
@@ -164,11 +163,11 @@ export default function InstrumentData() {
       });
 
       // subscribe to the top bar (column 0) PVs
-      for (const pv of instrument.columnZeroPVs.keys()){
+      for (const pv of instrument.columnZeroPVs.keys()) {
         sendJsonMessage({ type: "subscribe", pvs: [pv] });
       }
 
-      // subscribe to top bar label PVs 
+      // subscribe to top bar label PVs
       for (const pv of instrument.dictLongerInstPVs.keys()) {
         sendJsonMessage({ type: "subscribe", pvs: [pv] });
       }
@@ -177,8 +176,6 @@ export default function InstrumentData() {
       for (const pv of instrument.runInfoMap.keys()) {
         sendJsonMessage({ type: "subscribe", pvs: [pv] });
       }
-
-
     }
   }, [instlist, instName, sendJsonMessage]);
 
@@ -246,7 +243,10 @@ export default function InstrumentData() {
             currentInstrument.groups[
               currentInstrument.groups.length - 1
             ].blocks.push(completePV);
-            const block_address = currentInstrument.prefix + "CS:SB:" + completePV.human_readable_name;
+            const block_address =
+              currentInstrument.prefix +
+              "CS:SB:" +
+              completePV.human_readable_name;
             sendJsonMessage({
               type: "subscribe",
               pvs: [
@@ -273,39 +273,56 @@ export default function InstrumentData() {
       if (currentInstrument.dictLongerInstPVs.has(updatedPVName)) {
         // This is a top bar label PV
         if (!currentInstrument.topBarPVs.has(updatedPVName) && updatedPV.text) {
-          let prefixRemoved = updatedPVName.split(currentInstrument.dashboard_prefix)[1]
-          let row = prefixRemoved[0]
-          let col = prefixRemoved[2]
-          currentInstrument.topBarPVs.set(updatedPVName, [row, col, updatedPV.text, null]);
+          let prefixRemoved = updatedPVName.split(
+            currentInstrument.dashboard_prefix,
+          )[1];
+          let row = prefixRemoved[0];
+          let col = prefixRemoved[2];
+          currentInstrument.topBarPVs.set(updatedPVName, [
+            row,
+            col,
+            updatedPV.text,
+            null,
+          ]);
           // first update, lets now subscribe to the 'value' part of the dashboard label
-          let value_pv = currentInstrument.dictLongerInstPVs.get(updatedPVName)
+          let value_pv = currentInstrument.dictLongerInstPVs.get(updatedPVName);
           sendJsonMessage({
             type: "subscribe",
-            pvs: [
-              value_pv
-            ],
+            pvs: [value_pv],
           });
         }
       } else if (currentInstrument.columnZeroPVs.has(updatedPVName)) {
         // this is a top bar column zero value
         const row = updatedPVName.endsWith("TITLE") ? 0 : 1; // if title, column 1
-        currentInstrument.topBarPVs.set(updatedPVName, [row, 0, currentInstrument.columnZeroPVs.get(updatedPVName), updatedPV.text]);
-      } else if(Array.from(currentInstrument.dictLongerInstPVs.values()).includes(updatedPVName)) {
+        currentInstrument.topBarPVs.set(updatedPVName, [
+          row,
+          0,
+          currentInstrument.columnZeroPVs.get(updatedPVName),
+          updatedPV.text,
+        ]);
+      } else if (
+        Array.from(currentInstrument.dictLongerInstPVs.values()).includes(
+          updatedPVName,
+        )
+      ) {
         // this is a top bar value
         for (const [labelPV, valuePV] of currentInstrument.dictLongerInstPVs) {
-          if (valuePV == updatedPVName){
+          if (valuePV == updatedPVName) {
             currentInstrument.topBarPVs.get(labelPV)[3] = updatedPV.text;
           }
         }
-
       } else if (currentInstrument.runInfoMap.has(updatedPVName)) {
-        currentInstrument.runInfoPVs.set(currentInstrument.runInfoMap.get(updatedPVName), pvVal)
+        currentInstrument.runInfoPVs.set(
+          currentInstrument.runInfoMap.get(updatedPVName),
+          pvVal,
+        );
       } else {
         // This is a block - check if in groups
 
         for (const group of currentInstrument.groups) {
           for (const block of group.blocks) {
-            let block_full_pv_name = currentInstrument.prefix + "CS:SB:" + block.human_readable_name
+            let block_full_pv_name =
+              currentInstrument.prefix + "CS:SB:" + block.human_readable_name;
             if (updatedPVName == block_full_pv_name) {
               let prec = updatedPV.precision;
 
@@ -330,7 +347,7 @@ export default function InstrumentData() {
               }
 
               const pv = document.getElementById(
-                block.human_readable_name + "_CIRCLE"
+                block.human_readable_name + "_CIRCLE",
               );
 
               if (!pv) return;
@@ -346,8 +363,7 @@ export default function InstrumentData() {
             } else if (updatedPVName == block_full_pv_name + ":RC:INRANGE") {
               block.runcontrol_inrange = updatedPV.value == 1;
               return;
-            }
-            else if (updatedPVName == block_full_pv_name + ":RC:ENABLE") {
+            } else if (updatedPVName == block_full_pv_name + ":RC:ENABLE") {
               block.runcontrol_enabled = updatedPV.value == 1;
               return;
             }
@@ -367,7 +383,11 @@ export default function InstrumentData() {
   }
   return (
     <div className="p-8 w-full mx-auto max-w-7xl">
-      <TopBar monitoredPVs={currentInstrument.topBarPVs} instName={instName} runInfoPVs={currentInstrument.runInfoPVs} />
+      <TopBar
+        monitoredPVs={currentInstrument.topBarPVs}
+        instName={instName}
+        runInfoPVs={currentInstrument.runInfoPVs}
+      />
       <Groups
         groupsMap={currentInstrument.groups}
         instName={instName}

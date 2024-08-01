@@ -40,7 +40,7 @@ const TopBar = ({ monitoredPVs, instName, runInfoPVs }) => {
           ${getStatusColor(runInfoPVs.has(runStateStr) ? runInfoPVs.get(runStateStr) : "UNKNOWN")} ${getForegroundColor(
             runInfoPVs.has(runStateStr)
               ? runInfoPVs.get(runStateStr)
-              : "UNKNOWN"
+              : "UNKNOWN",
           )}
           
           `}
@@ -88,7 +88,7 @@ const TopBar = ({ monitoredPVs, instName, runInfoPVs }) => {
  * This constructs the relevant table rows for a given column.
  * @param {*} index Column number.
  * @param {*} monitoredPVs array structure of top bar PVs
- * @returns a dom array which is rendered. 
+ * @returns a dom array which is rendered.
  */
 function getMonitoredPVs(index, monitoredPVs) {
   let dom = [];
@@ -121,7 +121,7 @@ function getMonitoredPVs(index, monitoredPVs) {
                 <circle cx="12" cy="12" r="12" />
               </svg>
             </td>
-          </tr>
+          </tr>,
         );
       }
     }

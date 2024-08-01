@@ -12,25 +12,21 @@ export default function InstList() {
   });
 
   useEffect(() => {
-      sendJsonMessage({ type: "subscribe", pvs: [INSTLIST_PV] });
-
+    sendJsonMessage({ type: "subscribe", pvs: [INSTLIST_PV] });
   }, [sendJsonMessage]);
 
   const [instList, setInstlist] = useState(null);
 
   useEffect(() => {
     if (lastJsonMessage !== null && lastJsonMessage.text != null) {
-        const response = JSON.parse(dehex_and_decompress(lastJsonMessage.text))
-        setInstlist(response);
-        console.log(response)
+      const response = JSON.parse(dehex_and_decompress(lastJsonMessage.text));
+      setInstlist(response);
+      console.log(response);
     }
   }, [lastJsonMessage]);
 
   if (!instList) {
-    return
+    return;
   }
   return instList;
-
-
-
 }

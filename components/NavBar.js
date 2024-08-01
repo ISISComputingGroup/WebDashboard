@@ -15,7 +15,7 @@ export default function NavBar() {
     });
 
     const userPrefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
+      "(prefers-color-scheme: dark)",
     ).matches;
     console.log("userPrefersDark", userPrefersDark);
     if (userPrefersDark) {
@@ -106,7 +106,8 @@ export default function NavBar() {
         </Link>
         <Link
           className="block py-2 px-3 rounded text-black dark:text-white hover:text-white hover:bg-zinc-800"
-          href="https://www.isis.stfc.ac.uk/Pages/Beam-Status.aspx" target="_blank"
+          href="https://www.isis.stfc.ac.uk/Pages/Beam-Status.aspx"
+          target="_blank"
         >
           Beam status
         </Link>
