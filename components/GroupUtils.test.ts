@@ -1,9 +1,12 @@
 import { checkIfAllBlocksInGroupAreHidden } from "./GroupUtils";
+import { IfcGroup } from "./IfcGroup";
 
-class MockGroup {
+class MockGroup implements IfcGroup {
   blocks: MockBlock[];
-  constructor(blocks: Array<MockBlock>) {
+  name: "test";
+  constructor(blocks: Array<MockBlock>, name:string = "test") {
     this.blocks = blocks;
+    this.name = name;
   }
 }
 

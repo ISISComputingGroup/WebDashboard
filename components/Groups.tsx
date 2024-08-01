@@ -1,12 +1,13 @@
 import React from "react";
 import Group from "./Group";
+import { IfcGroup } from "./IfcGroup";
 
 export default function Groups({
   groupsMap,
   instName,
   showHiddenBlocks,
 }: {
-  groupsMap: Array<object>;
+  groupsMap: Array<IfcGroup>;
   instName: string;
   showHiddenBlocks: boolean;
 }) {

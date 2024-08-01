@@ -1,13 +1,14 @@
 import React from "react";
 import Block from "./Block";
 import { checkIfAllBlocksInGroupAreHidden } from "./GroupUtils";
+import { IfcGroup } from "./IfcGroup";
 
 export default function Group({
   group,
   instName,
   showHiddenBlocks,
 }: {
-  group: object;
+  group: IfcGroup;
   instName: string;
   showHiddenBlocks: boolean;
 }) {
