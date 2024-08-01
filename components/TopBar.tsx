@@ -3,7 +3,7 @@ import { getForegroundColor, getStatusColor } from "./getRunstateColours";
 const runStateStr = "Run state";
 const configName = "Config name";
 
-const TopBar = ({ monitoredPVs, instName, runInfoPVs }) => {
+const TopBar = ({ monitoredPVs, instName, runInfoPVs }: {monitoredPVs: Map<string, any>, instName:string, runInfoPVs:Map<string, any> }) => {
   if (!monitoredPVs || !monitoredPVs.size || !runInfoPVs || !runInfoPVs.size) {
     return (
       <h1 className="text-lg w-full text-white bg-gray-400 border-gray-500 border-2 p-3 font-semibold px-7 animate-pulse">
@@ -56,8 +56,8 @@ const TopBar = ({ monitoredPVs, instName, runInfoPVs }) => {
           <table className="text-sm w-full table-fixed flex">
             <tbody className="text-gray-200 ">
               <tr>
-                {[0, 1, 2].map((index) => (
-                  <th key={index} id={index}>
+                {[0, 1, 2].map((index:number) => (
+                  <th key={index} id={index.toString()}>
                     {getMonitoredPVs(index, monitoredPVs)}
                   </th>
                 ))}
@@ -90,7 +90,7 @@ const TopBar = ({ monitoredPVs, instName, runInfoPVs }) => {
  * @param {*} monitoredPVs array structure of top bar PVs
  * @returns a dom array which is rendered.
  */
-function getMonitoredPVs(index, monitoredPVs) {
+function getMonitoredPVs(index:number, monitoredPVs:any) {
   let dom = [];
 
   for (var i = 0; i <= 3; i++) {

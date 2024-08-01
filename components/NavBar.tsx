@@ -4,11 +4,11 @@ import Image from "next/image";
 
 export default function NavBar() {
   // set class based on the user system preference
-  const { theme, setTheme } = useState(null);
+  const [theme, setTheme ] = useState("dark");
 
   useEffect(() => {
     console.log("useEffect");
-    const button = document.getElementById("theme-switch");
+    const button = document.getElementById("theme-switch")!;
 
     button.addEventListener("click", (event) => {
       handleThemeSwitch();
@@ -19,16 +19,16 @@ export default function NavBar() {
     ).matches;
     console.log("userPrefersDark", userPrefersDark);
     if (userPrefersDark) {
-      document.getElementsByTagName("body").classList.add("dark");
+      document.getElementsByTagName("body")[0].classList.add("dark");
       setTheme("dark");
     }
   }, []);
 
   useEffect(() => {
     if (theme === "dark") {
-      document.getElementsByTagName("body").classList.add("dark");
+      document.getElementsByTagName("body")[0].classList.add("dark");
     } else {
-      document.getElementsByTagName("body").classList.remove("dark");
+      document.getElementsByTagName("body")[0].classList.remove("dark");
     }
   }, [theme]);
 
