@@ -3,10 +3,10 @@ import { IfcGroup } from "./IfcGroup";
 
 class MockGroup implements IfcGroup {
   blocks: MockBlock[];
-  name: "test";
-  constructor(blocks: Array<MockBlock>, name:string = "test") {
+  name:string;
+  constructor(blocks: Array<MockBlock>) {
     this.blocks = blocks;
-    this.name = name;
+    this.name = "test";
   }
 }
 
