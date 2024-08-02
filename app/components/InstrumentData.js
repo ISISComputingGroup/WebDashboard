@@ -1,8 +1,8 @@
+"use client"
 import React from "react";
 import TopBar from "./TopBar";
 import Groups from "./Groups";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import useWebSocket from "react-use-websocket";
 import { dehex_and_decompress } from "./dehex_and_decompress";
 import { Instrument } from "./Instrument";
@@ -10,12 +10,12 @@ import {PV} from "./PV";
 
 let lastUpdate = "";
 
-export default function InstrumentData() {
+export default function InstrumentData({instrumentName}) {
   // set up the different states for the instrument data
 
-  const router = useRouter();
   const socketURL = process.env.NEXT_PUBLIC_WS_URL;
-  let instName = "";
+
+  const instName = instrumentName ;
 
   const { sendJsonMessage, lastJsonMessage } = useWebSocket(socketURL, {
     shouldReconnect: (closeEvent) => true,
@@ -31,7 +31,8 @@ export default function InstrumentData() {
       pvs: ["CS:INSTLIST"],
     });
 
-    if (instName == "" || instlist == null) {
+
+    if (instName == "" || instName == null || instlist == null ) {
       return;
     }
 
@@ -272,11 +273,7 @@ export default function InstrumentData() {
     setShowHiddenBlocks(!showHiddenBlocks);
   };
 
-  if (router.query.slug) {
-    instName = router.query.slug[0];
-  }
-
-  if (!instName || !currentInstrument) {
+  if (!instName || instName==null|| !currentInstrument) {
     return <h1>Loading...</h1>;
   }
   return (
