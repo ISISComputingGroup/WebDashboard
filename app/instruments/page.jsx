@@ -1,6 +1,7 @@
+"use client"
 import { Inter } from "next/font/google";
 import Link from "next/link";
-import InstList from "@/components/InstList";
+import InstList from "@/app/components/InstList";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {

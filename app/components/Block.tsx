@@ -6,7 +6,7 @@ export default function Block(
   instName: string,
   showHiddenBlocks: boolean,
 ) {
-  if (!pv.visible && !showHiddenBlocks) {
+  if (!pv.visible && !showHiddenBlocks && !instName) {
     return;
   }
   return (

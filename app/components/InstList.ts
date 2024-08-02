@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+
 import useWebSocket from "react-use-websocket";
 import { dehex_and_decompress } from "./dehex_and_decompress";
 
@@ -13,18 +13,16 @@ export default function InstList() {
 
   sendJsonMessage({ type: "subscribe", pvs: [INSTLIST_PV] });
 
-  const [instList, setInstlist] = useState(null);
+  let instList = null;
 
-  useEffect(() => {
     if (lastJsonMessage) {
       if (lastJsonMessage.text && typeof lastJsonMessage.text == "string") {
         const response: any = dehex_and_decompress(lastJsonMessage.text);
         if (typeof response == "string") {
-          setInstlist(JSON.parse(response));
+          instList = JSON.parse(response);
         }
       }
     }
-  }, [lastJsonMessage]);
 
   if (!instList) {
     return;

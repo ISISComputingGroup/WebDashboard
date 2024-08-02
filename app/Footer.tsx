@@ -37,13 +37,6 @@ export default function Footer() {
           </Link>
 
           <Link
-            href="/support"
-            className="text-base leading-6 text-gray-500 hover:text-gray-900  dark:text-white dark:hover:text-gray-400 transition-color duration-100 px-5 py-2"
-          >
-            Support
-          </Link>
-
-          <Link
             href="#"
             className="text-base leading-6 text-gray-500 hover:text-gray-900  dark:text-white dark:hover:text-gray-400 transition-color duration-100 px-5 py-2"
           >
