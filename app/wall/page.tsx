@@ -125,7 +125,7 @@ export default function WallDisplay() {
     pvList.forEach((pv) => {
       sendJsonMessage({ type: "subscribe", pvs: [pv] });
     });
-  }, []);
+  }, [TS1Data, TS2Data, miscData, sendJsonMessage]);
 
   useEffect(() => {
     if (!lastJsonMessage) {
