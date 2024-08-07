@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import InstList from "@/app/components/InstList";
@@ -48,7 +48,7 @@ export default function Home() {
                     {group}
                   </h1>
                   <div className="flex-wrap flex justify-left items-center  w-full mx-auto text-left md:text-center">
-                    {insts.map((instrument) => {
+                    {insts.map((instrument: string) => {
                       return (
                         <Link
                           href={`/instruments/${instrument}`}
