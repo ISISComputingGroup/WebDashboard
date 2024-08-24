@@ -23,7 +23,7 @@ export default function Group({
 
   return (
     <div className="w-full bg-gray-700 shadow-md rounded-xl flex flex-col overflow-x-auto">
-      <h1 className="p-4 bg-gray-600 rounded-t-lg min-w-full">{group.name}</h1>
+      <h1 className="p-4 bg-gray-600 rounded-t-lg min-w-full text-white">{group.name}</h1>
       <table className="text-sm table-fixed">
         <thead>
           <tr className="bg-blue-gray-100 text-gray-100">
