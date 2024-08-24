@@ -17,7 +17,7 @@ const TopBar = ({ monitoredPVs, instName, runInfoPVs }: {monitoredPVs: Map<strin
       id="top_bar"
       className="w-full bg-white  shadow-lg text-black rounded-xl text-md"
     >
-      <div className="text-left mb-4">
+      <div className="text-left mb-4 p-4">
         <h1 className="text-black text-2xl">
           Instrument:{" "}
           <span className="font-semibold">{instName.toUpperCase()}</span>
@@ -68,8 +68,8 @@ const TopBar = ({ monitoredPVs, instName, runInfoPVs }: {monitoredPVs: Map<strin
 
         <label>
           <input className="peer/showLabel absolute scale-0" type="checkbox" />
-          <span className="block max-h-14 overflow-hidden rounded-lg bg-gray-100 px-4 py-0  shadow-lg transition-all duration-300 peer-checked/showLabel:max-h-fit">
-            <h3 className="flex h-14 cursor-pointer items-center font-bold">
+          <span className="block max-h-14 overflow-hidden rounded-lg bg-gray-100 hover:bg-gray-400 px-4 py-0 mb-2  shadow-lg transition-all duration-300 peer-checked/showLabel:max-h-fit cursor-pointer">
+            <h3 className="flex h-14 cursor-pointer items-center font-bold ">
               Click to show/hide all run information
             </h3>
             {Array.from(runInfoPVs.entries()).map((runInfoPV) => (
