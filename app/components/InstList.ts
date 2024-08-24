@@ -16,8 +16,8 @@ export default function InstList() {
   let instList = null;
 
     if (lastJsonMessage) {
-      if (lastJsonMessage.text && typeof lastJsonMessage.text == "string") {
-        const response: any = dehex_and_decompress(lastJsonMessage.text);
+      if (lastJsonMessage.b64byt && typeof lastJsonMessage.b64byt == "string") {
+        const response: any = dehex_and_decompress(atob(lastJsonMessage.b64byt));
         if (typeof response == "string") {
           instList = JSON.parse(response);
         }

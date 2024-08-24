@@ -81,8 +81,8 @@ export default function InstrumentData({instrumentName}) {
     const updatedPV = lastJsonMessage;
     const updatedPVName = updatedPV.pv;
 
-    if (updatedPVName == "CS:INSTLIST" && updatedPV.text != null) {
-      setInstlist(JSON.parse(dehex_and_decompress(updatedPV.text)));
+    if (updatedPVName == "CS:INSTLIST" && updatedPV.b64byt != null) {
+      setInstlist(JSON.parse(dehex_and_decompress(atob(updatedPV.b64byt))));
     }
 
     if (!currentInstrument) {
@@ -91,19 +91,19 @@ export default function InstrumentData({instrumentName}) {
 
     if (
       updatedPVName == `${currentInstrument.prefix}${CONFIG_DETAILS}` &&
-      updatedPV.text != null
+      updatedPV.b64byt != null
     ) {
       // config change, reset instrument groups
-      if (updatedPV.text == lastUpdate) {
+      if (updatedPV.b64byt == lastUpdate) {
         //config hasnt actually changed
         return;
       }
-      lastUpdate = updatedPV.text;
+      lastUpdate = updatedPV.b64byt;
 
       console.log("config changed");
-      let raw = updatedPV.text;
+      let raw = updatedPV.b64byt;
 
-      const res = dehex_and_decompress(raw);
+      const res = dehex_and_decompress(atob(raw));
       const response = JSON.parse(res);
 
       //parse it here
@@ -158,6 +158,9 @@ export default function InstrumentData({instrumentName}) {
       if (updatedPV.text != null) {
         //string
         pvVal = updatedPV.text;
+      } else if (updatedPV.b64byt != null) {
+        //pv is base64 encoded
+        pvVal = atob(updatedPV.b64byt);
       } else if (updatedPV.value != null) {
         //anything else
         pvVal = updatedPV.value;
@@ -189,11 +192,13 @@ export default function InstrumentData({instrumentName}) {
       } else if (currentInstrument.columnZeroPVs.has(updatedPVName)) {
         // this is a top bar column zero value
         const row = updatedPVName.endsWith("TITLE") ? 0 : 1; // if title, column 1
+        // Both of these are base64 encoded. PVWS gives a null byte back if there is no value, so replace with null. 
+        const value = atob(updatedPV.b64byt) != "\x00" ? atob(updatedPV.b64byt) : null;
         currentInstrument.topBarPVs.set(updatedPVName, [
           row,
           0,
           currentInstrument.columnZeroPVs.get(updatedPVName),
-          updatedPV.text,
+          value,
         ]);
       } else if (
         Array.from(currentInstrument.dictLongerInstPVs.values()).includes(

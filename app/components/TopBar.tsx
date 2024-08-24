@@ -110,7 +110,7 @@ function getMonitoredPVs(index:number, monitoredPVs:any) {
           >
             <td className="py-1 px-4 flex">{label}</td>
             <td className="py-1 px-4 flex justify-between items-center">
-              <span className="font-light">{value}</span>
+              <span className="font-light">{value!=null?value:"Hidden/unknown"}</span>
               <svg
                 id={label + "_VALUE"}
                 className="min-w-2 min-h-2 max-w-2 max-h-2 transition-all text-transparent text-sm"
