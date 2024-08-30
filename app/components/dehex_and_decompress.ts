@@ -16,7 +16,7 @@ function unhexlify(str: string): string {
  */
 export function dehex_and_decompress(
   input: string,
-): string | Uint8Array | undefined {
+): string | Uint8Array | null {
   // DEHEX
   const unhexed = unhexlify(input);
   const charData = unhexed.split("").map(function (x) {
