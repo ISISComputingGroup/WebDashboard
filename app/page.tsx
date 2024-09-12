@@ -18,11 +18,9 @@ export default function Home() {
               <h1 className="block w-full mt-2 py-2 text-transparent bg-clip-text leading-12 bg-gradient-to-r from-green-400 to-purple-500 lg:inline">
                 Web Dashboard
               </h1>{" "}
-              {/* <span>around your product ?</span> */}
             </div>
             <p className="px-0 mb-8 text-lg text-gray-600 dark:text-white md:text-xl lg:px-24">
-              Use this dashboard to monitor run and block information of your
-              experiment
+              Use this dashboard to monitor, run, and block your experiment&apo;s information.
             </p>
             <div className="mb-4 space-x-0 md:space-x-2 md:mb-8">
               <div className="relative inline-flex  group">
@@ -34,7 +32,7 @@ export default function Home() {
                   target="_self"
                   role="button"
                 >
-                  View instruments
+                  View Instruments
                   <svg
                     className="fill-current w-6 h-6"
                     clipRule="evenodd"
@@ -51,61 +49,11 @@ export default function Home() {
                   </svg>
                 </Link>
               </div>
-              {/* <Link
-                href="/instruments/"
-                className="inline-flex items-center justify-center border-4 border-gray-100 focus:border-green-400 transition-all duration-20 w-full px-6 py-3 mb-2 text-lg text-white bg-green-400 hover:bg-green-500 rounded-2xl sm:w-auto sm:mb-0"
-              >
-                View instruments
-                <svg
-                  className="w-4 h-4 ml-1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-              </Link> */}
-              {/* <Link
-                href="https://www.isis.stfc.ac.uk/Pages/Instruments.aspx"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center transition-all duration-200 border-4 border-gray-100 focus:border-gray-300 justify-center w-full px-6 py-3 mb-2 text-lg bg-gray-300 hover:bg-gray-400 rounded-2xl sm:w-auto sm:mb-0"
-              >
-                Learn More
-                <svg
-                  className="w-4 h-4 ml-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-                  ></path>
-                </svg>
-              </Link> */}
             </div>
           </div>
           <div className=" mx-auto mt-20 w-full">
             <section className="">
               <div className="container px-6  mx-auto">
-                {/* <h1 className="text-2xl font-semibold text-zinc-800 capitalize lg:text-4xl dark:text-white">
-                  explore our <br /> awesome{" "}
-                  <span className="underline decoration-blue-500">Components</span>
-                </h1>
-
-                <p className="mt-4 text-zinc-500 xl:mt-6 dark:text-zinc-300">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Nostrum quam voluptatibus
-                </p> */}
-
                 <div className="grid grid-cols-1 gap-8 mt-8 xl:mt-12 xl:gap-12 md:grid-cols-2 xl:grid-cols-3">
                   <motion.div
                     whileHover={{ y: -10 }}
@@ -139,11 +87,7 @@ export default function Home() {
                     </h1>
 
                     <p className="text-zinc-500 dark:text-zinc-300">
-                      The Science and Technology Facilities Council (STFC)
-                      operates world-class neutron and muon sources, providing
-                      advanced research capabilities for scientists across
-                      various disciplines. These facilities enable the study of
-                      materials at the atomic level.
+                    The Science and Technology Facilities Council (STFC)&apos; world-class neutron and muon instruments give unique insights into materials at the atomic level, providing scientists advanced research capabilities across numerous disciplines.
                     </p>
 
                     <a
@@ -193,12 +137,7 @@ export default function Home() {
                     </h1>
 
                     <p className="text-zinc-500 dark:text-zinc-300">
-                      The IBEX Control System is used to manage and control the
-                      instruments at the neutron and muon sources of STFC. It
-                      provides a user-friendly interface for scientists to
-                      configure experiments, monitor data collection, and adjust
-                      parameters in real-time, ensuring precise and efficient
-                      operation.
+                    The IBEX Control System provides a user-friendly interface for scientists to manage and control instruments at the neutron and muon sources of STFC. They can configure experiments, monitor data collection, and adjust parameters in real time for precise, efficient operation. 
                     </p>
 
                     <a
@@ -248,11 +187,7 @@ export default function Home() {
                     </h1>
 
                     <p className="text-zinc-500 dark:text-zinc-300">
-                      Data from experiments is collected and processed by the
-                      PHOEBUS system, which uses PV WebSockets to stream
-                      real-time data to users&apos; PCs. This ensures immediate
-                      access to experimental results and facilitates quick
-                      analysis and adjustments.
+                    The PHOEBUS system collects and processes experiment data, and then streams it to users&apo; PCs. This real-time access to results allows for adjustments and quick analysis.
                     </p>
 
                     <Link
@@ -278,47 +213,6 @@ export default function Home() {
                 </div>
               </div>
             </section>
-
-            {/* <div className="fixed inset-x-0 lg:inset-x-auto bottom-6 lg:right-8 xl:right-10 xl:bottom-8">
-              <div className="lg:w-72 px-6 lg:px-0">
-                <div className="p-2 bg-blue-600 rounded-lg shadow-lg sm:p-3">
-                  <div className="flex flex-wrap items-center justify-between">
-                    <a
-                      target="_blank"
-                      href="https://www.buymeacoffee.com/khatabwedaa"
-                      className="flex items-center flex-1 w-0"
-                    >
-                      <span className="flex p-2 bg-blue-800 rounded-lg">
-                        <svg
-                          className="h-6 w-6 text-white"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M5.12954 3.00772C5.48563 2.38457 6.14831 2 6.86603 2H17.134C17.8517 2 18.5144 2.38457 18.8704 3.00772L20.0133 5.00772C20.6612 6.14163 20.0618 7.51107 18.9235 7.89532C18.9276 7.97661 18.9269 8.0591 18.9209 8.14249L18.0638 20.1425C17.989 21.1891 17.1181 22 16.0689 22H7.9311C6.88182 22 6.01094 21.1891 5.93618 20.1425L5.07904 8.14249C5.07308 8.0591 5.07231 7.97661 5.07645 7.89531C3.93813 7.51105 3.33874 6.14162 3.98668 5.00772L5.12954 3.00772ZM7.07396 8L7.28824 11H16.7117L16.926 8H7.07396ZM7.71681 17L7.9311 20H16.0689L16.2831 17H7.71681ZM18.2768 6L17.134 4L6.86603 4L5.72317 6H18.2768Z"
-                            fill="currentColor"
-                          ></path>
-                        </svg>
-                      </span>
-
-                      <p className="ml-3 font-medium tracking-wide text-white truncate">
-                        By me a coffee
-                      </p>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div> */}
-
-            {/* <div className="relative z-0 w-full mt-8">
-              <div className="flex justify-center items-center overflow-hidden shadow-2xl ">
-                <img
-                  src="/ibex_example.jpg"
-                  className=" w-full max-h-[500px] object-cover"
-                />
-              </div>
-            </div> */}
           </div>
         </div>
       </section>
