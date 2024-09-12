@@ -12,7 +12,7 @@ export class Instrument {
   runInfoPVs: Map<any, any>;
   configname: string;
   groups: Array<IfcGroup>;
-  constructor(prefix:string) {
+  constructor(prefix: string) {
     this.prefix = prefix;
     this.dashboard_prefix = `${this.prefix}${DASHBOARD}`;
 
@@ -20,7 +20,7 @@ export class Instrument {
       Object.entries({
         [`${this.prefix}DAE:TITLE`]: "Title:",
         [`${this.prefix}DAE:_USERNAME`]: "Users:",
-      })
+      }),
     );
 
     this.dictLongerInstPVs = new Map(
@@ -31,7 +31,7 @@ export class Instrument {
         [`${this.dashboard_prefix}1:2:LABEL`]: `${this.dashboard_prefix}1:2:VALUE`,
         [`${this.dashboard_prefix}2:2:LABEL`]: `${this.dashboard_prefix}2:2:VALUE`,
         [`${this.dashboard_prefix}3:2:LABEL`]: `${this.dashboard_prefix}3:2:VALUE`,
-      })
+      }),
     );
 
     // PV name: [human readable name, column in top bar(null is monitor but don't show)]
@@ -67,7 +67,7 @@ export class Instrument {
         [`${this.prefix}DAE:RUNDURATION_PD`]: "Period Run Time",
         [`${this.prefix}DAE:PERIODSEQ`]: "Period Sequence",
         [`${this.prefix}DAE:DAEMEMORYUSED`]: "DAE Memory Used",
-      })
+      }),
     );
 
     // (label) PV address  : [row, col, label, value]

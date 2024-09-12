@@ -3,8 +3,22 @@ import { getForegroundColor, getStatusColor } from "./getRunstateColours";
 const runStateStr = "Run state";
 const configName = "Config name";
 
-const TopBar = ({ monitoredPVs, instName, runInfoPVs }: {monitoredPVs: Map<string, any>, instName:string, runInfoPVs:Map<string, any> }) => {
-  if (!monitoredPVs || !monitoredPVs.size || !runInfoPVs || !runInfoPVs.size|| !instName) {
+const TopBar = ({
+  monitoredPVs,
+  instName,
+  runInfoPVs,
+}: {
+  monitoredPVs: Map<string, any>;
+  instName: string;
+  runInfoPVs: Map<string, any>;
+}) => {
+  if (
+    !monitoredPVs ||
+    !monitoredPVs.size ||
+    !runInfoPVs ||
+    !runInfoPVs.size ||
+    !instName
+  ) {
     return (
       <h1 className="text-lg w-full text-white bg-gray-400 border-gray-500 border-2 p-3 font-semibold px-7 animate-pulse">
         Loading...
@@ -56,7 +70,7 @@ const TopBar = ({ monitoredPVs, instName, runInfoPVs }: {monitoredPVs: Map<strin
           <table className="text-sm w-full table-fixed flex">
             <tbody className="text-gray-200 ">
               <tr>
-                {[0, 1, 2].map((index:number) => (
+                {[0, 1, 2].map((index: number) => (
                   <th key={index} id={index.toString()}>
                     {getMonitoredPVs(index, monitoredPVs)}
                   </th>
@@ -90,7 +104,7 @@ const TopBar = ({ monitoredPVs, instName, runInfoPVs }: {monitoredPVs: Map<strin
  * @param {*} monitoredPVs array structure of top bar PVs
  * @returns a dom array which is rendered.
  */
-function getMonitoredPVs(index:number, monitoredPVs:any) {
+function getMonitoredPVs(index: number, monitoredPVs: any) {
   let dom = [];
 
   for (var i = 0; i <= 3; i++) {
@@ -110,7 +124,9 @@ function getMonitoredPVs(index:number, monitoredPVs:any) {
           >
             <td className="py-1 px-4 flex">{label}</td>
             <td className="py-1 px-4 flex justify-between items-center">
-              <span className="font-light">{value!=null?value:"Hidden/unknown"}</span>
+              <span className="font-light">
+                {value != null ? value : "Hidden/unknown"}
+              </span>
               <svg
                 id={label + "_VALUE"}
                 className="min-w-2 min-h-2 max-w-2 max-h-2 transition-all text-transparent text-sm"

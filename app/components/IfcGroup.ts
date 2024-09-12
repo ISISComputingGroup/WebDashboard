@@ -1,4 +1,4 @@
 export interface IfcGroup {
-    name:string;
-    blocks:Array<any>
+  name: string;
+  blocks: Array<any>;
 }
