@@ -7,29 +7,9 @@ import useWebSocket from "react-use-websocket";
 import { dehex_and_decompress } from "./dehex_and_decompress";
 import { Instrument } from "./Instrument";
 import {PV} from "./PV";
+import { PVWSMessage } from "./IfcPVWSMessage";
 
 let lastUpdate: string = "";
-
-interface PVWSMessage {
-  type: string;
-  pv: string;
-  value?: number|null;
-  text?: string|null;
-  b64byt?: string|null;
-  units?: string|null;
-  precision?: number|null;
-  labels?: string|null;
-  min?: number|null;
-  max?: number|null;
-  warn_low?: number|null;
-  warn_high?: number|null;
-  alarm_low?: number|null;
-  alarm_high?: number|null;
-  severity?: string|null;
-  seconds?: number|null;
-  readonly?: boolean|null;
-  nanos?: number|null;
-}
 
 export default function InstrumentData({instrumentName}: {instrumentName:string} ) {
   // set up the different states for the instrument data
