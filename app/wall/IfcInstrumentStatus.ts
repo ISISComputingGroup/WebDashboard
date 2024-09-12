@@ -1,5 +1,5 @@
 export interface IfcInstrumentStatus {
-  name: string,
-  status: string,
-  pv: string
+  name: string;
+  status: string;
+  pv: string;
 }

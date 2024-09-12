@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import TopBar from "./TopBar";
 import Groups from "./Groups";
@@ -6,25 +6,38 @@ import { useEffect, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import { dehex_and_decompress } from "./dehex_and_decompress";
 import { Instrument } from "./Instrument";
-import {PV} from "./PV";
+import { PV } from "./PV";
 import { PVWSMessage } from "./IfcPVWSMessage";
 
 let lastUpdate: string = "";
 
-export default function InstrumentData({instrumentName}: {instrumentName:string} ) {
+export default function InstrumentData({
+  instrumentName,
+}: {
+  instrumentName: string;
+}) {
   // set up the different states for the instrument data
 
-  const socketURL = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8080/pvws/pv";
+  const socketURL =
+    process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8080/pvws/pv";
 
-  const instName = instrumentName ;
+  const instName = instrumentName;
 
-  const { sendJsonMessage, lastJsonMessage }: {sendJsonMessage:any,lastJsonMessage:PVWSMessage} = useWebSocket(socketURL, {
-    shouldReconnect: (closeEvent) => true,
-  });
+  const {
+    sendJsonMessage,
+    lastJsonMessage,
+  }: { sendJsonMessage: any; lastJsonMessage: PVWSMessage } = useWebSocket(
+    socketURL,
+    {
+      shouldReconnect: (closeEvent) => true,
+    },
+  );
 
   const CONFIG_DETAILS = "CS:BLOCKSERVER:GET_CURR_CONFIG_DETAILS";
-  const [instlist, setInstlist] = useState<Array<any>|null>(null);
-  const [currentInstrument, setCurrentInstrument] = useState<Instrument|null>(null);
+  const [instlist, setInstlist] = useState<Array<any> | null>(null);
+  const [currentInstrument, setCurrentInstrument] = useState<Instrument | null>(
+    null,
+  );
 
   useEffect(() => {
     sendJsonMessage({
@@ -32,8 +45,7 @@ export default function InstrumentData({instrumentName}: {instrumentName:string}
       pvs: ["CS:INSTLIST"],
     });
 
-
-    if (instName == "" || instName == null || instlist == null ) {
+    if (instName == "" || instName == null || instlist == null) {
       return;
     }
 
@@ -81,10 +93,10 @@ export default function InstrumentData({instrumentName}: {instrumentName:string}
     }
     const updatedPV: PVWSMessage = lastJsonMessage;
     const updatedPVName: string = updatedPV.pv;
-    const updatedPVbytes: string|null|undefined = updatedPV.b64byt;
+    const updatedPVbytes: string | null | undefined = updatedPV.b64byt;
 
     if (updatedPVName == "CS:INSTLIST" && updatedPVbytes != null) {
-      const dehexedInstList = dehex_and_decompress(atob(updatedPVbytes))
+      const dehexedInstList = dehex_and_decompress(atob(updatedPVbytes));
       if (dehexedInstList != null && typeof dehexedInstList == "string") {
         setInstlist(JSON.parse(dehexedInstList));
       }
@@ -135,7 +147,7 @@ export default function InstrumentData({instrumentName}: {instrumentName:string}
           });
 
           for (const block of groupBlocks) {
-            const newBlock = blocks.find((b:any) => b.name === block);
+            const newBlock = blocks.find((b: any) => b.name === block);
 
             const completePV = new PV(newBlock.pv);
             completePV.human_readable_name = newBlock.name;
@@ -181,7 +193,7 @@ export default function InstrumentData({instrumentName}: {instrumentName:string}
         // This is a top bar label PV
         if (!currentInstrument.topBarPVs.has(updatedPVName) && updatedPV.text) {
           let prefixRemoved = updatedPVName.split(
-            currentInstrument.dashboard_prefix
+            currentInstrument.dashboard_prefix,
           )[1];
           let row = prefixRemoved[0];
           let col = prefixRemoved[2];
@@ -198,11 +210,15 @@ export default function InstrumentData({instrumentName}: {instrumentName:string}
             pvs: [value_pv],
           });
         }
-      } else if (currentInstrument.columnZeroPVs.has(updatedPVName) && updatedPVbytes != null ) {
+      } else if (
+        currentInstrument.columnZeroPVs.has(updatedPVName) &&
+        updatedPVbytes != null
+      ) {
         // this is a top bar column zero value
         const row = updatedPVName.endsWith("TITLE") ? 0 : 1; // if title, column 1
-        // Both of these are base64 encoded. PVWS gives a null byte back if there is no value, so replace with null. 
-        const value = atob(updatedPVbytes) != "\x00" ? atob(updatedPVbytes) : null;
+        // Both of these are base64 encoded. PVWS gives a null byte back if there is no value, so replace with null.
+        const value =
+          atob(updatedPVbytes) != "\x00" ? atob(updatedPVbytes) : null;
         currentInstrument.topBarPVs.set(updatedPVName, [
           row,
           0,
@@ -211,7 +227,7 @@ export default function InstrumentData({instrumentName}: {instrumentName:string}
         ]);
       } else if (
         Array.from(currentInstrument.dictLongerInstPVs.values()).includes(
-          updatedPVName
+          updatedPVName,
         )
       ) {
         // this is a top bar value
@@ -223,7 +239,7 @@ export default function InstrumentData({instrumentName}: {instrumentName:string}
       } else if (currentInstrument.runInfoMap.has(updatedPVName)) {
         currentInstrument.runInfoPVs.set(
           currentInstrument.runInfoMap.get(updatedPVName),
-          pvVal
+          pvVal,
         );
       } else {
         // This is a block - check if in groups
@@ -256,7 +272,7 @@ export default function InstrumentData({instrumentName}: {instrumentName:string}
               }
 
               const pv = document.getElementById(
-                block.human_readable_name + "_CIRCLE"
+                block.human_readable_name + "_CIRCLE",
               );
 
               if (!pv) return;
@@ -287,7 +303,7 @@ export default function InstrumentData({instrumentName}: {instrumentName:string}
     setShowHiddenBlocks(!showHiddenBlocks);
   };
 
-  if (!instName || instName==null|| !currentInstrument) {
+  if (!instName || instName == null || !currentInstrument) {
     return <h1>Loading...</h1>;
   }
   return (

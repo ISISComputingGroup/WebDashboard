@@ -1,4 +1,3 @@
-
 import useWebSocket from "react-use-websocket";
 import { dehex_and_decompress } from "./dehex_and_decompress";
 
@@ -15,14 +14,14 @@ export default function InstList() {
 
   let instList = null;
 
-    if (lastJsonMessage) {
-      if (lastJsonMessage.b64byt && typeof lastJsonMessage.b64byt == "string") {
-        const response: any = dehex_and_decompress(atob(lastJsonMessage.b64byt));
-        if (typeof response == "string") {
-          instList = JSON.parse(response);
-        }
+  if (lastJsonMessage) {
+    if (lastJsonMessage.b64byt && typeof lastJsonMessage.b64byt == "string") {
+      const response: any = dehex_and_decompress(atob(lastJsonMessage.b64byt));
+      if (typeof response == "string") {
+        instList = JSON.parse(response);
       }
     }
+  }
 
   if (!instList) {
     return;

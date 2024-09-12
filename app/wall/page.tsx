@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -9,40 +9,41 @@ import { IfcInstrumentStatus } from "./IfcInstrumentStatus";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function WallDisplay() {
-
   const runstatePV = "DAE:RUNSTATE_STR";
 
-  const [TS1Data] = useState<Array<IfcInstrumentStatus>>([
-    { name: "ALF", status: "", pv: "IN:ALF:" + runstatePV },
-    { name: "CRISP", status: "", pv: "IN:CRISP:" + runstatePV },
-    { name: "EMMA", status: "", pv: "IN:EMMA:" + runstatePV },
-    { name: "EMMA-A", status: "", pv: "IN:EMMA-A:" + runstatePV },
-    { name: "EMU", status: "", pv: "IN:EMU:" + runstatePV },
-    { name: "ENGINX", status: "", pv: "IN:ENGINX:" + runstatePV },
-    { name: "GEM", status: "", pv: "IN:GEM:" + runstatePV },
-    {
-      name: "HIFI-CRYOMAG",
-      status: "",
-      pv: "IN:HIFI-CRYOMAG:" + runstatePV,
-    },
-    { name: "HRPD", status: "", pv: "IN:HRPD:" + runstatePV },
-    { name: "INES", status: "", pv: "IN:INES:" + runstatePV },
-    { name: "IRIS", status: "", pv: "IN:IRIS:" + runstatePV },
-    { name: "LOQ", status: "", pv: "IN:LOQ:" + runstatePV },
-    { name: "MAPS", status: "", pv: "IN:MAPS:" + runstatePV },
-    { name: "MARI", status: "", pv: "IN:MARI:" + runstatePV },
-    { name: "MERLIN", status: "", pv: "IN:MERLIN:" + runstatePV },
-    { name: "MUONFE", status: "", pv: "IN:MUONFE:" + runstatePV },
-    { name: "OSIRIS", status: "", pv: "IN:OSIRIS:" + runstatePV },
-    { name: "PEARL", status: "", pv: "IN:PEARL:" + runstatePV },
-    { name: "POLARIS", status: "", pv: "IN:POLARIS:" + runstatePV },
-    { name: "RIKENFE", status: "", pv: "IN:RIKENFE:" + runstatePV },
-    { name: "SANDALS", status: "", pv: "IN:SANDALS:" + runstatePV },
-    { name: "SCIDEMO", status: "", pv: "IN:SCIDEMO:" + runstatePV },
-    { name: "SURF", status: "", pv: "IN:SURF:" + runstatePV },
-    { name: "TOSCA", status: "", pv: "IN:TOSCA:" + runstatePV },
-    { name: "VESUVIO", status: "", pv: "IN:VESUVIO:" + runstatePV },
-  ].sort((a, b) => a.name.localeCompare(b.name)));
+  const [TS1Data] = useState<Array<IfcInstrumentStatus>>(
+    [
+      { name: "ALF", status: "", pv: "IN:ALF:" + runstatePV },
+      { name: "CRISP", status: "", pv: "IN:CRISP:" + runstatePV },
+      { name: "EMMA", status: "", pv: "IN:EMMA:" + runstatePV },
+      { name: "EMMA-A", status: "", pv: "IN:EMMA-A:" + runstatePV },
+      { name: "EMU", status: "", pv: "IN:EMU:" + runstatePV },
+      { name: "ENGINX", status: "", pv: "IN:ENGINX:" + runstatePV },
+      { name: "GEM", status: "", pv: "IN:GEM:" + runstatePV },
+      {
+        name: "HIFI-CRYOMAG",
+        status: "",
+        pv: "IN:HIFI-CRYOMAG:" + runstatePV,
+      },
+      { name: "HRPD", status: "", pv: "IN:HRPD:" + runstatePV },
+      { name: "INES", status: "", pv: "IN:INES:" + runstatePV },
+      { name: "IRIS", status: "", pv: "IN:IRIS:" + runstatePV },
+      { name: "LOQ", status: "", pv: "IN:LOQ:" + runstatePV },
+      { name: "MAPS", status: "", pv: "IN:MAPS:" + runstatePV },
+      { name: "MARI", status: "", pv: "IN:MARI:" + runstatePV },
+      { name: "MERLIN", status: "", pv: "IN:MERLIN:" + runstatePV },
+      { name: "MUONFE", status: "", pv: "IN:MUONFE:" + runstatePV },
+      { name: "OSIRIS", status: "", pv: "IN:OSIRIS:" + runstatePV },
+      { name: "PEARL", status: "", pv: "IN:PEARL:" + runstatePV },
+      { name: "POLARIS", status: "", pv: "IN:POLARIS:" + runstatePV },
+      { name: "RIKENFE", status: "", pv: "IN:RIKENFE:" + runstatePV },
+      { name: "SANDALS", status: "", pv: "IN:SANDALS:" + runstatePV },
+      { name: "SCIDEMO", status: "", pv: "IN:SCIDEMO:" + runstatePV },
+      { name: "SURF", status: "", pv: "IN:SURF:" + runstatePV },
+      { name: "TOSCA", status: "", pv: "IN:TOSCA:" + runstatePV },
+      { name: "VESUVIO", status: "", pv: "IN:VESUVIO:" + runstatePV },
+    ].sort((a, b) => a.name.localeCompare(b.name)),
+  );
   const [TS2Data] = useState<Array<IfcInstrumentStatus>>(
     [
       { name: "IMAT", status: "", pv: "IN:IMAT:" + runstatePV },
@@ -55,7 +56,7 @@ export default function WallDisplay() {
       { name: "SANS2D", status: "", pv: "IN:SANS2D:" + runstatePV },
       { name: "WISH", status: "", pv: "IN:WISH:" + runstatePV },
       { name: "ZOOM", status: "", pv: "IN:ZOOM:" + runstatePV },
-    ].sort((a, b) => a.name.localeCompare(b.name))
+    ].sort((a, b) => a.name.localeCompare(b.name)),
   );
   const [miscData] = useState<Array<IfcInstrumentStatus>>(
     [
@@ -106,8 +107,7 @@ export default function WallDisplay() {
         status: "",
         pv: "IN:WISH_SETUP:" + runstatePV,
       },
-    ].sort((a, b) => a.name.localeCompare(b.name))
-
+    ].sort((a, b) => a.name.localeCompare(b.name)),
   );
 
   const socketURL = process.env.NEXT_PUBLIC_WS_URL!;
@@ -150,9 +150,7 @@ export default function WallDisplay() {
     } else {
       instrument.status = value;
     }
-
   }, [lastJsonMessage, TS1Data, TS2Data, miscData]);
-
 
   return (
     <main
