@@ -7,23 +7,24 @@ import useWebSocket from "react-use-websocket";
 import { dehex_and_decompress } from "./dehex_and_decompress";
 import { Instrument } from "./Instrument";
 import {PV} from "./PV";
+import { PVWSMessage } from "./IfcPVWSMessage";
 
-let lastUpdate = "";
+let lastUpdate: string = "";
 
-export default function InstrumentData({instrumentName}) {
+export default function InstrumentData({instrumentName}: {instrumentName:string} ) {
   // set up the different states for the instrument data
 
-  const socketURL = process.env.NEXT_PUBLIC_WS_URL;
+  const socketURL = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8080/pvws/pv";
 
   const instName = instrumentName ;
 
-  const { sendJsonMessage, lastJsonMessage } = useWebSocket(socketURL, {
+  const { sendJsonMessage, lastJsonMessage }: {sendJsonMessage:any,lastJsonMessage:PVWSMessage} = useWebSocket(socketURL, {
     shouldReconnect: (closeEvent) => true,
   });
 
   const CONFIG_DETAILS = "CS:BLOCKSERVER:GET_CURR_CONFIG_DETAILS";
-  const [instlist, setInstlist] = useState(null);
-  const [currentInstrument, setCurrentInstrument] = useState(null);
+  const [instlist, setInstlist] = useState<Array<any>|null>(null);
+  const [currentInstrument, setCurrentInstrument] = useState<Instrument|null>(null);
 
   useEffect(() => {
     sendJsonMessage({
@@ -78,11 +79,15 @@ export default function InstrumentData({instrumentName}) {
     if (!lastJsonMessage) {
       return;
     }
-    const updatedPV = lastJsonMessage;
-    const updatedPVName = updatedPV.pv;
+    const updatedPV: PVWSMessage = lastJsonMessage;
+    const updatedPVName: string = updatedPV.pv;
+    const updatedPVbytes: string|null|undefined = updatedPV.b64byt;
 
-    if (updatedPVName == "CS:INSTLIST" && updatedPV.b64byt != null) {
-      setInstlist(JSON.parse(dehex_and_decompress(atob(updatedPV.b64byt))));
+    if (updatedPVName == "CS:INSTLIST" && updatedPVbytes != null) {
+      const dehexedInstList = dehex_and_decompress(atob(updatedPVbytes))
+      if (dehexedInstList != null && typeof dehexedInstList == "string") {
+        setInstlist(JSON.parse(dehexedInstList));
+      }
     }
 
     if (!currentInstrument) {
@@ -91,19 +96,23 @@ export default function InstrumentData({instrumentName}) {
 
     if (
       updatedPVName == `${currentInstrument.prefix}${CONFIG_DETAILS}` &&
-      updatedPV.b64byt != null
+      updatedPVbytes != null
     ) {
       // config change, reset instrument groups
-      if (updatedPV.b64byt == lastUpdate) {
+      if (updatedPVbytes == lastUpdate) {
         //config hasnt actually changed
         return;
       }
-      lastUpdate = updatedPV.b64byt;
+      lastUpdate = updatedPVbytes;
 
       console.log("config changed");
-      let raw = updatedPV.b64byt;
+      let raw = updatedPVbytes;
 
       const res = dehex_and_decompress(atob(raw));
+
+      if (res == null || typeof res != "string") {
+        return;
+      }
       const response = JSON.parse(res);
 
       //parse it here
@@ -126,7 +135,7 @@ export default function InstrumentData({instrumentName}) {
           });
 
           for (const block of groupBlocks) {
-            const newBlock = blocks.find((b) => b.name === block);
+            const newBlock = blocks.find((b:any) => b.name === block);
 
             const completePV = new PV(newBlock.pv);
             completePV.human_readable_name = newBlock.name;
@@ -158,9 +167,9 @@ export default function InstrumentData({instrumentName}) {
       if (updatedPV.text != null) {
         //string
         pvVal = updatedPV.text;
-      } else if (updatedPV.b64byt != null) {
+      } else if (updatedPVbytes != null) {
         //pv is base64 encoded
-        pvVal = atob(updatedPV.b64byt);
+        pvVal = atob(updatedPVbytes);
       } else if (updatedPV.value != null) {
         //anything else
         pvVal = updatedPV.value;
@@ -189,11 +198,11 @@ export default function InstrumentData({instrumentName}) {
             pvs: [value_pv],
           });
         }
-      } else if (currentInstrument.columnZeroPVs.has(updatedPVName)) {
+      } else if (currentInstrument.columnZeroPVs.has(updatedPVName) && updatedPVbytes != null ) {
         // this is a top bar column zero value
         const row = updatedPVName.endsWith("TITLE") ? 0 : 1; // if title, column 1
         // Both of these are base64 encoded. PVWS gives a null byte back if there is no value, so replace with null. 
-        const value = atob(updatedPV.b64byt) != "\x00" ? atob(updatedPV.b64byt) : null;
+        const value = atob(updatedPVbytes) != "\x00" ? atob(updatedPVbytes) : null;
         currentInstrument.topBarPVs.set(updatedPVName, [
           row,
           0,
