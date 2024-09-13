@@ -187,7 +187,7 @@ export default function Home() {
                     </h1>
 
                     <p className="text-zinc-500 dark:text-zinc-300">
-                    The PHOEBUS system collects and processes experiment data, and then streams it to users&apo; PCs. This real-time access to results allows for adjustments and quick analysis.
+                    Data is collected by EPICS, forwarded by PVWS, and then streamed to the browser by a websocket. This real-time access to results allows for adjustments and quick analysis.
                     </p>
 
                     <Link
