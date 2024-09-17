@@ -20,7 +20,7 @@ export default function Home() {
               </h1>{" "}
             </div>
             <p className="px-0 mb-8 text-lg text-gray-600 dark:text-white md:text-xl lg:px-24">
-              Use this dashboard to monitor your experiment's information.
+              Use this dashboard to monitor your experiment&apos;s information.
             </p>
             <div className="mb-4 space-x-0 md:space-x-2 md:mb-8">
               <div className="relative inline-flex  group">
