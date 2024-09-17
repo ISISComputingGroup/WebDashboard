@@ -2,8 +2,8 @@
   "name": "webdashboard",
   "version": "0.1.0",
   "private": true,
-  "author": "ISIS Neutron and Muon Source Experiment Controls",
-  "description": "The code for the web dashboard of instruments at ISIS Neutron and Muon Source. Create by ISIS Experiemnt Controls",
+  "author": "ISIS Neutron and Muon Source - Experiment Controls",
+  "description": "The web dashboard for instruments at the ISIS Neutron and Muon Source",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
