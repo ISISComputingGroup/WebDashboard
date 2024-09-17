@@ -6,15 +6,18 @@ Allows monitoring of instrument PVs via a web page.
 
 ## Tech Stack
 
-**Frontend:** NextJS, TailwindCSS
+**Frontend:** [NextJS](https://nextjs.org/) using [React](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/)
 
 **Backend:** [pvws](https://github.com/ornl-epics/pvws)
 
-## Deployment
+## Development
 
-To deploy this project run the following commands
+To install all dependencies, use: 
+```bash
+  npm install
+```
 
-### In the root dir
+### Running
 
 (if your pvws is not running locally on port 8080) create an `.env.local` file with `NEXT_PUBLIC_WS_URL` set to the pvws URL you are using. For example:
 
@@ -22,12 +25,11 @@ To deploy this project run the following commands
 NEXT_PUBLIC_WS_URL=ws://<hostname>:<port>/pvws/pv
 ```
 
-To start, use:
-
-```bash
-  npm install
-```
+To start in dev mode, use:
 
 ```bash
   npm run dev
 ```
+
+### Building
+For a production build, run `npm run build`. To start this build natively, use `npm run start`.
