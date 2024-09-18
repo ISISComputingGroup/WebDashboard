@@ -33,6 +33,7 @@ export default function WallDisplay() {
       { name: "MARI", status: "", pv: "IN:MARI:" + runstatePV },
       { name: "MERLIN", status: "", pv: "IN:MERLIN:" + runstatePV },
       { name: "MUONFE", status: "", pv: "IN:MUONFE:" + runstatePV },
+      { name: "MUSR", status: "", pv: "IN:MUSR:" + runstatePV },
       { name: "OSIRIS", status: "", pv: "IN:OSIRIS:" + runstatePV },
       { name: "PEARL", status: "", pv: "IN:PEARL:" + runstatePV },
       { name: "POLARIS", status: "", pv: "IN:POLARIS:" + runstatePV },
@@ -40,6 +41,7 @@ export default function WallDisplay() {
       { name: "SANDALS", status: "", pv: "IN:SANDALS:" + runstatePV },
       { name: "SCIDEMO", status: "", pv: "IN:SCIDEMO:" + runstatePV },
       { name: "SURF", status: "", pv: "IN:SURF:" + runstatePV },
+      { name: "SXD", status: "", pv: "IN:SXD:" + runstatePV },
       { name: "TOSCA", status: "", pv: "IN:TOSCA:" + runstatePV },
       { name: "VESUVIO", status: "", pv: "IN:VESUVIO:" + runstatePV },
     ].sort((a, b) => a.name.localeCompare(b.name)),
@@ -93,7 +95,6 @@ export default function WallDisplay() {
         pv: "IN:IRIS_SETUP:" + runstatePV,
       },
       { name: "MOTION", status: "", pv: "IN:MOTION:" + runstatePV },
-      { name: "MUSR", status: "", pv: "IN:MUSR:" + runstatePV },
       {
         name: "PEARL_SETUP",
         status: "",
@@ -101,7 +102,6 @@ export default function WallDisplay() {
       },
       { name: "SELAB", status: "", pv: "IN:SELAB:" + runstatePV },
       { name: "SOFTMAT", status: "", pv: "IN:SOFTMAT:" + runstatePV },
-      { name: "SXD", status: "", pv: "IN:SXD:" + runstatePV },
       {
         name: "WISH_SETUP",
         status: "",
