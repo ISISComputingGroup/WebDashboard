@@ -12,6 +12,8 @@ Allows monitoring of instrument PVs via a web page.
 
 ## Development
 
+[Install NodeJS](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+
 To install all dependencies, use: 
 ```bash
   npm install
