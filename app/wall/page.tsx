@@ -1,11 +1,10 @@
 "use client";
 import { Inter } from "next/font/google";
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import useWebSocket from "react-use-websocket";
 import InstrumentWallCard from "@/app/components/InstrumentWallCard";
 import { IfcInstrumentStatus } from "./IfcInstrumentStatus";
-
+import Image from "next/image";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function WallDisplay() {
@@ -158,6 +157,29 @@ export default function WallDisplay() {
     >
       <section className=" rounded-xl w-full  w-full  md:px-0 md:w-11/12 my-4 ">
         <div className="mx-auto  ">
+          <div
+            id="beampic"
+            className="flex flex-col items-center justify-center"
+          >
+            <label>
+              <input
+                className="peer/showLabel absolute scale-0"
+                type="checkbox"
+              />
+              <span className="block max-h-14 overflow-hidden rounded-lg hover:bg-gray-800 px-4 py-0 mb-2  shadow-lg transition-all duration-300 peer-checked/showLabel:max-h-fit cursor-pointer">
+                <h3 className="flex h-14 cursor-pointer items-center font-bold justify-center ">
+                  Show/hide beam info
+                </h3>
+                <Image
+                  src={`https://www.isis.stfc.ac.uk/Gallery/beam-status/ISIS_Status.jpg?t=${Date.now()}`}
+                  alt="beam info"
+                  className="w-auto"
+                  height={600}
+                  width={600}
+                />
+              </span>
+            </label>
+          </div>
           <div className="w-full mx-auto text-left flex justify-center items-center p-8 dark:bg-zinc-900 rounded-xl">
             <div
               id="status"
