@@ -12,7 +12,7 @@ Allows monitoring of instrument PVs via a web page.
 
 ## Development
 
-[Install NodeJS](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+[Install NodeJS](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) - we are using `nvm-windows` for installing on windows, and the `lts` version of node. 
 
 To install all dependencies, use: 
 ```bash
