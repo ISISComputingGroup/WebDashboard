@@ -31,5 +31,9 @@ To start in dev mode, use:
   npm run dev
 ```
 
+#### Container approach
+To run in containerd instead, build the image with `nerdctl build -t web-dashboard .`
+then run with `nerdctl run -p 3000:3000 web-dashboard`
+
 ### Building
 For a production build, run `npm run build`. To start this build natively, use `npm run start`.
