@@ -14,7 +14,6 @@ export default function WallDisplay() {
     [
       { name: "ALF", status: "", pv: "IN:ALF:" + runstatePV },
       { name: "CRISP", status: "", pv: "IN:CRISP:" + runstatePV },
-      { name: "EMMA", status: "", pv: "IN:EMMA:" + runstatePV },
       { name: "EMMA-A", status: "", pv: "IN:EMMA-A:" + runstatePV },
       { name: "EMU", status: "", pv: "IN:EMU:" + runstatePV },
       { name: "ENGINX", status: "", pv: "IN:ENGINX:" + runstatePV },
@@ -22,7 +21,7 @@ export default function WallDisplay() {
       {
         name: "HIFI-CRYOMAG",
         status: "",
-        pv: "IN:HIFI-CRYOMAG:" + runstatePV,
+        pv: "IN:HIFI-C11:" + runstatePV,
       },
       { name: "HRPD", status: "", pv: "IN:HRPD:" + runstatePV },
       { name: "INES", status: "", pv: "IN:INES:" + runstatePV },
