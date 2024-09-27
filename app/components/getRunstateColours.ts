@@ -1,4 +1,4 @@
-export function getForegroundColor(status: string|undefined): string {
+export function getForegroundColor(status: string | undefined): string {
   switch (status) {
     case undefined:
     case "UNKNOWN":
@@ -27,7 +27,7 @@ export function getForegroundColor(status: string|undefined): string {
       return "text-white";
   }
 }
-export function getStatusColor(status: string|undefined): string {
+export function getStatusColor(status: string | undefined): string {
   switch (status) {
     case undefined:
     case "UNKNOWN":

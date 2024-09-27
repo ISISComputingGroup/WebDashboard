@@ -2,11 +2,12 @@
 import { Inter } from "next/font/google";
 import { useState, useEffect } from "react";
 import useWebSocket from "react-use-websocket";
-import InstrumentWallCard from "@/app/wall/InstrumentWallCard";
 import { IfcInstrumentStatus } from "./IfcInstrumentStatus";
-import Image from "next/image";
 import { PVWSMessage } from "../components/IfcPVWSMessage";
 import { dehex_and_decompress } from "../components/dehex_and_decompress";
+import InstrumentGroup from "./components/InstrumentGroup";
+import ShowHideBeamInfo from "./components/ShowHideBeamInfo";
+import JenkinsJobIframe from "./components/JenkinsJobsIframe";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function WallDisplay() {
@@ -100,9 +101,12 @@ export default function WallDisplay() {
   const {
     sendJsonMessage,
     lastJsonMessage,
-  }: { sendJsonMessage: any, lastJsonMessage: PVWSMessage } = useWebSocket(socketURL, {
-    shouldReconnect: (closeEvent) => true,
-  });
+  }: { sendJsonMessage: any; lastJsonMessage: PVWSMessage } = useWebSocket(
+    socketURL,
+    {
+      shouldReconnect: (closeEvent) => true,
+    },
+  );
 
   useEffect(() => {
     // On page load, subscribe to the instrument list as it's required to get each instrument's PV prefix.
@@ -127,33 +131,30 @@ export default function WallDisplay() {
       // Act on an instlist change - subscribe to each instrument's runstate PV.
       const dehexedInstList = dehex_and_decompress(atob(updatedPVbytes));
       if (dehexedInstList != null && typeof dehexedInstList == "string") {
-
         const instListDict = JSON.parse(dehexedInstList);
         for (const item of instListDict) {
+          // Iterate through the instlist, find their associated object in the ts1data, ts2data or miscData arrays, runstate PV and subscribe
           const instName = item["name"];
           const instPrefix = item["pvPrefix"];
-          const instrument = [...TS1Data, ...TS2Data, ...miscData].find(
+          const foundInstrument = [...TS1Data, ...TS2Data, ...miscData].find(
             (instrument) => instrument.name === instName,
           );
-          if (instrument != null) {
-            instrument.pv = instPrefix + runstatePV;
-            sendJsonMessage({ type: "subscribe", pvs: [instrument.pv] });
+          if (foundInstrument) {
+            // Subscribe to the instrument's runstate PV
+            foundInstrument.pv = instPrefix + runstatePV;
+            sendJsonMessage({ type: "subscribe", pvs: [foundInstrument.pv] });
           }
         }
-
       }
     } else {
-      // An instrument's runstate has changed. Find the instrument and update its status.
-      const instrument = [...TS1Data, ...TS2Data, ...miscData].find(
+      // An instrument's runstate has changed. Find the instrument and update its status (if there is one!).
+      const foundInstrument = [...TS1Data, ...TS2Data, ...miscData].find(
         (instrument) => instrument.pv === updatedPVName,
       );
-
-      if (instrument && updatedPVvalue != null) {
-        instrument.status = updatedPVvalue;
+      if (updatedPVvalue && foundInstrument) {
+        foundInstrument.status = updatedPVvalue;
       }
     }
-
-
   }, [lastJsonMessage, TS1Data, TS2Data, miscData, sendJsonMessage]);
 
   return (
@@ -162,29 +163,7 @@ export default function WallDisplay() {
     >
       <section className=" rounded-xl w-full  w-full  md:px-0 md:w-11/12 my-4 ">
         <div className="mx-auto  ">
-          <div
-            id="beampic"
-            className="flex flex-col items-center justify-center"
-          >
-            <label>
-              <input
-                className="peer/showLabel absolute scale-0"
-                type="checkbox"
-              />
-              <span className="block max-h-14 overflow-hidden rounded-lg bg-zinc-600 hover:bg-gray-800 px-4 py-0 mb-2  shadow-lg transition-all duration-300 peer-checked/showLabel:max-h-fit cursor-pointer">
-                <h3 className="flex h-14 cursor-pointer items-center font-bold justify-center text-white ">
-                  Show/hide beam info
-                </h3>
-                <Image
-                  src={`https://www.isis.stfc.ac.uk/Gallery/beam-status/ISIS_Status.jpg?t=${Date.now()}`}
-                  alt="beam info"
-                  className="w-auto"
-                  height={600}
-                  width={600}
-                />
-              </span>
-            </label>
-          </div>
+          <ShowHideBeamInfo />
           <div className="w-full mx-auto text-left flex justify-center items-center p-8 dark:bg-zinc-900 rounded-xl">
             <div
               id="status"
@@ -192,64 +171,23 @@ export default function WallDisplay() {
             >
               <h1 className="w-full text-left text-black dark:text-white font-semibold text-2xl   ">
                 Instrument Status:
-              </h1>{" "}
-              <div className="flex flex-col justify-center items-start w-full">
-                <h1 className="w-full text-left text-gray-600 dark:text-gray-200 font-semibold text-md mt-2 py-2 ">
-                  Target Station 1:
-                </h1>{" "}
-                <div className="flex flex-wrap gap-1">
-                  {TS1Data.map((instrument) => (
-                    <InstrumentWallCard
-                      key={instrument.name}
-                      instrument={instrument}
-                    />
-                  ))}
-                </div>
-              </div>
-              <div className="flex flex-col justify-center items-start w-full">
-                <h1 className="w-full text-left text-gray-600 dark:text-gray-200 font-semibold text-md mt-2 py-2 ">
-                  Target Station 2:
-                </h1>{" "}
-                <div className="flex flex-wrap gap-1">
-                  {TS2Data.map((instrument) => (
-                    <InstrumentWallCard
-                      key={instrument.name}
-                      instrument={instrument}
-                    />
-                  ))}
-                </div>
-              </div>
-              <div className="flex flex-col justify-center items-start w-full">
-                <h1 className="w-full text-left text-gray-600 dark:text-gray-200 font-semibold text-md mt-2 py-2 ">
-                  Miscellaneous:
-                </h1>{" "}
-                <div className="flex flex-wrap gap-1 ">
-                  {miscData.map((instrument) => (
-                    <InstrumentWallCard
-                      key={instrument.name}
-                      instrument={instrument}
-                    />
-                  ))}
-                </div>
-              </div>
+              </h1>
+              <InstrumentGroup
+                groupName={"Target Station 1"}
+                data={TS1Data}
+              ></InstrumentGroup>
+              <InstrumentGroup
+                groupName={"Target Station 2"}
+                data={TS2Data}
+              ></InstrumentGroup>
+              <InstrumentGroup
+                groupName={"Miscellaneous"}
+                data={miscData}
+              ></InstrumentGroup>
             </div>
           </div>
-
           <hr className="h-[2px] rounded my-4 bg-gray-200 border-0 dark:bg-gray-600" />
-
-          <div className="flex flex-col justify-center items-center">
-            <h1 className="w-full text-left text-black dark:text-white font-semibold text-2xl   ">
-              Jenkins Jobs:
-            </h1>{" "}
-            <p className="text-md text-left w-full text-black dark:text-white">
-              Tip: Open the jobs into a{" "}
-              <span className="font-bold underline">new tab</span> only
-            </p>
-            <iframe
-              className="w-full h-[300px] mt-4 border-2 border-gray-100 dark:border-black rounded-lg shadow-sm hover:shadow-lg hover:border-black dark:hover:border-white transition-all duration-200"
-              src="https://epics-jenkins.isis.rl.ac.uk/plugin/jenkinswalldisplay/walldisplay.html?viewName=WallDisplay&amp;jenkinsUrl=https%3A%2F%2Fepics-jenkins.isis.rl.ac.uk%2F"
-            ></iframe>
-          </div>
+          <JenkinsJobIframe />
         </div>
       </section>
     </main>
