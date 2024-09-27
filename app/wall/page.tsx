@@ -66,7 +66,7 @@ export default function WallDisplay() {
       {
         name: "CRYOLAB_R80",
         status: "",
-        pv: "IN:CRYOLAB_R80:" + runstatePV,
+        pv: "IN:CRYOLA7E:" + runstatePV,
       },
       { name: "DCLAB", status: "", pv: "IN:DCLAB:" + runstatePV },
       { name: "DEMO", status: "", pv: "IN:DEMO:" + runstatePV },
@@ -74,36 +74,36 @@ export default function WallDisplay() {
       {
         name: "ENGINX_SETUP",
         status: "",
-        pv: "IN:ENGINX_SETUP:" + runstatePV,
+        pv: "IN:ENGINX49:" + runstatePV,
       },
       { name: "HIFI", status: "", pv: "IN:HIFI:" + runstatePV },
       {
         name: "HRPD_SETUP",
         status: "",
-        pv: "IN:HRPD_SETUP:" + runstatePV,
+        pv: "IN:HRPD_S3D:" + runstatePV,
       },
       {
         name: "IBEXGUITEST",
         status: "",
-        pv: "IN:IBEXGUITEST:" + runstatePV,
+        pv: "IN:IBEXGUAD:" + runstatePV,
       },
       {
         name: "IRIS_SETUP",
         status: "",
-        pv: "IN:IRIS_SETUP:" + runstatePV,
+        pv: "IN:IRIS_S29:" + runstatePV,
       },
       { name: "MOTION", status: "", pv: "IN:MOTION:" + runstatePV },
       {
         name: "PEARL_SETUP",
         status: "",
-        pv: "IN:PEARL_SETUP:" + runstatePV,
+        pv: "IN:PEARL_5B:" + runstatePV,
       },
       { name: "SELAB", status: "", pv: "IN:SELAB:" + runstatePV },
       { name: "SOFTMAT", status: "", pv: "IN:SOFTMAT:" + runstatePV },
       {
         name: "WISH_SETUP",
         status: "",
-        pv: "IN:WISH_SETUP:" + runstatePV,
+        pv: "IN:WISH_S9C:" + runstatePV,
       },
     ].sort((a, b) => a.name.localeCompare(b.name)),
   );
