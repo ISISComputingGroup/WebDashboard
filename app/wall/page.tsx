@@ -2,153 +2,159 @@
 import { Inter } from "next/font/google";
 import { useState, useEffect } from "react";
 import useWebSocket from "react-use-websocket";
-import InstrumentWallCard from "@/app/components/InstrumentWallCard";
+import InstrumentWallCard from "@/app/wall/InstrumentWallCard";
 import { IfcInstrumentStatus } from "./IfcInstrumentStatus";
 import Image from "next/image";
+import { PVWSMessage } from "../components/IfcPVWSMessage";
+import { dehex_and_decompress } from "../components/dehex_and_decompress";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function WallDisplay() {
   const runstatePV = "DAE:RUNSTATE_STR";
+  const instListPV = "CS:INSTLIST";
 
   const [TS1Data] = useState<Array<IfcInstrumentStatus>>(
     [
-      { name: "ALF", status: "", pv: "IN:ALF:" + runstatePV },
-      { name: "CRISP", status: "", pv: "IN:CRISP:" + runstatePV },
-      { name: "EMMA-A", status: "", pv: "IN:EMMA-A:" + runstatePV },
-      { name: "EMU", status: "", pv: "IN:EMU:" + runstatePV },
-      { name: "ENGINX", status: "", pv: "IN:ENGINX:" + runstatePV },
-      { name: "GEM", status: "", pv: "IN:GEM:" + runstatePV },
+      { name: "ALF" },
+      { name: "CRISP" },
+      { name: "EMMA-A" },
+      { name: "EMU" },
+      { name: "ENGINX" },
+      { name: "GEM" },
       {
         name: "HIFI-CRYOMAG",
-        status: "",
-        pv: "IN:HIFI-C11:" + runstatePV,
       },
-      { name: "HRPD", status: "", pv: "IN:HRPD:" + runstatePV },
-      { name: "INES", status: "", pv: "IN:INES:" + runstatePV },
-      { name: "IRIS", status: "", pv: "IN:IRIS:" + runstatePV },
-      { name: "LOQ", status: "", pv: "IN:LOQ:" + runstatePV },
-      { name: "MAPS", status: "", pv: "IN:MAPS:" + runstatePV },
-      { name: "MARI", status: "", pv: "IN:MARI:" + runstatePV },
-      { name: "MERLIN", status: "", pv: "IN:MERLIN:" + runstatePV },
-      { name: "MUONFE", status: "", pv: "IN:MUONFE:" + runstatePV },
-      { name: "MUSR", status: "", pv: "IN:MUSR:" + runstatePV },
-      { name: "OSIRIS", status: "", pv: "IN:OSIRIS:" + runstatePV },
-      { name: "PEARL", status: "", pv: "IN:PEARL:" + runstatePV },
-      { name: "POLARIS", status: "", pv: "IN:POLARIS:" + runstatePV },
-      { name: "RIKENFE", status: "", pv: "IN:RIKENFE:" + runstatePV },
-      { name: "SANDALS", status: "", pv: "IN:SANDALS:" + runstatePV },
-      { name: "SCIDEMO", status: "", pv: "IN:SCIDEMO:" + runstatePV },
-      { name: "SURF", status: "", pv: "IN:SURF:" + runstatePV },
-      { name: "SXD", status: "", pv: "IN:SXD:" + runstatePV },
-      { name: "TOSCA", status: "", pv: "IN:TOSCA:" + runstatePV },
-      { name: "VESUVIO", status: "", pv: "IN:VESUVIO:" + runstatePV },
+      { name: "HRPD" },
+      { name: "INES" },
+      { name: "IRIS" },
+      { name: "LOQ" },
+      { name: "MAPS" },
+      { name: "MARI" },
+      { name: "MERLIN" },
+      { name: "MUONFE" },
+      { name: "MUSR" },
+      { name: "OSIRIS" },
+      { name: "PEARL" },
+      { name: "POLARIS" },
+      { name: "RIKENFE" },
+      { name: "SANDALS" },
+      { name: "SCIDEMO" },
+      { name: "SURF" },
+      { name: "SXD" },
+      { name: "TOSCA" },
+      { name: "VESUVIO" },
     ].sort((a, b) => a.name.localeCompare(b.name)),
   );
   const [TS2Data] = useState<Array<IfcInstrumentStatus>>(
     [
-      { name: "IMAT", status: "", pv: "IN:IMAT:" + runstatePV },
-      { name: "INTER", status: "", pv: "IN:INTER:" + runstatePV },
-      { name: "LARMOR", status: "", pv: "IN:LARMOR:" + runstatePV },
-      { name: "LET", status: "", pv: "IN:LET:" + runstatePV },
-      { name: "NIMROD", status: "", pv: "IN:NIMROD:" + runstatePV },
-      { name: "OFFSPEC", status: "", pv: "IN:OFFSPEC:" + runstatePV },
-      { name: "POLREF", status: "", pv: "IN:POLREF:" + runstatePV },
-      { name: "SANS2D", status: "", pv: "IN:SANS2D:" + runstatePV },
-      { name: "WISH", status: "", pv: "IN:WISH:" + runstatePV },
-      { name: "ZOOM", status: "", pv: "IN:ZOOM:" + runstatePV },
+      { name: "IMAT" },
+      { name: "INTER" },
+      { name: "LARMOR" },
+      { name: "LET" },
+      { name: "NIMROD" },
+      { name: "OFFSPEC" },
+      { name: "POLREF" },
+      { name: "SANS2D" },
+      { name: "WISH" },
+      { name: "ZOOM" },
     ].sort((a, b) => a.name.localeCompare(b.name)),
   );
   const [miscData] = useState<Array<IfcInstrumentStatus>>(
     [
-      { name: "ARGUS", status: "", pv: "IN:ARGUS:" + runstatePV },
-      { name: "CHIPIR", status: "", pv: "IN:CHIPIR:" + runstatePV },
-      { name: "CHRONUS", status: "", pv: "IN:CHRONUS:" + runstatePV },
+      { name: "ARGUS" },
+      { name: "CHIPIR" },
+      { name: "CHRONUS" },
       {
         name: "CRYOLAB_R80",
-        status: "",
-        pv: "IN:CRYOLA7E:" + runstatePV,
       },
-      { name: "DCLAB", status: "", pv: "IN:DCLAB:" + runstatePV },
-      { name: "DEMO", status: "", pv: "IN:DEMO:" + runstatePV },
-      { name: "DETMON", status: "", pv: "IN:DETMON:" + runstatePV },
+      { name: "DCLAB" },
+      { name: "DEMO" },
+      { name: "DETMON" },
       {
         name: "ENGINX_SETUP",
-        status: "",
-        pv: "IN:ENGINX49:" + runstatePV,
       },
-      { name: "HIFI", status: "", pv: "IN:HIFI:" + runstatePV },
+      { name: "HIFI" },
       {
         name: "HRPD_SETUP",
-        status: "",
-        pv: "IN:HRPD_S3D:" + runstatePV,
       },
       {
         name: "IBEXGUITEST",
-        status: "",
-        pv: "IN:IBEXGUAD:" + runstatePV,
       },
       {
         name: "IRIS_SETUP",
-        status: "",
-        pv: "IN:IRIS_S29:" + runstatePV,
       },
-      { name: "MOTION", status: "", pv: "IN:MOTION:" + runstatePV },
+      { name: "MOTION" },
       {
         name: "PEARL_SETUP",
-        status: "",
-        pv: "IN:PEARL_5B:" + runstatePV,
       },
-      { name: "SELAB", status: "", pv: "IN:SELAB:" + runstatePV },
-      { name: "SOFTMAT", status: "", pv: "IN:SOFTMAT:" + runstatePV },
+      { name: "SELAB" },
+      { name: "SOFTMAT" },
       {
         name: "WISH_SETUP",
-        status: "",
-        pv: "IN:WISH_S9C:" + runstatePV,
       },
     ].sort((a, b) => a.name.localeCompare(b.name)),
   );
 
   const socketURL = process.env.NEXT_PUBLIC_WS_URL!;
 
-  const { sendJsonMessage, lastJsonMessage } = useWebSocket(socketURL, {
+  const {
+    sendJsonMessage,
+    lastJsonMessage,
+  }: { sendJsonMessage: any, lastJsonMessage: PVWSMessage } = useWebSocket(socketURL, {
     shouldReconnect: (closeEvent) => true,
   });
 
-  // subscribe to the pv's
   useEffect(() => {
-    const pvList = [...TS1Data, ...TS2Data, ...miscData].map(
-      (instrument) => instrument.pv,
-    );
-
-    pvList.forEach((pv) => {
-      sendJsonMessage({ type: "subscribe", pvs: [pv] });
+    // On page load, subscribe to the instrument list as it's required to get each instrument's PV prefix.
+    sendJsonMessage({
+      type: "subscribe",
+      pvs: [instListPV],
     });
-  }, [TS1Data, TS2Data, miscData, sendJsonMessage]);
+  }, [sendJsonMessage]);
 
   useEffect(() => {
+    // This is a PV update, it could be either the instlist or an instrument's runstate that has changed
     if (!lastJsonMessage) {
       return;
     }
 
-    const message: any = lastJsonMessage;
+    const updatedPV: PVWSMessage = lastJsonMessage;
+    const updatedPVName: string = updatedPV.pv;
+    const updatedPVbytes: string | null | undefined = updatedPV.b64byt;
+    let updatedPVvalue: string | null | undefined = updatedPV.text;
 
-    const pv = message.pv;
-    let value = message.text;
+    if (updatedPVName == instListPV && updatedPVbytes != null) {
+      // Act on an instlist change - subscribe to each instrument's runstate PV.
+      const dehexedInstList = dehex_and_decompress(atob(updatedPVbytes));
+      if (dehexedInstList != null && typeof dehexedInstList == "string") {
 
-    if (!value) {
-      value = "UNKNOWN";
-    }
+        const instListDict = JSON.parse(dehexedInstList);
+        for (const item of instListDict) {
+          const instName = item["name"];
+          const instPrefix = item["pvPrefix"];
+          const instrument = [...TS1Data, ...TS2Data, ...miscData].find(
+            (instrument) => instrument.name === instName,
+          );
+          if (instrument != null) {
+            instrument.pv = instPrefix + runstatePV;
+            sendJsonMessage({ type: "subscribe", pvs: [instrument.pv] });
+          }
+        }
 
-    const instrument = [...TS1Data, ...TS2Data, ...miscData].find(
-      (instrument) => instrument.pv === pv,
-    );
-
-    if (!instrument) {
-      return;
+      }
     } else {
-      instrument.status = value;
+      // An instrument's runstate has changed. Find the instrument and update its status.
+      const instrument = [...TS1Data, ...TS2Data, ...miscData].find(
+        (instrument) => instrument.pv === updatedPVName,
+      );
+
+      if (instrument && updatedPVvalue != null) {
+        instrument.status = updatedPVvalue;
+      }
     }
-  }, [lastJsonMessage, TS1Data, TS2Data, miscData]);
+
+
+  }, [lastJsonMessage, TS1Data, TS2Data, miscData, sendJsonMessage]);
 
   return (
     <main

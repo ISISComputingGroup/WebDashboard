@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { getForegroundColor, getStatusColor } from "./getRunstateColours";
+import { getForegroundColor, getStatusColor } from "../components/getRunstateColours";
 
 export default function WallCard({ instrument }: { instrument: any }) {
   return (
@@ -20,7 +20,7 @@ export default function WallCard({ instrument }: { instrument: any }) {
           <span className="text-sm font-bold truncate line-clamp-1 ">
             {instrument.name}
           </span>
-          <span className="text-xs ">{instrument.status}</span>
+          <span className="text-xs ">{instrument.status ? instrument.status : "UNKNOWN"}</span>
         </div>
       </Link>
     </motion.div>
