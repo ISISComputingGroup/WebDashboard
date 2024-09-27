@@ -1,5 +1,6 @@
-export function getForegroundColor(status: string): string {
+export function getForegroundColor(status: string | undefined): string {
   switch (status) {
+    case undefined:
     case "UNKNOWN":
       return "text-black";
     case "PAUSED":
@@ -26,8 +27,9 @@ export function getForegroundColor(status: string): string {
       return "text-white";
   }
 }
-export function getStatusColor(status: string): string {
+export function getStatusColor(status: string | undefined): string {
   switch (status) {
+    case undefined:
     case "UNKNOWN":
       return "bg-[#F08080]";
     case "PAUSED":
