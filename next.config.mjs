@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   output: "standalone",
+  basePath: "/WebDashboard",
   images: {
     remotePatterns: [
       {
