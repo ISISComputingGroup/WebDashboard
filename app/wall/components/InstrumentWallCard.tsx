@@ -15,7 +15,7 @@ export default function WallCard({ instrument }: { instrument: any }) {
       )}`}
     >
       <Link
-        href={"instruments/" + instrument.name.toLowerCase()}
+        href={"instrument?name=" + instrument.name.toLowerCase()}
         className="flex items-center justify-center  lg:w-20 w-full h-4"
         target="_blank"
       >
