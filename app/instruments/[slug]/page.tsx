@@ -2,6 +2,8 @@ import { Inter } from "next/font/google";
 import InstrumentData from "@/app/components/InstrumentData";
 const inter = Inter({ subsets: ["latin"] });
 
+export const dynamicParams = true;
+
 export default function Instrument({ params }: { params: { slug: string } }) {
   return (
     <main
