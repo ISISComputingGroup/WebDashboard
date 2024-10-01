@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  output: "standalone",
-  basePath: process.env.BASE_PATH,
+  output: "export",
+  basePath: "/WebDashboard",
   images: {
     remotePatterns: [
       {
@@ -12,6 +12,7 @@ const nextConfig = {
         pathname: '/Gallery/beam-status/*',
       },
     ],
+    unoptimized: true,
   }
 };
 
