@@ -68,3 +68,4 @@ npm-debug.log
 
 morgan.log
 .next/
+out/
