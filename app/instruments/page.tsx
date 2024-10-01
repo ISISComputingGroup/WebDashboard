@@ -51,7 +51,7 @@ export default function Home() {
                     {insts.map((instrument: string) => {
                       return (
                         <Link
-                          href={`/instruments/${instrument}`}
+                          href={`/instrument?instrument=${instrument}`}
                           key={instrument}
                         >
                           <h1 className="text-1xl font-bold text-left mr-4 w-full leading-none transition-all hover:text-blue-500 tracking-normal text-black dark:text-white md:text-4xl md:tracking-tight">
