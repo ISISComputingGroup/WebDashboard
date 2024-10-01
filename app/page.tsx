@@ -87,7 +87,11 @@ export default function Home() {
                     </h1>
 
                     <p className="text-zinc-500 dark:text-zinc-300">
-                    The Science and Technology Facilities Council (STFC)&apos; world-class neutron and muon instruments give unique insights into materials at the atomic level, providing scientists advanced research capabilities across numerous disciplines.
+                      The Science and Technology Facilities Council (STFC)&apos;
+                      world-class neutron and muon instruments give unique
+                      insights into materials at the atomic level, providing
+                      scientists advanced research capabilities across numerous
+                      disciplines.
                     </p>
 
                     <a
@@ -137,7 +141,11 @@ export default function Home() {
                     </h1>
 
                     <p className="text-zinc-500 dark:text-zinc-300">
-                    The IBEX Control System provides a user-friendly interface for scientists to manage and control instruments at the neutron and muon sources of STFC. They can configure experiments, monitor data collection, and adjust parameters in real time for precise, efficient operation. 
+                      The IBEX Control System provides a user-friendly interface
+                      for scientists to manage and control instruments at the
+                      neutron and muon sources of STFC. They can configure
+                      experiments, monitor data collection, and adjust
+                      parameters in real time for precise, efficient operation.
                     </p>
 
                     <a
@@ -187,7 +195,10 @@ export default function Home() {
                     </h1>
 
                     <p className="text-zinc-500 dark:text-zinc-300">
-                    Data is collected by EPICS, forwarded by PVWS, and then streamed to the browser by a websocket. This real-time access to results allows for adjustments and quick analysis.
+                      Data is collected by EPICS, forwarded by PVWS, and then
+                      streamed to the browser by a websocket. This real-time
+                      access to results allows for adjustments and quick
+                      analysis.
                     </p>
 
                     <Link

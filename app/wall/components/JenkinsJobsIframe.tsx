@@ -6,7 +6,8 @@ export default function JenkinsJobIframe() {
       </h1>{" "}
       <p className="text-md text-left w-full text-black dark:text-white">
         Tip: Open the jobs into a{" "}
-        <span className="font-bold underline">new tab</span> only. If you cannot see this, you probably aren&apos;t connected to the ISIS network.
+        <span className="font-bold underline">new tab</span> only. If you cannot
+        see this, you probably aren&apos;t connected to the ISIS network.
       </p>
       <iframe
         className="w-full h-[300px] mt-4 border-2 border-gray-100 dark:border-black rounded-lg shadow-sm hover:shadow-lg hover:border-black dark:hover:border-white transition-all duration-200"
