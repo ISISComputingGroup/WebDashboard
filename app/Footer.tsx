@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="max-w-screen-xl px-4 py-12 mx-auto space-y-8 overflow-hidden sm:px-6 lg:px-8 w-full flex flex-col justify-center items-center ">
         <Link href="/" className="flex items-center justify-center ">
           <Image
-            src="/IBEX_logo.png"
+            src="/WebDashboard/IBEX_logo.png"
             alt="IBEX Logo"
             className="h-16 w-auto"
             width={128}
