@@ -21,8 +21,7 @@
     "pako": "^2.1.0",
     "react": "^18",
     "react-dom": "^18",
-    "react-use-websocket": "^4.8.1",
-    "sharp": "^0.33.4"
+    "react-use-websocket": "^4.8.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "6.1.5",
