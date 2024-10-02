@@ -21,7 +21,9 @@ To install all dependencies, use:
 ```
 
 ### Running
+
 This web dashboard relies on a PVWS instance to forward EPICS data via a websocket. https://github.com/ISISComputingGroup/WebDashboard/issues/30 should mean that there is a central instance running which will be used for production, but you may point your web dashboard at a local instance for dev work.
+
 <details>
   <summary>Running PVWS locally for development</summary>
   
@@ -39,16 +41,14 @@ set EPICS_CA_AUTO_ADDR_LIST=NO
 ```.env.local
 NEXT_PUBLIC_WS_URL=ws://<hostname>:<port>/pvws/pv
 ```
-</details>
 
+</details>
 
 To start in dev mode, use:
 
 ```bash
   npm run dev
 ```
-
-
 
 #### Container approach
 
