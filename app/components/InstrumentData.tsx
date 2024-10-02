@@ -215,10 +215,18 @@ export default function InstrumentData({
         updatedPVbytes != null
       ) {
         // this is a top bar column zero value
-        const row = updatedPVName.endsWith("TITLE") ? 0 : 1; // if title, column 1
-        // Both of these are base64 encoded. PVWS gives a null byte back if there is no value, so replace with null.
-        const value =
-          atob(updatedPVbytes) != "\x00" ? atob(updatedPVbytes) : null;
+        const isTitle = updatedPVName.endsWith("TITLE")
+
+        let value;
+        if (isTitle) {
+          // The title is base64 encoded. PVWS gives a null byte back if there is no value, so replace with null.
+          value = atob(updatedPVbytes) != "\x00" ? atob(updatedPVbytes) : null;
+        } else {
+          value = updatedPV.text
+        }
+
+        const row = isTitle ? 0 : 1; // if title, column 1
+        
         currentInstrument.topBarPVs.set(updatedPVName, [
           row,
           0,
