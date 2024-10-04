@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-import InstrumentPage from "@/app/components/InstrumentData";
+import InstrumentPage from "@/app/components/InstrumentPage";
 const inter = Inter({ subsets: ["latin"] });
 import { Suspense } from "react";
 import type { Metadata, ResolvingMetadata } from 'next'

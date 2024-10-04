@@ -32,9 +32,6 @@ export default function Home() {
     <main
       className={`flex min-h-screen bg-gray-100 dark:bg-zinc-800  flex-col items-center justify-between ${inter.className}`}
     >
-      <Head>
-        <title>Instruments | IBEX Web Dashboard</title>
-	  </Head>
       <section className="  flex flex-col items-start justify-center rounded-xl w-full  p-6 ">
         <div className=" mx-auto max-w-2/3">
           <h1 className="text-4xl font-extrabold text-left leading-none tracking-normal text-gray-900 dark:text-white md:text-6xl md:tracking-tight">

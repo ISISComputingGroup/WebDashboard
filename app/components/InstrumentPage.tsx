@@ -8,7 +8,6 @@ import { dehex_and_decompress } from "./dehex_and_decompress";
 import { Instrument } from "./Instrument";
 import { PV } from "./PV";
 import { PVWSMessage } from "./IfcPVWSMessage";
-import Head from 'next/head';
 import { useSearchParams } from "next/navigation";
 
 let lastUpdate: string = "";
@@ -325,9 +324,6 @@ function InstrumentData({
   }
   return (
     <div className="p-8 w-full mx-auto max-w-7xl">
-      <Head>
-	    <title>{instName} | IBEX Web Dashboard</title>
-	  </Head>
       <TopBar
         monitoredPVs={currentInstrument.topBarPVs}
         instName={instName}
