@@ -26,7 +26,11 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
     process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8080/pvws/pv";
 
   const instName = instrumentName;
-  if (document != undefined) {
+  if (
+    typeof document !== "undefined" &&
+    typeof instName !== "undefined" &&
+    instName !== null
+  ) {
     document.title = instName.toUpperCase() + " | IBEX Web Dashboard";
   }
 
