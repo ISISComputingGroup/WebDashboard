@@ -8,6 +8,8 @@ import { dehex_and_decompress } from "../components/dehex_and_decompress";
 import InstrumentGroup from "./components/InstrumentGroup";
 import ShowHideBeamInfo from "./components/ShowHideBeamInfo";
 import JenkinsJobIframe from "./components/JenkinsJobsIframe";
+import Head from 'next/head';
+
 const inter = Inter({ subsets: ["latin"] });
 
 export default function WallDisplay() {
@@ -161,6 +163,9 @@ export default function WallDisplay() {
     <main
       className={`flex min-h-screen bg-white dark:bg-zinc-800 flex-col items-center justify-between ${inter.className}`}
     >
+	  <Head>
+        <title>Wall Display | IBEX Web Dashboard</title>
+	  </Head>
       <section className=" rounded-xl w-full  w-full  md:px-0 md:w-11/12 my-4 ">
         <div className="mx-auto  ">
           <ShowHideBeamInfo />

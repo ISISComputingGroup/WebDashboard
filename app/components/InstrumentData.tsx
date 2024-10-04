@@ -8,10 +8,19 @@ import { dehex_and_decompress } from "./dehex_and_decompress";
 import { Instrument } from "./Instrument";
 import { PV } from "./PV";
 import { PVWSMessage } from "./IfcPVWSMessage";
+import Head from 'next/head';
+import { useSearchParams } from "next/navigation";
 
 let lastUpdate: string = "";
 
-export default function InstrumentData({
+export default function InstrumentPage() {
+  const searchParams = useSearchParams();
+  const instrument = searchParams.get("name")!;
+
+  return <InstrumentData instrumentName={instrument} />;
+}
+
+function InstrumentData({
   instrumentName,
 }: {
   instrumentName: string;
@@ -316,6 +325,9 @@ export default function InstrumentData({
   }
   return (
     <div className="p-8 w-full mx-auto max-w-7xl">
+      <Head>
+	    <title>{instName} | IBEX Web Dashboard</title>
+	  </Head>
       <TopBar
         monitoredPVs={currentInstrument.topBarPVs}
         instName={instName}

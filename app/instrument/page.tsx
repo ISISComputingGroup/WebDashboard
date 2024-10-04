@@ -1,15 +1,23 @@
-"use client";
 import { Inter } from "next/font/google";
-import InstrumentData from "@/app/components/InstrumentData";
+import InstrumentPage from "@/app/components/InstrumentData";
 const inter = Inter({ subsets: ["latin"] });
-import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import type { Metadata, ResolvingMetadata } from 'next'
 
-function InstrumentPage() {
-  const searchParams = useSearchParams();
-  const instrument = searchParams.get("name")!;
+type Props = {
+  params: { id: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
 
-  return <InstrumentData instrumentName={instrument} />;
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const instrument = searchParams!["name"];
+  
+  return {
+    title: instrument + ' | IBEX Web Dashboard',
+  }
 }
 
 export default function Instrument() {
