@@ -2,22 +2,22 @@ import { Inter } from "next/font/google";
 import InstrumentPage from "@/app/components/InstrumentPage";
 const inter = Inter({ subsets: ["latin"] });
 import { Suspense } from "react";
-import type { Metadata, ResolvingMetadata } from 'next'
+import type { Metadata, ResolvingMetadata } from "next";
 
 type Props = {
-  params: { id: string }
-  searchParams: { [key: string]: string | string[] | undefined }
-}
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
 export async function generateMetadata(
   { params, searchParams }: Props,
-  parent: ResolvingMetadata
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const instrument = searchParams!["name"];
-  
+
   return {
-    title: instrument + ' | IBEX Web Dashboard',
-  }
+    title: instrument + " | IBEX Web Dashboard",
+  };
 }
 
 export default function Instrument() {

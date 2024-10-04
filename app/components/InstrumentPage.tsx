@@ -19,11 +19,7 @@ export default function InstrumentPage() {
   return <InstrumentData instrumentName={instrument} />;
 }
 
-function InstrumentData({
-  instrumentName,
-}: {
-  instrumentName: string;
-}) {
+function InstrumentData({ instrumentName }: { instrumentName: string }) {
   // set up the different states for the instrument data
 
   const socketURL =
