@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  webpack (config, {dev}) {
+    if (dev) {
+        config.watchOptions = {
+            poll: true
+        }
+    }
+    return config
+},
   reactStrictMode: true,
   output: "export",
   basePath: "/WebDashboard",
