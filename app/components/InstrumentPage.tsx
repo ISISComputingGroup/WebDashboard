@@ -8,20 +8,30 @@ import { dehex_and_decompress } from "./dehex_and_decompress";
 import { Instrument } from "./Instrument";
 import { PV } from "./PV";
 import { PVWSMessage } from "./IfcPVWSMessage";
+import { useSearchParams } from "next/navigation";
 
 let lastUpdate: string = "";
 
-export default function InstrumentData({
-  instrumentName,
-}: {
-  instrumentName: string;
-}) {
+export default function InstrumentPage() {
+  const searchParams = useSearchParams();
+  const instrument = searchParams.get("name")!;
+
+  return <InstrumentData instrumentName={instrument} />;
+}
+
+function InstrumentData({ instrumentName }: { instrumentName: string }) {
   // set up the different states for the instrument data
 
   const socketURL =
     process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8080/pvws/pv";
 
   const instName = instrumentName;
+
+  useEffect(() => {
+    if (instName != null) {
+      document.title = instName.toUpperCase() + " | IBEX Web Dashboard";
+    }
+  }, [instName]);
 
   const {
     sendJsonMessage,

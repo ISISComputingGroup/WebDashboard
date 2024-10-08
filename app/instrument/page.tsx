@@ -1,16 +1,8 @@
-"use client";
 import { Inter } from "next/font/google";
-import InstrumentData from "@/app/components/InstrumentData";
+import InstrumentPage from "@/app/components/InstrumentPage";
 const inter = Inter({ subsets: ["latin"] });
-import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-
-function InstrumentPage() {
-  const searchParams = useSearchParams();
-  const instrument = searchParams.get("name")!;
-
-  return <InstrumentData instrumentName={instrument} />;
-}
+import type { Metadata, ResolvingMetadata } from "next";
 
 export default function Instrument() {
   return (

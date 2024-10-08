@@ -10,8 +10,8 @@
     "start": "next start",
     "lint": "eslint ./",
     "test": "jest",
-    "format": "prettier --write \"**/*.{ts,tsx,md,js}\"",
-    "format_check": "prettier --check \"**/*.{ts,tsx,md,js}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md,js,json,yml,yaml}\"",
+    "format_check": "prettier --check \"**/*.{ts,tsx,md,js,json,yml,yaml}\""
   },
   "dependencies": {
     "@types/pako": "^2.0.3",
