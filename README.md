@@ -50,12 +50,14 @@ To start in dev mode, use:
   npm run dev
 ```
 
-To build and start in prod mode, use: 
+To build and start in prod mode, use:
+
 ```bash
   npm run build && npx serve@latest out
 ```
+
 > [!NOTE]  
-> Images will not work properly here as a basePath has not been injected (as per the CI actions) 
+> Images will not work properly here as a basePath has not been injected (as per the CI actions)
 
 #### Container approach
 
