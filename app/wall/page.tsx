@@ -8,7 +8,6 @@ import { dehex_and_decompress } from "../components/dehex_and_decompress";
 import InstrumentGroup from "./components/InstrumentGroup";
 import ShowHideBeamInfo from "./components/ShowHideBeamInfo";
 import JenkinsJobIframe from "./components/JenkinsJobsIframe";
-import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
