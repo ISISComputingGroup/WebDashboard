@@ -1,12 +1,16 @@
 import { getForegroundColor, getStatusColor } from "./getRunstateColours";
-import {findPVByAddress, findPVByHumanReadableName, IfcPV} from "@/app/components/IfcPV";
+import {
+  findPVByAddress,
+  findPVByHumanReadableName,
+  IfcPV,
+} from "@/app/components/IfcPV";
 
 const runStateStr = "Run state";
 const configName = "Config name";
 
 function getRunstate(runInfoPVs: Array<IfcPV>): string | undefined {
-  const runStatePV = findPVByHumanReadableName(runInfoPVs, runStateStr)
-  if (runStatePV && runStatePV.value && (typeof runStatePV.value === "string")) {
+  const runStatePV = findPVByHumanReadableName(runInfoPVs, runStateStr);
+  if (runStatePV && runStatePV.value && typeof runStatePV.value === "string") {
     return runStatePV.value;
   }
 }
@@ -20,7 +24,8 @@ const TopBar = ({
   instName: string;
   runInfoPVs: Array<IfcPV>;
 }) => {
-  if (!dashboard ||
+  if (
+    !dashboard ||
     !dashboard.flat().length ||
     !runInfoPVs ||
     !runInfoPVs.length ||
@@ -58,58 +63,41 @@ const TopBar = ({
       >
         <h2
           className={`text-center p-4 text-xl rounded-t-lg w-full 
-          ${getStatusColor(getRunstate(runInfoPVs)) }
+          ${getStatusColor(getRunstate(runInfoPVs))}
            
-           ${getForegroundColor(getRunstate(runInfoPVs)
-          )}
+           ${getForegroundColor(getRunstate(runInfoPVs))}
           
           `}
         >
-          {instName.toUpperCase()} is{" "}
-          <span>
-            {getRunstate(runInfoPVs)}
-          </span>
+          {instName.toUpperCase()} is <span>{getRunstate(runInfoPVs)}</span>
         </h2>
         <div className="bg-gray-50 border-2 border-gray-800 m-4 p-4 shadow-md flex flex-col">
-          <table className="text-sm w-full table-fixed flex">
-            <tbody className="text-gray-200 ">
-              {/*<tr>*/}
-                {
-                  dashboard.map((column: Array<Array<IfcPV>>, index: number) => (
-                      <th key={index} id={index.toString()}>
-                        {column.map((row: Array<IfcPV>, index:number) => (
-                            <tr
-                                key={index}
-                                className="border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
-                            >
-                              <td className="py-1 px-4 flex">{row[0].value}</td>
-                              <td className="py-1 px-4 flex justify-between items-center">
-              <span className="font-light">
-                {row[1].value != null ? row[1].value : "Hidden/unknown"}
-              </span>
-
-                              </td>
-                            </tr>
-
-                        ))}
-                      </th>
-                  ))
-                }
-
-                {/*{[0, 1, 2].map((index: number) => (*/}
-                {/*  <th key={index} id={index.toString()}>*/}
-                {/*    {getMonitoredPVs(index, monitoredPVs)}*/}
-                {/*  </th>*/}
-                {/*))}*/}
-              {/*</tr>*/}
-            </tbody>
+          <table className="text-sm w-full table-fixed flex divide-x divide-gray-200 ">
+                {dashboard.map((column: Array<Array<IfcPV>>, index: number) => (
+                  <tbody key={index} id={index.toString()}>
+                    {column.map((row: Array<IfcPV>, index: number) => (
+                      <tr
+                        key={index}
+                        className="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+                      >
+                        <td className="py-1 px-4 flex font-bold">{row[0].value}</td>
+                        <td className="py-1 px-4 flex justify-between items-center">
+                          <span className="font-light">
+                            {row[1].value != null
+                              ? row[1].value
+                              : "Hidden/unknown"}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                ))}
           </table>
         </div>
 
         <label>
-          <input className="peer/showLabel absolute scale-0" type="checkbox"/>
-          <span
-              className="block max-h-14 overflow-hidden rounded-lg bg-gray-50 hover:bg-gray-800 hover:text-white px-4 py-0 mb-2  shadow-lg transition-all duration-300 peer-checked/showLabel:max-h-fit cursor-pointer">
+          <input className="peer/showLabel absolute scale-0" type="checkbox" />
+          <span className="block max-h-14 overflow-hidden rounded-lg bg-gray-50 hover:bg-gray-800 hover:text-white px-4 py-0 mb-2  shadow-lg transition-all duration-300 peer-checked/showLabel:max-h-fit cursor-pointer">
             <h3 className="flex h-14 cursor-pointer items-center font-bold ">
               Click to show/hide all run information
             </h3>
