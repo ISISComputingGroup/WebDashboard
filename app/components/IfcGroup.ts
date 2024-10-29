@@ -1,4 +1,4 @@
-import {IfcPV} from "@/app/components/IfcPV";
+import { IfcPV } from "@/app/components/IfcPV";
 
 export interface IfcGroup {
   name: string;

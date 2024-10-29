@@ -1,13 +1,13 @@
 "use client";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import TopBar from "./TopBar";
 import Groups from "./Groups";
 import useWebSocket from "react-use-websocket";
-import {dehex_and_decompress} from "./dehex_and_decompress";
-import {findPVInDashboard, Instrument} from "./Instrument";
-import {findPVByAddress, IfcPV} from "./IfcPV";
-import {PVWSMessage} from "./IfcPVWSMessage";
-import {useSearchParams} from "next/navigation";
+import { dehex_and_decompress } from "./dehex_and_decompress";
+import { findPVInDashboard, Instrument } from "./Instrument";
+import { findPVByAddress, IfcPV } from "./IfcPV";
+import { PVWSMessage } from "./IfcPVWSMessage";
+import { useSearchParams } from "next/navigation";
 
 let lastUpdate: string = "";
 
@@ -17,7 +17,6 @@ export default function InstrumentPage() {
 
   return <InstrumentData instrumentName={instrument} />;
 }
-
 
 function InstrumentData({ instrumentName }: { instrumentName: string }) {
   // set up the different states for the instrument data
@@ -81,7 +80,9 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
       });
 
       // subscribe to dashboard and run info PVs
-      for (const pv of instrument.runInfoPVs.concat(instrument.dashboard.flat(3))) {
+      for (const pv of instrument.runInfoPVs.concat(
+        instrument.dashboard.flat(3),
+      )) {
         sendJsonMessage({ type: "subscribe", pvs: [pv.pvaddress] });
       }
     }
@@ -149,7 +150,13 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
           for (const block of groupBlocks) {
             const newBlock = blocks.find((b: any) => b.name === block);
 
-            const completePV: IfcPV = {pvaddress:newBlock.pv, human_readable_name: newBlock.name, low_rc: newBlock.lowlimit, high_rc: newBlock.highlimit, visible: newBlock.visible};
+            const completePV: IfcPV = {
+              pvaddress: newBlock.pv,
+              human_readable_name: newBlock.name,
+              low_rc: newBlock.lowlimit,
+              high_rc: newBlock.highlimit,
+              visible: newBlock.visible,
+            };
 
             currentInstrument.groups[
               currentInstrument.groups.length - 1
@@ -185,20 +192,25 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
       }
 
       if (findPVInDashboard(currentInstrument.dashboard, updatedPVName)) {
-
         // This is a dashboard IfcPV update.
-        const pv: IfcPV = findPVInDashboard(currentInstrument.dashboard, updatedPVName)!;
-        if (updatedPVName.endsWith("TITLE") && updatedPVbytes && atob(updatedPVbytes) != "\x00") {
+        const pv: IfcPV = findPVInDashboard(
+          currentInstrument.dashboard,
+          updatedPVName,
+        )!;
+        if (
+          updatedPVName.endsWith("TITLE") &&
+          updatedPVbytes &&
+          atob(updatedPVbytes) != "\x00"
+        ) {
           // This is the title IfcPV which is base64 encoded, so decode here
           pv.value = atob(updatedPVbytes);
         } else if (updatedPV.text) {
           // This is any other dashboard IfcPV
-          pv.value = updatedPV.text
+          pv.value = updatedPV.text;
         }
-
-
       } else if (findPVByAddress(currentInstrument.runInfoPVs, updatedPVName)) {
-        findPVByAddress(currentInstrument.runInfoPVs, updatedPVName)!.value = pvVal;
+        findPVByAddress(currentInstrument.runInfoPVs, updatedPVName)!.value =
+          pvVal;
       } else {
         // This is a block - check if in groups
 

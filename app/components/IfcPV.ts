@@ -8,22 +8,28 @@ export interface IfcPV {
   max?: number;
   min?: number;
   warn_low?: number;
-  warn_high?:  number;
-  alarm_low?:number;
-  alarm_high?:  number ;
+  warn_high?: number;
+  alarm_low?: number;
+  alarm_high?: number;
   value?: string | number;
-  runcontrol_enabled?: boolean ;
-  runcontrol_inrange?: boolean ;
+  runcontrol_enabled?: boolean;
+  runcontrol_inrange?: boolean;
   visible?: boolean;
   suspend_on_invalid?: boolean;
   low_rc?: number;
   high_rc?: number;
 }
 
-export function findPVByAddress(arr: Array<IfcPV>, address: string): IfcPV | undefined {
-  return arr.find((b: IfcPV) => b.pvaddress == address)
+export function findPVByAddress(
+  arr: Array<IfcPV>,
+  address: string,
+): IfcPV | undefined {
+  return arr.find((b: IfcPV) => b.pvaddress == address);
 }
 
-export function findPVByHumanReadableName(arr: Array<IfcPV>, human_readable_name: string): IfcPV | undefined {
-  return arr.find((b: IfcPV) => b.human_readable_name == human_readable_name)
+export function findPVByHumanReadableName(
+  arr: Array<IfcPV>,
+  human_readable_name: string,
+): IfcPV | undefined {
+  return arr.find((b: IfcPV) => b.human_readable_name == human_readable_name);
 }
