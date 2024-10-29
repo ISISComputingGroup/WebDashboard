@@ -12,12 +12,6 @@ export interface IfcPV {
   alarm_low?: number;
   alarm_high?: number;
   value?: string | number;
-  runcontrol_enabled?: boolean;
-  runcontrol_inrange?: boolean;
-  visible?: boolean;
-  suspend_on_invalid?: boolean;
-  low_rc?: number;
-  high_rc?: number;
 }
 
 export function findPVByAddress(

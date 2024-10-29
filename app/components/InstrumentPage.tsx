@@ -8,6 +8,7 @@ import { findPVInDashboard, Instrument } from "./Instrument";
 import { findPVByAddress, IfcPV } from "./IfcPV";
 import { PVWSMessage } from "./IfcPVWSMessage";
 import { useSearchParams } from "next/navigation";
+import IfcBlock from "@/app/components/IfcBlock";
 
 let lastUpdate: string = "";
 
@@ -150,7 +151,7 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
           for (const block of groupBlocks) {
             const newBlock = blocks.find((b: any) => b.name === block);
 
-            const completePV: IfcPV = {
+            const completePV: IfcBlock = {
               pvaddress: newBlock.pv,
               human_readable_name: newBlock.name,
               low_rc: newBlock.lowlimit,

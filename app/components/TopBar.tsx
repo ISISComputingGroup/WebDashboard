@@ -73,25 +73,23 @@ const TopBar = ({
         </h2>
         <div className="bg-gray-50 border-2 border-gray-800 m-4 p-4 shadow-md flex flex-col">
           <table className="text-sm w-full table-fixed flex divide-x divide-gray-200 ">
-                {dashboard.map((column: Array<Array<IfcPV>>, index: number) => (
-                  <tbody key={index} id={index.toString()}>
-                    {column.map((row: Array<IfcPV>, index: number) => (
-                      <tr
-                        key={index}
-                        className="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
-                      >
-                        <td className="py-1 px-4 flex font-bold">{row[0].value}</td>
-                        <td className="py-1 px-4 flex justify-between items-center">
-                          <span className="font-light">
-                            {row[1].value != null
-                              ? row[1].value
-                              : "Hidden/unknown"}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
+            {dashboard.map((column: Array<Array<IfcPV>>, index: number) => (
+              <tbody key={index} id={index.toString()}>
+                {column.map((row: Array<IfcPV>, index: number) => (
+                  <tr
+                    key={index}
+                    className="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+                  >
+                    <td className="py-1 px-4 flex font-bold">{row[0].value}</td>
+                    <td className="py-1 px-4 flex justify-between items-center">
+                      <span className="font-light">
+                        {row[1].value != null ? row[1].value : "Hidden/unknown"}
+                      </span>
+                    </td>
+                  </tr>
                 ))}
+              </tbody>
+            ))}
           </table>
         </div>
 
