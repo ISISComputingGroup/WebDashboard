@@ -1,42 +1,44 @@
 import { IfcGroup } from "./IfcGroup";
-import {PV} from "@/app/components/PV";
+import {IfcPV} from "@/app/components/IfcPV";
 
 const DASHBOARD = "CS:DASHBOARD:TAB:";
+
+// Column[Row[labelPV, valuePV]]
+export type DashboardArr = Array<Array<Array<IfcPV>>>
 
 export class Instrument {
   prefix: string;
   dashboard_prefix: string;
 
-  columnZeroPVs: Map<string, string>;
-  dictLongerInstPVs: Map<string, string>;
-  // runInfoMap: Map<string, string>;
-  topBarPVs: Map<any, any>;
-  // runInfoPVs: Map<any, any>;
-  configname: string;
-  groups: Array<IfcGroup>;
-  runInfoPVs: Array<PV>;
+  groups: Array<IfcGroup> = [];
+  runInfoPVs: Array<IfcPV> = [];
+
+
+  dashboard: DashboardArr = []
+
   constructor(prefix: string) {
     this.prefix = prefix;
     this.dashboard_prefix = `${this.prefix}${DASHBOARD}`;
 
-    this.columnZeroPVs = new Map(
-      Object.entries({
-        [`${this.prefix}DAE:TITLE`]: "Title:",
-        [`${this.prefix}DAE:_USERNAME`]: "Users:",
-      }),
-    );
-
-    this.dictLongerInstPVs = new Map(
-      Object.entries({
-        [`${this.dashboard_prefix}1:1:LABEL`]: `${this.dashboard_prefix}1:1:VALUE`,
-        [`${this.dashboard_prefix}2:1:LABEL`]: `${this.dashboard_prefix}2:1:VALUE`,
-        [`${this.dashboard_prefix}3:1:LABEL`]: `${this.dashboard_prefix}3:1:VALUE`,
-        [`${this.dashboard_prefix}1:2:LABEL`]: `${this.dashboard_prefix}1:2:VALUE`,
-        [`${this.dashboard_prefix}2:2:LABEL`]: `${this.dashboard_prefix}2:2:VALUE`,
-        [`${this.dashboard_prefix}3:2:LABEL`]: `${this.dashboard_prefix}3:2:VALUE`,
-      }),
-    );
-
+    this.dashboard = [
+        //column 0
+        [
+            [{pvaddress: "", value: "Title:" },{pvaddress:`${this.prefix}DAE:TITLE`}],
+            [{pvaddress: "", value:"Users:" }, {pvaddress:`${this.prefix}DAE:_USERNAME`}]
+        ],
+        //column 1
+        [
+          [{pvaddress:`${this.dashboard_prefix}1:1:LABEL`}, {pvaddress:`${this.dashboard_prefix}1:1:VALUE`}],
+          [{pvaddress:`${this.dashboard_prefix}2:1:LABEL`}, {pvaddress:`${this.dashboard_prefix}2:1:VALUE`}],
+          [{pvaddress:`${this.dashboard_prefix}3:1:LABEL`}, {pvaddress:`${this.dashboard_prefix}3:1:VALUE`}],
+        ],
+        //column 2
+        [
+            [{pvaddress:`${this.dashboard_prefix}1:2:LABEL`}, {pvaddress:`${this.dashboard_prefix}1:2:VALUE`}],
+            [{pvaddress:`${this.dashboard_prefix}2:2:LABEL`}, {pvaddress:`${this.dashboard_prefix}2:2:VALUE`}],
+            [{pvaddress:`${this.dashboard_prefix}3:2:LABEL`}, {pvaddress:`${this.dashboard_prefix}3:2:VALUE`}]
+        ]
+    ]
     this.runInfoPVs= [
         {pvaddress: `${this.prefix}CS:BLOCKSERVER:CURR_CONFIG_NAME`, human_readable_name: "Config name"},
         {pvaddress: `${this.prefix}DAE:RUNSTATE_STR`, human_readable_name: "Run state"},
@@ -70,11 +72,9 @@ export class Instrument {
         {pvaddress:`${this.prefix}DAE:DAEMEMORYUSED`, human_readable_name: "DAE Memory Used",},
     ];
 
-
-    // (label) PV address  : [row, col, label, value]
-    this.topBarPVs = new Map();
-
-    this.groups = [];
-    this.configname = "";
   }
+}
+
+export function findPVInDashboard(dashboard: DashboardArr, pvAddress: string): undefined | IfcPV {
+    return dashboard.flat(3).find((pv:IfcPV) => pv.pvaddress == pvAddress);
 }

@@ -1,6 +1,6 @@
-import {PV} from "@/app/components/PV";
+import {IfcPV} from "@/app/components/IfcPV";
 
 export interface IfcGroup {
   name: string;
-  blocks: Array<PV>;
+  blocks: Array<IfcPV>;
 }

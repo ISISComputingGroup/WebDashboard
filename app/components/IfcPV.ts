@@ -1,4 +1,4 @@
-export interface PV {
+export interface IfcPV {
   pvaddress: string;
   human_readable_name?: string;
   severity?: string;
@@ -20,10 +20,10 @@ export interface PV {
   high_rc?: number;
 }
 
-export function findPVByAddress(arr: Array<PV>, address: string): PV | undefined {
-  return arr.find((b: PV) => b.pvaddress == address)
+export function findPVByAddress(arr: Array<IfcPV>, address: string): IfcPV | undefined {
+  return arr.find((b: IfcPV) => b.pvaddress == address)
 }
 
-export function findPVByHumanReadableName(arr: Array<PV>, human_readable_name: string): PV | undefined {
-  return arr.find((b: PV) => b.human_readable_name == human_readable_name)
+export function findPVByHumanReadableName(arr: Array<IfcPV>, human_readable_name: string): IfcPV | undefined {
+  return arr.find((b: IfcPV) => b.human_readable_name == human_readable_name)
 }

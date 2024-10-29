@@ -110,7 +110,7 @@ export default function WallDisplay() {
   );
 
   useEffect(() => {
-    // On page load, subscribe to the instrument list as it's required to get each instrument's PV prefix.
+    // On page load, subscribe to the instrument list as it's required to get each instrument's IfcPV prefix.
     sendJsonMessage({
       type: "subscribe",
       pvs: [instListPV],
@@ -118,7 +118,7 @@ export default function WallDisplay() {
   }, [sendJsonMessage]);
 
   useEffect(() => {
-    // This is a PV update, it could be either the instlist or an instrument's runstate that has changed
+    // This is a IfcPV update, it could be either the instlist or an instrument's runstate that has changed
     if (!lastJsonMessage) {
       return;
     }
@@ -129,19 +129,19 @@ export default function WallDisplay() {
     let updatedPVvalue: string | null | undefined = updatedPV.text;
 
     if (updatedPVName == instListPV && updatedPVbytes != null) {
-      // Act on an instlist change - subscribe to each instrument's runstate PV.
+      // Act on an instlist change - subscribe to each instrument's runstate IfcPV.
       const dehexedInstList = dehex_and_decompress(atob(updatedPVbytes));
       if (dehexedInstList != null && typeof dehexedInstList == "string") {
         const instListDict = JSON.parse(dehexedInstList);
         for (const item of instListDict) {
-          // Iterate through the instlist, find their associated object in the ts1data, ts2data or miscData arrays, runstate PV and subscribe
+          // Iterate through the instlist, find their associated object in the ts1data, ts2data or miscData arrays, runstate IfcPV and subscribe
           const instName = item["name"];
           const instPrefix = item["pvPrefix"];
           const foundInstrument = [...TS1Data, ...TS2Data, ...miscData].find(
             (instrument) => instrument.name === instName,
           );
           if (foundInstrument) {
-            // Subscribe to the instrument's runstate PV
+            // Subscribe to the instrument's runstate IfcPV
             foundInstrument.pv = instPrefix + runstatePV;
             sendJsonMessage({ type: "subscribe", pvs: [foundInstrument.pv] });
           }

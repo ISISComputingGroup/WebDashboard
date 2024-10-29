@@ -4,8 +4,8 @@ import TopBar from "./TopBar";
 import Groups from "./Groups";
 import useWebSocket from "react-use-websocket";
 import {dehex_and_decompress} from "./dehex_and_decompress";
-import {Instrument} from "./Instrument";
-import {findPVByAddress, PV} from "./PV";
+import {findPVInDashboard, Instrument} from "./Instrument";
+import {findPVByAddress, IfcPV} from "./IfcPV";
 import {PVWSMessage} from "./IfcPVWSMessage";
 import {useSearchParams} from "next/navigation";
 
@@ -80,18 +80,8 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
         pvs: [`${prefix}${CONFIG_DETAILS}`],
       });
 
-      // subscribe to the top bar (column 0) PVs
-      for (const pv of instrument.columnZeroPVs.keys()) {
-        sendJsonMessage({ type: "subscribe", pvs: [pv] });
-      }
-
-      // subscribe to top bar label PVs
-      for (const pv of instrument.dictLongerInstPVs.keys()) {
-        sendJsonMessage({ type: "subscribe", pvs: [pv] });
-      }
-
-      // subscribe to run info PVs
-      for (const pv of instrument.runInfoPVList) {
+      // subscribe to dashboard and run info PVs
+      for (const pv of instrument.runInfoPVs.concat(instrument.dashboard.flat(3))) {
         sendJsonMessage({ type: "subscribe", pvs: [pv.pvaddress] });
       }
     }
@@ -138,7 +128,7 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
       const response = JSON.parse(res);
 
       //parse it here
-      //create PV objects for currentinstrument.groups
+      //create IfcPV objects for currentinstrument.groups
       //subscribe to pvs
       const ConfigOutput = response;
       const blocks = ConfigOutput.blocks;
@@ -159,7 +149,7 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
           for (const block of groupBlocks) {
             const newBlock = blocks.find((b: any) => b.name === block);
 
-            const completePV: PV = {pvaddress:newBlock.pv, human_readable_name: newBlock.name, low_rc: newBlock.lowlimit, high_rc: newBlock.highlimit, visible: newBlock.visible};
+            const completePV: IfcPV = {pvaddress:newBlock.pv, human_readable_name: newBlock.name, low_rc: newBlock.lowlimit, high_rc: newBlock.highlimit, visible: newBlock.visible};
 
             currentInstrument.groups[
               currentInstrument.groups.length - 1
@@ -194,61 +184,19 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
         return;
       }
 
-      if (currentInstrument.dictLongerInstPVs.has(updatedPVName)) {
-        // This is a top bar label PV
-        if (!currentInstrument.topBarPVs.has(updatedPVName) && updatedPV.text) {
-          let prefixRemoved = updatedPVName.split(
-            currentInstrument.dashboard_prefix,
-          )[1];
-          let row = prefixRemoved[0];
-          let col = prefixRemoved[2];
-          currentInstrument.topBarPVs.set(updatedPVName, [
-            row,
-            col,
-            updatedPV.text,
-            null,
-          ]);
-          // first update, lets now subscribe to the 'value' part of the dashboard label
-          let value_pv = currentInstrument.dictLongerInstPVs.get(updatedPVName);
-          sendJsonMessage({
-            type: "subscribe",
-            pvs: [value_pv],
-          });
-        }
-      } else if (
-        currentInstrument.columnZeroPVs.has(updatedPVName) &&
-        updatedPVbytes != null
-      ) {
-        // this is a top bar column zero value
-        const isTitle = updatedPVName.endsWith("TITLE");
+      if (findPVInDashboard(currentInstrument.dashboard, updatedPVName)) {
 
-        let value;
-        if (isTitle) {
-          // The title is base64 encoded. PVWS gives a null byte back if there is no value, so replace with null.
-          value = atob(updatedPVbytes) != "\x00" ? atob(updatedPVbytes) : null;
-        } else {
-          value = updatedPV.text;
+        // This is a dashboard IfcPV update.
+        const pv: IfcPV = findPVInDashboard(currentInstrument.dashboard, updatedPVName)!;
+        if (updatedPVName.endsWith("TITLE") && updatedPVbytes && atob(updatedPVbytes) != "\x00") {
+          // This is the title IfcPV which is base64 encoded, so decode here
+          pv.value = atob(updatedPVbytes);
+        } else if (updatedPV.text) {
+          // This is any other dashboard IfcPV
+          pv.value = updatedPV.text
         }
 
-        const row = isTitle ? 0 : 1; // if title, column 1
 
-        currentInstrument.topBarPVs.set(updatedPVName, [
-          row,
-          0,
-          currentInstrument.columnZeroPVs.get(updatedPVName),
-          value,
-        ]);
-      } else if (
-        Array.from(currentInstrument.dictLongerInstPVs.values()).includes(
-          updatedPVName,
-        )
-      ) {
-        // this is a top bar value
-        for (const [labelPV, valuePV] of currentInstrument.dictLongerInstPVs) {
-          if (valuePV == updatedPVName) {
-            currentInstrument.topBarPVs.get(labelPV)[3] = updatedPV.text;
-          }
-        }
       } else if (findPVByAddress(currentInstrument.runInfoPVs, updatedPVName)) {
         findPVByAddress(currentInstrument.runInfoPVs, updatedPVName)!.value = pvVal;
       } else {
@@ -319,7 +267,7 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
   return (
     <div className="p-8 w-full mx-auto max-w-7xl">
       <TopBar
-        monitoredPVs={currentInstrument.topBarPVs}
+        dashboard={currentInstrument.dashboard}
         instName={instName}
         runInfoPVs={currentInstrument.runInfoPVs}
       />
