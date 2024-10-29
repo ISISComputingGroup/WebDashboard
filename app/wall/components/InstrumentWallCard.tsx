@@ -4,8 +4,9 @@ import {
   getForegroundColor,
   getStatusColor,
 } from "../../components/getRunstateColours";
+import {IfcInstrumentStatus} from "@/app/wall/IfcInstrumentStatus";
 
-export default function WallCard({ instrument }: { instrument: any }) {
+export default function WallCard({ instrument }: { instrument: IfcInstrumentStatus }) {
   return (
     <motion.div
       whileHover={{ y: -10 }}

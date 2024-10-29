@@ -3,11 +3,12 @@ import { Inter } from "next/font/google";
 import { useState, useEffect } from "react";
 import useWebSocket from "react-use-websocket";
 import { IfcInstrumentStatus } from "./IfcInstrumentStatus";
-import { PVWSMessage } from "../components/IfcPVWSMessage";
+import { IfcPVWSMessage } from "../components/IfcPVWSMessage";
 import { dehex_and_decompress } from "../components/dehex_and_decompress";
 import InstrumentGroup from "./components/InstrumentGroup";
 import ShowHideBeamInfo from "./components/ShowHideBeamInfo";
 import JenkinsJobIframe from "./components/JenkinsJobsIframe";
+import IfcPVWSRequest from "@/app/components/IfcPVWSRequest";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -102,7 +103,7 @@ export default function WallDisplay() {
   const {
     sendJsonMessage,
     lastJsonMessage,
-  }: { sendJsonMessage: any; lastJsonMessage: PVWSMessage } = useWebSocket(
+  }: { sendJsonMessage: ((a: IfcPVWSRequest) => void); lastJsonMessage: IfcPVWSMessage } = useWebSocket(
     socketURL,
     {
       shouldReconnect: (closeEvent) => true,
@@ -123,7 +124,7 @@ export default function WallDisplay() {
       return;
     }
 
-    const updatedPV: PVWSMessage = lastJsonMessage;
+    const updatedPV: IfcPVWSMessage = lastJsonMessage;
     const updatedPVName: string = updatedPV.pv;
     const updatedPVbytes: string | null | undefined = updatedPV.b64byt;
     let updatedPVvalue: string | null | undefined = updatedPV.text;

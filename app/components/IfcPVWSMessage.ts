@@ -1,4 +1,4 @@
-export interface PVWSMessage {
+export default interface IfcPVWSMessage {
   type: string;
   pv: string;
   value?: number | null;

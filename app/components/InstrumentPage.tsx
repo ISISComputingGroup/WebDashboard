@@ -1,14 +1,15 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import TopBar from "./TopBar";
 import Groups from "./Groups";
 import useWebSocket from "react-use-websocket";
-import { dehex_and_decompress } from "./dehex_and_decompress";
-import { findPVInDashboard, Instrument } from "./Instrument";
-import { findPVByAddress, IfcPV } from "./IfcPV";
-import { PVWSMessage } from "./IfcPVWSMessage";
-import { useSearchParams } from "next/navigation";
+import {dehex_and_decompress} from "./dehex_and_decompress";
+import {findPVInDashboard, Instrument} from "./Instrument";
+import {findPVByAddress, IfcPV} from "./IfcPV";
+import {IfcPVWSMessage} from "./IfcPVWSMessage";
+import {useSearchParams} from "next/navigation";
 import IfcBlock from "@/app/components/IfcBlock";
+import IfcPVWSRequest from "@/app/components/IfcPVWSRequest";
 
 let lastUpdate: string = "";
 
@@ -36,7 +37,7 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
   const {
     sendJsonMessage,
     lastJsonMessage,
-  }: { sendJsonMessage: any; lastJsonMessage: PVWSMessage } = useWebSocket(
+  }: { sendJsonMessage:((a: IfcPVWSRequest) => void), lastJsonMessage: IfcPVWSMessage } = useWebSocket(
     socketURL,
     {
       shouldReconnect: (closeEvent) => true,
@@ -50,6 +51,7 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
   );
 
   useEffect(() => {
+    // This is an initial useEffect to subscribe to lots of PVs including the instlist.
     sendJsonMessage({
       type: "subscribe",
       pvs: ["CS:INSTLIST"],
@@ -90,10 +92,11 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
   }, [instlist, instName, sendJsonMessage, currentInstrument]);
 
   useEffect(() => {
+    // This gets run whenever there is a PV update ie. when lastJsonMessage changes.
     if (!lastJsonMessage) {
       return;
     }
-    const updatedPV: PVWSMessage = lastJsonMessage;
+    const updatedPV: IfcPVWSMessage = lastJsonMessage;
     const updatedPVName: string = updatedPV.pv;
     const updatedPVbytes: string | null | undefined = updatedPV.b64byt;
 
@@ -120,19 +123,15 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
       lastUpdate = updatedPVbytes;
 
       console.log("config changed");
-      let raw = updatedPVbytes;
-
-      const res = dehex_and_decompress(atob(raw));
+      const res = dehex_and_decompress(atob(updatedPVbytes));
 
       if (res == null || typeof res != "string") {
         return;
       }
-      const response = JSON.parse(res);
-
       //parse it here
       //create IfcPV objects for currentinstrument.groups
       //subscribe to pvs
-      const ConfigOutput = response;
+      const ConfigOutput = JSON.parse(res);
       const blocks = ConfigOutput.blocks;
       const groups = ConfigOutput.groups;
 
@@ -226,35 +225,30 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
                 // this is likely the first update, and contains precision information which is not repeated on a normal value update - store this in the block for later truncation (see below)
                 block.precision = prec;
               }
-
               if (block.precision && typeof pvVal == "number") {
                 // if a block has precision truncate it here
                 block.value = pvVal.toPrecision(block.precision);
               } else {
                 block.value = pvVal;
               }
-
               if (updatedPV.units) {
                 block.units = updatedPV.units;
               }
-
               if (updatedPV.severity) {
                 block.severity = updatedPV.severity;
               }
 
-              const pv = document.getElementById(
+              // Let the user know a change has occurred by lighting up the green dot next to the value
+              const pvChangedIndicator = document.getElementById(
                 block.human_readable_name + "_CIRCLE",
               );
-
-              if (!pv) return;
-
-              if (pv.classList.contains("text-green-500")) return;
-              pv.classList.remove("text-transparent");
-              pv.classList.add("text-green-500");
-
+              if (!pvChangedIndicator) return;
+              if (pvChangedIndicator.classList.contains("text-green-500")) return;
+              pvChangedIndicator.classList.remove("text-transparent");
+              pvChangedIndicator.classList.add("text-green-500");
               setTimeout(() => {
-                pv.classList.remove("text-green-500");
-                pv.classList.add("text-transparent");
+                pvChangedIndicator.classList.remove("text-green-500");
+                pvChangedIndicator.classList.add("text-transparent");
               }, 2000);
             } else if (updatedPVName == block_full_pv_name + ":RC:INRANGE") {
               block.runcontrol_inrange = updatedPV.value == 1;
