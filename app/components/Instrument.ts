@@ -1,9 +1,6 @@
-import { IfcGroup, IfcPV } from "@/app/types";
+import { DashboardArr, IfcGroup, IfcPV } from "@/app/types";
 
 const DASHBOARD = "CS:DASHBOARD:TAB:";
-
-// Column[Row[labelPV, valuePV]]
-export type DashboardArr = Array<Array<Array<IfcPV>>>;
 
 export class Instrument {
   prefix: string;

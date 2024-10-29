@@ -1,5 +1,5 @@
-import { findPVInDashboard, DashboardArr } from "@/app/components/Instrument";
-import { IfcPV } from "@/app/types";
+import { findPVInDashboard } from "@/app/components/Instrument";
+import { DashboardArr, IfcPV } from "@/app/types";
 
 test("findPVinDashboard finds a IfcPV in the dashboard and returns it", () => {
   const prefix = "UNITTESTING";

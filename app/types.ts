@@ -77,3 +77,6 @@ export interface IfcInstrumentStatus {
   status?: string;
   pv?: string;
 }
+
+// Column[Row[labelPV, valuePV]]
+export type DashboardArr = Array<Array<Array<IfcPV>>>;
