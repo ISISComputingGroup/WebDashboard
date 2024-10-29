@@ -1,6 +1,6 @@
 import { checkIfAllBlocksInGroupAreHidden } from "./GroupUtils";
-import { IfcGroup } from "./IfcGroup";
-import IfcBlock from "@/app/components/IfcBlock";
+
+import { IfcBlock, IfcGroup } from "@/app/types";
 
 test("group with all hidden blocks returns true", () => {
   const aHiddenBlock: IfcBlock = { pvaddress: "", visible: false };

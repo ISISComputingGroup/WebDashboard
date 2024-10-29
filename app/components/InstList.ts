@@ -1,7 +1,7 @@
 import useWebSocket from "react-use-websocket";
 import { dehex_and_decompress } from "./dehex_and_decompress";
-import IfcPVWSRequest from "@/app/components/IfcPVWSRequest";
-import IfcPVWSMessage from "@/app/components/IfcPVWSMessage";
+
+import { IfcPVWSMessage, IfcPVWSRequest } from "@/app/types";
 
 const INSTLIST_PV = "CS:INSTLIST";
 

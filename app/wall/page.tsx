@@ -2,13 +2,15 @@
 import { Inter } from "next/font/google";
 import { useState, useEffect } from "react";
 import useWebSocket from "react-use-websocket";
-import IfcInstrumentStatus from "./IfcInstrumentStatus";
-import IfcPVWSMessage from "../components/IfcPVWSMessage";
 import { dehex_and_decompress } from "../components/dehex_and_decompress";
 import InstrumentGroup from "./components/InstrumentGroup";
 import ShowHideBeamInfo from "./components/ShowHideBeamInfo";
 import JenkinsJobIframe from "./components/JenkinsJobsIframe";
-import IfcPVWSRequest from "@/app/components/IfcPVWSRequest";
+import {
+  IfcInstrumentStatus,
+  IfcPVWSMessage,
+  IfcPVWSRequest,
+} from "@/app/types";
 
 const inter = Inter({ subsets: ["latin"] });
 

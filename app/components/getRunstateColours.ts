@@ -1,58 +1,34 @@
-export function getForegroundColor(status: string | undefined): string {
-  switch (status) {
-    case undefined:
-    case "UNKNOWN":
-      return "text-black";
-    case "PAUSED":
-      return "text-white";
-    case "PAUSING":
-      return "text-white";
-    case "RESUMING":
-      return "text-white";
-    case "RUNNING":
-      return "text-black";
-    case "BEGINNING":
-      return "text-white";
-    case "ENDING":
-      return "text-white";
-    case "WAITING":
-      return "text-white";
-    case "PROCESSING":
-      return "text-black";
-    case "VETOING":
-      return "text-black";
-    case "SETUP":
-      return "text-black";
-    default:
-      return "text-white";
-  }
+const statusColourLookup = new Map<string, string>([
+  ["PAUSED", "bg-red-500"],
+  ["PAUSING", "bg-red-950"],
+  ["RESUMING", "bg-green-900"],
+  ["RUNNING", "bg-[#90EE90]"],
+  ["BEGINNING", "bg-[#90EE90]"],
+  ["ENDING", "bg-[#90EE90]"],
+  ["WAITING", "bg-[#DAA520]"],
+  ["PROCESSING", "bg-[#FFFF00]"],
+  ["VETOING", "bg-[#FFFF00]"],
+  ["SETUP", "bg-[#ADD8E6]"],
+]);
+
+export function getForegroundColour(status: string | undefined): string {
+  const blackTextRunstates = [
+    undefined,
+    "UNKNOWN",
+    "RUNNING",
+    "PROCESSING",
+    "VETOING",
+    "SETUP",
+  ];
+  return blackTextRunstates.includes(status) ? "text-black" : "text-white";
 }
-export function getStatusColor(status: string | undefined): string {
-  switch (status) {
-    case undefined:
-    case "UNKNOWN":
-      return "bg-[#F08080]";
-    case "PAUSED":
-      return "bg-red-500";
-    case "PAUSING":
-      return "bg-red-950";
-    case "RESUMING":
-      return "bg-green-900";
-    case "RUNNING":
-      return "bg-[#90EE90]";
-    case "BEGINNING":
-      return "bg-[#90EE90]";
-    case "ENDING":
-      return "bg-[#90EE90]";
-    case "WAITING":
-      return "bg-[#DAA520]";
-    case "PROCESSING":
-      return "bg-[#FFFF00]";
-    case "VETOING":
-      return "bg-[#FFFF00]";
-    case "SETUP":
-      return "bg-[#ADD8E6]";
-    default:
-      return "bg-gray-500";
+export function getStatusColour(status: string | undefined): string {
+  if (
+    status == undefined ||
+    !statusColourLookup.has(status) ||
+    status == "UNKNOWN"
+  ) {
+    return "bg-[#F08080]";
   }
+  return statusColourLookup.get(status)!;
 }

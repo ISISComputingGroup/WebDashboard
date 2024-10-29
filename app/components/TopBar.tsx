@@ -1,8 +1,19 @@
-import { getForegroundColor, getStatusColor } from "./getRunstateColours";
-import { findPVByHumanReadableName, IfcPV } from "@/app/components/IfcPV";
+import { getForegroundColour, getStatusColour } from "./getRunstateColours";
+
+import { IfcPV } from "@/app/types";
 
 export const runStateStr = "Run state";
 const configName = "Config name";
+
+/**
+ * Given an array of PVs, find a PV based on its human-readable name. If none found, return undefined.
+ */
+export function findPVByHumanReadableName(
+  arr: Array<IfcPV>,
+  human_readable_name: string,
+): IfcPV | undefined {
+  return arr.find((b: IfcPV) => b.human_readable_name == human_readable_name);
+}
 
 export function getRunstate(runInfoPVs: Array<IfcPV>): string | undefined {
   const runStatePV = findPVByHumanReadableName(runInfoPVs, runStateStr);
@@ -69,9 +80,9 @@ const TopBar = ({
       >
         <h2
           className={`text-center p-4 text-xl rounded-t-lg w-full 
-          ${getStatusColor(getRunstate(runInfoPVs))}
+          ${getStatusColour(getRunstate(runInfoPVs))}
            
-           ${getForegroundColor(getRunstate(runInfoPVs))}
+           ${getForegroundColour(getRunstate(runInfoPVs))}
           
           `}
         >

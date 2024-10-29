@@ -1,4 +1,4 @@
-import IfcBlock from "@/app/components/IfcBlock";
+import { IfcBlock } from "@/app/types";
 
 const grafana_stub =
   "https://shadow.nd.rl.ac.uk/grafana/d/wMlwwaHMk/block-history?viewPanel=2&orgId=1&var-block=";

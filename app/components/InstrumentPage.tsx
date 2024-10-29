@@ -5,11 +5,8 @@ import Groups from "./Groups";
 import useWebSocket from "react-use-websocket";
 import { dehex_and_decompress } from "./dehex_and_decompress";
 import { findPVInDashboard, Instrument } from "./Instrument";
-import { IfcPV } from "./IfcPV";
-import IfcPVWSMessage from "./IfcPVWSMessage";
 import { useSearchParams } from "next/navigation";
-import IfcBlock from "@/app/components/IfcBlock";
-import IfcPVWSRequest from "@/app/components/IfcPVWSRequest";
+import { IfcBlock, IfcPV, IfcPVWSMessage, IfcPVWSRequest } from "@/app/types";
 
 let lastUpdate: string = "";
 

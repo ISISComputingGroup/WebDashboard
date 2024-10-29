@@ -1,5 +1,4 @@
-import { IfcGroup } from "./IfcGroup";
-import { IfcPV } from "@/app/components/IfcPV";
+import { IfcGroup, IfcPV } from "@/app/types";
 
 const DASHBOARD = "CS:DASHBOARD:TAB:";
 

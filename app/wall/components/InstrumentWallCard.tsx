@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-  getForegroundColor,
-  getStatusColor,
+  getForegroundColour,
+  getStatusColour,
 } from "../../components/getRunstateColours";
-import IfcInstrumentStatus from "@/app/wall/IfcInstrumentStatus";
+
+import { IfcInstrumentStatus } from "@/app/types";
 
 export default function WallCard({
   instrument,
@@ -15,7 +16,7 @@ export default function WallCard({
     <motion.div
       whileHover={{ y: -10 }}
       className={`flex items-center justify-between p-3  rounded-lg shadow-sm border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
-      ${getStatusColor(instrument.status)} ${getForegroundColor(
+      ${getStatusColour(instrument.status)} ${getForegroundColour(
         instrument.status,
       )}`}
     >

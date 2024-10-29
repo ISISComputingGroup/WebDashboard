@@ -1,9 +1,10 @@
-import { findPVByHumanReadableName, IfcPV } from "@/app/components/IfcPV";
 import {
   findPVByAddress,
+  findPVByHumanReadableName,
   getRunstate,
   runStateStr,
 } from "@/app/components/TopBar";
+import { IfcPV } from "@/app/types";
 
 test("findPVByAddress finds a PV and returns it", () => {
   const pvAddressToTest = "SOME:PV";

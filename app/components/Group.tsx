@@ -1,7 +1,8 @@
 import React from "react";
 import Block from "./Block";
 import { checkIfAllBlocksInGroupAreHidden } from "./GroupUtils";
-import { IfcGroup } from "./IfcGroup";
+
+import { IfcGroup } from "@/app/types";
 
 export default function Group({
   group,
