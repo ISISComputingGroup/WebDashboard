@@ -1,14 +1,13 @@
 "use client";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import TopBar from "./TopBar";
 import Groups from "./Groups";
-import { useEffect, useState } from "react";
 import useWebSocket from "react-use-websocket";
-import { dehex_and_decompress } from "./dehex_and_decompress";
-import { Instrument } from "./Instrument";
-import { PV } from "./PV";
-import { PVWSMessage } from "./IfcPVWSMessage";
-import { useSearchParams } from "next/navigation";
+import {dehex_and_decompress} from "./dehex_and_decompress";
+import {Instrument} from "./Instrument";
+import {findPVByAddress, PV} from "./PV";
+import {PVWSMessage} from "./IfcPVWSMessage";
+import {useSearchParams} from "next/navigation";
 
 let lastUpdate: string = "";
 
@@ -18,6 +17,7 @@ export default function InstrumentPage() {
 
   return <InstrumentData instrumentName={instrument} />;
 }
+
 
 function InstrumentData({ instrumentName }: { instrumentName: string }) {
   // set up the different states for the instrument data
@@ -91,8 +91,8 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
       }
 
       // subscribe to run info PVs
-      for (const pv of instrument.runInfoMap.keys()) {
-        sendJsonMessage({ type: "subscribe", pvs: [pv] });
+      for (const pv of instrument.runInfoPVList) {
+        sendJsonMessage({ type: "subscribe", pvs: [pv.pvaddress] });
       }
     }
   }, [instlist, instName, sendJsonMessage, currentInstrument]);
@@ -159,12 +159,7 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
           for (const block of groupBlocks) {
             const newBlock = blocks.find((b: any) => b.name === block);
 
-            const completePV = new PV(newBlock.pv);
-            completePV.human_readable_name = newBlock.name;
-            completePV.runcontrol_enabled = newBlock.runcontrol;
-            completePV.low_rc = newBlock.lowlimit;
-            completePV.high_rc = newBlock.highlimit;
-            completePV.visible = newBlock.visible;
+            const completePV: PV = {pvaddress:newBlock.pv, human_readable_name: newBlock.name, low_rc: newBlock.lowlimit, high_rc: newBlock.highlimit, visible: newBlock.visible};
 
             currentInstrument.groups[
               currentInstrument.groups.length - 1
@@ -254,11 +249,8 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
             currentInstrument.topBarPVs.get(labelPV)[3] = updatedPV.text;
           }
         }
-      } else if (currentInstrument.runInfoMap.has(updatedPVName)) {
-        currentInstrument.runInfoPVs.set(
-          currentInstrument.runInfoMap.get(updatedPVName),
-          pvVal,
-        );
+      } else if (findPVByAddress(currentInstrument.runInfoPVs, updatedPVName)) {
+        findPVByAddress(currentInstrument.runInfoPVs, updatedPVName)!.value = pvVal;
       } else {
         // This is a block - check if in groups
 

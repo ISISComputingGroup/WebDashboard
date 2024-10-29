@@ -1,7 +1,15 @@
 import { getForegroundColor, getStatusColor } from "./getRunstateColours";
+import {findPVByAddress, findPVByHumanReadableName, PV} from "@/app/components/PV";
 
 const runStateStr = "Run state";
 const configName = "Config name";
+
+function getRunstate(runInfoPVs: Array<PV>): string | undefined {
+  const runStatePV = findPVByHumanReadableName(runInfoPVs, runStateStr)
+  if (runStatePV && runStatePV.value && (typeof runStatePV.value === "string")) {
+    return runStatePV.value;
+  }
+}
 
 const TopBar = ({
   monitoredPVs,
@@ -10,13 +18,13 @@ const TopBar = ({
 }: {
   monitoredPVs: Map<string, any>;
   instName: string;
-  runInfoPVs: Map<string, any>;
+  runInfoPVs: Array<PV>;
 }) => {
   if (
     !monitoredPVs ||
     !monitoredPVs.size ||
     !runInfoPVs ||
-    !runInfoPVs.size ||
+    !runInfoPVs.length ||
     !instName
   ) {
     return (
@@ -39,8 +47,8 @@ const TopBar = ({
         <h1 className="text-black text-lg">
           Config:{" "}
           <span className="font-semibold">
-            {runInfoPVs.has(configName)
-              ? runInfoPVs.get(configName)
+            {findPVByAddress(runInfoPVs, configName)
+              ? findPVByAddress(runInfoPVs, configName)!.value
               : "UNKNOWN"}
           </span>
         </h1>
@@ -51,19 +59,16 @@ const TopBar = ({
       >
         <h2
           className={`text-center p-4 text-xl rounded-t-lg w-full 
-          ${getStatusColor(runInfoPVs.has(runStateStr) ? runInfoPVs.get(runStateStr) : "UNKNOWN")} ${getForegroundColor(
-            runInfoPVs.has(runStateStr)
-              ? runInfoPVs.get(runStateStr)
-              : "UNKNOWN",
+          ${getStatusColor(getRunstate(runInfoPVs)) }
+           
+           ${getForegroundColor(getRunstate(runInfoPVs)
           )}
           
           `}
         >
           {instName.toUpperCase()} is{" "}
           <span>
-            {runInfoPVs.has(runStateStr)
-              ? runInfoPVs.get(runStateStr)
-              : "UNKNOWN"}
+            {getRunstate(runInfoPVs)}
           </span>
         </h2>
         <div className="bg-gray-50 border-2 border-gray-800 m-4 p-4 shadow-md flex flex-col">
@@ -86,9 +91,9 @@ const TopBar = ({
             <h3 className="flex h-14 cursor-pointer items-center font-bold ">
               Click to show/hide all run information
             </h3>
-            {Array.from(runInfoPVs.entries()).map((runInfoPV) => (
-              <p className="mb-2" key={runInfoPV[0]}>
-                {runInfoPV[0]}: {runInfoPV[1]}
+            {runInfoPVs.map((runInfoPV) => (
+              <p className="mb-2" key={runInfoPV.human_readable_name}>
+                {runInfoPV.human_readable_name}: {runInfoPV.value}
               </p>
             ))}
           </span>

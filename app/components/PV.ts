@@ -1,43 +1,29 @@
-export class PV {
+export interface PV {
   pvaddress: string;
-  human_readable_name: null | string;
-  severity: null | string;
-  units: null | string;
-  description: null | string;
-  precision: null | number;
-  min: null | number;
-  max: null | number;
-  warn_low: null | number;
-  warn_high: null | number;
-  alarm_low: null | number;
-  alarm_high: null | number;
-  value: null | string | number;
-  runcontrol_enabled: boolean;
-  runcontrol_inrange: boolean;
-  visible: boolean;
-  suspend_on_invald: boolean;
-  low_rc: null | number;
-  high_rc: null | number;
+  human_readable_name?: string;
+  severity?: string;
+  units?: string;
+  description?: string;
+  precision?: number;
+  max?: number;
+  min?: number;
+  warn_low?: number;
+  warn_high?:  number;
+  alarm_low?:number;
+  alarm_high?:  number ;
+  value?: string | number;
+  runcontrol_enabled?: boolean ;
+  runcontrol_inrange?: boolean ;
+  visible?: boolean;
+  suspend_on_invalid?: boolean;
+  low_rc?: number;
+  high_rc?: number;
+}
 
-  constructor(pvaddress: string) {
-    this.pvaddress = pvaddress;
-    this.human_readable_name = null;
-    this.severity = null;
-    this.units = null;
-    this.description = null;
-    this.precision = null;
-    this.min = null;
-    this.max = null;
-    this.warn_low = null;
-    this.warn_high = null;
-    this.alarm_low = null;
-    this.alarm_high = null;
-    this.value = null;
-    this.runcontrol_enabled = false;
-    this.runcontrol_inrange = true;
-    this.visible = false;
-    this.suspend_on_invald = false;
-    this.low_rc = null;
-    this.high_rc = null;
-  }
+export function findPVByAddress(arr: Array<PV>, address: string): PV | undefined {
+  return arr.find((b: PV) => b.pvaddress == address)
+}
+
+export function findPVByHumanReadableName(arr: Array<PV>, human_readable_name: string): PV | undefined {
+  return arr.find((b: PV) => b.human_readable_name == human_readable_name)
 }
