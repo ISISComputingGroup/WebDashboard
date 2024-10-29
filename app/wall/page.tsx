@@ -2,8 +2,8 @@
 import { Inter } from "next/font/google";
 import { useState, useEffect } from "react";
 import useWebSocket from "react-use-websocket";
-import { IfcInstrumentStatus } from "./IfcInstrumentStatus";
-import { IfcPVWSMessage } from "../components/IfcPVWSMessage";
+import IfcInstrumentStatus from "./IfcInstrumentStatus";
+import IfcPVWSMessage from "../components/IfcPVWSMessage";
 import { dehex_and_decompress } from "../components/dehex_and_decompress";
 import InstrumentGroup from "./components/InstrumentGroup";
 import ShowHideBeamInfo from "./components/ShowHideBeamInfo";
@@ -103,12 +103,12 @@ export default function WallDisplay() {
   const {
     sendJsonMessage,
     lastJsonMessage,
-  }: { sendJsonMessage: ((a: IfcPVWSRequest) => void); lastJsonMessage: IfcPVWSMessage } = useWebSocket(
-    socketURL,
-    {
-      shouldReconnect: (closeEvent) => true,
-    },
-  );
+  }: {
+    sendJsonMessage: (a: IfcPVWSRequest) => void;
+    lastJsonMessage: IfcPVWSMessage;
+  } = useWebSocket(socketURL, {
+    shouldReconnect: (closeEvent) => true,
+  });
 
   useEffect(() => {
     // On page load, subscribe to the instrument list as it's required to get each instrument's IfcPV prefix.

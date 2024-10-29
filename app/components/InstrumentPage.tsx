@@ -1,13 +1,13 @@
 "use client";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import TopBar from "./TopBar";
 import Groups from "./Groups";
 import useWebSocket from "react-use-websocket";
-import {dehex_and_decompress} from "./dehex_and_decompress";
-import {findPVInDashboard, Instrument} from "./Instrument";
-import {findPVByAddress, IfcPV} from "./IfcPV";
-import {IfcPVWSMessage} from "./IfcPVWSMessage";
-import {useSearchParams} from "next/navigation";
+import { dehex_and_decompress } from "./dehex_and_decompress";
+import { findPVInDashboard, Instrument } from "./Instrument";
+import { findPVByAddress, IfcPV } from "./IfcPV";
+import IfcPVWSMessage from "./IfcPVWSMessage";
+import { useSearchParams } from "next/navigation";
 import IfcBlock from "@/app/components/IfcBlock";
 import IfcPVWSRequest from "@/app/components/IfcPVWSRequest";
 
@@ -19,6 +19,12 @@ export default function InstrumentPage() {
 
   return <InstrumentData instrumentName={instrument} />;
 }
+
+const RC_ENABLE = ":RC:ENABLE";
+
+const RC_INRANGE = ":RC:INRANGE";
+
+const CSSB = "CS:SB:";
 
 function InstrumentData({ instrumentName }: { instrumentName: string }) {
   // set up the different states for the instrument data
@@ -37,12 +43,12 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
   const {
     sendJsonMessage,
     lastJsonMessage,
-  }: { sendJsonMessage:((a: IfcPVWSRequest) => void), lastJsonMessage: IfcPVWSMessage } = useWebSocket(
-    socketURL,
-    {
-      shouldReconnect: (closeEvent) => true,
-    },
-  );
+  }: {
+    sendJsonMessage: (a: IfcPVWSRequest) => void;
+    lastJsonMessage: IfcPVWSMessage;
+  } = useWebSocket(socketURL, {
+    shouldReconnect: (closeEvent) => true,
+  });
 
   const CONFIG_DETAILS = "CS:BLOCKSERVER:GET_CURR_CONFIG_DETAILS";
   const [instlist, setInstlist] = useState<Array<any> | null>(null);
@@ -162,15 +168,13 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
               currentInstrument.groups.length - 1
             ].blocks.push(completePV);
             const block_address =
-              currentInstrument.prefix +
-              "CS:SB:" +
-              completePV.human_readable_name;
+              currentInstrument.prefix + CSSB + completePV.human_readable_name;
             sendJsonMessage({
               type: "subscribe",
               pvs: [
                 block_address,
-                block_address + ":RC:ENABLE",
-                block_address + ":RC:INRANGE",
+                block_address + RC_ENABLE,
+                block_address + RC_INRANGE,
               ],
             });
           }
@@ -217,7 +221,7 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
         for (const group of currentInstrument.groups) {
           for (const block of group.blocks) {
             let block_full_pv_name =
-              currentInstrument.prefix + "CS:SB:" + block.human_readable_name;
+              currentInstrument.prefix + CSSB + block.human_readable_name;
             if (updatedPVName == block_full_pv_name) {
               let prec = updatedPV.precision;
 
@@ -243,17 +247,18 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
                 block.human_readable_name + "_CIRCLE",
               );
               if (!pvChangedIndicator) return;
-              if (pvChangedIndicator.classList.contains("text-green-500")) return;
+              if (pvChangedIndicator.classList.contains("text-green-500"))
+                return;
               pvChangedIndicator.classList.remove("text-transparent");
               pvChangedIndicator.classList.add("text-green-500");
               setTimeout(() => {
                 pvChangedIndicator.classList.remove("text-green-500");
                 pvChangedIndicator.classList.add("text-transparent");
               }, 2000);
-            } else if (updatedPVName == block_full_pv_name + ":RC:INRANGE") {
+            } else if (updatedPVName == block_full_pv_name + RC_INRANGE) {
               block.runcontrol_inrange = updatedPV.value == 1;
               return;
-            } else if (updatedPVName == block_full_pv_name + ":RC:ENABLE") {
+            } else if (updatedPVName == block_full_pv_name + RC_ENABLE) {
               block.runcontrol_enabled = updatedPV.value == 1;
               return;
             }

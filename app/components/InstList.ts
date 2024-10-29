@@ -8,7 +8,13 @@ const INSTLIST_PV = "CS:INSTLIST";
 export default function InstList() {
   const socketURL = process.env.NEXT_PUBLIC_WS_URL ?? "";
 
-  const { sendJsonMessage, lastJsonMessage } : { sendJsonMessage:((a: IfcPVWSRequest) => void), lastJsonMessage: IfcPVWSMessage } = useWebSocket(socketURL, {
+  const {
+    sendJsonMessage,
+    lastJsonMessage,
+  }: {
+    sendJsonMessage: (a: IfcPVWSRequest) => void;
+    lastJsonMessage: IfcPVWSMessage;
+  } = useWebSocket(socketURL, {
     shouldReconnect: (closeEvent) => true,
   });
 

@@ -1,5 +1,5 @@
 import InstrumentWallCard from "./InstrumentWallCard";
-import { IfcInstrumentStatus } from "../IfcInstrumentStatus";
+import IfcInstrumentStatus from "../IfcInstrumentStatus";
 
 export default function InstrumentGroup({
   groupName,
