@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import TopBar from "./TopBar";
+import TopBar, { findPVByAddress } from "./TopBar";
 import Groups from "./Groups";
 import useWebSocket from "react-use-websocket";
 import { dehex_and_decompress } from "./dehex_and_decompress";
 import { findPVInDashboard, Instrument } from "./Instrument";
-import { findPVByAddress, IfcPV } from "./IfcPV";
+import { IfcPV } from "./IfcPV";
 import IfcPVWSMessage from "./IfcPVWSMessage";
 import { useSearchParams } from "next/navigation";
 import IfcBlock from "@/app/components/IfcBlock";

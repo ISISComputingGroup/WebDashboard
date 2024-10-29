@@ -1,18 +1,24 @@
 import { getForegroundColor, getStatusColor } from "./getRunstateColours";
-import {
-  findPVByAddress,
-  findPVByHumanReadableName,
-  IfcPV,
-} from "@/app/components/IfcPV";
+import { findPVByHumanReadableName, IfcPV } from "@/app/components/IfcPV";
 
-const runStateStr = "Run state";
+export const runStateStr = "Run state";
 const configName = "Config name";
 
-function getRunstate(runInfoPVs: Array<IfcPV>): string | undefined {
+export function getRunstate(runInfoPVs: Array<IfcPV>): string | undefined {
   const runStatePV = findPVByHumanReadableName(runInfoPVs, runStateStr);
   if (runStatePV && runStatePV.value && typeof runStatePV.value === "string") {
     return runStatePV.value;
   }
+}
+
+/**
+ * Given an array of PVs, find a PV based on its PV address. If none found, return undefined.
+ */
+export function findPVByAddress(
+  arr: Array<IfcPV>,
+  address: string,
+): IfcPV | undefined {
+  return arr.find((b: IfcPV) => b.pvaddress == address);
 }
 
 const TopBar = ({

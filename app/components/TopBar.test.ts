@@ -1,8 +1,9 @@
+import { findPVByHumanReadableName, IfcPV } from "@/app/components/IfcPV";
 import {
   findPVByAddress,
-  findPVByHumanReadableName,
-  IfcPV,
-} from "@/app/components/IfcPV";
+  getRunstate,
+  runStateStr,
+} from "@/app/components/TopBar";
 
 test("findPVByAddress finds a PV and returns it", () => {
   const pvAddressToTest = "SOME:PV";
@@ -45,4 +46,20 @@ test("findPVByHumanReadableName does not find a nonexistant PV and returns undef
   const result = findPVByHumanReadableName(myPVs, humanReadableNameToTest);
 
   expect(result).toBe(undefined);
+});
+
+test("GetRunstate returns the runstate when it exists and is of string type", () => {
+  const expected = "SETUP";
+  const PVToTest: IfcPV = {
+    pvaddress: "",
+    value: expected,
+    human_readable_name: runStateStr,
+  };
+  const PVArr = [PVToTest];
+  expect(getRunstate(PVArr)).toBe(expected);
+});
+
+test("GetRunstate returns undefined when no runstate PV in array", () => {
+  const PVArr: Array<IfcPV> = [];
+  expect(getRunstate(PVArr)).toBe(undefined);
 });
