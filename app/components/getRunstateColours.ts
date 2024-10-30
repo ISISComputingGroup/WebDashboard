@@ -11,9 +11,8 @@ const statusColourLookup = new Map<string, string>([
   ["SETUP", "bg-[#ADD8E6]"],
 ]);
 
-export function getForegroundColour(status: string | undefined): string {
+export function getForegroundColour(status: string): string {
   const blackTextRunstates = [
-    undefined,
     "UNKNOWN",
     "RUNNING",
     "PROCESSING",
@@ -22,9 +21,8 @@ export function getForegroundColour(status: string | undefined): string {
   ];
   return blackTextRunstates.includes(status) ? "text-black" : "text-white";
 }
-export function getStatusColour(status: string | undefined): string {
+export function getStatusColour(status: string): string {
   if (
-    status == undefined ||
     !statusColourLookup.has(status) ||
     status == "UNKNOWN"
   ) {

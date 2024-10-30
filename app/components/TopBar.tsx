@@ -6,11 +6,12 @@ import { findPVByHumanReadableName } from "@/app/components/PVutils";
 export const runStateStr = "Run state";
 export const configName = "Config name";
 
-export function getRunstate(runInfoPVs: Array<IfcPV>): string | undefined {
+export function getRunstate(runInfoPVs: Array<IfcPV>): string {
   const runStatePV = findPVByHumanReadableName(runInfoPVs, runStateStr);
   if (runStatePV && runStatePV.value && typeof runStatePV.value === "string") {
     return runStatePV.value;
   }
+  return "UNKNOWN"
 }
 
 export default function TopBar({

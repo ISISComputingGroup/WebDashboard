@@ -19,9 +19,9 @@ test("GetRunstate returns the runstate when it exists and is of string type", ()
   expect(getRunstate(PVArr)).toBe(expected);
 });
 
-test("GetRunstate returns undefined when no runstate PV in array", () => {
+test("GetRunstate returns unknown when no runstate PV in array", () => {
   const PVArr: Array<IfcPV> = [];
-  expect(getRunstate(PVArr)).toBe(undefined);
+  expect(getRunstate(PVArr)).toBe("UNKNOWN");
 });
 
 it("renders topbar unchanged", () => {
