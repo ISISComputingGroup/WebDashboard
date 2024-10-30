@@ -11,7 +11,7 @@ export function getRunstate(runInfoPVs: Array<IfcPV>): string {
   if (runStatePV && runStatePV.value && typeof runStatePV.value === "string") {
     return runStatePV.value;
   }
-  return "UNKNOWN"
+  return "UNKNOWN";
 }
 
 export default function TopBar({
