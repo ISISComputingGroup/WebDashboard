@@ -16,8 +16,8 @@ export default function WallCard({
     <motion.div
       whileHover={{ y: -10 }}
       className={`flex items-center justify-between p-3  rounded-lg shadow-sm border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
-      ${getStatusColour(instrument.status)} ${getForegroundColour(
-        instrument.status,
+      ${getStatusColour(instrument.status || "UNKNOWN")} ${getForegroundColour(
+        instrument.status || "UNKNOWN",
       )}`}
     >
       <Link
