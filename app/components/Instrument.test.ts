@@ -1,7 +1,7 @@
 import { findPVInDashboard } from "@/app/components/Instrument";
 import { DashboardArr, IfcPV } from "@/app/types";
 
-test("findPVinDashboard finds a IfcPV in the dashboard and returns it", () => {
+test("findPVinDashboard finds a pv in the dashboard and returns it", () => {
   const prefix = "UNITTESTING";
   const pvToTestFor: IfcPV = { pvaddress: `${prefix}1:1:LABEL` };
   let dashboard: DashboardArr = [
@@ -46,7 +46,7 @@ test("findPVinDashboard finds a IfcPV in the dashboard and returns it", () => {
   expect(result).toBe(pvToTestFor);
 });
 
-test("findPVinDashboard does not find a IfcPV in the dashboard and returns undefined", () => {
+test("findPVinDashboard does not find a PV in the dashboard and returns undefined", () => {
   const prefix = "UNITTESTING";
   const pvToTestFor: IfcPV = { pvaddress: `${prefix}1:4:LABEL` };
   let dashboard: DashboardArr = [
