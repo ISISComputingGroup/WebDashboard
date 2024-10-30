@@ -19,7 +19,7 @@ export default function Group({
 
   // Check if all the blocks in this group are hidden. If so, hide the group.
   if (checkIfAllBlocksInGroupAreHidden(group) && !showHiddenBlocks) {
-    return;
+    return <div />;
   }
 
   return (

@@ -1,0 +1,406 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders topbar unchanged 1`] = `
+<div>
+  <div
+    class="w-full bg-white  shadow-lg text-black rounded-xl text-md"
+    id="top_bar"
+  >
+    <div
+      class="text-left mb-4 p-4"
+    >
+      <h1
+        class="text-black text-2xl"
+      >
+        Instrument:
+         
+        <span
+          class="font-semibold"
+          id="instNameSpan"
+        >
+          INSTRUMENT
+        </span>
+      </h1>
+      <h1
+        class="text-black text-lg"
+      >
+        Config:
+         
+        <span
+          class="font-semibold"
+          id="configNameSpan"
+        />
+      </h1>
+    </div>
+    <div
+      class="w-full flex justify-center items-center flex-col"
+      id="instNameDiv"
+    >
+      <h2
+        class="text-center p-4 text-xl rounded-t-lg w-full 
+          bg-[#F08080]
+           
+           text-black
+          
+          "
+      >
+        INSTRUMENT
+         is 
+        <span
+          id="runStateSpan"
+        />
+      </h2>
+      <div
+        class="bg-gray-50 border-2 border-gray-800 m-4 p-4 shadow-md flex flex-col"
+      >
+        <table
+          class="text-sm w-full table-fixed flex divide-x divide-gray-200 "
+          id="dashboardTable"
+        >
+          <tbody
+            id="0"
+          >
+            <tr
+              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+            >
+              <td
+                class="py-1 px-4 flex font-bold"
+              >
+                Title:
+              </td>
+              <td
+                class="py-1 px-4 flex justify-between items-center"
+              >
+                <span
+                  class="font-light"
+                >
+                  Hidden/unknown
+                </span>
+              </td>
+            </tr>
+            <tr
+              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+            >
+              <td
+                class="py-1 px-4 flex font-bold"
+              >
+                Users:
+              </td>
+              <td
+                class="py-1 px-4 flex justify-between items-center"
+              >
+                <span
+                  class="font-light"
+                >
+                  Hidden/unknown
+                </span>
+              </td>
+            </tr>
+          </tbody>
+          <tbody
+            id="1"
+          >
+            <tr
+              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+            >
+              <td
+                class="py-1 px-4 flex font-bold"
+              />
+              <td
+                class="py-1 px-4 flex justify-between items-center"
+              >
+                <span
+                  class="font-light"
+                >
+                  Hidden/unknown
+                </span>
+              </td>
+            </tr>
+            <tr
+              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+            >
+              <td
+                class="py-1 px-4 flex font-bold"
+              />
+              <td
+                class="py-1 px-4 flex justify-between items-center"
+              >
+                <span
+                  class="font-light"
+                >
+                  Hidden/unknown
+                </span>
+              </td>
+            </tr>
+            <tr
+              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+            >
+              <td
+                class="py-1 px-4 flex font-bold"
+              />
+              <td
+                class="py-1 px-4 flex justify-between items-center"
+              >
+                <span
+                  class="font-light"
+                >
+                  Hidden/unknown
+                </span>
+              </td>
+            </tr>
+          </tbody>
+          <tbody
+            id="2"
+          >
+            <tr
+              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+            >
+              <td
+                class="py-1 px-4 flex font-bold"
+              />
+              <td
+                class="py-1 px-4 flex justify-between items-center"
+              >
+                <span
+                  class="font-light"
+                >
+                  Hidden/unknown
+                </span>
+              </td>
+            </tr>
+            <tr
+              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+            >
+              <td
+                class="py-1 px-4 flex font-bold"
+              />
+              <td
+                class="py-1 px-4 flex justify-between items-center"
+              >
+                <span
+                  class="font-light"
+                >
+                  Hidden/unknown
+                </span>
+              </td>
+            </tr>
+            <tr
+              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+            >
+              <td
+                class="py-1 px-4 flex font-bold"
+              />
+              <td
+                class="py-1 px-4 flex justify-between items-center"
+              >
+                <span
+                  class="font-light"
+                >
+                  Hidden/unknown
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <label
+        id="runInfoLabel"
+      >
+        <input
+          class="peer/showLabel absolute scale-0"
+          type="checkbox"
+        />
+        <span
+          class="block max-h-14 overflow-hidden rounded-lg bg-gray-50 hover:bg-gray-800 hover:text-white px-4 py-0 mb-2  shadow-lg transition-all duration-300 peer-checked/showLabel:max-h-fit cursor-pointer"
+        >
+          <h3
+            class="flex h-14 cursor-pointer items-center font-bold "
+          >
+            Click to show/hide all run information
+          </h3>
+          <p
+            class="mb-2"
+          >
+            Config name
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Run state
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Run number
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Start number
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Title
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Users
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Good frames
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Raw frames (Total)
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Raw frames (Period)
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Current(uamps)
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Total(uamps)
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Monitor counts
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Monitor Spectrum
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Monitor From
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Monitor To
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Shutter Status
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Number of Spectra
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Number of Time Channels
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            DAE Simulation Mode
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Instrument Time
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Start time
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Run time
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Period
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Num periods
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Count Rate
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            RB Number
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Total Run Time
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Period Run Time
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            Period Sequence
+            : 
+          </p>
+          <p
+            class="mb-2"
+          >
+            DAE Memory Used
+            : 
+          </p>
+        </span>
+      </label>
+    </div>
+  </div>
+</div>
+`;

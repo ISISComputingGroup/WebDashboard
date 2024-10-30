@@ -1,12 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import TopBar, { findPVByAddress } from "./TopBar";
+import TopBar from "./TopBar";
 import Groups from "./Groups";
 import useWebSocket from "react-use-websocket";
 import { dehex_and_decompress } from "./dehex_and_decompress";
 import { findPVInDashboard, Instrument } from "./Instrument";
 import { useSearchParams } from "next/navigation";
 import { IfcBlock, IfcPV, IfcPVWSMessage, IfcPVWSRequest } from "@/app/types";
+import { findPVByAddress } from "@/app/components/PVutils";
 
 let lastUpdate: string = "";
 
@@ -132,7 +133,7 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
         return;
       }
       //parse it here
-      //create IfcPV objects for currentinstrument.groups
+      //create block objects for currentinstrument.groups
       //subscribe to pvs
       const ConfigOutput = JSON.parse(res);
       const blocks = ConfigOutput.blocks;
@@ -193,7 +194,7 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
       }
 
       if (findPVInDashboard(currentInstrument.dashboard, updatedPVName)) {
-        // This is a dashboard IfcPV update.
+        // This is a dashboard block update.
         const pv: IfcPV = findPVInDashboard(
           currentInstrument.dashboard,
           updatedPVName,
@@ -203,10 +204,10 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
           updatedPVbytes &&
           atob(updatedPVbytes) != "\x00"
         ) {
-          // This is the title IfcPV which is base64 encoded, so decode here
+          // This is the title block which is base64 encoded, so decode here
           pv.value = atob(updatedPVbytes);
         } else if (updatedPV.text) {
-          // This is any other dashboard IfcPV
+          // This is any other dashboard block
           pv.value = updatedPV.text;
         }
       } else if (findPVByAddress(currentInstrument.runInfoPVs, updatedPVName)) {

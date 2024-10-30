@@ -1,19 +1,10 @@
 import { getForegroundColour, getStatusColour } from "./getRunstateColours";
 
 import { IfcPV } from "@/app/types";
+import { findPVByHumanReadableName } from "@/app/components/PVutils";
 
 export const runStateStr = "Run state";
-const configName = "Config name";
-
-/**
- * Given an array of PVs, find a PV based on its human-readable name. If none found, return undefined.
- */
-export function findPVByHumanReadableName(
-  arr: Array<IfcPV>,
-  human_readable_name: string,
-): IfcPV | undefined {
-  return arr.find((b: IfcPV) => b.human_readable_name == human_readable_name);
-}
+export const configName = "Config name";
 
 export function getRunstate(runInfoPVs: Array<IfcPV>): string | undefined {
   const runStatePV = findPVByHumanReadableName(runInfoPVs, runStateStr);
@@ -22,17 +13,7 @@ export function getRunstate(runInfoPVs: Array<IfcPV>): string | undefined {
   }
 }
 
-/**
- * Given an array of PVs, find a PV based on its PV address. If none found, return undefined.
- */
-export function findPVByAddress(
-  arr: Array<IfcPV>,
-  address: string,
-): IfcPV | undefined {
-  return arr.find((b: IfcPV) => b.pvaddress == address);
-}
-
-const TopBar = ({
+export default function TopBar({
   dashboard,
   instName,
   runInfoPVs,
@@ -40,7 +21,7 @@ const TopBar = ({
   dashboard: Array<Array<Array<IfcPV>>>;
   instName: string;
   runInfoPVs: Array<IfcPV>;
-}) => {
+}) {
   if (
     !dashboard ||
     !dashboard.flat().length ||
@@ -63,19 +44,21 @@ const TopBar = ({
       <div className="text-left mb-4 p-4">
         <h1 className="text-black text-2xl">
           Instrument:{" "}
-          <span className="font-semibold">{instName.toUpperCase()}</span>
+          <span id={"instNameSpan"} className="font-semibold">
+            {instName.toUpperCase()}
+          </span>
         </h1>
         <h1 className="text-black text-lg">
           Config:{" "}
-          <span className="font-semibold">
-            {findPVByAddress(runInfoPVs, configName)
-              ? findPVByAddress(runInfoPVs, configName)!.value
+          <span id={"configNameSpan"} className="font-semibold">
+            {findPVByHumanReadableName(runInfoPVs, configName)
+              ? findPVByHumanReadableName(runInfoPVs, configName)!.value
               : "UNKNOWN"}
           </span>
         </h1>
       </div>
       <div
-        id="inst_name"
+        id="instNameDiv"
         className="w-full flex justify-center items-center flex-col"
       >
         <h2
@@ -86,10 +69,14 @@ const TopBar = ({
           
           `}
         >
-          {instName.toUpperCase()} is <span>{getRunstate(runInfoPVs)}</span>
+          {instName.toUpperCase()} is{" "}
+          <span id={"runStateSpan"}>{getRunstate(runInfoPVs)}</span>
         </h2>
         <div className="bg-gray-50 border-2 border-gray-800 m-4 p-4 shadow-md flex flex-col">
-          <table className="text-sm w-full table-fixed flex divide-x divide-gray-200 ">
+          <table
+            id={"dashboardTable"}
+            className="text-sm w-full table-fixed flex divide-x divide-gray-200 "
+          >
             {dashboard.map((column: Array<Array<IfcPV>>, index: number) => (
               <tbody key={index} id={index.toString()}>
                 {column.map((row: Array<IfcPV>, index: number) => (
@@ -110,7 +97,7 @@ const TopBar = ({
           </table>
         </div>
 
-        <label>
+        <label id={"runInfoLabel"}>
           <input className="peer/showLabel absolute scale-0" type="checkbox" />
           <span className="block max-h-14 overflow-hidden rounded-lg bg-gray-50 hover:bg-gray-800 hover:text-white px-4 py-0 mb-2  shadow-lg transition-all duration-300 peer-checked/showLabel:max-h-fit cursor-pointer">
             <h3 className="flex h-14 cursor-pointer items-center font-bold ">
@@ -126,6 +113,4 @@ const TopBar = ({
       </div>
     </div>
   );
-};
-
-export default TopBar;
+}
