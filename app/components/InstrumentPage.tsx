@@ -206,17 +206,8 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
 
       if (findPVInDashboard(currentInstrument.dashboard, updatedPVName)) {
         // This is a dashboard block update.
-        const pv: IfcPV = findPVInDashboard(
-          currentInstrument.dashboard,
-          updatedPVName,
-        )!;
-        if (updatedPVName.endsWith("TITLE") && pvVal && pvVal != "\x00") {
-          // This is the title block which is base64 encoded, so decode here
-          pv.value = pvVal;
-        } else if (pvVal) {
-          // This is any other dashboard block
-          pv.value = pvVal;
-        }
+        findPVInDashboard(currentInstrument.dashboard, updatedPVName)!.value =
+          pvVal;
       } else if (findPVByAddress(currentInstrument.runInfoPVs, updatedPVName)) {
         // This is a run information PV
         findPVByAddress(currentInstrument.runInfoPVs, updatedPVName)!.value =
@@ -242,20 +233,6 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
               }
               if (updatedPV.units) block.units = updatedPV.units;
               if (updatedPV.severity) block.severity = updatedPV.severity;
-
-              // Let the user know a change has occurred by lighting up the green dot next to the value
-              const pvChangedIndicator = document.getElementById(
-                block.human_readable_name + "_CIRCLE",
-              );
-              if (!pvChangedIndicator) return;
-              if (pvChangedIndicator.classList.contains("text-green-500"))
-                return;
-              pvChangedIndicator.classList.remove("text-transparent");
-              pvChangedIndicator.classList.add("text-green-500");
-              setTimeout(() => {
-                pvChangedIndicator.classList.remove("text-green-500");
-                pvChangedIndicator.classList.add("text-transparent");
-              }, 2000);
             } else if (updatedPVName == block_full_pv_name + RC_INRANGE) {
               block.runcontrol_inrange = updatedPV.value == 1;
               return;
