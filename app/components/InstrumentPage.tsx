@@ -26,13 +26,13 @@ export default function InstrumentPage() {
   return <InstrumentData instrumentName={instrument} />;
 }
 
-const RC_ENABLE = ":RC:ENABLE";
+export const RC_ENABLE = ":RC:ENABLE";
 
-const RC_INRANGE = ":RC:INRANGE";
+export const RC_INRANGE = ":RC:INRANGE";
 
-const CSSB = "CS:SB:";
+export const CSSB = "CS:SB:";
 
-function subscribeToBlockPVs(
+export function subscribeToBlockPVs(
   sendJsonMessage: (a: IfcPVWSRequest) => void,
   block_address: string,
 ) {
@@ -45,7 +45,7 @@ function subscribeToBlockPVs(
   });
 }
 
-function getGroupsWithBlocksFromConfigOutput(
+export function getGroupsWithBlocksFromConfigOutput(
   ConfigOutput: ConfigOutput,
   sendJsonMessage: (a: IfcPVWSRequest) => void,
   prefix: string,
@@ -67,7 +67,8 @@ function getGroupsWithBlocksFromConfigOutput(
           high_rc: newBlock.highlimit,
           visible: newBlock.visible,
         });
-        subscribeToBlockPVs(sendJsonMessage, prefix + CSSB + newBlock.name);
+        const fullyQualifiedBlockPVAddress = prefix + CSSB + newBlock.name;
+        subscribeToBlockPVs(sendJsonMessage, fullyQualifiedBlockPVAddress);
       }
     }
     newGroups.push({
