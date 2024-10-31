@@ -12,14 +12,16 @@ it("renders topbar unchanged", () => {
     visible: true,
   };
   const instName = "Instrument";
+  // @ts-ignore
   const { container } = render(Block(aBlock, instName, false));
   expect(container).toMatchSnapshot();
 });
 
-it("renders empty div if pv is hidden", () => {
+it("renders nothing if pv is hidden", () => {
   const aBlock: IfcBlock = { pvaddress: "SOME:PV", visible: false };
+  // @ts-ignore
   const { container } = render(Block(aBlock, "", false));
-  expect(container.innerHTML).toBe("<div></div>");
+  expect(container.innerHTML).toBe("");
 });
 
 it("renders block with correct name", () => {
@@ -28,6 +30,7 @@ it("renders block with correct name", () => {
     visible: true,
     human_readable_name: "MyBlock",
   };
+  // @ts-ignore
   const { container } = render(Block(aBlock, "", false));
   expect(container.getElementsByTagName("a")[0].innerHTML).toBe(
     aBlock.human_readable_name,
@@ -42,6 +45,7 @@ it("renders block with run control that is in range as a tick", () => {
     runcontrol_inrange: true,
     runcontrol_enabled: true,
   };
+  // @ts-ignore
   const { container } = render(Block(aBlock, "", false));
   expect(
     container.querySelector(`#${aBlock.human_readable_name}_VALUE_RC`)!
@@ -57,6 +61,7 @@ it("renders block with run control that is not in range as a cross", () => {
     runcontrol_inrange: false,
     runcontrol_enabled: true,
   };
+  // @ts-ignore
   const { container } = render(Block(aBlock, "", false));
   expect(
     container.querySelector(`#${aBlock.human_readable_name}_VALUE_RC`)!
@@ -72,6 +77,7 @@ it("renders block without run control without tick or cross", () => {
     runcontrol_inrange: false,
     runcontrol_enabled: false,
   };
+  // @ts-ignore
   const { container } = render(Block(aBlock, "", false));
   expect(
     container.querySelector(`#${aBlock.human_readable_name}_VALUE_RC`)!

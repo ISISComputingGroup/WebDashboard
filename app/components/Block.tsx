@@ -9,7 +9,7 @@ export default function Block(
   showHiddenBlocks: boolean,
 ) {
   if (!pv.visible && !showHiddenBlocks && !instName) {
-    return <div />;
+    return null;
   }
   return (
     <tr
