@@ -6,7 +6,15 @@ import useWebSocket from "react-use-websocket";
 import { dehex_and_decompress } from "./dehex_and_decompress";
 import { findPVInDashboard, Instrument } from "./Instrument";
 import { useSearchParams } from "next/navigation";
-import { IfcBlock, IfcPV, IfcPVWSMessage, IfcPVWSRequest } from "@/app/types";
+import {
+  ConfigOutput,
+  ConfigOutputBlock,
+  IfcBlock,
+  IfcGroup,
+  IfcPV,
+  IfcPVWSMessage,
+  IfcPVWSRequest,
+} from "@/app/types";
 import { findPVByAddress } from "@/app/components/PVutils";
 
 let lastUpdate: string = "";
@@ -23,6 +31,52 @@ const RC_ENABLE = ":RC:ENABLE";
 const RC_INRANGE = ":RC:INRANGE";
 
 const CSSB = "CS:SB:";
+
+function subscribeToBlockPVs(
+  sendJsonMessage: (a: IfcPVWSRequest) => void,
+  block_address: string,
+) {
+  /**
+   * Subscribes to a block and its associated run control PVs
+   */
+  sendJsonMessage({
+    type: "subscribe",
+    pvs: [block_address, block_address + RC_ENABLE, block_address + RC_INRANGE],
+  });
+}
+
+function getGroupsWithBlocksFromConfigOutput(
+  ConfigOutput: ConfigOutput,
+  sendJsonMessage: (a: IfcPVWSRequest) => void,
+  prefix: string,
+): Array<IfcGroup> {
+  const groups = ConfigOutput.groups;
+  let newGroups: Array<IfcGroup> = [];
+  for (const group of groups) {
+    const groupName = group.name;
+    let blocks: Array<IfcBlock> = [];
+    for (const block of group.blocks) {
+      const newBlock = ConfigOutput.blocks.find(
+        (b: ConfigOutputBlock) => b.name === block,
+      );
+      if (newBlock) {
+        blocks.push({
+          pvaddress: newBlock.pv,
+          human_readable_name: newBlock.name,
+          low_rc: newBlock.lowlimit,
+          high_rc: newBlock.highlimit,
+          visible: newBlock.visible,
+        });
+        subscribeToBlockPVs(sendJsonMessage, prefix + CSSB + newBlock.name);
+      }
+    }
+    newGroups.push({
+      name: groupName,
+      blocks: blocks,
+    });
+  }
+  return newGroups;
+}
 
 function InstrumentData({ instrumentName }: { instrumentName: string }) {
   // set up the different states for the instrument data
@@ -121,73 +175,29 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
     ) {
       // config change, reset instrument groups
       if (updatedPVbytes == lastUpdate) {
-        //config hasnt actually changed
+        // config hasnt actually changed so do nothing
         return;
       }
       lastUpdate = updatedPVbytes;
-
-      console.log("config changed");
       const res = dehex_and_decompress(atob(updatedPVbytes));
-
       if (res == null || typeof res != "string") {
         return;
       }
-      //parse it here
-      //create block objects for currentinstrument.groups
-      //subscribe to pvs
-      const ConfigOutput = JSON.parse(res);
-      const blocks = ConfigOutput.blocks;
-      const groups = ConfigOutput.groups;
-
-      currentInstrument.groups = [];
-
-      if (groups) {
-        for (const group of groups) {
-          const groupName = group.name;
-          const groupBlocks = group.blocks;
-
-          currentInstrument.groups.push({
-            name: groupName,
-            blocks: [],
-          });
-
-          for (const block of groupBlocks) {
-            const newBlock = blocks.find((b: any) => b.name === block);
-
-            const completePV: IfcBlock = {
-              pvaddress: newBlock.pv,
-              human_readable_name: newBlock.name,
-              low_rc: newBlock.lowlimit,
-              high_rc: newBlock.highlimit,
-              visible: newBlock.visible,
-            };
-
-            currentInstrument.groups[
-              currentInstrument.groups.length - 1
-            ].blocks.push(completePV);
-            const block_address =
-              currentInstrument.prefix + CSSB + completePV.human_readable_name;
-            sendJsonMessage({
-              type: "subscribe",
-              pvs: [
-                block_address,
-                block_address + RC_ENABLE,
-                block_address + RC_INRANGE,
-              ],
-            });
-          }
-        }
-      }
+      currentInstrument.groups = getGroupsWithBlocksFromConfigOutput(
+        JSON.parse(res),
+        sendJsonMessage,
+        currentInstrument.prefix,
+      );
     } else {
       let pvVal;
       if (updatedPV.text != null) {
-        //string
+        // PV has string value
         pvVal = updatedPV.text;
       } else if (updatedPVbytes != null) {
-        //pv is base64 encoded
+        // PV value is base64 encoded
         pvVal = atob(updatedPVbytes);
       } else if (updatedPV.value != null) {
-        //anything else
+        // PV value is a number
         pvVal = updatedPV.value;
       } else {
         return;
@@ -199,23 +209,19 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
           currentInstrument.dashboard,
           updatedPVName,
         )!;
-        if (
-          updatedPVName.endsWith("TITLE") &&
-          updatedPVbytes &&
-          atob(updatedPVbytes) != "\x00"
-        ) {
+        if (updatedPVName.endsWith("TITLE") && pvVal && pvVal != "\x00") {
           // This is the title block which is base64 encoded, so decode here
-          pv.value = atob(updatedPVbytes);
-        } else if (updatedPV.text) {
+          pv.value = pvVal;
+        } else if (pvVal) {
           // This is any other dashboard block
-          pv.value = updatedPV.text;
+          pv.value = pvVal;
         }
       } else if (findPVByAddress(currentInstrument.runInfoPVs, updatedPVName)) {
+        // This is a run information PV
         findPVByAddress(currentInstrument.runInfoPVs, updatedPVName)!.value =
           pvVal;
       } else {
         // This is a block - check if in groups
-
         for (const group of currentInstrument.groups) {
           for (const block of group.blocks) {
             let block_full_pv_name =
@@ -233,12 +239,8 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
               } else {
                 block.value = pvVal;
               }
-              if (updatedPV.units) {
-                block.units = updatedPV.units;
-              }
-              if (updatedPV.severity) {
-                block.severity = updatedPV.severity;
-              }
+              if (updatedPV.units) block.units = updatedPV.units;
+              if (updatedPV.severity) block.severity = updatedPV.severity;
 
               // Let the user know a change has occurred by lighting up the green dot next to the value
               const pvChangedIndicator = document.getElementById(
@@ -271,7 +273,7 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
     setShowHiddenBlocks(!showHiddenBlocks);
   };
 
-  if (!instName || instName == null || !currentInstrument) {
+  if (!instName || !currentInstrument) {
     return <h1>Loading...</h1>;
   }
   return (

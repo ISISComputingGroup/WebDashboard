@@ -80,3 +80,62 @@ export interface IfcInstrumentStatus {
 
 // Column[Row[labelPV, valuePV]]
 export type DashboardArr = Array<Array<Array<IfcPV>>>;
+
+export interface ConfigOutput {
+  blocks: Array<ConfigOutputBlock>;
+  component_iocs: Array<ConfigOutputIOCs>;
+  components: Array<ConfigOutputComponent>;
+  configuresBlockGWAndArchiver: boolean;
+  description: string;
+  groups: Array<ConfigOutputGroup>;
+  history: Array<string>;
+  iocs: Array<ConfigOutputIOCs>;
+  isDynamic: boolean;
+  isProtected: boolean;
+  name: string;
+  synoptic: string;
+}
+
+export interface ConfigOutputBlock {
+  component?: string;
+  highlimit: number;
+  local: boolean;
+  log_deadband: number;
+  log_periodic: boolean;
+  log_rate: number;
+  lowlimit: number;
+  name: string;
+  pv: string;
+  runcontrol: boolean;
+  set_block: boolean;
+  set_block_val?: number | string;
+  suspend_on_invalid: boolean;
+  visible: boolean;
+}
+
+export interface ConfigOutputComponent {
+  name: string;
+}
+
+export interface ConfigOutputGroup {
+  blocks: Array<string>;
+  name: string;
+  component?: string;
+}
+
+export interface ConfigOutputIOCs {
+  autostart: boolean;
+  component: string;
+  macros: Array<ConfigOutputIocMacro>;
+  name: string;
+  pvs: Array<string>;
+  pvsets: Array<string>;
+  remotePvPrefix: string;
+  restart: boolean;
+  simlevel: string;
+}
+
+export interface ConfigOutputIocMacro {
+  name: string;
+  value: string;
+}
