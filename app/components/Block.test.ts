@@ -1,6 +1,15 @@
 import { render } from "@testing-library/react";
 import Block from "@/app/components/Block";
 import { IfcBlock } from "@/app/types";
+import { table } from "framer-motion/m";
+import React from "react";
+
+let tableBody: HTMLTableSectionElement;
+beforeEach(() => {
+  // We have to create a table with a tbody as Block returns a <tr>, so create that here for each test.
+  const table = document.createElement("table");
+  tableBody = table.createTBody();
+});
 
 it("renders topbar unchanged", () => {
   const unit = "mm";
@@ -12,15 +21,17 @@ it("renders topbar unchanged", () => {
     visible: true,
   };
   const instName = "Instrument";
-  // @ts-ignore
-  const { container } = render(Block(aBlock, instName, false));
+  const { container } = render(Block(aBlock, instName, false), {
+    container: tableBody,
+  });
   expect(container).toMatchSnapshot();
 });
 
 it("renders nothing if pv is hidden", () => {
   const aBlock: IfcBlock = { pvaddress: "SOME:PV", visible: false };
-  // @ts-ignore
-  const { container } = render(Block(aBlock, "", false));
+  const { container } = render(Block(aBlock, "", false), {
+    container: tableBody,
+  });
   expect(container.innerHTML).toBe("");
 });
 
@@ -30,8 +41,9 @@ it("renders block with correct name", () => {
     visible: true,
     human_readable_name: "MyBlock",
   };
-  // @ts-ignore
-  const { container } = render(Block(aBlock, "", false));
+  const { container } = render(Block(aBlock, "", false), {
+    container: tableBody,
+  });
   expect(container.getElementsByTagName("a")[0].innerHTML).toBe(
     aBlock.human_readable_name,
   );
@@ -45,8 +57,9 @@ it("renders block with run control that is in range as a tick", () => {
     runcontrol_inrange: true,
     runcontrol_enabled: true,
   };
-  // @ts-ignore
-  const { container } = render(Block(aBlock, "", false));
+  const { container } = render(Block(aBlock, "", false), {
+    container: tableBody,
+  });
   expect(
     container.querySelector(`#${aBlock.human_readable_name}_VALUE_RC`)!
       .innerHTML,
@@ -61,8 +74,9 @@ it("renders block with run control that is not in range as a cross", () => {
     runcontrol_inrange: false,
     runcontrol_enabled: true,
   };
-  // @ts-ignore
-  const { container } = render(Block(aBlock, "", false));
+  const { container } = render(Block(aBlock, "", false), {
+    container: tableBody,
+  });
   expect(
     container.querySelector(`#${aBlock.human_readable_name}_VALUE_RC`)!
       .innerHTML,
@@ -77,8 +91,9 @@ it("renders block without run control without tick or cross", () => {
     runcontrol_inrange: false,
     runcontrol_enabled: false,
   };
-  // @ts-ignore
-  const { container } = render(Block(aBlock, "", false));
+  const { container } = render(Block(aBlock, "", false), {
+    container: tableBody,
+  });
   expect(
     container.querySelector(`#${aBlock.human_readable_name}_VALUE_RC`)!
       .innerHTML,

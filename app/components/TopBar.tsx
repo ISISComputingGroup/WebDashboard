@@ -1,6 +1,6 @@
 import { getForegroundColour, getStatusColour } from "./getRunstateColours";
 
-import { IfcPV } from "@/app/types";
+import { DashboardArr, IfcPV } from "@/app/types";
 import { findPVByHumanReadableName } from "@/app/components/PVutils";
 
 export const runStateStr = "Run state";
@@ -19,7 +19,7 @@ export default function TopBar({
   instName,
   runInfoPVs,
 }: {
-  dashboard: Array<Array<Array<IfcPV>>>;
+  dashboard: DashboardArr;
   instName: string;
   runInfoPVs: Array<IfcPV>;
 }) {

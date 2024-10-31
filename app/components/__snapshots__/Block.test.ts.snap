@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders topbar unchanged 1`] = `
-<div>
+<tbody>
   <tr
     class="border-b border-blue-gray-200 transition duration-100 hover:bg-gray-100 hover:text-black"
   >
@@ -52,5 +52,5 @@ exports[`renders topbar unchanged 1`] = `
       </svg>
     </td>
   </tr>
-</div>
+</tbody>
 `;
