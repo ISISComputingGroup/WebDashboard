@@ -1,15 +1,22 @@
+"use client";
 import { IfcBlock } from "@/app/types";
 import { useState } from "react";
 
 const grafana_stub =
   "https://shadow.nd.rl.ac.uk/grafana/d/wMlwwaHMk/block-history?viewPanel=2&orgId=1&var-block=";
 
-export default function Block(
-  pv: IfcBlock,
-  instName: string,
-  showHiddenBlocks: boolean,
-) {
-  const [currentValue, setCurrentValue] = useState<string | number | undefined>();
+export default function Block({
+  pv,
+  instName,
+  showHiddenBlocks,
+}: {
+  pv: IfcBlock;
+  instName: string;
+  showHiddenBlocks: boolean;
+}) {
+  const [currentValue, setCurrentValue] = useState<
+    string | number | undefined
+  >();
   if (!pv.visible && !showHiddenBlocks && !instName) {
     return null;
   }

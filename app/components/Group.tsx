@@ -36,7 +36,16 @@ export default function Group({
           </tr>
         </thead>
         <tbody className="text-gray-200 ">
-          {group.blocks.map((pv) => Block(pv, instName, showHiddenBlocks))}
+          {group.blocks.map((pv) => {
+            return (
+              <Block
+                key={pv.human_readable_name}
+                pv={pv}
+                instName={instName}
+                showHiddenBlocks={showHiddenBlocks}
+              />
+            );
+          })}
         </tbody>
       </table>
     </div>

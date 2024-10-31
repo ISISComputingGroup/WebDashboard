@@ -1,6 +1,5 @@
 import { ConfigOutput, IfcPVWSRequest } from "@/app/types";
 import {
-  CSSB,
   getGroupsWithBlocksFromConfigOutput,
   RC_ENABLE,
   RC_INRANGE,

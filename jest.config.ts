@@ -13,9 +13,6 @@ const config: Config = {
   // setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   collectCoverage: true,
   collectCoverageFrom: ["app/**/*.{ts,tsx}", "!**/*types.ts"],
-  moduleNameMapper: {
-    "^react$": "<rootDir>/node_modules/react/index.js"
-  }
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
