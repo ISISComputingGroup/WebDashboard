@@ -17,7 +17,7 @@ export default function Footer() {
         </Link>
         <nav className="flex flex-wrap justify-center -mx-5 -my-2">
           <Link
-            href="#"
+            href="/"
             className="text-base leading-6 text-gray-500 hover:text-gray-900  dark:text-white dark:hover:text-gray-400 transition-color duration-100 px-5 py-2"
           >
             Home
@@ -33,14 +33,7 @@ export default function Footer() {
             href="/wall"
             className="text-base leading-6 text-gray-500 hover:text-gray-900  dark:text-white dark:hover:text-gray-400 transition-color duration-100 px-5 py-2"
           >
-            The Wall
-          </Link>
-
-          <Link
-            href="#"
-            className="text-base leading-6 text-gray-500 hover:text-gray-900  dark:text-white dark:hover:text-gray-400 transition-color duration-100 px-5 py-2"
-          >
-            Terms
+            Wall display
           </Link>
         </nav>
         <p className="mt-8 text-base leading-6 text-center text-gray-400">

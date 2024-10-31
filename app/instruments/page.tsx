@@ -21,7 +21,7 @@ export default function Home() {
 
     for (let group of groups) {
       if (!instruments.has(group)) {
-        instruments.set(group, new Array());
+        instruments.set(group, []);
       }
       instruments.get(group).push(name);
     }

@@ -39,7 +39,7 @@ export default function NavBar() {
           className="block py-2 px-3 rounded text-black dark:text-white hover:text-white hover:bg-zinc-800"
           href="/wall"
         >
-          The Wall
+          Wall display
         </Link>
         <Link
           className="block py-2 px-3 rounded text-black dark:text-white hover:text-white hover:bg-zinc-800"

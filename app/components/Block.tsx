@@ -1,14 +1,41 @@
+"use client";
+import { IfcBlock } from "@/app/types";
+import { useState } from "react";
+
 const grafana_stub =
   "https://shadow.nd.rl.ac.uk/grafana/d/wMlwwaHMk/block-history?viewPanel=2&orgId=1&var-block=";
 
-export default function Block(
-  pv: any,
-  instName: string,
-  showHiddenBlocks: boolean,
-) {
+export default function Block({
+  pv,
+  instName,
+  showHiddenBlocks,
+}: {
+  pv: IfcBlock;
+  instName: string;
+  showHiddenBlocks: boolean;
+}) {
+  const [currentValue, setCurrentValue] = useState<
+    string | number | undefined
+  >();
   if (!pv.visible && !showHiddenBlocks && !instName) {
-    return;
+    return null;
   }
+  if (pv.value != currentValue) {
+    setCurrentValue(pv.value);
+    // Let the user know a change has occurred by lighting up the green dot next to the value
+    const pvChangedIndicator = document.getElementById(
+      pv.human_readable_name + "_CIRCLE",
+    );
+    if (!pvChangedIndicator) return;
+    if (pvChangedIndicator.classList.contains("text-green-500")) return;
+    pvChangedIndicator.classList.remove("text-transparent");
+    pvChangedIndicator.classList.add("text-green-500");
+    setTimeout(() => {
+      pvChangedIndicator.classList.remove("text-green-500");
+      pvChangedIndicator.classList.add("text-transparent");
+    }, 2000);
+  }
+
   return (
     <tr
       key={pv.human_readable_name}

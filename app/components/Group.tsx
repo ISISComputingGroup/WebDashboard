@@ -1,7 +1,8 @@
 import React from "react";
 import Block from "./Block";
 import { checkIfAllBlocksInGroupAreHidden } from "./GroupUtils";
-import { IfcGroup } from "./IfcGroup";
+
+import { IfcGroup } from "@/app/types";
 
 export default function Group({
   group,
@@ -17,8 +18,8 @@ export default function Group({
   }
 
   // Check if all the blocks in this group are hidden. If so, hide the group.
-  if (checkIfAllBlocksInGroupAreHidden(group) && showHiddenBlocks == false) {
-    return;
+  if (checkIfAllBlocksInGroupAreHidden(group) && !showHiddenBlocks) {
+    return null;
   }
 
   return (
@@ -35,7 +36,16 @@ export default function Group({
           </tr>
         </thead>
         <tbody className="text-gray-200 ">
-          {group.blocks.map((pv) => Block(pv, instName, showHiddenBlocks))}
+          {group.blocks.map((pv) => {
+            return (
+              <Block
+                key={pv.human_readable_name}
+                pv={pv}
+                instName={instName}
+                showHiddenBlocks={showHiddenBlocks}
+              />
+            );
+          })}
         </tbody>
       </table>
     </div>

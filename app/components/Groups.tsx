@@ -1,6 +1,7 @@
 import React from "react";
 import Group from "./Group";
-import { IfcGroup } from "./IfcGroup";
+
+import { IfcGroup } from "@/app/types";
 
 export default function Groups({
   groupsMap,
