@@ -87,15 +87,14 @@ export default function Home() {
                     </h1>
 
                     <p className="text-zinc-500 dark:text-zinc-300">
-                      The Science and Technology Facilities Council (STFC)&apos;
-                      world-class neutron and muon instruments give unique
-                      insights into materials at the atomic level, providing
-                      scientists advanced research capabilities across numerous
-                      disciplines.
+                      The ISIS Neutron and Muon Source is a world-leading centre
+                      for research at the STFC Rutherford Appleton Laboratory.
+                      Our neutron and muon instruments give unique insights into
+                      the properties of materials on the atomic scale.
                     </p>
 
                     <a
-                      href="#"
+                      href="https://www.isis.stfc.ac.uk/Pages/home.aspx"
                       className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-500"
                     >
                       <svg
@@ -143,13 +142,12 @@ export default function Home() {
                     <p className="text-zinc-500 dark:text-zinc-300">
                       The IBEX Control System provides a user-friendly interface
                       for scientists to manage and control instruments at the
-                      neutron and muon sources of STFC. They can configure
-                      experiments, monitor data collection, and adjust
-                      parameters in real time for precise, efficient operation.
+                      ISIS. They can configure experiments, monitor data
+                      collection, and adjust parameters in real time.
                     </p>
 
                     <a
-                      href="#"
+                      href="https://www.isis.stfc.ac.uk/Pages/Experiment-Control.aspx"
                       className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-500"
                     >
                       <svg
@@ -202,7 +200,7 @@ export default function Home() {
                     </p>
 
                     <Link
-                      href="#"
+                      href="https://github.com/ornl-epics/pvws"
                       className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-500"
                     >
                       <svg
