@@ -96,6 +96,7 @@ export default function Home() {
                     <a
                       href="https://www.isis.stfc.ac.uk/Pages/home.aspx"
                       className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-500"
+                      target="_blank"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -149,6 +150,7 @@ export default function Home() {
                     <a
                       href="https://www.isis.stfc.ac.uk/Pages/Experiment-Control.aspx"
                       className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-500"
+                      target="_blank"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -199,9 +201,10 @@ export default function Home() {
                       analysis.
                     </p>
 
-                    <Link
+                    <a
                       href="https://github.com/ornl-epics/pvws"
                       className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-500"
+                      target="_blank"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -217,7 +220,7 @@ export default function Home() {
                           d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
                         />
                       </svg>
-                    </Link>
+                    </a>
                   </motion.div>
                 </div>
               </div>
