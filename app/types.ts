@@ -27,6 +27,7 @@ export interface IfcBlock extends IfcPV {
   suspend_on_invalid?: boolean;
   low_rc?: number;
   high_rc?: number;
+  sp_value?: number | string;
 }
 
 export interface IfcGroup {

@@ -115,3 +115,48 @@ it("renders block without run control without tick or cross", () => {
       .innerHTML,
   ).toBe("");
 });
+
+it("renders block with SP and shows SP value", () => {
+  const expectedValue = 123;
+  const expectedSpValue = 124;
+  const aBlock: IfcBlock = {
+    pvaddress: "SOME:PV",
+    visible: true,
+    human_readable_name: "MyBlock",
+    runcontrol_inrange: false,
+    runcontrol_enabled: false,
+    sp_value: expectedSpValue,
+    value: expectedValue,
+  };
+  const { container } = render(
+    <Block pv={aBlock} instName={""} showHiddenBlocks={false} />,
+    {
+      container: tableBody,
+    },
+  );
+  expect(
+    container.querySelector(`#${aBlock.human_readable_name}_VALUE`)!.innerHTML,
+  ).toContain(`${expectedValue} (SP: ${expectedSpValue})`);
+});
+
+it("renders block without SP and hides SP value", () => {
+  const expectedValue = 123;
+  const expectedSpValue = 124;
+  const aBlock: IfcBlock = {
+    pvaddress: "SOME:PV",
+    visible: true,
+    human_readable_name: "MyBlock",
+    runcontrol_inrange: false,
+    runcontrol_enabled: false,
+    value: expectedValue,
+  };
+  const { container } = render(
+    <Block pv={aBlock} instName={""} showHiddenBlocks={false} />,
+    {
+      container: tableBody,
+    },
+  );
+  expect(
+    container.querySelector(`#${aBlock.human_readable_name}_VALUE`)!.innerHTML,
+  ).toContain(`${expectedValue} `);
+});

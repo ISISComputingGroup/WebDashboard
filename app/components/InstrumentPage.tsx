@@ -30,6 +30,8 @@ export const RC_ENABLE = ":RC:ENABLE";
 
 export const RC_INRANGE = ":RC:INRANGE";
 
+export const SP = ":SP";
+
 export const CSSB = "CS:SB:";
 
 export function subscribeToBlockPVs(
@@ -41,7 +43,12 @@ export function subscribeToBlockPVs(
    */
   sendJsonMessage({
     type: "subscribe",
-    pvs: [block_address, block_address + RC_ENABLE, block_address + RC_INRANGE],
+    pvs: [
+      block_address,
+      block_address + RC_ENABLE,
+      block_address + RC_INRANGE,
+      block_address + SP,
+    ],
   });
 }
 
@@ -238,6 +245,9 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
               return;
             } else if (updatedPVName == block_full_pv_name + RC_ENABLE) {
               block.runcontrol_enabled = updatedPV.value == 1;
+              return;
+            } else if (updatedPVName == block_full_pv_name + SP) {
+              block.sp_value = pvVal;
               return;
             }
           }
