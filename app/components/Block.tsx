@@ -59,7 +59,7 @@ export default function Block({
       <td className="py-1 px-4 ">
         <span id={pv.human_readable_name + "_VALUE"}>
           {pv.value} {pv.units != null && pv.units}
-          {(pv.sp_value != undefined) && `(SP: ${pv.sp_value})`}{" "}
+          {pv.sp_value != undefined && `(SP: ${pv.sp_value})`}{" "}
           <a
             href="https://github.com/ISISComputingGroup/ibex_user_manual/wiki/Blocks#alarms"
             className="text-red-600"
