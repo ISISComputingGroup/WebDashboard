@@ -1,10 +1,11 @@
-import { ConfigOutput, IfcPVWSRequest } from "@/app/types";
+import { ConfigOutput, IfcBlock, IfcPVWSRequest } from "@/app/types";
 import {
   getGroupsWithBlocksFromConfigOutput,
   RC_ENABLE,
   RC_INRANGE,
   SP,
   subscribeToBlockPVs,
+  toPrecision,
 } from "@/app/components/InstrumentPage";
 
 test("subscribeToBlockPVs subscribes to all run control PVs", () => {
@@ -18,6 +19,37 @@ test("subscribeToBlockPVs subscribes to all run control PVs", () => {
   };
   expect(JSON.stringify(mockSendJsonMessage.mock.calls[0][0])).toBe(
     JSON.stringify(expectedCall),
+  );
+});
+
+test("toPrecision does nothing to string value ", () => {
+  const expectedValue = "untouched";
+  const aBlock: IfcBlock = {
+    pvaddress: "SOME:BLOCK:STR",
+    value: expectedValue,
+  };
+  expect(toPrecision(aBlock, expectedValue)).toBe(expectedValue);
+});
+
+test("toPrecision does nothing to block without pv ", () => {
+  const expectedValue = 0.00123456;
+  const aBlock: IfcBlock = {
+    pvaddress: "SOME:BLOCK:STR",
+    value: expectedValue,
+  };
+  expect(toPrecision(aBlock, expectedValue)).toBe(expectedValue);
+});
+
+test("toPrecision truncates block if it has precision", () => {
+  const originalValue = 0.00123456;
+  const precision = 3;
+  const aBlock: IfcBlock = {
+    pvaddress: "SOME:BLOCK:STR",
+    value: originalValue,
+    precision: precision,
+  };
+  expect(toPrecision(aBlock, originalValue)).toBe(
+    originalValue.toPrecision(precision),
   );
 });
 

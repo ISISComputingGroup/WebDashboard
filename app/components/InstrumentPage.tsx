@@ -86,6 +86,15 @@ export function getGroupsWithBlocksFromConfigOutput(
   return newGroups;
 }
 
+export function toPrecision(
+  block: IfcBlock,
+  pvVal: number | string,
+): string | number {
+  return block.precision && typeof pvVal == "number"
+    ? pvVal.toPrecision(block.precision)
+    : pvVal;
+}
+
 function InstrumentData({ instrumentName }: { instrumentName: string }) {
   // set up the different states for the instrument data
 
@@ -232,12 +241,9 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
                 // this is likely the first update, and contains precision information which is not repeated on a normal value update - store this in the block for later truncation (see below)
                 block.precision = prec;
               }
-              if (block.precision && typeof pvVal == "number") {
-                // if a block has precision truncate it here
-                block.value = pvVal.toPrecision(block.precision);
-              } else {
-                block.value = pvVal;
-              }
+              // if a block has precision truncate it here
+              block.value = toPrecision(block, pvVal);
+
               if (updatedPV.units) block.units = updatedPV.units;
               if (updatedPV.severity) block.severity = updatedPV.severity;
             } else if (updatedPVName == block_full_pv_name + RC_INRANGE) {
@@ -247,7 +253,7 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
               block.runcontrol_enabled = updatedPV.value == 1;
               return;
             } else if (updatedPVName == block_full_pv_name + SP) {
-              block.sp_value = pvVal;
+              block.sp_value = toPrecision(block, pvVal);
               return;
             }
           }
