@@ -20,7 +20,12 @@ it("renders topbar unchanged", () => {
   };
   const instName = "Instrument";
   const { container } = render(
-    <Block pv={aBlock} instName={instName} showHiddenBlocks={false} />,
+    <Block
+      pv={aBlock}
+      instName={instName}
+      showHiddenBlocks={false}
+      showSetpoints={false}
+    />,
     {
       container: tableBody,
     },
@@ -31,7 +36,12 @@ it("renders topbar unchanged", () => {
 it("renders nothing if pv is hidden", () => {
   const aBlock: IfcBlock = { pvaddress: "SOME:PV", visible: false };
   const { container } = render(
-    <Block pv={aBlock} instName={""} showHiddenBlocks={false} />,
+    <Block
+      pv={aBlock}
+      instName={""}
+      showHiddenBlocks={false}
+      showSetpoints={false}
+    />,
     {
       container: tableBody,
     },
@@ -46,7 +56,12 @@ it("renders block with correct name", () => {
     human_readable_name: "MyBlock",
   };
   const { container } = render(
-    <Block pv={aBlock} instName={""} showHiddenBlocks={false} />,
+    <Block
+      pv={aBlock}
+      instName={""}
+      showHiddenBlocks={false}
+      showSetpoints={false}
+    />,
     {
       container: tableBody,
     },
@@ -65,7 +80,12 @@ it("renders block with run control that is in range as a tick", () => {
     runcontrol_enabled: true,
   };
   const { container } = render(
-    <Block pv={aBlock} instName={""} showHiddenBlocks={false} />,
+    <Block
+      pv={aBlock}
+      instName={""}
+      showHiddenBlocks={false}
+      showSetpoints={false}
+    />,
     {
       container: tableBody,
     },
@@ -85,7 +105,12 @@ it("renders block with run control that is not in range as a cross", () => {
     runcontrol_enabled: true,
   };
   const { container } = render(
-    <Block pv={aBlock} instName={""} showHiddenBlocks={false} />,
+    <Block
+      pv={aBlock}
+      instName={""}
+      showHiddenBlocks={false}
+      showSetpoints={false}
+    />,
     {
       container: tableBody,
     },
@@ -105,7 +130,12 @@ it("renders block without run control without tick or cross", () => {
     runcontrol_enabled: false,
   };
   const { container } = render(
-    <Block pv={aBlock} instName={""} showHiddenBlocks={false} />,
+    <Block
+      pv={aBlock}
+      instName={""}
+      showHiddenBlocks={false}
+      showSetpoints={false}
+    />,
     {
       container: tableBody,
     },
@@ -129,14 +159,19 @@ it("renders block with SP and shows SP value", () => {
     value: expectedValue,
   };
   const { container } = render(
-    <Block pv={aBlock} instName={""} showHiddenBlocks={false} />,
+    <Block
+      pv={aBlock}
+      instName={""}
+      showHiddenBlocks={false}
+      showSetpoints={true}
+    />,
     {
       container: tableBody,
     },
   );
   expect(
     container.querySelector(`#${aBlock.human_readable_name}_VALUE`)!.innerHTML,
-  ).toContain(`${expectedValue} (SP: ${expectedSpValue})`);
+  ).toContain(`${expectedValue} <br>(SP: ${expectedSpValue})`);
 });
 
 it("renders block without SP and hides SP value", () => {
@@ -149,14 +184,23 @@ it("renders block without SP and hides SP value", () => {
     runcontrol_inrange: false,
     runcontrol_enabled: false,
     value: expectedValue,
+    sp_value: expectedSpValue,
   };
   const { container } = render(
-    <Block pv={aBlock} instName={""} showHiddenBlocks={false} />,
+    <Block
+      pv={aBlock}
+      instName={""}
+      showHiddenBlocks={false}
+      showSetpoints={false}
+    />,
     {
       container: tableBody,
     },
   );
-  expect(
-    container.querySelector(`#${aBlock.human_readable_name}_VALUE`)!.innerHTML,
-  ).toContain(`${expectedValue} `);
+
+  const valueLabel = container.querySelector(
+    `#${aBlock.human_readable_name}_VALUE`,
+  )!.innerHTML;
+  expect(valueLabel).toContain(`${expectedValue} `);
+  expect(valueLabel).not.toContain(`${expectedSpValue}`);
 });

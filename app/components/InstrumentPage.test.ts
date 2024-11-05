@@ -3,7 +3,7 @@ import {
   getGroupsWithBlocksFromConfigOutput,
   RC_ENABLE,
   RC_INRANGE,
-  SP,
+  SP_RBV,
   subscribeToBlockPVs,
   toPrecision,
 } from "@/app/components/InstrumentPage";
@@ -15,7 +15,7 @@ test("subscribeToBlockPVs subscribes to all run control PVs", () => {
   expect(mockSendJsonMessage.mock.calls.length).toBe(1);
   const expectedCall: IfcPVWSRequest = {
     type: "subscribe",
-    pvs: [aBlock, aBlock + RC_ENABLE, aBlock + RC_INRANGE, aBlock + SP],
+    pvs: [aBlock, aBlock + RC_ENABLE, aBlock + RC_INRANGE, aBlock + SP_RBV],
   };
   expect(JSON.stringify(mockSendJsonMessage.mock.calls[0][0])).toBe(
     JSON.stringify(expectedCall),

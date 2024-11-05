@@ -16,6 +16,7 @@ import {
   IfcPVWSRequest,
 } from "@/app/types";
 import { findPVByAddress } from "@/app/components/PVutils";
+import CheckToggle from "@/app/components/CheckToggle";
 
 let lastUpdate: string = "";
 
@@ -30,7 +31,7 @@ export const RC_ENABLE = ":RC:ENABLE";
 
 export const RC_INRANGE = ":RC:INRANGE";
 
-export const SP = ":SP";
+export const SP_RBV = ":SP:RBV";
 
 export const CSSB = "CS:SB:";
 
@@ -47,7 +48,7 @@ export function subscribeToBlockPVs(
       block_address,
       block_address + RC_ENABLE,
       block_address + RC_INRANGE,
-      block_address + SP,
+      block_address + SP_RBV,
     ],
   });
 }
@@ -96,11 +97,15 @@ export function toPrecision(
 }
 
 function InstrumentData({ instrumentName }: { instrumentName: string }) {
-  // set up the different states for the instrument data
-
+  const [showHiddenBlocks, setShowHiddenBlocks] = useState(false);
+  const [showSetpoints, setShowSetpoints] = useState(false);
+  const CONFIG_DETAILS = "CS:BLOCKSERVER:GET_CURR_CONFIG_DETAILS";
+  const [instlist, setInstlist] = useState<Array<any> | null>(null);
+  const [currentInstrument, setCurrentInstrument] = useState<Instrument | null>(
+    null,
+  );
   const socketURL =
     process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8080/pvws/pv";
-
   const instName = instrumentName;
 
   useEffect(() => {
@@ -118,12 +123,6 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
   } = useWebSocket(socketURL, {
     shouldReconnect: (closeEvent) => true,
   });
-
-  const CONFIG_DETAILS = "CS:BLOCKSERVER:GET_CURR_CONFIG_DETAILS";
-  const [instlist, setInstlist] = useState<Array<any> | null>(null);
-  const [currentInstrument, setCurrentInstrument] = useState<Instrument | null>(
-    null,
-  );
 
   useEffect(() => {
     // This is an initial useEffect to subscribe to lots of PVs including the instlist.
@@ -248,24 +247,16 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
               if (updatedPV.severity) block.severity = updatedPV.severity;
             } else if (updatedPVName == block_full_pv_name + RC_INRANGE) {
               block.runcontrol_inrange = updatedPV.value == 1;
-              return;
             } else if (updatedPVName == block_full_pv_name + RC_ENABLE) {
               block.runcontrol_enabled = updatedPV.value == 1;
-              return;
-            } else if (updatedPVName == block_full_pv_name + SP) {
+            } else if (updatedPVName == block_full_pv_name + SP_RBV) {
               block.sp_value = toPrecision(block, pvVal);
-              return;
             }
           }
         }
       }
     }
   }, [lastJsonMessage, currentInstrument, sendJsonMessage]);
-
-  const [showHiddenBlocks, setShowHiddenBlocks] = useState(false);
-  const onShowHiddenBlocksCheckboxChange = () => {
-    setShowHiddenBlocks(!showHiddenBlocks);
-  };
 
   if (!instName || !currentInstrument) {
     return <h1>Loading...</h1>;
@@ -277,25 +268,24 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
         instName={instName}
         runInfoPVs={currentInstrument.runInfoPVs}
       />
+      <div className="flex gap-2 ml-2">
+        <CheckToggle
+          checked={showHiddenBlocks}
+          setChecked={setShowHiddenBlocks}
+          text={"Show hidden blocks"}
+        />
+        <CheckToggle
+          checked={showSetpoints}
+          setChecked={setShowSetpoints}
+          text={"Show setpoints"}
+        />
+      </div>
       <Groups
         groupsMap={currentInstrument.groups}
         instName={instName}
         showHiddenBlocks={showHiddenBlocks}
+        showSetpoints={showSetpoints}
       />
-      <div className="pt-4">
-        <label className="inline-flex items-center cursor-pointer">
-          <input
-            type="checkbox"
-            checked={showHiddenBlocks}
-            onChange={onShowHiddenBlocksCheckboxChange}
-            className="sr-only peer"
-          />
-          <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-          <span className="ms-3 text-sm font-medium text-gray-900">
-            Show hidden blocks?
-          </span>
-        </label>
-      </div>
     </div>
   );
 }

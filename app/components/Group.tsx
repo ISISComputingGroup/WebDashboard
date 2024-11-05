@@ -8,10 +8,12 @@ export default function Group({
   group,
   instName,
   showHiddenBlocks,
+  showSetpoints,
 }: {
   group: IfcGroup;
   instName: string;
   showHiddenBlocks: boolean;
+  showSetpoints: boolean;
 }) {
   if (!group) {
     return <h1>Loading...</h1>;
@@ -30,7 +32,7 @@ export default function Group({
       <table className="text-sm table-fixed">
         <thead>
           <tr className="bg-blue-gray-100 text-gray-100">
-            <th className="py-3 px-4 text-left">Block Name</th>
+            <th className="py-3 px-4 text-left">Block</th>
             <th className="py-3 px-4 text-left">Value</th>
             <th className="py-3 px-4 text-left">In-Range</th>
           </tr>
@@ -43,6 +45,7 @@ export default function Group({
                 pv={pv}
                 instName={instName}
                 showHiddenBlocks={showHiddenBlocks}
+                showSetpoints={showSetpoints}
               />
             );
           })}
