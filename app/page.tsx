@@ -19,9 +19,6 @@ export default function Home() {
                 Web Dashboard
               </h1>{" "}
             </div>
-            <p className="px-0 mb-8 text-lg text-gray-600 dark:text-white md:text-xl lg:px-24">
-              Use this dashboard to monitor your experiment&apos;s information.
-            </p>
             <div className="mb-4 space-x-0 md:space-x-2 md:mb-8">
               <div className="relative inline-flex  group">
                 <div className="absolute transition-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt"></div>
@@ -83,18 +80,15 @@ export default function Home() {
                     </span>
 
                     <h1 className="text-xl font-semibold text-zinc-700 capitalize dark:text-white">
-                      Neutron and Muon Source of STFC
+                      Quick Links
                     </h1>
 
                     <p className="text-zinc-500 dark:text-zinc-300">
-                      The ISIS Neutron and Muon Source is a world-leading centre
-                      for research at the STFC Rutherford Appleton Laboratory.
-                      Our neutron and muon instruments give unique insights into
-                      the properties of materials on the atomic scale.
+                      View instrument scientist quick links (requires login).
                     </p>
 
                     <a
-                      href="https://www.isis.stfc.ac.uk/Pages/home.aspx"
+                      href="https://stfc365.sharepoint.com/sites/isis-hub/SitePages/Instrument-Quick-Links.aspx"
                       className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-500"
                       target="_blank"
                     >
@@ -137,18 +131,15 @@ export default function Home() {
                     </span>
 
                     <h1 className="text-xl font-semibold text-zinc-700 capitalize dark:text-white">
-                      IBEX Control System
+                      Instrument Journals
                     </h1>
 
                     <p className="text-zinc-500 dark:text-zinc-300">
-                      The IBEX Control System provides a user-friendly interface
-                      for scientists to manage and control instruments at the
-                      ISIS. They can configure experiments, monitor data
-                      collection, and adjust parameters in real time.
+                      View recent instrument journal entries (requires login).
                     </p>
 
                     <a
-                      href="https://www.isis.stfc.ac.uk/Pages/Experiment-Control.aspx"
+                      href="https://shadow.nd.rl.ac.uk/journals/"
                       className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-500"
                       target="_blank"
                     >
@@ -191,18 +182,15 @@ export default function Home() {
                     </span>
 
                     <h1 className="text-xl font-semibold text-zinc-700 capitalize dark:text-white">
-                      Data Flow from PHOEBUS to Users
+                      Beam status & MCR News
                     </h1>
 
                     <p className="text-zinc-500 dark:text-zinc-300">
-                      Data is collected by EPICS, forwarded by PVWS, and then
-                      streamed to the browser by a websocket. This real-time
-                      access to results allows for adjustments and quick
-                      analysis.
+                      View current beam status & recent MCR news updates.
                     </p>
 
                     <a
-                      href="https://github.com/ornl-epics/pvws"
+                      href="https://www.isis.stfc.ac.uk/Pages/Beam-Status.aspx"
                       className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-500"
                       target="_blank"
                     >

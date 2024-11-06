@@ -44,7 +44,7 @@ export default function Home() {
                   key={group}
                   className="flex flex-col justify-center items-center w-full "
                 >
-                  <h1 className="text-4xl text-black dark:text-gray-100 text-left w-full">
+                  <h1 className="text-4xl font-bold text-black dark:text-gray-100 text-left w-full">
                     {group}
                   </h1>
                   <div className="flex-wrap flex justify-left items-center  w-full mx-auto text-left md:text-center">
@@ -54,7 +54,7 @@ export default function Home() {
                           href={`/instrument?name=${instrument}`}
                           key={instrument}
                         >
-                          <h1 className="text-1xl font-bold text-left mr-4 w-full leading-none transition-all hover:text-blue-500 tracking-normal text-black dark:text-white md:text-4xl md:tracking-tight">
+                          <h1 className="text-1xl text-left mr-4 w-full leading-none transition-all hover:text-blue-500 tracking-normal text-black dark:text-white md:text-4xl md:tracking-tight">
                             {instrument}
                           </h1>
                         </Link>
