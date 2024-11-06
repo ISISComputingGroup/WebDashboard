@@ -23,12 +23,12 @@ exports[`renders topbar unchanged 1`] = `
         123
          
         mm
-         
         <a
           class="text-red-600"
           href="https://github.com/ISISComputingGroup/ibex_user_manual/wiki/Blocks#alarms"
-        />
-         
+        >
+          <br />
+        </a>
       </span>
     </td>
     <td

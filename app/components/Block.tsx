@@ -9,10 +9,12 @@ export default function Block({
   pv,
   instName,
   showHiddenBlocks,
+  showSetpoints,
 }: {
   pv: IfcBlock;
   instName: string;
   showHiddenBlocks: boolean;
+  showSetpoints: boolean;
 }) {
   const [currentValue, setCurrentValue] = useState<
     string | number | undefined
@@ -58,13 +60,22 @@ export default function Block({
 
       <td className="py-1 px-4 ">
         <span id={pv.human_readable_name + "_VALUE"}>
-          {pv.value} {pv.units != null && pv.units}{" "}
-          <a
-            href="https://github.com/ISISComputingGroup/ibex_user_manual/wiki/Blocks#alarms"
-            className="text-red-600"
-          >
-            {pv.severity != "NONE" && pv.severity}
-          </a>{" "}
+          {pv.value} {pv.units != null && pv.units}
+          {showSetpoints && pv.sp_value != null ? (
+            <>
+              <br />
+              {`(SP: ${pv.sp_value})`}
+            </>
+          ) : null}
+          {pv.severity != "NONE" ? (
+            <a
+              href="https://github.com/ISISComputingGroup/ibex_user_manual/wiki/Blocks#alarms"
+              className="text-red-600"
+            >
+              <br />
+              {pv.severity}
+            </a>
+          ) : null}
         </span>
       </td>
       <td className="py-1 px-4 flex justify-between items-center">
