@@ -31,32 +31,30 @@ export default function Home() {
     <main
       className={`flex min-h-screen bg-gray-100 dark:bg-zinc-800  flex-col items-center justify-between ${inter.className}`}
     >
-      <section className="  flex flex-col items-start justify-center rounded-xl w-full  p-6 ">
+      <section className="  flex flex-col items-start justify-center rounded-xl w-full p-1">
         <div className=" mx-auto max-w-2/3">
-          <h1 className="text-4xl font-extrabold text-left leading-none tracking-normal text-gray-900 dark:text-white md:text-6xl md:tracking-tight">
-            Instrument Dashboards
-          </h1>
-
-          <div className="flex mt-6 flex-col justify-center items-center space-y-4 ">
-            {[...instruments].map(([group, insts]) => {
+          <div className="flex mt-6 flex-col justify-center items-center space-y-2">
+            {[...instruments].sort().map(([group, insts]) => {
               return (
                 <div
                   key={group}
                   className="flex flex-col justify-center items-center w-full "
                 >
-                  <h1 className="text-4xl font-bold text-black dark:text-gray-100 text-left w-full">
+                  <h1 className="text-2xl font-bold text-black dark:text-gray-100 text-left w-full">
                     {group}
                   </h1>
-                  <div className="flex-wrap flex justify-left items-center  w-full mx-auto text-left md:text-center">
-                    {insts.map((instrument: string) => {
+                  <div className="flex-wrap flex justify-left items-center w-full mx-auto text-left md:text-center">
+                    {insts.sort().map((instrument: string) => {
                       return (
                         <Link
                           href={`/instrument?name=${instrument}`}
                           key={instrument}
                         >
-                          <h1 className="text-1xl text-left mr-4 w-full leading-none transition-all hover:text-blue-500 tracking-normal text-black dark:text-white md:text-4xl md:tracking-tight">
-                            {instrument}
-                          </h1>
+						  <div className="shadow-lg rounded-lg border-2 border-gray-600 bg-slate-800 hover:bg-slate-700 py-2 px-3 m-1 transition-all duration-100">
+                            <h1 className="text-xl flex items-center justify-center text-left leading-none transition-all text-black dark:text-white">
+                              {instrument}
+                            </h1>
+						  </div>
                         </Link>
                       );
                     })}
