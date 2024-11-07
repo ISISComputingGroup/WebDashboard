@@ -85,7 +85,7 @@ export default function Home() {
 
                     <a
                       href="https://stfc365.sharepoint.com/sites/isis-hub/SitePages/Instrument-Quick-Links.aspx"
-                      className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-500"
+                      className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:bg-blue-400 dark:hover:bg-blue-400"
                       target="_blank"
                     >
                       <svg
@@ -133,7 +133,7 @@ export default function Home() {
 
                     <a
                       href="https://shadow.nd.rl.ac.uk/journals/"
-                      className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-500"
+                      className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:bg-blue-400 dark:hover:bg-blue-400"
                       target="_blank"
                     >
                       <svg
@@ -181,7 +181,7 @@ export default function Home() {
 
                     <a
                       href="https://www.isis.stfc.ac.uk/Pages/Beam-Status.aspx"
-                      className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-500"
+                      className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:bg-blue-400 dark:hover:bg-blue-400"
                       target="_blank"
                     >
                       <svg
