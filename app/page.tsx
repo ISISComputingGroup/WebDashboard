@@ -4,6 +4,10 @@ import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
+{
+  /*Icons from https://heroicons.com/*/
+}
+
 export default function Home() {
   return (
     <main
