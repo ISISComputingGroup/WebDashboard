@@ -8,10 +8,10 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   return (
     <main
-      className={`flex min-h-screen bg-gray-100 dark:bg-zinc-800 flex-col items-center justify-between ${inter.className}`}
+      className={`flex bg-gray-100 dark:bg-zinc-800 flex-col items-center justify-between ${inter.className}`}
     >
-      <section className=" rounded-xl w-full  p-12 ">
-        <div className="px-12 mx-auto max-w-7xl">
+      <section className=" rounded-xl  p-2 md:p-12 ">
+        <div className="px-12 mx-auto">
           <div className="w-full mx-auto text-left md:w-11/12 xl:w-9/12 md:text-center">
             <div className="mb-8 flex flex-col text-4xl font-extrabold leading-none tracking-normal text-gray-900 dark:text-white md:text-6xl md:tracking-tight">
               <h1>Experiment Controls</h1>{" "}
@@ -50,7 +50,7 @@ export default function Home() {
           </div>
           <div className=" mx-auto mt-20 w-full">
             <section className="">
-              <div className="container px-6  mx-auto">
+              <div className="container md:px-6 mx-auto">
                 <div className="grid grid-cols-1 gap-8 mt-8 xl:mt-12 xl:gap-12 md:grid-cols-2 xl:grid-cols-3">
                   <motion.div
                     whileHover={{ y: -10 }}
