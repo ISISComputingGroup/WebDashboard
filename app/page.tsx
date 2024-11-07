@@ -1,7 +1,6 @@
 "use client";
 import { Inter } from "next/font/google";
 import Link from "next/link";
-import { motion } from "framer-motion";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -52,10 +51,7 @@ export default function Home() {
             <section className="">
               <div className="container md:px-6 mx-auto">
                 <div className="grid grid-cols-1 gap-8 mt-8 xl:mt-12 xl:gap-12 md:grid-cols-2 xl:grid-cols-3">
-                  <motion.div
-                    whileHover={{ y: -10 }}
-                    className="p-8 space-y-3 border-2 border-blue-400 dark:border-blue-300 rounded-xl bg-white dark:bg-zinc-900"
-                  >
+                  <div className="p-8 space-y-3 border-2 border-blue-400 dark:border-blue-300 rounded-xl bg-white dark:bg-zinc-900">
                     <span className="inline-block text-blue-500 dark:text-blue-400">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -89,7 +85,7 @@ export default function Home() {
 
                     <a
                       href="https://stfc365.sharepoint.com/sites/isis-hub/SitePages/Instrument-Quick-Links.aspx"
-                      className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-500"
+                      className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:bg-blue-400 dark:hover:bg-blue-400"
                       target="_blank"
                     >
                       <svg
@@ -107,12 +103,9 @@ export default function Home() {
                         />
                       </svg>
                     </a>
-                  </motion.div>
+                  </div>
 
-                  <motion.div
-                    whileHover={{ y: -10 }}
-                    className="p-8 space-y-3 border-2 border-blue-400 dark:border-blue-300 rounded-xl bg-white dark:bg-zinc-900"
-                  >
+                  <div className="p-8 space-y-3 border-2 border-blue-400 dark:border-blue-300 rounded-xl bg-white dark:bg-zinc-900">
                     <span className="inline-block text-blue-500 dark:text-blue-400">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -140,7 +133,7 @@ export default function Home() {
 
                     <a
                       href="https://shadow.nd.rl.ac.uk/journals/"
-                      className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-500"
+                      className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:bg-blue-400 dark:hover:bg-blue-400"
                       target="_blank"
                     >
                       <svg
@@ -158,12 +151,9 @@ export default function Home() {
                         />
                       </svg>
                     </a>
-                  </motion.div>
+                  </div>
 
-                  <motion.div
-                    whileHover={{ y: -10 }}
-                    className="p-8 space-y-3 border-2 border-blue-400 dark:border-blue-300 rounded-xl bg-white dark:bg-zinc-900"
-                  >
+                  <div className="p-8 space-y-3 border-2 border-blue-400 dark:border-blue-300 rounded-xl bg-white dark:bg-zinc-900">
                     <span className="inline-block text-blue-500 dark:text-blue-400">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -191,7 +181,7 @@ export default function Home() {
 
                     <a
                       href="https://www.isis.stfc.ac.uk/Pages/Beam-Status.aspx"
-                      className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:text-blue-600 dark:hover:text-blue-500"
+                      className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:bg-blue-400 dark:hover:bg-blue-400"
                       target="_blank"
                     >
                       <svg
@@ -209,7 +199,7 @@ export default function Home() {
                         />
                       </svg>
                     </a>
-                  </motion.div>
+                  </div>
                 </div>
               </div>
             </section>
