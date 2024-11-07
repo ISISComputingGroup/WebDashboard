@@ -1,7 +1,6 @@
 "use client";
 import { Inter } from "next/font/google";
 import Link from "next/link";
-import { motion } from "framer-motion";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -52,10 +51,7 @@ export default function Home() {
             <section className="">
               <div className="container md:px-6 mx-auto">
                 <div className="grid grid-cols-1 gap-8 mt-8 xl:mt-12 xl:gap-12 md:grid-cols-2 xl:grid-cols-3">
-                  <motion.div
-                    whileHover={{ y: -10 }}
-                    className="p-8 space-y-3 border-2 border-blue-400 dark:border-blue-300 rounded-xl bg-white dark:bg-zinc-900"
-                  >
+                  <div className="p-8 space-y-3 border-2 border-blue-400 dark:border-blue-300 rounded-xl bg-white dark:bg-zinc-900">
                     <span className="inline-block text-blue-500 dark:text-blue-400">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -107,12 +103,9 @@ export default function Home() {
                         />
                       </svg>
                     </a>
-                  </motion.div>
+                  </div>
 
-                  <motion.div
-                    whileHover={{ y: -10 }}
-                    className="p-8 space-y-3 border-2 border-blue-400 dark:border-blue-300 rounded-xl bg-white dark:bg-zinc-900"
-                  >
+                  <div className="p-8 space-y-3 border-2 border-blue-400 dark:border-blue-300 rounded-xl bg-white dark:bg-zinc-900">
                     <span className="inline-block text-blue-500 dark:text-blue-400">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -158,12 +151,9 @@ export default function Home() {
                         />
                       </svg>
                     </a>
-                  </motion.div>
+                  </div>
 
-                  <motion.div
-                    whileHover={{ y: -10 }}
-                    className="p-8 space-y-3 border-2 border-blue-400 dark:border-blue-300 rounded-xl bg-white dark:bg-zinc-900"
-                  >
+                  <div className="p-8 space-y-3 border-2 border-blue-400 dark:border-blue-300 rounded-xl bg-white dark:bg-zinc-900">
                     <span className="inline-block text-blue-500 dark:text-blue-400">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -209,7 +199,7 @@ export default function Home() {
                         />
                       </svg>
                     </a>
-                  </motion.div>
+                  </div>
                 </div>
               </div>
             </section>
