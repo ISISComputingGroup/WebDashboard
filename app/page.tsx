@@ -4,6 +4,10 @@ import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
+{
+  /*Icons from https://heroicons.com/*/
+}
+
 export default function Home() {
   return (
     <main
@@ -55,22 +59,16 @@ export default function Home() {
                     <span className="inline-block text-blue-500 dark:text-blue-400">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="w-8 h-8"
                         fill="none"
                         viewBox="0 0 24 24"
+                        strokeWidth="1.5"
                         stroke="currentColor"
+                        className="size-10"
                       >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"
-                        />
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"
+                          d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"
                         />
                       </svg>
                     </span>
@@ -109,16 +107,16 @@ export default function Home() {
                     <span className="inline-block text-blue-500 dark:text-blue-400">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="w-8 h-8"
                         fill="none"
                         viewBox="0 0 24 24"
+                        strokeWidth="1.5"
                         stroke="currentColor"
+                        className="size-10"
                       >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"
+                          d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
                         />
                       </svg>
                     </span>
@@ -157,16 +155,16 @@ export default function Home() {
                     <span className="inline-block text-blue-500 dark:text-blue-400">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="w-8 h-8"
                         fill="none"
                         viewBox="0 0 24 24"
+                        strokeWidth="1.5"
                         stroke="currentColor"
+                        className="size-10"
                       >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                          d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z"
                         />
                       </svg>
                     </span>
