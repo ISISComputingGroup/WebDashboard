@@ -1,6 +1,14 @@
 import Image from "next/image";
+import { useState } from "react";
 
 export default function ShowHideBeamInfo() {
+  const [date, setDate] = useState<number>(Date.now());
+
+  setInterval(() => {
+    // Update the date, used by the beam image to get a fresh image, every 5 seconds so we're not constantly reloading the image on every render.
+    setDate(Date.now());
+  }, 5000);
+
   return (
     <div id="beampic" className="flex flex-col items-center justify-center">
       {" "}
@@ -11,11 +19,11 @@ export default function ShowHideBeamInfo() {
             Show/hide beam info
           </h3>
           <Image
-            src={`https://www.isis.stfc.ac.uk/Gallery/beam-status/ISIS_Status.jpg?t=${Date.now()}`}
+            src={`https://www.isis.stfc.ac.uk/Gallery/beam-status/ISIS_Status.jpg?t=${date}`}
             alt="beam info"
-            className="w-auto"
             height={600}
             width={600}
+            suppressHydrationWarning // needed to avoid the server-side rendering hydration warning because the "date" variable will be further ahead on the client than the server.
           />
         </span>
       </label>
