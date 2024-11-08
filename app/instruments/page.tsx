@@ -50,11 +50,11 @@ export default function Home() {
                           href={`/instrument?name=${instrument}`}
                           key={instrument}
                         >
-						  <div className="shadow-lg rounded-lg border-2 border-gray-600 bg-slate-800 hover:bg-slate-700 py-2 px-3 m-1 transition-all duration-100">
+                          <div className="shadow-lg rounded-lg border-2 border-gray-600 bg-slate-800 hover:bg-slate-700 py-2 px-3 m-1 transition-all duration-100">
                             <h1 className="text-xl flex items-center justify-center text-left leading-none transition-all text-black dark:text-white">
                               {instrument}
                             </h1>
-						  </div>
+                          </div>
                         </Link>
                       );
                     })}
