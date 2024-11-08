@@ -28,6 +28,13 @@ export default function Footer() {
           >
             Instrument statuses
           </Link>
+          <Link
+            href="https://www.isis.stfc.ac.uk/Pages/Beam-Status.aspx"
+            className="text-base leading-6 text-gray-500 hover:text-gray-900  dark:text-white dark:hover:text-gray-400 transition-color duration-100 px-5 py-2"
+            target="_blank"
+          >
+            Beam status
+          </Link>
         </nav>
         <p className="mt-8 text-base leading-6 text-center text-gray-400">
           © 2024 Experiment Controls at ISIS. All rights reserved.
