@@ -15,7 +15,7 @@ export default function Home() {
     >
       <section className=" rounded-xl  p-2 md:p-12 ">
         <div className="px-12 mx-auto">
-          <div className="w-full mx-auto text-left md:w-11/12 xl:w-9/12 md:text-center">
+          <div className="w-full  mx-auto md:w-11/12 xl:w-9/12 text-center">
             <div className="mb-8 flex flex-col text-4xl font-extrabold leading-none tracking-normal text-gray-900 dark:text-white md:text-6xl md:tracking-tight">
               <h1>Experiment Controls</h1>{" "}
               <h1 className="block w-full mt-2 py-2 text-transparent bg-clip-text leading-12 bg-gradient-to-r from-green-400 to-purple-500 lg:inline">
