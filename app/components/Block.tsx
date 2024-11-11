@@ -10,11 +10,13 @@ export default function Block({
   instName,
   showHiddenBlocks,
   showSetpoints,
+  showTimestamps,
 }: {
   pv: IfcBlock;
   instName: string;
   showHiddenBlocks: boolean;
   showSetpoints: boolean;
+  showTimestamps: boolean;
 }) {
   const [currentValue, setCurrentValue] = useState<
     string | number | undefined
@@ -65,6 +67,12 @@ export default function Block({
             <>
               <br />
               {`(SP: ${pv.sp_value})`}
+            </>
+          ) : null}
+          {showTimestamps && pv.updateSeconds != null ? (
+            <>
+              <br />
+              {`(Last update: ${new Date(pv.updateSeconds * 1000).toLocaleString()})`}
             </>
           ) : null}
           {pv.severity != "NONE" ? (

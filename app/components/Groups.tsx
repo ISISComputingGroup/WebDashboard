@@ -8,11 +8,13 @@ export default function Groups({
   instName,
   showHiddenBlocks,
   showSetpoints,
+  showTimestamps,
 }: {
   groupsMap: Array<IfcGroup>;
   instName: string;
   showHiddenBlocks: boolean;
   showSetpoints: boolean;
+  showTimestamps: boolean;
 }) {
   if (!groupsMap) {
     return <h1>Loading...</h1>;
@@ -28,6 +30,7 @@ export default function Groups({
             instName={instName}
             showHiddenBlocks={showHiddenBlocks}
             showSetpoints={showSetpoints}
+            showTimestamps={showTimestamps}
           />
         );
       })}

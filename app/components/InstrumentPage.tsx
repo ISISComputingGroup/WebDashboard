@@ -99,6 +99,7 @@ export function toPrecision(
 function InstrumentData({ instrumentName }: { instrumentName: string }) {
   const [showHiddenBlocks, setShowHiddenBlocks] = useState(false);
   const [showSetpoints, setShowSetpoints] = useState(false);
+  const [showTimestamps, setShowTimestamps] = useState(false);
   const CONFIG_DETAILS = "CS:BLOCKSERVER:GET_CURR_CONFIG_DETAILS";
   const [instlist, setInstlist] = useState<Array<any> | null>(null);
   const [currentInstrument, setCurrentInstrument] = useState<Instrument | null>(
@@ -242,6 +243,7 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
               }
               // if a block has precision truncate it here
               block.value = toPrecision(block, pvVal);
+              if (updatedPV.seconds) block.updateSeconds = updatedPV.seconds;
 
               if (updatedPV.units) block.units = updatedPV.units;
               if (updatedPV.severity) block.severity = updatedPV.severity;
@@ -268,7 +270,7 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
         instName={instName}
         runInfoPVs={currentInstrument.runInfoPVs}
       />
-      <div className="flex gap-2 ml-2">
+      <div className="flex gap-2 ml-2 md:flex-row flex-col">
         <CheckToggle
           checked={showHiddenBlocks}
           setChecked={setShowHiddenBlocks}
@@ -279,12 +281,18 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
           setChecked={setShowSetpoints}
           text={"Show setpoints"}
         />
+        <CheckToggle
+          checked={showTimestamps}
+          setChecked={setShowTimestamps}
+          text={"Show update timestamps"}
+        />
       </div>
       <Groups
         groupsMap={currentInstrument.groups}
         instName={instName}
         showHiddenBlocks={showHiddenBlocks}
         showSetpoints={showSetpoints}
+        showTimestamps={showTimestamps}
       />
     </div>
   );
