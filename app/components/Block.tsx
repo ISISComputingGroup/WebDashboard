@@ -1,6 +1,6 @@
 "use client";
 import { IfcBlock } from "@/app/types";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const grafana_stub =
   "https://shadow.nd.rl.ac.uk/grafana/d/wMlwwaHMk/block-history?viewPanel=2&orgId=1&var-block=";
@@ -9,18 +9,15 @@ export default function Block({
   pv,
   instName,
   showHiddenBlocks,
-  showSetpoints,
-  showTimestamps,
 }: {
   pv: IfcBlock;
   instName: string;
   showHiddenBlocks: boolean;
-  showSetpoints: boolean;
-  showTimestamps: boolean;
 }) {
   const [currentValue, setCurrentValue] = useState<
     string | number | undefined
   >();
+  const [showAdvanced, setShowAdvanced] = useState(false);
   if (!pv.visible && !showHiddenBlocks && !instName) {
     return null;
   }
@@ -44,6 +41,9 @@ export default function Block({
     <tr
       key={pv.human_readable_name}
       className="border-b border-blue-gray-200 transition duration-100 hover:bg-gray-100 hover:text-black"
+      onClick={() => {
+        setShowAdvanced(!showAdvanced);
+      }}
     >
       <td className="py-1 px-4">
         <a
@@ -62,19 +62,8 @@ export default function Block({
 
       <td className="py-1 px-4 ">
         <span id={pv.human_readable_name + "_VALUE"}>
+          {showAdvanced && "Readback: "}
           {pv.value} {pv.units != null && pv.units}
-          {showSetpoints && pv.sp_value != null ? (
-            <>
-              <br />
-              {`(SP: ${pv.sp_value})`}
-            </>
-          ) : null}
-          {showTimestamps && pv.updateSeconds != null ? (
-            <>
-              <br />
-              {`(Last update: ${new Date(pv.updateSeconds * 1000).toLocaleString()})`}
-            </>
-          ) : null}
           {pv.severity != "NONE" ? (
             <a
               href="https://github.com/ISISComputingGroup/ibex_user_manual/wiki/Blocks#alarms"
@@ -84,6 +73,22 @@ export default function Block({
               {pv.severity}
             </a>
           ) : null}
+          {showAdvanced && (
+            <div>
+              <hr />
+              {pv.sp_value != null ? (
+                <span id={pv.human_readable_name + "_SP"}>
+                  {`Setpoint: ${pv.sp_value}`}
+                  <hr />
+                </span>
+              ) : null}
+              {pv.updateSeconds != null ? (
+                <span id={pv.human_readable_name + "_TIMESTAMP"}>
+                  {`Last update: ${new Date(pv.updateSeconds * 1000).toLocaleString()}`}
+                </span>
+              ) : null}
+            </div>
+          )}
         </span>
       </td>
       <td className="py-1 px-4 flex justify-between items-center">
@@ -99,6 +104,9 @@ export default function Block({
         >
           <circle cx="12" cy="12" r="12" />
         </svg>
+        <span className={"cursor-pointer font-bold"}>
+          {showAdvanced ? "-" : "+"}
+        </span>
       </td>
     </tr>
   );

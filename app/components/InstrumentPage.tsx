@@ -276,23 +276,11 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
           setChecked={setShowHiddenBlocks}
           text={"Show hidden blocks"}
         />
-        <CheckToggle
-          checked={showSetpoints}
-          setChecked={setShowSetpoints}
-          text={"Show setpoints"}
-        />
-        <CheckToggle
-          checked={showTimestamps}
-          setChecked={setShowTimestamps}
-          text={"Show update timestamps"}
-        />
       </div>
       <Groups
         groupsMap={currentInstrument.groups}
         instName={instName}
         showHiddenBlocks={showHiddenBlocks}
-        showSetpoints={showSetpoints}
-        showTimestamps={showTimestamps}
       />
     </div>
   );
