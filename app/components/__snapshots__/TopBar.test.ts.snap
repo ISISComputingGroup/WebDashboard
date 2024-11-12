@@ -29,35 +29,35 @@ exports[`renders topbar unchanged 1`] = `
         </span>
       </h2>
       <h3
-        class="text-black text-wrap max-w-full break-all"
+        class="text-black text-wrap max-w-full break-all py-2 font-semibold"
       >
         Config:
          
         <span
-          class="font-semibold"
           id="configNameSpan"
         />
       </h3>
       <div
-        class="bg-gray-50 border-2 border-gray-800 shadow-md flex flex-col"
+        class="bg-gray-50 border-2 border-gray-800 shadow-md flex flex-col max-w-full w-full"
       >
         <table
-          class="text-sm w-full table-fixed flex divide-x divide-gray-200 "
+          class="text-sm max-w-full table-fixed flex divide-x divide-gray-200 text-wrap "
           id="dashboardTable"
         >
           <tbody
+            class="w-1/3"
             id="0"
           >
             <tr
-              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white md:flex"
             >
               <td
-                class="py-1 px-4 flex font-bold"
+                class="py-1 px-4 flex font-bold break-words"
               >
                 Title:
               </td>
               <td
-                class="py-1 px-4 flex justify-between items-center"
+                class="py-1 px-4 flex justify-between items-center break-all"
               >
                 <span
                   class="font-light"
@@ -67,15 +67,15 @@ exports[`renders topbar unchanged 1`] = `
               </td>
             </tr>
             <tr
-              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white md:flex"
             >
               <td
-                class="py-1 px-4 flex font-bold"
+                class="py-1 px-4 flex font-bold break-words"
               >
                 Users:
               </td>
               <td
-                class="py-1 px-4 flex justify-between items-center"
+                class="py-1 px-4 flex justify-between items-center break-all"
               >
                 <span
                   class="font-light"
@@ -86,16 +86,17 @@ exports[`renders topbar unchanged 1`] = `
             </tr>
           </tbody>
           <tbody
+            class="w-1/3"
             id="1"
           >
             <tr
-              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white md:flex"
             >
               <td
-                class="py-1 px-4 flex font-bold"
+                class="py-1 px-4 flex font-bold break-words"
               />
               <td
-                class="py-1 px-4 flex justify-between items-center"
+                class="py-1 px-4 flex justify-between items-center break-all"
               >
                 <span
                   class="font-light"
@@ -105,13 +106,13 @@ exports[`renders topbar unchanged 1`] = `
               </td>
             </tr>
             <tr
-              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white md:flex"
             >
               <td
-                class="py-1 px-4 flex font-bold"
+                class="py-1 px-4 flex font-bold break-words"
               />
               <td
-                class="py-1 px-4 flex justify-between items-center"
+                class="py-1 px-4 flex justify-between items-center break-all"
               >
                 <span
                   class="font-light"
@@ -121,13 +122,13 @@ exports[`renders topbar unchanged 1`] = `
               </td>
             </tr>
             <tr
-              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white md:flex"
             >
               <td
-                class="py-1 px-4 flex font-bold"
+                class="py-1 px-4 flex font-bold break-words"
               />
               <td
-                class="py-1 px-4 flex justify-between items-center"
+                class="py-1 px-4 flex justify-between items-center break-all"
               >
                 <span
                   class="font-light"
@@ -138,16 +139,17 @@ exports[`renders topbar unchanged 1`] = `
             </tr>
           </tbody>
           <tbody
+            class="w-1/3"
             id="2"
           >
             <tr
-              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white md:flex"
             >
               <td
-                class="py-1 px-4 flex font-bold"
+                class="py-1 px-4 flex font-bold break-words"
               />
               <td
-                class="py-1 px-4 flex justify-between items-center"
+                class="py-1 px-4 flex justify-between items-center break-all"
               >
                 <span
                   class="font-light"
@@ -157,13 +159,13 @@ exports[`renders topbar unchanged 1`] = `
               </td>
             </tr>
             <tr
-              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white md:flex"
             >
               <td
-                class="py-1 px-4 flex font-bold"
+                class="py-1 px-4 flex font-bold break-words"
               />
               <td
-                class="py-1 px-4 flex justify-between items-center"
+                class="py-1 px-4 flex justify-between items-center break-all"
               >
                 <span
                   class="font-light"
@@ -173,13 +175,13 @@ exports[`renders topbar unchanged 1`] = `
               </td>
             </tr>
             <tr
-              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white"
+              class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white md:flex"
             >
               <td
-                class="py-1 px-4 flex font-bold"
+                class="py-1 px-4 flex font-bold break-words"
               />
               <td
-                class="py-1 px-4 flex justify-between items-center"
+                class="py-1 px-4 flex justify-between items-center break-all"
               >
                 <span
                   class="font-light"
@@ -192,7 +194,7 @@ exports[`renders topbar unchanged 1`] = `
         </table>
       </div>
       <label
-        class="pt-2 max-w-full break-all text-wrap"
+        class="p-2 w-full"
         id="runInfoLabel"
       >
         <input
@@ -200,193 +202,437 @@ exports[`renders topbar unchanged 1`] = `
           type="checkbox"
         />
         <span
-          class="block max-h-14 overflow-hidden rounded-lg bg-gray-50 hover:bg-gray-800 hover:text-white px-4 py-0 mb-2  shadow-lg transition-all duration-300 peer-checked/showLabel:max-h-fit cursor-pointer"
+          class="block max-h-14 overflow-hidden rounded-lg bg-gray-50 hover:bg-gray-800 hover:text-white px-4 py-0 mb-2  shadow-lg transition-all duration-300 peer-checked/showLabel:max-h-fit cursor-pointer items-center"
         >
           <h3
-            class="flex h-14 cursor-pointer items-center font-bold "
+            class="flex h-14 cursor-pointer font-bold text-center items-center justify-center"
           >
             Show/hide all run information
           </h3>
-          <p
-            class="mb-2"
+          <div
+            class="grid md:grid-cols-5 gap-2"
           >
-            Config name
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Run state
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Run number
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Start number
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Title
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Users
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Good frames
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Raw frames (Total)
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Raw frames (Period)
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Current(uamps)
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Total(uamps)
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Monitor counts
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Monitor Spectrum
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Monitor From
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Monitor To
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Shutter Status
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Number of Spectra
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Number of Time Channels
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            DAE Simulation Mode
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Instrument Time
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Start time
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Run time
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Period
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Num periods
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Count Rate
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            RB Number
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Total Run Time
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Period Run Time
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            Period Sequence
-            : 
-          </p>
-          <p
-            class="mb-2"
-          >
-            DAE Memory Used
-            : 
-          </p>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Config name
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Run state
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Run number
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Start number
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Title
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Users
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Good frames
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Raw frames (Total)
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Raw frames (Period)
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Current(uamps)
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Total(uamps)
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Monitor counts
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Monitor Spectrum
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Monitor From
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Monitor To
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Shutter Status
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Number of Spectra
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Number of Time Channels
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                DAE Simulation Mode
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Instrument Time
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Start time
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Run time
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Period
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Num periods
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Count Rate
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                RB Number
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Total Run Time
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Period Run Time
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                Period Sequence
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+            <div
+              class="mb-2 shadow-sm rounded-md"
+            >
+              <p
+                class="font-bold"
+              >
+                DAE Memory Used
+                :
+              </p>
+               
+              <p
+                class="break-all"
+              />
+            </div>
+          </div>
         </span>
       </label>
     </div>
