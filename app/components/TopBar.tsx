@@ -42,22 +42,6 @@ export default function TopBar({
       id="top_bar"
       className="w-full bg-white  shadow-lg text-black rounded-xl text-md"
     >
-      <div className="text-left mb-4 p-4">
-        <h1 className="text-black text-2xl">
-          Instrument:{" "}
-          <span id={"instNameSpan"} className="font-semibold">
-            {instName.toUpperCase()}
-          </span>
-        </h1>
-        <h1 className="text-black text-lg">
-          Config:{" "}
-          <span id={"configNameSpan"} className="font-semibold">
-            {findPVByHumanReadableName(runInfoPVs, configName)
-              ? findPVByHumanReadableName(runInfoPVs, configName)!.value
-              : "UNKNOWN"}
-          </span>
-        </h1>
-      </div>
       <div
         id="instNameDiv"
         className="w-full flex justify-center items-center flex-col"
@@ -69,11 +53,21 @@ export default function TopBar({
            ${getForegroundColour(getRunstate(runInfoPVs))}
           
           `}
+          id={"instNameLabel"}
         >
           {instName.toUpperCase()} is{" "}
           <span id={"runStateSpan"}>{getRunstate(runInfoPVs)}</span>
         </h2>
-        <div className="bg-gray-50 border-2 border-gray-800 m-4 p-4 shadow-md flex flex-col">
+        <h3 className="text-black text-wrap max-w-full break-all">
+          Config:{" "}
+          <span id={"configNameSpan"} className="font-semibold">
+            {findPVByHumanReadableName(runInfoPVs, configName)
+              ? findPVByHumanReadableName(runInfoPVs, configName)!.value
+              : "UNKNOWN"}
+          </span>
+        </h3>
+
+        <div className="bg-gray-50 border-2 border-gray-800 shadow-md flex flex-col">
           <table
             id={"dashboardTable"}
             className="text-sm w-full table-fixed flex divide-x divide-gray-200 "
@@ -98,11 +92,14 @@ export default function TopBar({
           </table>
         </div>
 
-        <label id={"runInfoLabel"}>
+        <label
+          id={"runInfoLabel"}
+          className="pt-2 max-w-full break-all text-wrap"
+        >
           <input className="peer/showLabel absolute scale-0" type="checkbox" />
           <span className="block max-h-14 overflow-hidden rounded-lg bg-gray-50 hover:bg-gray-800 hover:text-white px-4 py-0 mb-2  shadow-lg transition-all duration-300 peer-checked/showLabel:max-h-fit cursor-pointer">
             <h3 className="flex h-14 cursor-pointer items-center font-bold ">
-              Click to show/hide all run information
+              Show/hide all run information
             </h3>
             {runInfoPVs.map((runInfoPV) => (
               <p className="mb-2" key={runInfoPV.human_readable_name}>

@@ -7,32 +7,6 @@ exports[`renders topbar unchanged 1`] = `
     id="top_bar"
   >
     <div
-      class="text-left mb-4 p-4"
-    >
-      <h1
-        class="text-black text-2xl"
-      >
-        Instrument:
-         
-        <span
-          class="font-semibold"
-          id="instNameSpan"
-        >
-          INSTRUMENT
-        </span>
-      </h1>
-      <h1
-        class="text-black text-lg"
-      >
-        Config:
-         
-        <span
-          class="font-semibold"
-          id="configNameSpan"
-        />
-      </h1>
-    </div>
-    <div
       class="w-full flex justify-center items-center flex-col"
       id="instNameDiv"
     >
@@ -43,6 +17,7 @@ exports[`renders topbar unchanged 1`] = `
            text-black
           
           "
+        id="instNameLabel"
       >
         INSTRUMENT
          is
@@ -53,8 +28,18 @@ exports[`renders topbar unchanged 1`] = `
           UNKNOWN
         </span>
       </h2>
+      <h3
+        class="text-black text-wrap max-w-full break-all"
+      >
+        Config:
+         
+        <span
+          class="font-semibold"
+          id="configNameSpan"
+        />
+      </h3>
       <div
-        class="bg-gray-50 border-2 border-gray-800 m-4 p-4 shadow-md flex flex-col"
+        class="bg-gray-50 border-2 border-gray-800 shadow-md flex flex-col"
       >
         <table
           class="text-sm w-full table-fixed flex divide-x divide-gray-200 "
@@ -207,6 +192,7 @@ exports[`renders topbar unchanged 1`] = `
         </table>
       </div>
       <label
+        class="pt-2 max-w-full break-all text-wrap"
         id="runInfoLabel"
       >
         <input
@@ -219,7 +205,7 @@ exports[`renders topbar unchanged 1`] = `
           <h3
             class="flex h-14 cursor-pointer items-center font-bold "
           >
-            Click to show/hide all run information
+            Show/hide all run information
           </h3>
           <p
             class="mb-2"

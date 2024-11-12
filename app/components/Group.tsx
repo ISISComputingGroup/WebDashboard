@@ -31,8 +31,8 @@ export default function Group({
         <thead className="sticky">
           <tr className="bg-blue-gray-100 text-gray-100 border-b-2 border-b-gray-400">
             <th className="py-2 px-2 text-left w-1/3">Block</th>
-            <th className="py-2 px-2 text-left w-1/3">Value</th>
-            <th className="py-2 px-2 text-left w-1/3">In-Range</th>
+            <th className="py-2 px-2 text-left w-7/12">Value</th>
+            <th className="py-2 px-2 text-left"></th>
           </tr>
         </thead>
         <tbody className="text-gray-200 sticky">

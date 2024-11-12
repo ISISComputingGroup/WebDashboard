@@ -264,7 +264,7 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
     return <h1>Loading...</h1>;
   }
   return (
-    <div className="p-2 md:p-8 w-full mx-auto">
+    <div className="p-2 w-full mx-auto">
       <TopBar
         dashboard={currentInstrument.dashboard}
         instName={instName}

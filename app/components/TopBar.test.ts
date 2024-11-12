@@ -47,7 +47,7 @@ it("draws instName expectedly", () => {
       runInfoPVs: instrument.runInfoPVs,
     }),
   );
-  expect(container.querySelector("#instNameSpan")!.innerHTML).toBe(
+  expect(container.querySelector("#instNameLabel")!.innerHTML).toContain(
     instName.toUpperCase(),
   );
 });
