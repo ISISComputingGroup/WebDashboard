@@ -38,7 +38,7 @@ exports[`renders topbar unchanged 1`] = `
         />
       </h3>
       <div
-        class="bg-gray-50 border-2 border-gray-800 shadow-md flex flex-col max-w-full w-full"
+        class="bg-gray-50 border-2 border-gray-200 flex flex-col max-w-full w-full"
       >
         <table
           class="text-sm max-w-full table-fixed flex divide-x divide-gray-200 text-wrap "
@@ -202,7 +202,7 @@ exports[`renders topbar unchanged 1`] = `
           type="checkbox"
         />
         <span
-          class="block max-h-14 overflow-hidden rounded-lg bg-gray-50 hover:bg-gray-800 hover:text-white px-4 py-0 mb-2  shadow-lg transition-all duration-300 peer-checked/showLabel:max-h-fit cursor-pointer items-center"
+          class="block max-h-14 overflow-hidden rounded-lg bg-gray-600 hover:bg-gray-800 text-white px-4 py-0 mb-2 transition-all duration-300 peer-checked/showLabel:max-h-fit cursor-pointer items-center"
         >
           <h3
             class="flex h-14 cursor-pointer font-bold text-center items-center justify-center"

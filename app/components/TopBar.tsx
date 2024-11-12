@@ -67,7 +67,7 @@ export default function TopBar({
           </span>
         </h3>
 
-        <div className="bg-gray-50 border-2 border-gray-800 shadow-md flex flex-col max-w-full w-full">
+        <div className="bg-gray-50 border-2 border-gray-200 flex flex-col max-w-full w-full">
           <table
             id={"dashboardTable"}
             className="text-sm max-w-full table-fixed flex divide-x divide-gray-200 text-wrap "
@@ -96,7 +96,7 @@ export default function TopBar({
 
         <label id={"runInfoLabel"} className="p-2 w-full">
           <input className="peer/showLabel absolute scale-0" type="checkbox" />
-          <span className="block max-h-14 overflow-hidden rounded-lg bg-gray-50 hover:bg-gray-800 hover:text-white px-4 py-0 mb-2  shadow-lg transition-all duration-300 peer-checked/showLabel:max-h-fit cursor-pointer items-center">
+          <span className="block max-h-14 overflow-hidden rounded-lg bg-gray-600 hover:bg-gray-800 text-white px-4 py-0 mb-2 transition-all duration-300 peer-checked/showLabel:max-h-fit cursor-pointer items-center">
             <h3 className="flex h-14 cursor-pointer font-bold text-center items-center justify-center">
               Show/hide all run information
             </h3>
