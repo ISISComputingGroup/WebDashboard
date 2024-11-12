@@ -28,14 +28,14 @@ export default function Group({
         {group.name}
       </h1>
       <table className="text-sm table-fixed">
-        <thead>
-          <tr className="bg-blue-gray-100 text-gray-100">
-            <th className="py-3 px-4 text-left">Block</th>
-            <th className="py-3 px-4 text-left">Value</th>
-            <th className="py-3 px-4 text-left">In-Range</th>
+        <thead className="sticky">
+          <tr className="bg-blue-gray-100 text-gray-100 border-b-2 border-b-gray-400">
+            <th className="py-2 px-2 text-left w-1/3">Block</th>
+            <th className="py-2 px-2 text-left w-1/3">Value</th>
+            <th className="py-2 px-2 text-left w-1/3">In-Range</th>
           </tr>
         </thead>
-        <tbody className="text-gray-200 ">
+        <tbody className="text-gray-200 sticky">
           {group.blocks.map((pv) => {
             return (
               <Block

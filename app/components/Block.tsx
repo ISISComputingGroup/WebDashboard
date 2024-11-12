@@ -45,7 +45,7 @@ export default function Block({
         setShowAdvanced(!showAdvanced);
       }}
     >
-      <td className="py-1 px-4">
+      <td className="py-1 px-2 w-1/3">
         <a
           className="underline"
           href={
@@ -60,7 +60,7 @@ export default function Block({
         </a>
       </td>
 
-      <td className="py-1 px-4 ">
+      <td className="py-1 px-2 w-1/3">
         <span id={pv.human_readable_name + "_VALUE"}>
           {showAdvanced && "Readback: "}
           {pv.value} {pv.units != null && pv.units}
@@ -91,7 +91,7 @@ export default function Block({
           )}
         </span>
       </td>
-      <td className="py-1 px-4 flex justify-between items-center">
+      <td className="py-1 px-2  flex justify-between items-center">
         <span id={pv.human_readable_name + "_VALUE_RC"}>
           {pv.runcontrol_enabled && (pv.runcontrol_inrange ? "✅" : "❌")}
         </span>
