@@ -15,6 +15,7 @@ export interface IfcPV {
   alarm_low?: number;
   alarm_high?: number;
   value?: string | number;
+  updateSeconds?: number; // Seconds from epoch
 }
 
 export interface IfcBlock extends IfcPV {

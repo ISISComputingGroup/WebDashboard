@@ -6,7 +6,7 @@ exports[`renders topbar unchanged 1`] = `
     class="border-b border-blue-gray-200 transition duration-100 hover:bg-gray-100 hover:text-black"
   >
     <td
-      class="py-1 px-4"
+      class="py-1 px-2 w-1/3 flex-row"
     >
       <a
         class="underline"
@@ -15,41 +15,51 @@ exports[`renders topbar unchanged 1`] = `
       />
     </td>
     <td
-      class="py-1 px-4 "
+      class="py-1 px-2 w-7/12"
     >
       <span
-        id="undefined_VALUE"
+        id="undefined_VALUE_ROW"
       >
-        123
-         
-        mm
-        <a
-          class="text-red-600"
-          href="https://github.com/ISISComputingGroup/ibex_user_manual/wiki/Blocks#alarms"
+        <div
+          class="flex justify-between"
         >
-          <br />
-        </a>
+          <span
+            class="text-red-400"
+            id="undefined_VALUE"
+          >
+            123
+             
+            mm
+          </span>
+          <svg
+            class="min-w-2 min-h-2 max-w-2 max-h-2 transition-all text-transparent"
+            fill="currentColor"
+            id="undefined_CIRCLE"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="12"
+            />
+          </svg>
+        </div>
       </span>
     </td>
     <td
-      class="py-1 px-4 flex justify-between items-center"
+      class="py-1 px-2  flex justify-between items-center"
     >
       <span
         id="undefined_VALUE_RC"
+        title="Run control in-range?"
       />
-      <svg
-        class="min-w-2 min-h-2 max-w-2 max-h-2 transition-all text-transparent"
-        fill="currentColor"
-        id="undefined_CIRCLE"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
+      <span
+        class="cursor-pointer font-bold"
+        title="Show/Hide advanced statuses"
       >
-        <circle
-          cx="12"
-          cy="12"
-          r="12"
-        />
-      </svg>
+        +
+      </span>
     </td>
   </tr>
 </tbody>
