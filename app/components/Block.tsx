@@ -66,7 +66,7 @@ export default function Block({
           <div className="flex justify-between">
             <span
               id={pv.human_readable_name + "_VALUE"}
-              className={pv.severity != "NONE" ? "text-red-600" : ""}
+              className={pv.severity != "NONE" ? "text-red-400" : ""}
             >
               {showAdvanced && "Readback: "}
               {pv.value} {pv.units != null && pv.units}
@@ -88,7 +88,7 @@ export default function Block({
               {pv.severity != "NONE" ? (
                 <a
                   href="https://github.com/ISISComputingGroup/ibex_user_manual/wiki/Blocks#alarms"
-                  className="text-red-600"
+                  className="text-red-400"
                 >
                   Alarm: {pv.severity}
                 </a>
