@@ -64,7 +64,10 @@ export default function Block({
       <td className="py-1 px-2 w-7/12">
         <span id={pv.human_readable_name + "_VALUE_ROW"}>
           <div className="flex justify-between">
-            <span id={pv.human_readable_name + "_VALUE"}>
+            <span
+              id={pv.human_readable_name + "_VALUE"}
+              className={pv.severity != "NONE" ? "text-red-600" : ""}
+            >
               {showAdvanced && "Readback: "}
               {pv.value} {pv.units != null && pv.units}
             </span>
@@ -78,16 +81,18 @@ export default function Block({
               <circle cx="12" cy="12" r="12" />
             </svg>
           </div>
-          {pv.severity != "NONE" ? (
-            <a
-              href="https://github.com/ISISComputingGroup/ibex_user_manual/wiki/Blocks#alarms"
-              className="text-red-600"
-            >
-              Alarm: {pv.severity}
-            </a>
-          ) : null}
+
           {showAdvanced && (
             <div>
+              <hr />
+              {pv.severity != "NONE" ? (
+                <a
+                  href="https://github.com/ISISComputingGroup/ibex_user_manual/wiki/Blocks#alarms"
+                  className="text-red-600"
+                >
+                  Alarm: {pv.severity}
+                </a>
+              ) : null}
               <hr />
               {pv.sp_value != null ? (
                 <span id={pv.human_readable_name + "_SP"}>
