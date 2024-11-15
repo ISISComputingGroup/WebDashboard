@@ -89,6 +89,7 @@ export default function Block({
                 <a
                   href="https://github.com/ISISComputingGroup/ibex_user_manual/wiki/Blocks#alarms"
                   className="text-red-400"
+                  target="_blank"
                 >
                   Alarm: {pv.severity}
                 </a>
