@@ -52,6 +52,7 @@ export default function WallDisplay() {
   );
   const [TS2Data] = useState<Array<IfcInstrumentStatus>>(
     [
+      { name: "CHIPIR" },
       { name: "IMAT" },
       { name: "INTER" },
       { name: "LARMOR" },
@@ -67,7 +68,6 @@ export default function WallDisplay() {
   const [miscData] = useState<Array<IfcInstrumentStatus>>(
     [
       { name: "ARGUS" },
-      { name: "CHIPIR" },
       { name: "CHRONUS" },
       {
         name: "CRYOLAB_R80",
