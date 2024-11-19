@@ -5,6 +5,19 @@ import React, { useState } from "react";
 const grafana_stub =
   "https://shadow.nd.rl.ac.uk/grafana/d/wMlwwaHMk/block-history?viewPanel=2&orgId=1&var-block=";
 
+function numberFormatter(value: string | number | undefined) {
+  var nValue: number = value == undefined ? NaN : +value
+  if (isNaN(nValue)) {
+    return value
+  } else {
+    if (nValue != 0 && (Math.abs(nValue) < 0.001 || Math.abs(nValue) > 10000)) {
+      return nValue.toExponential()
+    } else {
+      return nValue.toPrecision()
+    }
+  }
+}
+
 export default function Block({
   pv,
   instName,
@@ -35,19 +48,6 @@ export default function Block({
       pvChangedIndicator.classList.remove("text-green-500");
       pvChangedIndicator.classList.add("text-transparent");
     }, 2000);
-  }
-  var formattedValue = currentValue
-  if (typeof currentValue === 'string') {
-    var formattedValue: number = +currentValue
-  }
-  if (isNaN(formattedValue)) {
-    var formattedValue = currentValue
-  } else {
-    if (pv.units != null && formattedValue != 0 && (formattedValue < 0.001 || formattedValue > 10000)) {
-      var formattedValue = formattedValue.toExponential()
-    } else {
-      var formattedValue = formattedValue.toPrecision()
-    }
   }
 
   const minimum_date_to_be_shown = 631152000; // This is what PVWS thinks epoch time is for some reason. don't bother showing it as the instrument wasn't running EPICS on 01/01/1990
@@ -82,7 +82,7 @@ export default function Block({
               className={pv.severity != "NONE" ? "text-red-400" : ""}
             >
               {showAdvanced && "Readback: "}
-              {formattedValue} {pv.units != null && pv.units}
+              {numberFormatter(pv.value)} {pv.units != null && pv.units}
             </span>
             <svg
               id={pv.human_readable_name + "_CIRCLE"}
