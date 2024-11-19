@@ -36,6 +36,19 @@ export default function Block({
       pvChangedIndicator.classList.add("text-transparent");
     }, 2000);
   }
+  var formattedValue = currentValue
+  if (typeof currentValue === 'string') {
+    var formattedValue: number = +currentValue
+  }
+  if (isNaN(formattedValue)) {
+    var formattedValue = currentValue
+  } else {
+    if (pv.units != null && formattedValue != 0 && (formattedValue < 0.001 || formattedValue > 10000)) {
+      var formattedValue = formattedValue.toExponential()
+    } else {
+      var formattedValue = formattedValue.toPrecision()
+    }
+  }
 
   const minimum_date_to_be_shown = 631152000; // This is what PVWS thinks epoch time is for some reason. don't bother showing it as the instrument wasn't running EPICS on 01/01/1990
   return (
@@ -69,7 +82,7 @@ export default function Block({
               className={pv.severity != "NONE" ? "text-red-400" : ""}
             >
               {showAdvanced && "Readback: "}
-              {pv.value} {pv.units != null && pv.units}
+              {formattedValue} {pv.units != null && pv.units}
             </span>
             <svg
               id={pv.human_readable_name + "_CIRCLE"}
