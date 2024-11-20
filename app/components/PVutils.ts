@@ -19,3 +19,30 @@ export function findPVByAddress(
 ): IfcPV | undefined {
   return arr.find((b: IfcPV) => b.pvaddress == address);
 }
+
+/**
+ * Formats a given PV value input such that above or below a threshold value,
+ * it uses scientific (exponential) notation, matching behaviour of ibex_gui
+ */
+export function ExponentialOnThresholdFormat(
+  value: string | number,
+  precision: number = 3,
+) {
+  var nValue: number = value == undefined ? NaN : +value;
+  if (isNaN(nValue)) {
+    return value;
+  } else {
+    if (nValue == 0) {
+      return "0";
+    } else if (Number.isInteger(nValue)) {
+      return nValue.toString();
+    } else if (Math.abs(nValue) < 0.001 || Math.abs(nValue) >= 1000000) {
+      return nValue
+        .toExponential(precision)
+        .replace("e+", "E")
+        .replace("e", "E");
+    } else {
+      return nValue.toFixed(precision);
+    }
+  }
+}

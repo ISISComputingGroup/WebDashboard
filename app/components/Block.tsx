@@ -5,19 +5,6 @@ import React, { useState } from "react";
 const grafana_stub =
   "https://shadow.nd.rl.ac.uk/grafana/d/wMlwwaHMk/block-history?viewPanel=2&orgId=1&var-block=";
 
-function numberFormatter(value: string | number | undefined) {
-  var nValue: number = value == undefined ? NaN : +value;
-  if (isNaN(nValue)) {
-    return value;
-  } else {
-    if (nValue != 0 && (Math.abs(nValue) < 0.001 || Math.abs(nValue) > 10000)) {
-      return nValue.toExponential();
-    } else {
-      return nValue.toPrecision();
-    }
-  }
-}
-
 export default function Block({
   pv,
   instName,
@@ -82,7 +69,7 @@ export default function Block({
               className={pv.severity != "NONE" ? "text-red-400" : ""}
             >
               {showAdvanced && "Readback: "}
-              {numberFormatter(pv.value)} {pv.units != null && pv.units}
+              {pv.value} {pv.units != null && pv.units}
             </span>
             <svg
               id={pv.human_readable_name + "_CIRCLE"}
