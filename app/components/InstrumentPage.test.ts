@@ -49,7 +49,7 @@ test("toPrecision truncates block if it has precision", () => {
     precision: precision,
   };
   expect(toPrecision(aBlock, originalValue)).toBe(
-    originalValue.toPrecision(precision),
+    originalValue.toFixed(precision),
   );
 });
 
