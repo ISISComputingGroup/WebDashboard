@@ -15,7 +15,10 @@ import {
   IfcPVWSMessage,
   IfcPVWSRequest,
 } from "@/app/types";
-import { findPVByAddress } from "@/app/components/PVutils";
+import {
+  findPVByAddress,
+  ExponentialOnThresholdFormat,
+} from "@/app/components/PVutils";
 import CheckToggle from "@/app/components/CheckToggle";
 
 let lastUpdate: string = "";
@@ -91,8 +94,8 @@ export function toPrecision(
   block: IfcBlock,
   pvVal: number | string,
 ): string | number {
-  return block.precision && typeof pvVal == "number"
-    ? pvVal.toPrecision(block.precision)
+  return block.precision
+    ? ExponentialOnThresholdFormat(pvVal, block.precision)
     : pvVal;
 }
 
