@@ -18,7 +18,7 @@ export default function Block({
     string | number | undefined
   >();
   const [showAdvanced, setShowAdvanced] = useState(false);
-  if (!pv.visible && !showHiddenBlocks && !instName) {
+  if (!pv.visible && !showHiddenBlocks) {
     return null;
   }
   if (pv.value != currentValue) {
