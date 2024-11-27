@@ -141,3 +141,8 @@ export interface ConfigOutputIocMacro {
   name: string;
   value: string;
 }
+
+export interface targetStation {
+  targetStation: string;
+  instruments: Array<IfcInstrumentStatus>;
+}

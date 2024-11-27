@@ -23,8 +23,9 @@ export default function ShowHideBeamInfo() {
           <Image
             src={`https://www.isis.stfc.ac.uk/Gallery/beam-status/ISIS_Status.jpg?t=${date}`}
             alt="beam info"
-            height={600}
-            width={600}
+            height={400}
+            width={0}
+            className={"w-auto"}
           />
         </span>
       </label>
