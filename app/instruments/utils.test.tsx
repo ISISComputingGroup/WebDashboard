@@ -1,4 +1,4 @@
-import { createInstrumentGroupsFromInstlist } from "@/app/instruments/page";
+import createInstrumentGroupsFromInstlist from "@/app/instruments/utils";
 import { instList } from "@/app/types";
 
 test("createInstrumentGroupsFromInstlist adds an instrument to a group if it has one", () => {

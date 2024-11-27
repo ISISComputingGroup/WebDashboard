@@ -1,33 +1,11 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import {
-  IfcPVWSMessage,
-  IfcPVWSRequest,
-  instList,
-  PVWSRequestType,
-} from "@/app/types";
-import {
-  dehex_and_decompress,
-  instListFromBytes,
-} from "@/app/components/dehex_and_decompress";
+import { IfcPVWSMessage, IfcPVWSRequest } from "@/app/types";
+import { instListFromBytes } from "@/app/components/dehex_and_decompress";
 import useWebSocket from "react-use-websocket";
 import { instListPV, instListSubscription, socketURL } from "@/app/commonVars";
-
-export function createInstrumentGroupsFromInstlist(
-  jsonInstList: instList,
-): Map<string, Array<string>> {
-  let newInstrumentGroups: Map<string, Array<string>> = new Map();
-  for (let inst of jsonInstList) {
-    for (let group of inst["groups"]) {
-      if (!newInstrumentGroups.has(group)) {
-        newInstrumentGroups.set(group, []);
-      }
-      newInstrumentGroups.get(group)!.push(inst["name"]);
-    }
-  }
-  return newInstrumentGroups;
-}
+import createInstrumentGroupsFromInstlist from "@/app/instruments/utils";
 
 export default function Instruments() {
   const [instrumentGroups, setInstrumentGroups] = useState<
