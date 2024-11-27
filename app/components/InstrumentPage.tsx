@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import TopBar from "./TopBar";
 import Groups from "./Groups";
 import useWebSocket from "react-use-websocket";
-import { dehex_and_decompress } from "./dehex_and_decompress";
+import {
+  dehex_and_decompress,
+  instListFromBytes,
+} from "./dehex_and_decompress";
 import { findPVInDashboard, Instrument } from "./Instrument";
 import { useSearchParams } from "next/navigation";
 import {
@@ -11,15 +14,16 @@ import {
   ConfigOutputBlock,
   IfcBlock,
   IfcGroup,
-  IfcPV,
   IfcPVWSMessage,
   IfcPVWSRequest,
+  PVWSRequestType,
 } from "@/app/types";
 import {
-  findPVByAddress,
   ExponentialOnThresholdFormat,
+  findPVByAddress,
 } from "@/app/components/PVutils";
 import CheckToggle from "@/app/components/CheckToggle";
+import { instListPV, instListSubscription, socketURL } from "@/app/commonVars";
 
 let lastUpdate: string = "";
 
@@ -46,7 +50,7 @@ export function subscribeToBlockPVs(
    * Subscribes to a block and its associated run control PVs
    */
   sendJsonMessage({
-    type: "subscribe",
+    type: PVWSRequestType.subscribe,
     pvs: [
       block_address,
       block_address + RC_ENABLE,
@@ -101,15 +105,12 @@ export function toPrecision(
 
 function InstrumentData({ instrumentName }: { instrumentName: string }) {
   const [showHiddenBlocks, setShowHiddenBlocks] = useState(false);
-  const [showSetpoints, setShowSetpoints] = useState(false);
-  const [showTimestamps, setShowTimestamps] = useState(false);
   const CONFIG_DETAILS = "CS:BLOCKSERVER:GET_CURR_CONFIG_DETAILS";
   const [instlist, setInstlist] = useState<Array<any> | null>(null);
   const [currentInstrument, setCurrentInstrument] = useState<Instrument | null>(
     null,
   );
-  const socketURL =
-    process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8080/pvws/pv";
+
   const instName = instrumentName;
 
   useEffect(() => {
@@ -130,10 +131,7 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
 
   useEffect(() => {
     // This is an initial useEffect to subscribe to lots of PVs including the instlist.
-    sendJsonMessage({
-      type: "subscribe",
-      pvs: ["CS:INSTLIST"],
-    });
+    sendJsonMessage(instListSubscription);
 
     if (instName == "" || instName == null || instlist == null) {
       return;
@@ -156,7 +154,7 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
       setCurrentInstrument(instrument);
 
       sendJsonMessage({
-        type: "subscribe",
+        type: PVWSRequestType.subscribe,
         pvs: [`${prefix}${CONFIG_DETAILS}`],
       });
 
@@ -164,7 +162,10 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
       for (const pv of instrument.runInfoPVs.concat(
         instrument.dashboard.flat(3),
       )) {
-        sendJsonMessage({ type: "subscribe", pvs: [pv.pvaddress] });
+        sendJsonMessage({
+          type: PVWSRequestType.subscribe,
+          pvs: [pv.pvaddress],
+        });
       }
     }
   }, [instlist, instName, sendJsonMessage, currentInstrument]);
@@ -178,11 +179,8 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
     const updatedPVName: string = updatedPV.pv;
     const updatedPVbytes: string | null | undefined = updatedPV.b64byt;
 
-    if (updatedPVName == "CS:INSTLIST" && updatedPVbytes != null) {
-      const dehexedInstList = dehex_and_decompress(atob(updatedPVbytes));
-      if (dehexedInstList != null && typeof dehexedInstList == "string") {
-        setInstlist(JSON.parse(dehexedInstList));
-      }
+    if (updatedPVName == instListPV && updatedPVbytes != null) {
+      setInstlist(instListFromBytes(updatedPVbytes));
     }
 
     if (!currentInstrument) {
@@ -200,9 +198,6 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
       }
       lastUpdate = updatedPVbytes;
       const res = dehex_and_decompress(atob(updatedPVbytes));
-      if (res == null || typeof res != "string") {
-        return;
-      }
       currentInstrument.groups = getGroupsWithBlocksFromConfigOutput(
         JSON.parse(res),
         sendJsonMessage,

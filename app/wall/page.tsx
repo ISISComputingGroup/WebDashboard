@@ -1,15 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
 import useWebSocket from "react-use-websocket";
-import { dehex_and_decompress } from "../components/dehex_and_decompress";
+import { instListFromBytes } from "../components/dehex_and_decompress";
 import InstrumentGroup from "./components/InstrumentGroup";
 import ShowHideBeamInfo from "./components/ShowHideBeamInfo";
 import JenkinsJobIframe from "./components/JenkinsJobsIframe";
-import { IfcPVWSMessage, IfcPVWSRequest, targetStation } from "@/app/types";
+import {
+  IfcPVWSMessage,
+  IfcPVWSRequest,
+  PVWSRequestType,
+  targetStation,
+} from "@/app/types";
+import { instListPV, instListSubscription, socketURL } from "@/app/commonVars";
 
 export default function WallDisplay() {
   const runstatePV = "DAE:RUNSTATE_STR";
-  const instListPV = "CS:INSTLIST";
 
   const [data, setData] = useState<Array<targetStation>>([
     {
@@ -43,7 +48,7 @@ export default function WallDisplay() {
         { name: "SXD" },
         { name: "TOSCA" },
         { name: "VESUVIO" },
-      ].sort((a, b) => a.name.localeCompare(b.name)),
+      ],
     },
     {
       targetStation: "Target Station 2",
@@ -59,7 +64,7 @@ export default function WallDisplay() {
         { name: "SANS2D" },
         { name: "WISH" },
         { name: "ZOOM" },
-      ].sort((a, b) => a.name.localeCompare(b.name)),
+      ],
     },
     {
       targetStation: "Miscellaneous",
@@ -94,11 +99,9 @@ export default function WallDisplay() {
         {
           name: "WISH_SETUP",
         },
-      ].sort((a, b) => a.name.localeCompare(b.name)),
+      ],
     },
   ]);
-
-  const socketURL = process.env.NEXT_PUBLIC_WS_URL!;
 
   const {
     sendJsonMessage,
@@ -112,10 +115,7 @@ export default function WallDisplay() {
 
   useEffect(() => {
     // On page load, subscribe to the instrument list as it's required to get each instrument's PV prefix.
-    sendJsonMessage({
-      type: "subscribe",
-      pvs: [instListPV],
-    });
+    sendJsonMessage(instListSubscription);
   }, [sendJsonMessage]);
 
   useEffect(() => {
@@ -130,42 +130,39 @@ export default function WallDisplay() {
     let updatedPVvalue: string | null | undefined = updatedPV.text;
 
     if (updatedPVName == instListPV && updatedPVbytes != null) {
-      // Act on an instlist change - subscribe to each instrument's runstate PV.
-      const dehexedInstList = dehex_and_decompress(atob(updatedPVbytes));
-      if (dehexedInstList != null && typeof dehexedInstList == "string") {
-        const instListDict = JSON.parse(dehexedInstList);
-        for (const item of instListDict) {
-          // Iterate through the instlist, find their associated object in the ts1data, ts2data or miscData arrays, get the runstate PV and subscribe
-          const instName = item["name"];
-          const instPrefix = item["pvPrefix"];
-          setData((prev) => {
-            const newData: Array<targetStation> = [...prev];
-            newData.map((targetStation) => {
-              const foundInstrument = targetStation.instruments.find(
-                (instrument) => instrument.name === instName,
-              );
-              if (foundInstrument) {
-                // Subscribe to the instrument's runstate PV
-                foundInstrument.pv = instPrefix + runstatePV;
-                sendJsonMessage({
-                  type: "subscribe",
-                  pvs: [foundInstrument.pv],
-                });
-              }
-            });
-            return newData;
+      const instListDict = instListFromBytes(updatedPVbytes);
+      for (const item of instListDict) {
+        // Iterate through instruments in the instlist, get the runstate PV and subscribe
+        const instName = item["name"];
+        const instPrefix = item["pvPrefix"];
+        setData((prev) => {
+          const newData: Array<targetStation> = [...prev];
+          newData.map((targetStation) => {
+            const foundInstrument = targetStation.instruments.find(
+              (instrument) => instrument.name === instName,
+            );
+            if (foundInstrument) {
+              foundInstrument.runstatePV = instPrefix + runstatePV;
+              // Subscribe to the instrument's runstate PV
+              sendJsonMessage({
+                type: PVWSRequestType.subscribe,
+                pvs: [foundInstrument.runstatePV],
+              });
+            }
           });
-        }
+          return newData;
+        });
       }
     } else if (updatedPVvalue) {
       setData((prev) => {
         const newData: Array<targetStation> = [...prev];
         newData.map((targetStation) => {
           const foundInstrument = targetStation.instruments.findIndex(
-            (instrument) => instrument.pv === updatedPVName,
+            (instrument) => instrument.runstatePV === updatedPVName,
           );
-          if (foundInstrument >= 0)
-            targetStation.instruments[foundInstrument].status = updatedPVvalue;
+          if (foundInstrument !== -1)
+            targetStation.instruments[foundInstrument].runstate =
+              updatedPVvalue;
         });
         return newData;
       });

@@ -1,40 +1,83 @@
 "use client";
-import { Inter } from "next/font/google";
 import Link from "next/link";
-import InstList from "@/app/components/InstList";
-const inter = Inter({ subsets: ["latin"] });
+import { useEffect, useState } from "react";
+import {
+  IfcPVWSMessage,
+  IfcPVWSRequest,
+  instList,
+  PVWSRequestType,
+} from "@/app/types";
+import {
+  dehex_and_decompress,
+  instListFromBytes,
+} from "@/app/components/dehex_and_decompress";
+import useWebSocket from "react-use-websocket";
+import { instListPV, instListSubscription, socketURL } from "@/app/commonVars";
 
-export default function Home() {
-  let instList = InstList();
-
-  if (!instList) {
-    return <h1>Loading...</h1>;
-  }
-
-  instList = Array.from(instList);
-
-  let instruments = new Map();
-
-  for (let inst of instList) {
-    let groups = inst["groups"];
-    let name = inst["name"];
-
-    for (let group of groups) {
-      if (!instruments.has(group)) {
-        instruments.set(group, []);
+export function createInstrumentGroupsFromInstlist(
+  jsonInstList: instList,
+): Map<string, Array<string>> {
+  let newInstrumentGroups: Map<string, Array<string>> = new Map();
+  for (let inst of jsonInstList) {
+    for (let group of inst["groups"]) {
+      if (!newInstrumentGroups.has(group)) {
+        newInstrumentGroups.set(group, []);
       }
-      instruments.get(group).push(name);
+      newInstrumentGroups.get(group)!.push(inst["name"]);
     }
+  }
+  return newInstrumentGroups;
+}
+
+export default function Instruments() {
+  const [instrumentGroups, setInstrumentGroups] = useState<
+    Map<string, Array<string>>
+  >(new Map());
+
+  const {
+    sendJsonMessage,
+    lastJsonMessage,
+  }: {
+    sendJsonMessage: (a: IfcPVWSRequest) => void;
+    lastJsonMessage: IfcPVWSMessage;
+  } = useWebSocket(socketURL, {
+    shouldReconnect: (closeEvent) => true,
+  });
+
+  useEffect(() => {
+    // On page load, subscribe to the instrument list as it's required to get each instrument.
+    sendJsonMessage(instListSubscription);
+  }, [sendJsonMessage]);
+
+  useEffect(() => {
+    // Instlist has changed
+    if (!lastJsonMessage) {
+      return;
+    }
+
+    const updatedPV: IfcPVWSMessage = lastJsonMessage;
+    const updatedPVbytes: string | null | undefined = updatedPV.b64byt;
+
+    if (updatedPV.pv == instListPV && updatedPVbytes != null) {
+      const newInstrumentGroups = createInstrumentGroupsFromInstlist(
+        instListFromBytes(updatedPVbytes),
+      );
+      setInstrumentGroups(newInstrumentGroups);
+    }
+  }, [lastJsonMessage]);
+
+  if (!instrumentGroups.size) {
+    return <h1>Loading...</h1>;
   }
 
   return (
     <main
-      className={`flex min-h-screen bg-gray-100 dark:bg-zinc-800  flex-col items-center justify-between ${inter.className}`}
+      className={`flex min-h-screen bg-gray-100 dark:bg-zinc-800  flex-col items-center justify-between`}
     >
       <section className="  flex flex-col items-start justify-center rounded-xl w-full p-1">
         <div className=" mx-auto max-w-2/3">
           <div className="flex mt-6 flex-col justify-center items-center space-y-2">
-            {[...instruments].sort().map(([group, insts]) => {
+            {Array.from(instrumentGroups.entries()).map(([group, insts]) => {
               return (
                 <div
                   key={group}

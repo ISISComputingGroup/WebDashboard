@@ -1,4 +1,9 @@
-import { ConfigOutput, IfcBlock, IfcPVWSRequest } from "@/app/types";
+import {
+  ConfigOutput,
+  IfcBlock,
+  IfcPVWSRequest,
+  PVWSRequestType,
+} from "@/app/types";
 import {
   getGroupsWithBlocksFromConfigOutput,
   RC_ENABLE,
@@ -14,7 +19,7 @@ test("subscribeToBlockPVs subscribes to all run control PVs", () => {
   subscribeToBlockPVs(mockSendJsonMessage, aBlock);
   expect(mockSendJsonMessage.mock.calls.length).toBe(1);
   const expectedCall: IfcPVWSRequest = {
-    type: "subscribe",
+    type: PVWSRequestType.subscribe,
     pvs: [aBlock, aBlock + RC_ENABLE, aBlock + RC_INRANGE, aBlock + SP_RBV],
   };
   expect(JSON.stringify(mockSendJsonMessage.mock.calls[0][0])).toBe(
