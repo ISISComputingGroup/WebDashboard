@@ -31,7 +31,7 @@ it("renders topbar unchanged", () => {
 it("renders nothing if pv is hidden", () => {
   const aBlock: IfcBlock = { pvaddress: "SOME:PV", visible: false };
   const { container } = render(
-    <Block pv={aBlock} instName={""} showHiddenBlocks={false} />,
+    <Block pv={aBlock} instName={"ANINST"} showHiddenBlocks={false} />,
     {
       container: tableBody,
     },
