@@ -5,11 +5,11 @@ export default function createInstrumentGroupsFromInstlist(
 ): Map<string, Array<string>> {
   let newInstrumentGroups: Map<string, Array<string>> = new Map();
   for (let inst of jsonInstList) {
-    for (let group of inst["groups"]) {
+    for (let group of inst.groups) {
       if (!newInstrumentGroups.has(group)) {
         newInstrumentGroups.set(group, []);
       }
-      newInstrumentGroups.get(group)!.push(inst["name"]);
+      newInstrumentGroups.get(group)!.push(inst.name);
     }
   }
   return newInstrumentGroups;

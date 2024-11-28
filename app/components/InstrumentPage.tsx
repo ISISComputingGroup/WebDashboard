@@ -16,6 +16,7 @@ import {
   IfcGroup,
   IfcPVWSMessage,
   IfcPVWSRequest,
+  instList,
   PVWSRequestType,
 } from "@/app/types";
 import {
@@ -106,7 +107,7 @@ export function toPrecision(
 function InstrumentData({ instrumentName }: { instrumentName: string }) {
   const [showHiddenBlocks, setShowHiddenBlocks] = useState(false);
   const CONFIG_DETAILS = "CS:BLOCKSERVER:GET_CURR_CONFIG_DETAILS";
-  const [instlist, setInstlist] = useState<Array<any> | null>(null);
+  const [instlist, setInstlist] = useState<instList | null>(null);
   const [currentInstrument, setCurrentInstrument] = useState<Instrument | null>(
     null,
   );
@@ -140,8 +141,8 @@ function InstrumentData({ instrumentName }: { instrumentName: string }) {
     let prefix = "";
 
     for (const item of instlist) {
-      if (item["name"] == instName.toUpperCase()) {
-        prefix = item["pvPrefix"];
+      if (item.name == instName.toUpperCase()) {
+        prefix = item.pvPrefix;
       }
     }
     if (!prefix) {

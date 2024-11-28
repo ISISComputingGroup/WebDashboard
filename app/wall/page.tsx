@@ -5,13 +5,12 @@ import { instListFromBytes } from "../components/dehex_and_decompress";
 import InstrumentGroup from "./components/InstrumentGroup";
 import ShowHideBeamInfo from "./components/ShowHideBeamInfo";
 import JenkinsJobIframe from "./components/JenkinsJobsIframe";
-import {
-  IfcPVWSMessage,
-  IfcPVWSRequest,
-  PVWSRequestType,
-  targetStation,
-} from "@/app/types";
+import { IfcPVWSMessage, IfcPVWSRequest, targetStation } from "@/app/types";
 import { instListPV, instListSubscription, socketURL } from "@/app/commonVars";
+import {
+  updateInstrumentRunstate,
+  updateInstrumentRunstatePV,
+} from "@/app/wall/utils";
 
 export default function WallDisplay() {
   const runstatePV = "DAE:RUNSTATE_STR";
@@ -131,40 +130,19 @@ export default function WallDisplay() {
 
     if (updatedPVName == instListPV && updatedPVbytes != null) {
       const instListDict = instListFromBytes(updatedPVbytes);
-      for (const item of instListDict) {
-        // Iterate through instruments in the instlist, get the runstate PV and subscribe
-        const instName = item["name"];
-        const instPrefix = item["pvPrefix"];
+      for (const instrument of instListDict) {
         setData((prev) => {
-          const newData: Array<targetStation> = [...prev];
-          newData.map((targetStation) => {
-            const foundInstrument = targetStation.instruments.find(
-              (instrument) => instrument.name === instName,
-            );
-            if (foundInstrument) {
-              foundInstrument.runstatePV = instPrefix + runstatePV;
-              // Subscribe to the instrument's runstate PV
-              sendJsonMessage({
-                type: PVWSRequestType.subscribe,
-                pvs: [foundInstrument.runstatePV],
-              });
-            }
-          });
-          return newData;
+          return updateInstrumentRunstatePV(
+            prev,
+            instrument,
+            runstatePV,
+            sendJsonMessage,
+          );
         });
       }
     } else if (updatedPVvalue) {
       setData((prev) => {
-        const newData: Array<targetStation> = [...prev];
-        newData.map((targetStation) => {
-          const foundInstrument = targetStation.instruments.findIndex(
-            (instrument) => instrument.runstatePV === updatedPVName,
-          );
-          if (foundInstrument !== -1)
-            targetStation.instruments[foundInstrument].runstate =
-              updatedPVvalue;
-        });
-        return newData;
+        return updateInstrumentRunstate(prev, updatedPVName, updatedPVvalue);
       });
     }
   }, [lastJsonMessage, sendJsonMessage]);
