@@ -63,21 +63,25 @@ export interface IfcPVWSMessage {
   nanos?: number | null;
 }
 
+export enum PVWSRequestType {
+  subscribe = "subscribe",
+  clear = "clear",
+}
 export interface IfcPVWSRequest {
   /**
    * A request to send to PVWS.
    */
-  type: string;
+  type: PVWSRequestType;
   pvs: Array<string>;
 }
 
 export interface IfcInstrumentStatus {
   /**
-   * Instrument status used for the wall display.
+   * Instrument status used for the wall display. Contains runstate PV and current runstate.
    */
-  name: string;
-  status?: string;
-  pv?: string;
+  name: string; // Name of the instrument
+  runstate?: string; // Runstate
+  runstatePV?: string; // Runstate PV address
 }
 
 // Column[Row[labelPV, valuePV]]
@@ -141,3 +145,19 @@ export interface ConfigOutputIocMacro {
   name: string;
   value: string;
 }
+
+export interface targetStation {
+  targetStation: string;
+  instruments: Array<IfcInstrumentStatus>;
+}
+
+export interface instListEntry {
+  name: string;
+  hostName: string;
+  isScheduled: boolean;
+  pvPrefix: string;
+  seci: boolean;
+  groups: Array<string>;
+}
+
+export type instList = Array<instListEntry>;
