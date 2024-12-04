@@ -15,9 +15,11 @@ const config: Config = {
   collectCoverageFrom: [
     "app/**/*.{ts,tsx}",
     "!**/*layout.tsx",
-    "!**/*_app.tsx",
-    "!**/*JenkinsJobsIframe.tsx", // relies on an external image
-    "!**/*ShowHideBeamInfo.tsx", // relies on an external image
+    "!app/_app.tsx",
+    "!app/components/JenkinsJobsIframe.tsx", // relies on an external image
+    "!app/components/ShowHideBeamInfo.tsx", // relies on an external image
+    "!app/components/InstrumentData.tsx", // relies on websocket
+    "!app/components/InstrumentsDisplay.tsx", // relies on websocket
   ],
 };
 
