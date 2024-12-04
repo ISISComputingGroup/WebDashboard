@@ -1,4 +1,3 @@
-"use client";
 import InstrumentsDisplay from "@/app/components/InstrumentsDisplay";
 
 export default function Instruments() {

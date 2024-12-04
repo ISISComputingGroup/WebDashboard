@@ -10,3 +10,11 @@ it("renders instrumentwallcard unchanged", () => {
   const { container } = render(<InstrumentWallCard instrument={instrument} />);
   expect(container).toMatchSnapshot();
 });
+
+it("renders instrumentwallcard unchanged when runstate is unknown", () => {
+  const instrument: IfcInstrumentStatus = {
+    name: "Instrument1",
+  };
+  const { container } = render(<InstrumentWallCard instrument={instrument} />);
+  expect(container).toMatchSnapshot();
+});

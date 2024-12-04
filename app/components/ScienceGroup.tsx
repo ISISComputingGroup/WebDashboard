@@ -17,11 +17,16 @@ export default function ScienceGroup({
         {name}
       </h2>
       <div className={"flex flex-wrap gap-1"}>
-        {instruments.map((instrument: IfcInstrumentStatus) => {
-          return (
-            <InstrumentWallCard key={instrument.name} instrument={instrument} />
-          );
-        })}
+        {instruments
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((instrument: IfcInstrumentStatus) => {
+            return (
+              <InstrumentWallCard
+                key={instrument.name}
+                instrument={instrument}
+              />
+            );
+          })}
       </div>
     </div>
   );

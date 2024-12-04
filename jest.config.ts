@@ -14,11 +14,10 @@ const config: Config = {
   collectCoverage: true,
   collectCoverageFrom: [
     "app/**/*.{ts,tsx}",
-    "!**/*types.ts",
-    "!**/*commonVars.ts",
     "!**/*layout.tsx",
     "!**/*_app.tsx",
-    "!**/*JenkinsJobsIframe.tsx",
+    "!**/*JenkinsJobsIframe.tsx", // relies on an external image
+    "!**/*ShowHideBeamInfo.tsx", // relies on an external image
   ],
 };
 

@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import {
   IfcInstrumentStatus,
@@ -177,13 +178,13 @@ export default function InstrumentsDisplay({
   return (
     <div>
       {sortByGroups &&
-        Array.from(createInstrumentGroups(data).entries()).map(
-          ([name, instruments]) => {
+        Array.from(createInstrumentGroups(data).entries())
+          .sort((a, b) => b[1].length - a[1].length) // Sort to display the biggest group first
+          .map(([name, instruments]) => {
             return (
               <ScienceGroup key={name} name={name} instruments={instruments} />
             );
-          },
-        )}
+          })}
       {!sortByGroups &&
         data.map((targetStation) => {
           return (

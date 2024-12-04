@@ -1,4 +1,3 @@
-"use client";
 import ShowHideBeamInfo from "../components/ShowHideBeamInfo";
 import JenkinsJobIframe from "../components/JenkinsJobsIframe";
 import InstrumentsDisplay from "@/app/components/InstrumentsDisplay";
