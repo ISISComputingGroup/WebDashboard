@@ -17,6 +17,8 @@ const config: Config = {
     "!**/*types.ts",
     "!**/*commonVars.ts",
     "!**/*layout.tsx",
+    "!**/*_app.tsx",
+    "!**/*JenkinsJobsIframe.tsx",
   ],
 };
 

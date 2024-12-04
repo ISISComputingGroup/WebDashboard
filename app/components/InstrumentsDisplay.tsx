@@ -24,6 +24,7 @@ export function createInstrumentGroups(
       if (inst.scienceGroups) {
         for (const group of inst.scienceGroups) {
           if (!newInstrumentGroups.has(group)) {
+            // This is a new science group so create a new entry
             newInstrumentGroups.set(group, []);
           }
           newInstrumentGroups.get(group)!.push(inst);
@@ -188,8 +189,8 @@ export default function InstrumentsDisplay({
           return (
             <TargetStation
               key={targetStation.targetStation}
-              groupName={targetStation.targetStation}
-              data={targetStation.instruments}
+              name={targetStation.targetStation}
+              instruments={targetStation.instruments}
             />
           );
         })}

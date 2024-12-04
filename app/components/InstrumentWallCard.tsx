@@ -3,7 +3,7 @@ import { getForegroundColour, getStatusColour } from "./getRunstateColours";
 
 import { IfcInstrumentStatus } from "@/app/types";
 
-export default function WallCard({
+export default function InstrumentWallCard({
   instrument,
 }: {
   instrument: IfcInstrumentStatus;
@@ -24,9 +24,7 @@ export default function WallCard({
           <span className="text-sm font-bold truncate line-clamp-1 ">
             {instrument.name}
           </span>
-          <span className="text-xs ">
-            {instrument.runstate ? instrument.runstate : "UNKNOWN"}
-          </span>
+          <span className="text-xs ">{instrument.runstate || "UNKNOWN"}</span>
         </div>
       </Link>
     </div>
