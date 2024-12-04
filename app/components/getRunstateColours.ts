@@ -18,6 +18,7 @@ export function getForegroundColour(status: string): string {
     "PROCESSING",
     "VETOING",
     "SETUP",
+    "WAITING",
   ];
   return blackTextRunstates.includes(status) ? "text-black" : "text-white";
 }
