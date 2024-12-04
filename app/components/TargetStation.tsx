@@ -2,7 +2,7 @@ import InstrumentWallCard from "./InstrumentWallCard";
 
 import { IfcInstrumentStatus } from "@/app/types";
 
-export default function InstrumentGroup({
+export default function TargetStation({
   groupName,
   data,
 }: {

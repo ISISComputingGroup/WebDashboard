@@ -1,8 +1,5 @@
 import Link from "next/link";
-import {
-  getForegroundColour,
-  getStatusColour,
-} from "../../components/getRunstateColours";
+import { getForegroundColour, getStatusColour } from "./getRunstateColours";
 
 import { IfcInstrumentStatus } from "@/app/types";
 
