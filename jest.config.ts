@@ -19,7 +19,6 @@ const config: Config = {
     "!app/components/JenkinsJobsIframe.tsx", // relies on an external image
     "!app/components/ShowHideBeamInfo.tsx", // relies on an external image
     "!app/components/InstrumentData.tsx", // relies on websocket
-    "!app/components/InstrumentsDisplay.tsx", // relies on websocket
   ],
 };
 

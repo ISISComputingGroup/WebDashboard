@@ -16,6 +16,9 @@ import {
 import TargetStation from "@/app/components/TargetStation";
 import ScienceGroup from "@/app/components/ScienceGroup";
 
+// Ignore support machines for the instruments page.
+const instrumentsExcludeList = ["SUPPORT"];
+
 export function createInstrumentGroups(
   targetStations: Array<targetStation>,
 ): Map<string, Array<IfcInstrumentStatus>> {
@@ -24,11 +27,13 @@ export function createInstrumentGroups(
     for (const inst of targetStation.instruments) {
       if (inst.scienceGroups) {
         for (const group of inst.scienceGroups) {
-          if (!newInstrumentGroups.has(group)) {
-            // This is a new science group so create a new entry
-            newInstrumentGroups.set(group, []);
+          if (!instrumentsExcludeList.includes(group)) {
+            if (!newInstrumentGroups.has(group)) {
+              // This is a new science group so create a new entry
+              newInstrumentGroups.set(group, []);
+            }
+            newInstrumentGroups.get(group)!.push(inst);
           }
-          newInstrumentGroups.get(group)!.push(inst);
         }
       }
     }
@@ -36,6 +41,7 @@ export function createInstrumentGroups(
   return newInstrumentGroups;
 }
 
+/* c8 ignore start */
 export default function InstrumentsDisplay({
   sortByGroups = false,
 }: {
@@ -198,3 +204,4 @@ export default function InstrumentsDisplay({
     </div>
   );
 }
+/* c8 ignore end */
