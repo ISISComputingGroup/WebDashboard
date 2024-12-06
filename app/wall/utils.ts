@@ -47,6 +47,7 @@ export function updateInstrumentRunstatePV(
     );
     if (foundInstrument) {
       foundInstrument.runstatePV = instListEntry.pvPrefix + runstatePV;
+      foundInstrument.scienceGroups = instListEntry.groups;
       // Subscribe to the instrument's runstate PV
       sendJsonMessage({
         type: PVWSRequestType.subscribe,

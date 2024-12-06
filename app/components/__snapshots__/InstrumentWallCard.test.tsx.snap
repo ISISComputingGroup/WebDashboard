@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders instrumentwallcard unchanged 1`] = `
+<div>
+  <div
+    class="flex items-center justify-between p-3  rounded-lg shadow-sm border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
+      bg-[#90EE90] text-black"
+  >
+    <a
+      class="flex items-center justify-center  lg:w-20 w-full h-4"
+      href="/instrument?name=Instrument"
+      target="_blank"
+    >
+      <div
+        class="flex flex-col justify-center items-center"
+      >
+        <span
+          class="text-sm font-bold truncate line-clamp-1 "
+        >
+          Instrument
+        </span>
+        <span
+          class="text-xs "
+        >
+          RUNNING
+        </span>
+      </div>
+    </a>
+  </div>
+</div>
+`;
+
+exports[`renders instrumentwallcard unchanged when runstate is unknown 1`] = `
+<div>
+  <div
+    class="flex items-center justify-between p-3  rounded-lg shadow-sm border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
+      bg-[#F08080] text-black"
+  >
+    <a
+      class="flex items-center justify-center  lg:w-20 w-full h-4"
+      href="/instrument?name=Instrument1"
+      target="_blank"
+    >
+      <div
+        class="flex flex-col justify-center items-center"
+      >
+        <span
+          class="text-sm font-bold truncate line-clamp-1 "
+        >
+          Instrument1
+        </span>
+        <span
+          class="text-xs "
+        >
+          UNKNOWN
+        </span>
+      </div>
+    </a>
+  </div>
+</div>
+`;

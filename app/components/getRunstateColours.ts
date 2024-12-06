@@ -18,12 +18,10 @@ export function getForegroundColour(status: string): string {
     "PROCESSING",
     "VETOING",
     "SETUP",
+    "WAITING",
   ];
   return blackTextRunstates.includes(status) ? "text-black" : "text-white";
 }
 export function getStatusColour(status: string): string {
-  if (!statusColourLookup.has(status) || status == "UNKNOWN") {
-    return "bg-[#F08080]";
-  }
-  return statusColourLookup.get(status)!;
+  return statusColourLookup.get(status) || "bg-[#F08080]";
 }

@@ -82,6 +82,7 @@ export interface IfcInstrumentStatus {
   name: string; // Name of the instrument
   runstate?: string; // Runstate
   runstatePV?: string; // Runstate PV address
+  scienceGroups?: Array<string>;
 }
 
 // Column[Row[labelPV, valuePV]]

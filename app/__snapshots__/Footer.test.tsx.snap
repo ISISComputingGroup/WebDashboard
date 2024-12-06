@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders footer unchanged 1`] = `
+<div>
+  <footer
+    class="bg-white dark:bg-zinc-900  "
+  >
+    <div
+      class="max-w-screen-xl px-4 py-12 mx-auto space-y-8 overflow-hidden sm:px-6 lg:px-8 w-full flex flex-col justify-center items-center "
+    >
+      <a
+        class="flex items-center justify-center "
+        href="/"
+      >
+        <img
+          alt="IBEX Logo"
+          class="h-16 w-auto"
+          data-nimg="1"
+          decoding="async"
+          height="128"
+          loading="lazy"
+          src="/_next/image?url=%2FWebDashboard%2FIBEX_logo.png&w=256&q=75"
+          srcset="/_next/image?url=%2FWebDashboard%2FIBEX_logo.png&w=128&q=75 1x, /_next/image?url=%2FWebDashboard%2FIBEX_logo.png&w=256&q=75 2x"
+          style="color: transparent;"
+          width="128"
+        />
+      </a>
+      <nav
+        class="flex flex-wrap justify-center -mx-5 -my-2"
+      >
+        <a
+          class="text-base leading-6 text-gray-500 hover:text-gray-900  dark:text-white dark:hover:text-gray-400 transition-color duration-100 px-5 py-2"
+          href="/"
+        >
+          Home
+        </a>
+        <a
+          class="text-base leading-6 text-gray-500 hover:text-gray-900  dark:text-white dark:hover:text-gray-400 transition-color duration-100 px-5 py-2"
+          href="/instruments"
+        >
+          Instrument statuses
+        </a>
+        <a
+          class="text-base leading-6 text-gray-500 hover:text-gray-900  dark:text-white dark:hover:text-gray-400 transition-color duration-100 px-5 py-2"
+          href="https://www.isis.stfc.ac.uk/Pages/Beam-Status.aspx"
+          target="_blank"
+        >
+          Beam status
+        </a>
+      </nav>
+      <p
+        class="mt-8 text-base leading-6 text-center text-gray-400"
+      >
+        © 2024 Experiment Controls at ISIS. All rights reserved.
+      </p>
+    </div>
+  </footer>
+</div>
+`;

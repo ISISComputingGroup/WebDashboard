@@ -4,7 +4,7 @@ import {
 } from "@/app/components/getRunstateColours";
 
 test("getForegroundColor when runstate requires white text returns white text", () => {
-  const runstate = "WAITING";
+  const runstate = "RESUMING";
   const result = getForegroundColour(runstate);
   expect(result).toBe("text-white");
 });

@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <section className="bg-white dark:bg-zinc-900  ">
+    <footer className="bg-white dark:bg-zinc-900  ">
       <div className="max-w-screen-xl px-4 py-12 mx-auto space-y-8 overflow-hidden sm:px-6 lg:px-8 w-full flex flex-col justify-center items-center ">
         <Link href="/" className="flex items-center justify-center ">
           <Image
@@ -40,6 +40,6 @@ export default function Footer() {
           © 2024 Experiment Controls at ISIS. All rights reserved.
         </p>
       </div>
-    </section>
+    </footer>
   );
 }

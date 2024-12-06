@@ -1,0 +1,170 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders groups correctly with hidden and non hidden groups 1`] = `
+<div>
+  <div
+    class="rounded-xl grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mt-2"
+  >
+    <div
+      class="w-full bg-gray-700 shadow-md rounded-xl flex flex-col overflow-x-auto"
+    >
+      <h1
+        class="p-4 bg-gray-600 rounded-t-lg min-w-full text-white"
+      >
+        group1
+      </h1>
+      <table
+        class="text-sm table-fixed"
+      >
+        <thead
+          class="sticky"
+        >
+          <tr
+            class="bg-blue-gray-100 text-gray-100 border-b-2 border-b-gray-400"
+          >
+            <th
+              class="py-2 px-2 text-left w-1/3"
+            >
+              Block
+            </th>
+            <th
+              class="py-2 px-2 text-left w-7/12"
+            >
+              Value
+            </th>
+            <th
+              class="py-2 px-2 text-left"
+            />
+          </tr>
+        </thead>
+        <tbody
+          class="text-gray-200 sticky"
+        >
+          <tr
+            class="border-b border-blue-gray-200 transition duration-100 hover:bg-gray-100 hover:text-black"
+          >
+            <td
+              class="py-1 px-2 w-1/3 flex-row"
+            >
+              <a
+                class="underline"
+                href="https://shadow.nd.rl.ac.uk/grafana/d/wMlwwaHMk/block-history?viewPanel=2&orgId=1&var-block=aShownBlock&var-inst=TESTING"
+                target="_blank"
+              >
+                aShownBlock
+              </a>
+            </td>
+            <td
+              class="py-1 px-2 w-7/12"
+            >
+              <span
+                id="aShownBlock_VALUE_ROW"
+              >
+                <div
+                  class="flex justify-between"
+                >
+                  <span
+                    class="text-red-400"
+                    id="aShownBlock_VALUE"
+                  >
+                    2.344
+                     
+                  </span>
+                  <svg
+                    class="min-w-2 min-h-2 max-w-2 max-h-2 transition-all text-transparent"
+                    fill="currentColor"
+                    id="aShownBlock_CIRCLE"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="12"
+                    />
+                  </svg>
+                </div>
+              </span>
+            </td>
+            <td
+              class="py-1 px-2  flex justify-between items-center"
+            >
+              <span
+                id="aShownBlock_VALUE_RC"
+                title="Run control in-range?"
+              />
+              <span
+                class="cursor-pointer font-bold"
+                title="Show/Hide advanced statuses"
+              >
+                +
+              </span>
+            </td>
+          </tr>
+          <tr
+            class="border-b border-blue-gray-200 transition duration-100 hover:bg-gray-100 hover:text-black"
+          >
+            <td
+              class="py-1 px-2 w-1/3 flex-row"
+            >
+              <a
+                class="underline"
+                href="https://shadow.nd.rl.ac.uk/grafana/d/wMlwwaHMk/block-history?viewPanel=2&orgId=1&var-block=aDifferentShownBlock&var-inst=TESTING"
+                target="_blank"
+              >
+                aDifferentShownBlock
+              </a>
+            </td>
+            <td
+              class="py-1 px-2 w-7/12"
+            >
+              <span
+                id="aDifferentShownBlock_VALUE_ROW"
+              >
+                <div
+                  class="flex justify-between"
+                >
+                  <span
+                    class="text-red-400"
+                    id="aDifferentShownBlock_VALUE"
+                  >
+                    3.14
+                     
+                  </span>
+                  <svg
+                    class="min-w-2 min-h-2 max-w-2 max-h-2 transition-all text-transparent"
+                    fill="currentColor"
+                    id="aDifferentShownBlock_CIRCLE"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="12"
+                    />
+                  </svg>
+                </div>
+              </span>
+            </td>
+            <td
+              class="py-1 px-2  flex justify-between items-center"
+            >
+              <span
+                id="aDifferentShownBlock_VALUE_RC"
+                title="Run control in-range?"
+              />
+              <span
+                class="cursor-pointer font-bold"
+                title="Show/Hide advanced statuses"
+              >
+                +
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+`;

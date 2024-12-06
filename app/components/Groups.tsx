@@ -12,10 +12,6 @@ export default function Groups({
   instName: string;
   showHiddenBlocks: boolean;
 }) {
-  if (!groupsMap) {
-    return <h1>Loading...</h1>;
-  }
-
   return (
     <div className="rounded-xl grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mt-2">
       {groupsMap.map((group) => {
