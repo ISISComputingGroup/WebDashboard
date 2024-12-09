@@ -30,7 +30,7 @@ let lastUpdate: string = "";
 
 export function InstrumentData({ instrumentName }: { instrumentName: string }) {
   const [showHiddenBlocks, setShowHiddenBlocks] = useState(false);
-  const CONFIG_DETAILS = "CS:BLOCKSERVER:GET_CURR_CONFIG_DETAILS";
+  const CONFIG_DETAILS = "CS:BLOCKSERVER:WD_CONF_DETAILS";
   const [instlist, setInstlist] = useState<instList | null>(null);
   const [currentInstrument, setCurrentInstrument] = useState<Instrument | null>(
     null,
