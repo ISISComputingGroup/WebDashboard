@@ -11,7 +11,6 @@ export default function CheckToggle({
   text: string;
   textColour?: string;
 }) {
-  console.log(textColour);
   return (
     <div className="pt-4">
       <label className="inline-flex items-center cursor-pointer">
