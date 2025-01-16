@@ -5,7 +5,7 @@ export default function JenkinsJobIframe() {
         Jenkins Jobs:
       </h1>{" "}
       <p className="text-md text-left w-full text-black dark:text-white">
-        Tip: Open the jobs into a{" "}
+        Tip: Open the jobs by clicking on the individual job, then clicking the job name into a{" "}
         <span className="font-bold underline">new tab</span> only. If you cannot
         see this, you probably aren&apos;t connected to the ISIS network.
       </p>
