@@ -54,11 +54,14 @@ export default function InstrumentsDisplay({
       targetStation: "Target Station 1",
       instruments: [
         { name: "ALF" },
+        { name: "ARGUS" },
+        { name: "CHRONUS" },
         { name: "CRISP" },
         { name: "EMMA-A" },
         { name: "EMU" },
         { name: "ENGINX" },
         { name: "GEM" },
+        { name: "HIFI" },
         {
           name: "HIFI-CRYOMAG",
         },
@@ -102,8 +105,6 @@ export default function InstrumentsDisplay({
     {
       targetStation: "Miscellaneous",
       instruments: [
-        { name: "ARGUS" },
-        { name: "CHRONUS" },
         {
           name: "CRYOLAB_R80",
         },
@@ -113,7 +114,6 @@ export default function InstrumentsDisplay({
         {
           name: "ENGINX_SETUP",
         },
-        { name: "HIFI" },
         {
           name: "HRPD_SETUP",
         },
