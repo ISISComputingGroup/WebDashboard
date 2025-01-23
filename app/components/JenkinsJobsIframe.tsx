@@ -1,18 +1,58 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { IfcWallDisplayJob, IfcWallDisplayResponse } from "@/app/types";
+const jenkinsColourToWebDashColour = new Map<string, string>([
+  ["red", "bg-red-800"],
+  ["blue", "bg-green-800"],
+  ["aborted", "bg-gray-400"],
+  ["red_anime", "bg-red-400"],
+  ["blue_anime", "bg-green-400"],
+]);
+
 export default function JenkinsJobIframe() {
+  const [data, setData] = useState<Array<IfcWallDisplayJob>>([]);
+
+  useEffect(() => {
+    async function fetchPosts() {
+      const res = await fetch(
+        "https://epics-jenkins.isis.rl.ac.uk/view/WallDisplay/api/json",
+      );
+      const resData: IfcWallDisplayResponse = await res.json();
+      const jobs: Array<IfcWallDisplayJob> = resData["jobs"].filter(
+        (job) => job["color"] != "disabled",
+      );
+      setData(jobs);
+    }
+    fetchPosts();
+  }, []);
+
+  if (data.length === 0) {
+    return (
+      <div>
+        <h1 className={"dark:text-white"}>
+          Loading jenkins jobs. If this takes a while, check you are connected
+          to the ISIS network.
+        </h1>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col justify-center items-center">
-      <h1 className="w-full text-left text-black dark:text-white font-semibold text-2xl   ">
-        Jenkins Jobs:
-      </h1>{" "}
-      <p className="text-md text-left w-full text-black dark:text-white">
-        Tip: Open the jobs into a{" "}
-        <span className="font-bold underline">new tab</span> only. If you cannot
-        see this, you probably aren&apos;t connected to the ISIS network.
-      </p>
-      <iframe
-        className="w-full h-[300px] mt-4 border-2 border-gray-100 dark:border-black rounded-lg shadow-sm hover:shadow-lg hover:border-black dark:hover:border-white transition-all duration-200"
-        src="https://epics-jenkins.isis.rl.ac.uk/plugin/jenkinswalldisplay/walldisplay.html?viewName=WallDisplay&amp;jenkinsUrl=https%3A%2F%2Fepics-jenkins.isis.rl.ac.uk%2F"
-      ></iframe>
+    <div className=" grid grid-cols-3 justify-center items-center gap-1">
+      {data.map((job) => (
+        <a
+          key={job["name"]}
+          href={job["url"]}
+          className={
+            "text-white capitalize rounded-lg text-center " +
+            jenkinsColourToWebDashColour.get(job["color"])
+          }
+          target={"_blank"}
+        >
+          {job["name"]}
+        </a>
+      ))}
     </div>
   );
 }
