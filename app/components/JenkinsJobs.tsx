@@ -4,17 +4,23 @@ import { useEffect, useState } from "react";
 import { IfcWallDisplayJob, IfcWallDisplayResponse } from "@/app/types";
 
 const successColour = "[#90EE90]";
+const unstableColour = "[#FFFF00]";
 const failureColour = "[#F08080]";
 const abortedColour = "gray-400";
 
 const jenkinsColourToWebDashColour = new Map<string, string>([
   ["red", `bg-${failureColour}`], // build broken
+  ["yellow", `bg-${unstableColour}`], // build unstable
   ["blue", `bg-${successColour}`], // build success
   ["aborted", `bg-${abortedColour}`], // build aborted
   [
     "red_anime",
     `bg-[repeating-linear-gradient(45deg,#F08080_0px,#F08080_20px,#99a1af_20px,#99a1af_40px)]`,
   ], // build running but was broken
+  [
+    "yellow_anime",
+    "bg-[repeating-linear-gradient(45deg,#ffff00_0px,#ffff00_20px,#99a1af_20px,#99a1af_40px)]",
+  ], // build running but was unstable
   [
     "blue_anime",
     "bg-[repeating-linear-gradient(45deg,#90EE90_0px,#90EE90_20px,#99a1af_20px,#99a1af_40px)]",
