@@ -162,3 +162,19 @@ export interface instListEntry {
 }
 
 export type instList = Array<instListEntry>;
+
+export interface IfcWallDisplayJob {
+  _class: string;
+  color: string;
+  name: string;
+  url: string;
+}
+
+export interface IfcWallDisplayResponse {
+  _class: string;
+  description?: string;
+  name: string;
+  property: Array<string>;
+  url: string;
+  jobs: Array<IfcWallDisplayJob>;
+}

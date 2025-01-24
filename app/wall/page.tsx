@@ -1,5 +1,5 @@
 import ShowHideBeamInfo from "../components/ShowHideBeamInfo";
-import JenkinsJobIframe from "../components/JenkinsJobsIframe";
+import JenkinsJobIframe from "../components/JenkinsJobs";
 import InstrumentsDisplay from "@/app/components/InstrumentsDisplay";
 
 export default function WallDisplay() {
@@ -22,6 +22,9 @@ export default function WallDisplay() {
             </div>
           </div>
           <hr className="h-[2px] rounded my-4 bg-gray-200 border-0 dark:bg-gray-600" />
+          <h1 className="w-full text-left text-black dark:text-white font-semibold text-2xl pb-2 ">
+            Jenkins jobs:
+          </h1>
           <JenkinsJobIframe />
         </div>
       </section>
