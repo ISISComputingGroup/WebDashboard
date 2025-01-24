@@ -3,25 +3,32 @@
 import { useEffect, useState } from "react";
 import { IfcWallDisplayJob, IfcWallDisplayResponse } from "@/app/types";
 
-const successColour = "[#90EE90]";
-const failureColour = "[#F08080]";
-const abortedColour = "gray-400";
-
 const jenkinsColourToWebDashColour = new Map<string, string>([
-  ["red", `bg-${failureColour}`], // build broken
-  ["blue", `bg-${successColour}`], // build success
-  ["aborted", `bg-${abortedColour}`], // build aborted
+  // these map to https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/model/BallColor.java#L57
+  ["red", `bg-[#F08080]`], // build broken
+  ["blue", `bg-[#90EE90]`], // build success
+  ["aborted", `bg-[#99a1af]`], // build aborted
+
+  ["yellow", `bg-[#dddd00]`],
+  [
+    "yellow_anime",
+    `bg-[repeating-linear-gradient(45deg,#dddd00_0px,#dddd00_20px,#eeee00_20px,#eeee00_40px)]`,
+  ], // build running but was broken
   [
     "red_anime",
-    `bg-[repeating-linear-gradient(45deg,#F08080_0px,#F08080_20px,#99a1af_20px,#99a1af_40px)]`,
+    `bg-[repeating-linear-gradient(45deg,#F08080_0px,#F08080_20px,#F09090_20px,#F09090_40px)]`,
   ], // build running but was broken
   [
     "blue_anime",
-    "bg-[repeating-linear-gradient(45deg,#90EE90_0px,#90EE90_20px,#99a1af_20px,#99a1af_40px)]",
+    "bg-[repeating-linear-gradient(45deg,#90EE90_0px,#90EE90_20px,#90DD90_20px,#90DD90_40px)]",
   ], // build running but was successful
+  [
+    "aborted_anime",
+    "bg-[repeating-linear-gradient(45deg,#99A1AF_0px,#99A1AF_20px,#7F7F7F_20px,#7F7F7F_40px)]",
+  ], // build aborted but now running
 ]);
 
-export default function JenkinsJobIframe() {
+export default function JenkinsJobs() {
   const [data, setData] = useState<Array<IfcWallDisplayJob>>([]);
 
   useEffect(() => {
@@ -61,7 +68,8 @@ export default function JenkinsJobIframe() {
           href={job["url"] + "#:~:text=Builds"} // link to text fragment for "builds"
           className={
             "text-black h-10 font-bold text-xl capitalize rounded-lg text-center border-2 border-black hover:border-white " +
-            jenkinsColourToWebDashColour.get(job["color"])
+            jenkinsColourToWebDashColour.get(job["color"]) +
+            ` wd-state-${job["color"]}`
           }
           target={"_blank"}
         >
