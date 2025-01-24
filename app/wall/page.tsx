@@ -1,5 +1,5 @@
 import ShowHideBeamInfo from "../components/ShowHideBeamInfo";
-import JenkinsJobIframe from "../components/JenkinsJobsIframe";
+import JenkinsJobIframe from "../components/JenkinsJobs";
 import InstrumentsDisplay from "@/app/components/InstrumentsDisplay";
 
 export default function WallDisplay() {
