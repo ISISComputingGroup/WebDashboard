@@ -2,12 +2,23 @@
 
 import { useEffect, useState } from "react";
 import { IfcWallDisplayJob, IfcWallDisplayResponse } from "@/app/types";
+
+const successColour = "[#90EE90]";
+const failureColour = "[#F08080]";
+const abortedColour = "gray-400";
+
 const jenkinsColourToWebDashColour = new Map<string, string>([
-  ["red", "bg-red-800"],
-  ["blue", "bg-green-800"],
-  ["aborted", "bg-gray-400"],
-  ["red_anime", "bg-red-400"],
-  ["blue_anime", "bg-green-400"],
+  ["red", `bg-${failureColour}`], // build broken
+  ["blue", `bg-${successColour}`], // build success
+  ["aborted", `bg-${abortedColour}`], // build aborted
+  [
+    "red_anime",
+    `bg-[repeating-linear-gradient(45deg,#F08080_0px,#F08080_20px,#99a1af_20px,#99a1af_40px)]`,
+  ], // build running but was broken
+  [
+    "blue_anime",
+    "bg-[repeating-linear-gradient(45deg,#90EE90_0px,#90EE90_20px,#99a1af_20px,#99a1af_40px)]",
+  ], // build running but was successful
 ]);
 
 export default function JenkinsJobIframe() {
@@ -39,13 +50,17 @@ export default function JenkinsJobIframe() {
   }
 
   return (
-    <div className=" grid grid-cols-3 justify-center items-center gap-1">
+    <div
+      className={
+        "grid md:grid-rows-8 md:grid-flow-col  md:grid-cols-3 items-center gap-1.5 grid-cols-1"
+      }
+    >
       {data.map((job) => (
         <a
           key={job["name"]}
           href={job["url"]}
           className={
-            "text-white capitalize rounded-lg text-center " +
+            "text-black h-10 font-bold text-xl capitalize rounded-lg text-center border-2 border-black hover:border-white " +
             jenkinsColourToWebDashColour.get(job["color"])
           }
           target={"_blank"}
