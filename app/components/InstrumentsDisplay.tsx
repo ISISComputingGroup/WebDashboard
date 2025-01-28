@@ -65,7 +65,6 @@ export default function InstrumentsDisplay({
         {
           name: "HIFI-CRYOMAG",
         },
-        { name: "HRPD" },
         { name: "INES" },
         { name: "IRIS" },
         { name: "LOQ" },
@@ -114,6 +113,7 @@ export default function InstrumentsDisplay({
         {
           name: "ENGINX_SETUP",
         },
+        { name: "HRPD" },
         {
           name: "HRPD_SETUP",
         },
