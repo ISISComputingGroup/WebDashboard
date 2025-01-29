@@ -12,11 +12,11 @@ const jenkinsColourToWebDashColour = new Map<string, string>([
   ["yellow", `bg-[#dddd00]`],
   [
     "yellow_anime",
-    `bg-[repeating-linear-gradient(45deg,#dddd00_0px,#dddd00_20px,#eeee00_20px,#eeee00_40px)]`,
+    "bg-[repeating-linear-gradient(45deg,#dddd00_0px,#dddd00_20px,#eeee00_20px,#eeee00_40px)]",
   ], // build running but was broken
   [
     "red_anime",
-    `bg-[repeating-linear-gradient(45deg,#F08080_0px,#F08080_20px,#F09090_20px,#F09090_40px)]`,
+    "bg-[repeating-linear-gradient(45deg,#F08080_0px,#F08080_20px,#F09090_20px,#F09090_40px)]",
   ], // build running but was broken
   [
     "blue_anime",
@@ -32,6 +32,7 @@ export default function JenkinsJobs() {
   const [data, setData] = useState<Array<IfcWallDisplayJob>>([]);
 
   useEffect(() => {
+    // initially request from jenkins, then set interval to do so every minute thereafter.
     async function fetchPosts() {
       const res = await fetch(
         "https://epics-jenkins.isis.rl.ac.uk/view/WallDisplay/api/json",
@@ -43,6 +44,11 @@ export default function JenkinsJobs() {
       setData(jobs);
     }
     fetchPosts();
+
+    const interval = setInterval(() => {
+      fetchPosts();
+    }, 60000);
+    return () => clearInterval(interval);
   }, []);
 
   if (data.length === 0) {
