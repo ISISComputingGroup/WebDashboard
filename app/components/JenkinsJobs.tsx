@@ -41,6 +41,7 @@ export default function JenkinsJobs() {
       const jobs: Array<IfcWallDisplayJob> = resData["jobs"].filter(
         (job) => job["color"] != "disabled",
       );
+      console.log(jobs);
       setData(jobs);
     }
     fetchPosts();
@@ -71,7 +72,7 @@ export default function JenkinsJobs() {
       {data.map((job) => (
         <a
           key={job["name"]}
-          href={job["url"] + "lastBuild"} // link to text fragment for "builds"
+          href={job["url"] + "lastCompletedBuild"} // link to text fragment for "builds"
           className={
             "text-black h-10 font-bold text-xl capitalize rounded-lg text-center border-2 border-black hover:border-white " +
             jenkinsColourToWebDashColour.get(job["color"]) +
