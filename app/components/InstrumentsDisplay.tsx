@@ -78,7 +78,6 @@ export default function InstrumentsDisplay({
         { name: "POLARIS" },
         { name: "RIKENFE" },
         { name: "SANDALS" },
-        { name: "SCIDEMO" },
         { name: "SURF" },
         { name: "SXD" },
         { name: "TOSCA" },
@@ -127,6 +126,7 @@ export default function InstrumentsDisplay({
         {
           name: "PEARL_SETUP",
         },
+        { name: "SCIDEMO" },
         { name: "SELAB" },
         { name: "SOFTMAT" },
         {
