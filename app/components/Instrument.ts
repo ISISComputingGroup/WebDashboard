@@ -71,10 +71,6 @@ export class Instrument {
         pvaddress: `${this.prefix}DAE:RUNNUMBER`,
         human_readable_name: "Run number",
       },
-      {
-        pvaddress: `${this.prefix}DAE:STARTTIME`,
-        human_readable_name: "Start number",
-      },
       { pvaddress: `${this.prefix}DAE:TITLE`, human_readable_name: "Title" },
       {
         pvaddress: `${this.prefix}DAE:_USERNAME`,
@@ -117,7 +113,7 @@ export class Instrument {
         human_readable_name: "Monitor To",
       },
       {
-        pvaddress: `${this.prefix}DAE:SHUTTER`,
+        pvaddress: `${this.prefix}CS:SHUTTER`,
         human_readable_name: "Shutter Status",
       },
       {
@@ -133,7 +129,7 @@ export class Instrument {
         human_readable_name: "DAE Simulation Mode",
       },
       {
-        pvaddress: `${this.prefix}DAE:TIME_OF_DAY`,
+        pvaddress: `${this.prefix}TIME_OF_DAY`,
         human_readable_name: "Instrument Time",
       },
       {
@@ -141,7 +137,7 @@ export class Instrument {
         human_readable_name: "Start time",
       },
       {
-        pvaddress: `${this.prefix}DAE:RUNDURATION_PD`,
+        pvaddress: `${this.prefix}DAE:RUNDURATION`,
         human_readable_name: "Run time",
       },
       { pvaddress: `${this.prefix}DAE:PERIOD`, human_readable_name: "Period" },
@@ -156,10 +152,6 @@ export class Instrument {
       {
         pvaddress: `${this.prefix}DAE:_RBNUMBER`,
         human_readable_name: "RB Number",
-      },
-      {
-        pvaddress: `${this.prefix}DAE:RUNDURATION`,
-        human_readable_name: "Total Run Time",
       },
       {
         pvaddress: `${this.prefix}DAE:RUNDURATION_PD`,
