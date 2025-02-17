@@ -173,6 +173,10 @@ export class Instrument {
         pvaddress: `${this.prefix}DAE:DAEMEMORYUSED`,
         human_readable_name: "DAE Memory Used",
       },
+      {
+        pvaddress: `${this.prefix}DAE:DAETIMINGSOURCE`,
+        human_readable_name: "Timing Source",
+      },
     ];
   }
 }
