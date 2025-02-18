@@ -82,11 +82,15 @@ export class Instrument {
       },
       {
         pvaddress: `${this.prefix}DAE:RAWFRAMES`,
-        human_readable_name: "Raw frames (Total)",
+        human_readable_name: "Raw frames",
       },
       {
-        pvaddress: `${this.prefix}DAE:RAWFRAMES_PD`,
-        human_readable_name: "Raw frames (Period)",
+        pvaddress: `${this.prefix}DAE:COUNTRATE`,
+        human_readable_name: "Count Rate",
+      },
+      {
+        pvaddress: `${this.prefix}DAE:_RBNUMBER`,
+        human_readable_name: "RB Number",
       },
       {
         pvaddress: `${this.prefix}DAE:BEAMCURRENT`,
@@ -142,16 +146,12 @@ export class Instrument {
       },
       { pvaddress: `${this.prefix}DAE:PERIOD`, human_readable_name: "Period" },
       {
+        pvaddress: `${this.prefix}DAE:RAWFRAMES_PD`,
+        human_readable_name: "Period Raw frames",
+      },
+      {
         pvaddress: `${this.prefix}DAE:NUMPERIODS`,
         human_readable_name: "Num periods",
-      },
-      {
-        pvaddress: `${this.prefix}DAE:COUNTRATE`,
-        human_readable_name: "Count Rate",
-      },
-      {
-        pvaddress: `${this.prefix}DAE:_RBNUMBER`,
-        human_readable_name: "RB Number",
       },
       {
         pvaddress: `${this.prefix}DAE:RUNDURATION_PD`,
@@ -162,12 +162,20 @@ export class Instrument {
         human_readable_name: "Period Sequence",
       },
       {
+        pvaddress: `${this.prefix}DAE:GOODFRAMES_PD`,
+        human_readable_name: "Period Good Frames",
+      },
+      {
         pvaddress: `${this.prefix}DAE:DAEMEMORYUSED`,
         human_readable_name: "DAE Memory Used",
       },
       {
         pvaddress: `${this.prefix}DAE:DAETIMINGSOURCE`,
         human_readable_name: "Timing Source",
+      },
+      {
+        pvaddress: `${this.prefix}DAE:EVENTS`,
+        human_readable_name: "Total Counts",
       },
     ];
   }
