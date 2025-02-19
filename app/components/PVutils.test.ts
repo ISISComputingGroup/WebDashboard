@@ -1,8 +1,10 @@
-import {IfcPV, IfcPVWSMessage, instListEntry} from "@/app/types";
+import { IfcPV, IfcPVWSMessage, instListEntry } from "@/app/types";
 import {
   findPVByAddress,
   findPVByHumanReadableName,
-  ExponentialOnThresholdFormat, getPrefix, getPvValue,
+  ExponentialOnThresholdFormat,
+  getPrefix,
+  getPvValue,
 } from "@/app/components/PVutils";
 
 test("findPVByAddress finds a PV and returns it", () => {
@@ -160,46 +162,55 @@ test("GIVEN value not a number when WHEN formatting THEN value is returned untou
 });
 
 test("getPrefix returns an instrument prefix if instName is in instlist", () => {
-  const myInstName = "BLAH"
-  const myInstPrefix = `IN:${myInstName}:`
-  const instList: Array<instListEntry> = [{name:myInstName, pvPrefix:myInstPrefix, isScheduled:true, seci:false, groups:[], hostName:myInstName}]
+  const myInstName = "BLAH";
+  const myInstPrefix = `IN:${myInstName}:`;
+  const instList: Array<instListEntry> = [
+    {
+      name: myInstName,
+      pvPrefix: myInstPrefix,
+      isScheduled: true,
+      seci: false,
+      groups: [],
+      hostName: myInstName,
+    },
+  ];
   expect(getPrefix(instList, myInstName)).toEqual(myInstPrefix);
-})
+});
 
 test("getPrefix returns TE if instrument prefix not in instlist", () => {
-  const myInstName = "NDW9999"
-  const myInstPrefix = `TE:${myInstName}:`
-  const instList: Array<instListEntry> = []
+  const myInstName = "NDW9999";
+  const myInstPrefix = `TE:${myInstName}:`;
+  const instList: Array<instListEntry> = [];
 
   expect(getPrefix(instList, myInstName)).toEqual(myInstPrefix);
-})
-
-test('getPvValue returns the text value when text is provided', () => {
-  const updatedPV = {type:"update", pv:"test", text: 'Hello World' };
-  const result = getPvValue(updatedPV);
-  expect(result).toBe('Hello World');
 });
 
-test('getPvValue decodes and return the base64 value when b64byt is provided', () => {
-  const updatedPV = {type:"update", pv:"test", b64byt: 'SGVsbG8gV29ybGQ=' }; // Base64 for 'Hello World'
+test("getPvValue returns the text value when text is provided", () => {
+  const updatedPV = { type: "update", pv: "test", text: "Hello World" };
   const result = getPvValue(updatedPV);
-  expect(result).toBe('Hello World');
+  expect(result).toBe("Hello World");
 });
 
-test('getPvValue returns the numeric value when value is provided', () => {
-  const updatedPV = {type:"update", pv:"test", value: 123 };
+test("getPvValue decodes and return the base64 value when b64byt is provided", () => {
+  const updatedPV = { type: "update", pv: "test", b64byt: "SGVsbG8gV29ybGQ=" }; // Base64 for 'Hello World'
+  const result = getPvValue(updatedPV);
+  expect(result).toBe("Hello World");
+});
+
+test("getPvValue returns the numeric value when value is provided", () => {
+  const updatedPV = { type: "update", pv: "test", value: 123 };
   const result = getPvValue(updatedPV);
   expect(result).toBe(123);
 });
 
-test('getPvValue returns undefined if no valid field is provided', () => {
-  const updatedPV: IfcPVWSMessage = {type:"update", pv:"test",};
+test("getPvValue returns undefined if no valid field is provided", () => {
+  const updatedPV: IfcPVWSMessage = { type: "update", pv: "test" };
   const result = getPvValue(updatedPV);
   expect(result).toBeUndefined();
 });
 
-test('getPvValue handles an empty string for text', () => {
-  const updatedPV = {type:"update", pv:"test", text: '' };
+test("getPvValue handles an empty string for text", () => {
+  const updatedPV = { type: "update", pv: "test", text: "" };
   const result = getPvValue(updatedPV);
-  expect(result).toBe('');
+  expect(result).toBe("");
 });

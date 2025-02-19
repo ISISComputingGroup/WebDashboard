@@ -5,7 +5,8 @@ import {
   getGroupsWithBlocksFromConfigOutput,
   RC_ENABLE,
   RC_INRANGE,
-  SP_RBV, storePrecision,
+  SP_RBV,
+  storePrecision,
   subscribeToBlockPVs,
   toPrecision,
   yesToBoolean,
@@ -15,7 +16,8 @@ import {
   DashboardArr,
   IfcBlock,
   IfcGroup,
-  IfcPV, IfcPVWSMessage,
+  IfcPV,
+  IfcPVWSMessage,
   IfcPVWSRequest,
   PVWSRequestType,
 } from "@/app/types";
@@ -223,10 +225,12 @@ test("subscribeToBlockPVs subscribes to blocks, their run control and their SP:R
 
 test("storePrecision adds precision to a block if it is the first update", () => {
   const precision = 3;
-  const message: IfcPVWSMessage = {type:"update", pv:"",precision:precision}
-  let blockWithoutPrecision: IfcBlock = {pvaddress:""}
-  storePrecision(message, blockWithoutPrecision)
-  expect(blockWithoutPrecision.precision).toEqual(precision)
-})
-
-
+  const message: IfcPVWSMessage = {
+    type: "update",
+    pv: "",
+    precision: precision,
+  };
+  let blockWithoutPrecision: IfcBlock = { pvaddress: "" };
+  storePrecision(message, blockWithoutPrecision);
+  expect(blockWithoutPrecision.precision).toEqual(precision);
+});
