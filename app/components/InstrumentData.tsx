@@ -1,32 +1,115 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import {
+  ConfigOutput,
+  ConfigOutputBlock,
+  IfcBlock,
+  IfcGroup,
+  IfcPV,
   IfcPVWSMessage,
   IfcPVWSRequest,
   instList,
   PVWSRequestType,
 } from "@/app/types";
-import { findPVInDashboard, Instrument } from "@/app/components/Instrument";
+import {
+  findPVInDashboard,
+  findPVInGroups,
+  Instrument,
+} from "@/app/components/Instrument";
 import useWebSocket from "react-use-websocket";
 import { instListPV, instListSubscription, socketURL } from "@/app/commonVars";
 import {
   dehex_and_decompress,
   instListFromBytes,
 } from "@/app/components/dehex_and_decompress";
-import { findPVByAddress } from "@/app/components/PVutils";
+import {
+  ExponentialOnThresholdFormat,
+  findPVByAddress,
+} from "@/app/components/PVutils";
 import TopBar from "@/app/components/TopBar";
 import CheckToggle from "@/app/components/CheckToggle";
 import Groups from "@/app/components/Groups";
-import {
-  CSSB,
-  getGroupsWithBlocksFromConfigOutput,
-  RC_ENABLE,
-  RC_INRANGE,
-  SP_RBV,
-  toPrecision,
-} from "@/app/components/InstrumentPage";
 
 let lastUpdate: string = "";
+export const RC_ENABLE = ":RC:ENABLE";
+
+export const RC_INRANGE = ":RC:INRANGE";
+
+export const SP_RBV = ":SP:RBV";
+
+export const CSSB = "CS:SB:";
+
+export function toPrecision(
+  block: IfcPV,
+  pvVal: number | string,
+): string | number {
+  return block.precision
+    ? ExponentialOnThresholdFormat(pvVal, block.precision)
+    : pvVal;
+}
+
+function storePrecision(updatedPV: IfcPVWSMessage, block: IfcBlock) {
+  const prec = updatedPV.precision;
+  if (prec != null && prec > 0 && !block.precision) {
+    // this is likely the first update, and contains precision information which is not repeated on a normal value update - store this in the block for later truncation (see below)
+    block.precision = prec;
+  }
+}
+function yesToBoolean(pvVal: string | number) {
+  return pvVal == "YES";
+}
+
+export function subscribeToBlockPVs(
+  sendJsonMessage: (a: IfcPVWSRequest) => void,
+  block_address: string,
+) {
+  /**
+   * Subscribes to a block and its associated run control PVs
+   */
+  sendJsonMessage({
+    type: PVWSRequestType.subscribe,
+    pvs: [
+      block_address,
+      block_address + RC_ENABLE,
+      block_address + RC_INRANGE,
+      block_address + SP_RBV,
+    ],
+  });
+}
+
+export function getGroupsWithBlocksFromConfigOutput(
+  configOutput: ConfigOutput,
+  sendJsonMessage: (a: IfcPVWSRequest) => void,
+  prefix: string,
+): Array<IfcGroup> {
+  const groups = configOutput.groups;
+  let newGroups: Array<IfcGroup> = [];
+  for (const group of groups) {
+    const groupName = group.name;
+    let blocks: Array<IfcBlock> = [];
+    for (const block of group.blocks) {
+      const newBlock = configOutput.blocks.find(
+        (b: ConfigOutputBlock) => b.name === block,
+      );
+      if (newBlock) {
+        blocks.push({
+          pvaddress: newBlock.pv,
+          human_readable_name: newBlock.name,
+          low_rc: newBlock.lowlimit,
+          high_rc: newBlock.highlimit,
+          visible: newBlock.visible,
+        });
+        const fullyQualifiedBlockPVAddress = prefix + CSSB + newBlock.name;
+        subscribeToBlockPVs(sendJsonMessage, fullyQualifiedBlockPVAddress);
+      }
+    }
+    newGroups.push({
+      name: groupName,
+      blocks: blocks,
+    });
+  }
+  return newGroups;
+}
 
 export function InstrumentData({ instrumentName }: { instrumentName: string }) {
   const [showHiddenBlocks, setShowHiddenBlocks] = useState(false);
@@ -106,6 +189,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
 
     if (updatedPVName == instListPV && updatedPVbytes != null) {
       setInstlist(instListFromBytes(updatedPVbytes));
+      return;
     }
 
     if (!currentInstrument) {
@@ -140,44 +224,55 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
         // PV value is a number
         pvVal = updatedPV.value;
       } else {
+        console.debug(`initial/blank message from ${updatedPVName}`);
         return;
       }
 
-      if (findPVInDashboard(currentInstrument.dashboard, updatedPVName)) {
-        // This is a dashboard block update.
-        findPVInDashboard(currentInstrument.dashboard, updatedPVName)!.value =
-          pvVal;
-      } else if (findPVByAddress(currentInstrument.runInfoPVs, updatedPVName)) {
-        // This is a run information PV
-        findPVByAddress(currentInstrument.runInfoPVs, updatedPVName)!.value =
-          pvVal;
+      // Check if this is a dashboard, run info, or block PV update.
+      const pv =
+        findPVInDashboard(currentInstrument.dashboard, updatedPVName) ||
+        findPVByAddress(currentInstrument.runInfoPVs, updatedPVName) ||
+        findPVInGroups(
+          currentInstrument.groups,
+          currentInstrument.prefix,
+          updatedPVName,
+        );
+      if (pv) {
+        storePrecision(updatedPV, pv);
+        pv.value = toPrecision(pv, pvVal);
+        if (updatedPV.seconds) pv.updateSeconds = updatedPV.seconds;
+        if (updatedPV.units) pv.units = updatedPV.units;
+        if (updatedPV.severity) pv.severity = updatedPV.severity;
       } else {
-        // This is a block - check if in groups
-        for (const group of currentInstrument.groups) {
-          for (const block of group.blocks) {
-            let block_full_pv_name =
-              currentInstrument.prefix + CSSB + block.human_readable_name;
-            if (updatedPVName == block_full_pv_name) {
-              let prec = updatedPV.precision;
-
-              if (prec != null && prec > 0 && !block.precision) {
-                // this is likely the first update, and contains precision information which is not repeated on a normal value update - store this in the block for later truncation (see below)
-                block.precision = prec;
-              }
-              // if a block has precision truncate it here
-              block.value = toPrecision(block, pvVal);
-              if (updatedPV.seconds) block.updateSeconds = updatedPV.seconds;
-
-              if (updatedPV.units) block.units = updatedPV.units;
-              if (updatedPV.severity) block.severity = updatedPV.severity;
-            } else if (updatedPVName == block_full_pv_name + RC_INRANGE) {
-              block.runcontrol_inrange = updatedPV.value == 1;
-            } else if (updatedPVName == block_full_pv_name + RC_ENABLE) {
-              block.runcontrol_enabled = updatedPV.value == 1;
-            } else if (updatedPVName == block_full_pv_name + SP_RBV) {
-              block.sp_value = toPrecision(block, pvVal);
-            }
-          }
+        // OK, we haven't found the block, but we may have an update for its object such as its run control status
+        if (updatedPVName.endsWith(RC_INRANGE)) {
+          const underlyingBlock = findPVInGroups(
+            currentInstrument.groups,
+            currentInstrument.prefix,
+            updatedPVName.replace(RC_INRANGE, ""),
+          );
+          if (underlyingBlock)
+            underlyingBlock.runcontrol_inrange = yesToBoolean(pvVal);
+        } else if (updatedPVName.endsWith(RC_ENABLE)) {
+          const underlyingBlock = findPVInGroups(
+            currentInstrument.groups,
+            currentInstrument.prefix,
+            updatedPVName.replace(RC_ENABLE, ""),
+          );
+          if (underlyingBlock)
+            underlyingBlock.runcontrol_enabled = yesToBoolean(pvVal);
+        } else if (updatedPVName.endsWith(SP_RBV)) {
+          const underlyingBlock = findPVInGroups(
+            currentInstrument.groups,
+            currentInstrument.prefix,
+            updatedPVName.replace(SP_RBV, ""),
+          );
+          if (underlyingBlock)
+            underlyingBlock.sp_value = toPrecision(underlyingBlock, pvVal);
+        } else {
+          console.warn(
+            `update from unknown PV: ${updatedPVName} with value ${pvVal}`,
+          );
         }
       }
     }

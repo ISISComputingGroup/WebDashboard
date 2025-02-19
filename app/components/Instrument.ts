@@ -1,4 +1,5 @@
-import { DashboardArr, IfcGroup, IfcPV } from "@/app/types";
+import { DashboardArr, IfcBlock, IfcGroup, IfcPV } from "@/app/types";
+import { CSSB } from "@/app/components/InstrumentData";
 
 const DASHBOARD = "CS:DASHBOARD:TAB:";
 
@@ -186,4 +187,17 @@ export function findPVInDashboard(
   pvAddress: string,
 ): undefined | IfcPV {
   return dashboard.flat(3).find((pv: IfcPV) => pv.pvaddress == pvAddress);
+}
+
+export function findPVInGroups(
+  groups: Array<IfcGroup>,
+  prefix: string,
+  updatedPVName: string,
+): undefined | IfcBlock {
+  return groups
+    .flatMap((group: IfcGroup) => group.blocks)
+    .find(
+      (block: IfcBlock) =>
+        updatedPVName == prefix + CSSB + block.human_readable_name,
+    );
 }

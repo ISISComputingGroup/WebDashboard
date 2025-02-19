@@ -4,14 +4,15 @@ import {
   IfcPVWSRequest,
   PVWSRequestType,
 } from "@/app/types";
+
 import {
-  getGroupsWithBlocksFromConfigOutput,
   RC_ENABLE,
   RC_INRANGE,
   SP_RBV,
   subscribeToBlockPVs,
   toPrecision,
-} from "@/app/components/InstrumentPage";
+  getGroupsWithBlocksFromConfigOutput,
+} from "@/app/components/InstrumentData";
 
 test("subscribeToBlockPVs subscribes to all run control PVs", () => {
   const mockSendJsonMessage = jest.fn();
