@@ -512,7 +512,7 @@ exports[`renders topbar unchanged 1`] = `
               <p
                 class="font-bold"
               >
-                Run time
+                Run time(s)
                 :
               </p>
                
@@ -568,7 +568,7 @@ exports[`renders topbar unchanged 1`] = `
               <p
                 class="font-bold"
               >
-                Period Run Time
+                Period Run Time(s)
                 :
               </p>
                
