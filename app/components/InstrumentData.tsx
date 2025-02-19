@@ -1,11 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import {
-  ConfigOutput,
-  ConfigOutputBlock,
-  IfcBlock,
-  IfcGroup,
-  IfcPV,
   IfcPVWSMessage,
   IfcPVWSRequest,
   instList,
@@ -14,7 +9,14 @@ import {
 import {
   findPVInDashboard,
   findPVInGroups,
+  getGroupsWithBlocksFromConfigOutput,
   Instrument,
+  RC_ENABLE,
+  RC_INRANGE,
+  SP_RBV,
+  storePrecision,
+  toPrecision,
+  yesToBoolean,
 } from "@/app/components/Instrument";
 import useWebSocket from "react-use-websocket";
 import { instListPV, instListSubscription, socketURL } from "@/app/commonVars";
@@ -23,93 +25,15 @@ import {
   instListFromBytes,
 } from "@/app/components/dehex_and_decompress";
 import {
-  ExponentialOnThresholdFormat,
   findPVByAddress,
+  getPrefix,
+  getPvValue,
 } from "@/app/components/PVutils";
 import TopBar from "@/app/components/TopBar";
 import CheckToggle from "@/app/components/CheckToggle";
 import Groups from "@/app/components/Groups";
 
 let lastUpdate: string = "";
-export const RC_ENABLE = ":RC:ENABLE";
-
-export const RC_INRANGE = ":RC:INRANGE";
-
-export const SP_RBV = ":SP:RBV";
-
-export const CSSB = "CS:SB:";
-
-export function toPrecision(
-  block: IfcPV,
-  pvVal: number | string,
-): string | number {
-  return block.precision
-    ? ExponentialOnThresholdFormat(pvVal, block.precision)
-    : pvVal;
-}
-
-function storePrecision(updatedPV: IfcPVWSMessage, block: IfcBlock) {
-  const prec = updatedPV.precision;
-  if (prec != null && prec > 0 && !block.precision) {
-    // this is likely the first update, and contains precision information which is not repeated on a normal value update - store this in the block for later truncation (see below)
-    block.precision = prec;
-  }
-}
-function yesToBoolean(pvVal: string | number) {
-  return pvVal == "YES";
-}
-
-export function subscribeToBlockPVs(
-  sendJsonMessage: (a: IfcPVWSRequest) => void,
-  block_address: string,
-) {
-  /**
-   * Subscribes to a block and its associated run control PVs
-   */
-  sendJsonMessage({
-    type: PVWSRequestType.subscribe,
-    pvs: [
-      block_address,
-      block_address + RC_ENABLE,
-      block_address + RC_INRANGE,
-      block_address + SP_RBV,
-    ],
-  });
-}
-
-export function getGroupsWithBlocksFromConfigOutput(
-  configOutput: ConfigOutput,
-  sendJsonMessage: (a: IfcPVWSRequest) => void,
-  prefix: string,
-): Array<IfcGroup> {
-  const groups = configOutput.groups;
-  let newGroups: Array<IfcGroup> = [];
-  for (const group of groups) {
-    const groupName = group.name;
-    let blocks: Array<IfcBlock> = [];
-    for (const block of group.blocks) {
-      const newBlock = configOutput.blocks.find(
-        (b: ConfigOutputBlock) => b.name === block,
-      );
-      if (newBlock) {
-        blocks.push({
-          pvaddress: newBlock.pv,
-          human_readable_name: newBlock.name,
-          low_rc: newBlock.lowlimit,
-          high_rc: newBlock.highlimit,
-          visible: newBlock.visible,
-        });
-        const fullyQualifiedBlockPVAddress = prefix + CSSB + newBlock.name;
-        subscribeToBlockPVs(sendJsonMessage, fullyQualifiedBlockPVAddress);
-      }
-    }
-    newGroups.push({
-      name: groupName,
-      blocks: blocks,
-    });
-  }
-  return newGroups;
-}
 
 export function InstrumentData({ instrumentName }: { instrumentName: string }) {
   const [showHiddenBlocks, setShowHiddenBlocks] = useState(false);
@@ -145,17 +69,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
       return;
     }
 
-    let prefix = "";
-
-    for (const item of instlist) {
-      if (item.name == instName.toUpperCase()) {
-        prefix = item.pvPrefix;
-      }
-    }
-    if (!prefix) {
-      // not on the instlist, or the instlist is not available. Try to guess it's a developer machine
-      prefix = "TE:" + instName.toUpperCase() + ":";
-    }
+    let prefix = getPrefix(instlist, instName);
 
     if (!currentInstrument) {
       let instrument = new Instrument(prefix);
@@ -213,17 +127,9 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
         currentInstrument.prefix,
       );
     } else {
-      let pvVal;
-      if (updatedPV.text != null) {
-        // PV has string value
-        pvVal = updatedPV.text;
-      } else if (updatedPVbytes != null) {
-        // PV value is base64 encoded
-        pvVal = atob(updatedPVbytes);
-      } else if (updatedPV.value != null) {
-        // PV value is a number
-        pvVal = updatedPV.value;
-      } else {
+      const pvVal = getPvValue(updatedPV);
+
+      if (pvVal == undefined) {
         console.debug(`initial/blank message from ${updatedPVName}`);
         return;
       }
@@ -244,7 +150,8 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
         if (updatedPV.units) pv.units = updatedPV.units;
         if (updatedPV.severity) pv.severity = updatedPV.severity;
       } else {
-        // OK, we haven't found the block, but we may have an update for its object such as its run control status
+        // OK, we haven't found the block, but we may have an update for
+        // its object such as its run control status or SP:RBV
         if (updatedPVName.endsWith(RC_INRANGE)) {
           const underlyingBlock = findPVInGroups(
             currentInstrument.groups,

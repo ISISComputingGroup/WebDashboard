@@ -1,5 +1,18 @@
-import { DashboardArr, IfcBlock, IfcGroup, IfcPV } from "@/app/types";
-import { CSSB } from "@/app/components/InstrumentData";
+import {
+  ConfigOutput,
+  ConfigOutputBlock,
+  DashboardArr,
+  IfcBlock,
+  IfcGroup,
+  IfcPV,
+  IfcPVWSMessage,
+  IfcPVWSRequest,
+  PVWSRequestType,
+} from "@/app/types";
+import {
+  ExponentialOnThresholdFormat,
+  findPVByAddress,
+} from "@/app/components/PVutils";
 
 const DASHBOARD = "CS:DASHBOARD:TAB:";
 
@@ -186,7 +199,89 @@ export function findPVInDashboard(
   dashboard: DashboardArr,
   pvAddress: string,
 ): undefined | IfcPV {
-  return dashboard.flat(3).find((pv: IfcPV) => pv.pvaddress == pvAddress);
+  return findPVByAddress(dashboard.flat(3), pvAddress);
+}
+
+export const RC_ENABLE = ":RC:ENABLE";
+export const RC_INRANGE = ":RC:INRANGE";
+export const SP_RBV = ":SP:RBV";
+export const CSSB = "CS:SB:";
+
+export function toPrecision(
+  block: IfcPV,
+  pvVal: number | string,
+): string | number {
+  return block.precision
+    ? ExponentialOnThresholdFormat(pvVal, block.precision)
+    : pvVal;
+}
+
+export function storePrecision(updatedPV: IfcPVWSMessage, block: IfcBlock) {
+  const prec = updatedPV.precision;
+  if (prec != null && prec > 0 && !block.precision) {
+    // this is likely the first update, and contains precision information which is not repeated on a normal value update - store this in the block for later truncation (see below)
+    block.precision = prec;
+  }
+}
+
+export function yesToBoolean(pvVal: string | number) {
+  return pvVal == "YES";
+}
+
+export function subscribeToBlockPVs(
+  sendJsonMessage: (a: IfcPVWSRequest) => void,
+  block_address: string,
+) {
+  /**
+   * Subscribes to a block and its associated run control PVs
+   */
+  sendJsonMessage({
+    type: PVWSRequestType.subscribe,
+    pvs: [
+      block_address,
+      block_address + RC_ENABLE,
+      block_address + RC_INRANGE,
+      block_address + SP_RBV,
+    ],
+  });
+}
+
+/**
+ * Parse the blockserver's current configuration output
+ * and create an array of groups which contain blocks.
+ */
+export function getGroupsWithBlocksFromConfigOutput(
+  configOutput: ConfigOutput,
+  sendJsonMessage: (a: IfcPVWSRequest) => void,
+  prefix: string,
+): Array<IfcGroup> {
+  const groups = configOutput.groups;
+  let newGroups: Array<IfcGroup> = [];
+  for (const group of groups) {
+    const groupName = group.name;
+    let blocks: Array<IfcBlock> = [];
+    for (const block of group.blocks) {
+      const newBlock = configOutput.blocks.find(
+        (b: ConfigOutputBlock) => b.name === block,
+      );
+      if (newBlock) {
+        blocks.push({
+          pvaddress: newBlock.pv,
+          human_readable_name: newBlock.name,
+          low_rc: newBlock.lowlimit,
+          high_rc: newBlock.highlimit,
+          visible: newBlock.visible,
+        });
+        const fullyQualifiedBlockPVAddress = prefix + CSSB + newBlock.name;
+        subscribeToBlockPVs(sendJsonMessage, fullyQualifiedBlockPVAddress);
+      }
+    }
+    newGroups.push({
+      name: groupName,
+      blocks: blocks,
+    });
+  }
+  return newGroups;
 }
 
 export function findPVInGroups(
