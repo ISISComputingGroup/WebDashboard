@@ -1,4 +1,4 @@
-import { IfcPV } from "@/app/types";
+import { IfcPV, IfcPVWSMessage, instListEntry } from "@/app/types";
 
 /**
  * Given an array of PVs, find a PV based on its human-readable name. If none found, return undefined.
@@ -28,7 +28,7 @@ export function ExponentialOnThresholdFormat(
   value: string | number,
   precision: number = 3,
 ) {
-  var nValue: number = value == undefined ? NaN : +value;
+  const nValue: number = value == undefined ? NaN : +value;
   if (isNaN(nValue)) {
     return value;
   } else {
@@ -45,4 +45,42 @@ export function ExponentialOnThresholdFormat(
       return nValue.toFixed(precision);
     }
   }
+}
+
+/**
+ * PVWS gives values as several different fields depending on the PV's data type,
+ * this function returns either the string, number or no value at all
+ * so we can use it as a single variable
+ */
+export function getPvValue(
+  updatedPV: IfcPVWSMessage,
+): string | number | undefined {
+  if (updatedPV.text != null) {
+    // PV has string value
+    return updatedPV.text;
+  } else if (updatedPV.b64byt != null) {
+    // PV value is base64 encoded
+    return atob(updatedPV.b64byt);
+  } else if (updatedPV.value != null) {
+    // PV value is a number
+    return updatedPV.value;
+  }
+}
+
+/**
+ * Given an instlist, check if the current instrument is in it and return
+ * the instrument prefix, if not just return TE:<instName>:
+ */
+export function getPrefix(
+  instlist: Array<instListEntry>,
+  instName: string,
+): string {
+  for (const instListEntry of instlist) {
+    if (instListEntry.name == instName.toUpperCase()) {
+      return instListEntry.pvPrefix;
+    }
+  }
+
+  // not on the instlist, or the instlist is not available. Try to guess it's a developer machine
+  return "TE:" + instName.toUpperCase() + ":";
 }

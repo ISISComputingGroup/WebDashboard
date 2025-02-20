@@ -1,8 +1,10 @@
-import { IfcPV } from "@/app/types";
+import { IfcPV, IfcPVWSMessage, instListEntry } from "@/app/types";
 import {
   findPVByAddress,
   findPVByHumanReadableName,
   ExponentialOnThresholdFormat,
+  getPrefix,
+  getPvValue,
 } from "@/app/components/PVutils";
 
 test("findPVByAddress finds a PV and returns it", () => {
@@ -103,9 +105,7 @@ test("GIVEN negative value just below higher threshold WHEN formatting with prec
   expect(ExponentialOnThresholdFormat(-999999.1234)).toBe("-999999.123");
 });
 
-// TypeScript does not have separate integer/float types - for integers never use exponential so change test a bit
 test("GIVEN value equal to higher threshold WHEN formatting with precision 3 THEN exponential notation used", () => {
-  //expect(ExponentialOnThresholdFormat(1000000)).toBe("1.000E6");
   expect(ExponentialOnThresholdFormat(1000000.1)).toBe("1.000E6");
 });
 
@@ -114,23 +114,12 @@ test("GIVEN negative value equal to higher threshold WHEN formatting with precis
 });
 
 test("GIVEN value above higher threshold WHEN formatting with precision 5 THEN exponential notation used", () => {
-  //expect(ExponentialOnThresholdFormat(123456789, 5)).toBe("1.23457E8");
   expect(ExponentialOnThresholdFormat(123456789.1, 5)).toBe("1.23457E8");
 });
 
 test("GIVEN negative value above higher threshold WHEN formatting with precision 5 THEN exponential notation used", () => {
-  //expect(ExponentialOnThresholdFormat(-123456789, 5)).toBe("-1.23457E8");
   expect(ExponentialOnThresholdFormat(-123456789.1, 5)).toBe("-1.23457E8");
 });
-
-// TypeScript does not have separate integer/float types - so ignore next two tests.
-//it("GIVEN value 0 WHEN formatting THEN no exponential notation used", () => {
-//  expect(ExponentialOnThresholdFormat(0)).toBe("0.000");
-//});
-//
-//it("GIVEN negative value 0 WHEN formatting THEN no exponential notation used", () => {
-//  expect(ExponentialOnThresholdFormat(-0)).toBe("0.000");
-//});
 
 test("GIVEN integer below higher threshold WHEN formatting THEN no exponential notation used", () => {
   expect(ExponentialOnThresholdFormat(13)).toBe("13");
@@ -166,4 +155,62 @@ test("GIVEN integer equal to 0 WHEN formatting THEN no exponential notation used
 
 test("GIVEN negative integer equal to 0 WHEN formatting THEN no exponential notation used", () => {
   expect(ExponentialOnThresholdFormat(-0)).toBe("0");
+});
+
+test("GIVEN value not a number when WHEN formatting THEN value is returned untouched", () => {
+  expect(ExponentialOnThresholdFormat("test")).toBe("test");
+});
+
+test("getPrefix returns an instrument prefix if instName is in instlist", () => {
+  const myInstName = "BLAH";
+  const myInstPrefix = `IN:${myInstName}:`;
+  const instList: Array<instListEntry> = [
+    {
+      name: myInstName,
+      pvPrefix: myInstPrefix,
+      isScheduled: true,
+      seci: false,
+      groups: [],
+      hostName: myInstName,
+    },
+  ];
+  expect(getPrefix(instList, myInstName)).toEqual(myInstPrefix);
+});
+
+test("getPrefix returns TE if instrument prefix not in instlist", () => {
+  const myInstName = "NDW9999";
+  const myInstPrefix = `TE:${myInstName}:`;
+  const instList: Array<instListEntry> = [];
+
+  expect(getPrefix(instList, myInstName)).toEqual(myInstPrefix);
+});
+
+test("getPvValue returns the text value when text is provided", () => {
+  const updatedPV = { type: "update", pv: "test", text: "Hello World" };
+  const result = getPvValue(updatedPV);
+  expect(result).toBe("Hello World");
+});
+
+test("getPvValue decodes and return the base64 value when b64byt is provided", () => {
+  const updatedPV = { type: "update", pv: "test", b64byt: "SGVsbG8gV29ybGQ=" }; // Base64 for 'Hello World'
+  const result = getPvValue(updatedPV);
+  expect(result).toBe("Hello World");
+});
+
+test("getPvValue returns the numeric value when value is provided", () => {
+  const updatedPV = { type: "update", pv: "test", value: 123 };
+  const result = getPvValue(updatedPV);
+  expect(result).toBe(123);
+});
+
+test("getPvValue returns undefined if no valid field is provided", () => {
+  const updatedPV: IfcPVWSMessage = { type: "update", pv: "test" };
+  const result = getPvValue(updatedPV);
+  expect(result).toBeUndefined();
+});
+
+test("getPvValue handles an empty string for text", () => {
+  const updatedPV = { type: "update", pv: "test", text: "" };
+  const result = getPvValue(updatedPV);
+  expect(result).toBe("");
 });
