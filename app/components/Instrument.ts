@@ -85,11 +85,6 @@ export class Instrument {
         pvaddress: `${this.prefix}DAE:RUNNUMBER`,
         human_readable_name: "Run number",
       },
-      { pvaddress: `${this.prefix}DAE:TITLE`, human_readable_name: "Title" },
-      {
-        pvaddress: `${this.prefix}DAE:_USERNAME`,
-        human_readable_name: "Users",
-      },
       {
         pvaddress: `${this.prefix}DAE:GOODFRAMES`,
         human_readable_name: "Good frames",
