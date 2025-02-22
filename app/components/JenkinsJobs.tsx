@@ -41,7 +41,6 @@ export default function JenkinsJobs() {
       const jobs: Array<IfcWallDisplayJob> = resData["jobs"].filter(
         (job) => job["color"] != "disabled",
       );
-      console.log(jobs);
       setData(jobs);
     }
     fetchPosts();

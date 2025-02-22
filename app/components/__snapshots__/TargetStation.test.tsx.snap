@@ -9,6 +9,8 @@ exports[`renders targetstation unchanged 1`] = `
       class="w-full text-left text-gray-600 dark:text-gray-200 font-semibold text-md mt-2 py-2 "
     >
       TS5
+       
+      - 1234.57 μA
     </h1>
     <div
       class="flex flex-wrap gap-1"

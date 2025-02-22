@@ -4,6 +4,7 @@ import {
   IfcInstrumentStatus,
   IfcPVWSMessage,
   IfcPVWSRequest,
+  PVWSRequestType,
   targetStation,
 } from "@/app/types";
 import useWebSocket from "react-use-websocket";
@@ -12,6 +13,7 @@ import { instListFromBytes } from "@/app/components/dehex_and_decompress";
 import {
   updateInstrumentRunstate,
   updateInstrumentRunstatePV,
+  updateTargetStationBeamCurrent,
 } from "@/app/wall/utils";
 import TargetStation from "@/app/components/TargetStation";
 import ScienceGroup from "@/app/components/ScienceGroup";
@@ -52,6 +54,7 @@ export default function InstrumentsDisplay({
   const [data, setData] = useState<Array<targetStation>>([
     {
       targetStation: "Target Station 1",
+      beamCurrentPv: "AC:TS1:BEAM:CURR",
       instruments: [
         { name: "ALF" },
         { name: "ARGUS" },
@@ -86,6 +89,7 @@ export default function InstrumentsDisplay({
     },
     {
       targetStation: "Target Station 2",
+      beamCurrentPv: "AC:TS2:BEAM:CURR",
       instruments: [
         { name: "CHIPIR" },
         { name: "IMAT" },
@@ -146,10 +150,18 @@ export default function InstrumentsDisplay({
     shouldReconnect: (closeEvent) => true,
   });
 
+  const targetStationCurrentPvs = data
+    .map((ts) => ts.beamCurrentPv)
+    .filter((pv) => pv !== undefined);
+
   useEffect(() => {
     // On page load, subscribe to the instrument list as it's required to get each instrument's PV prefix.
     sendJsonMessage(instListSubscription);
-  }, [sendJsonMessage]);
+    sendJsonMessage({
+      type: PVWSRequestType.subscribe,
+      pvs: targetStationCurrentPvs,
+    });
+  }, [sendJsonMessage, targetStationCurrentPvs]);
 
   useEffect(() => {
     // This is a PV update, it could be either the instlist or an instrument's runstate that has changed
@@ -161,6 +173,7 @@ export default function InstrumentsDisplay({
     const updatedPVName: string = updatedPV.pv;
     const updatedPVbytes: string | null | undefined = updatedPV.b64byt;
     let updatedPVvalue: string | null | undefined = updatedPV.text;
+    let updatedPVnum: number | null | undefined = updatedPV.value;
 
     if (updatedPVName == instListPV && updatedPVbytes != null) {
       const instListDict = instListFromBytes(updatedPVbytes);
@@ -174,12 +187,20 @@ export default function InstrumentsDisplay({
           );
         });
       }
+    } else if (targetStationCurrentPvs.includes(updatedPVName)) {
+      setData((prev) => {
+        return updateTargetStationBeamCurrent(
+          prev,
+          updatedPVName,
+          updatedPVnum,
+        );
+      });
     } else if (updatedPVvalue) {
       setData((prev) => {
         return updateInstrumentRunstate(prev, updatedPVName, updatedPVvalue);
       });
     }
-  }, [lastJsonMessage, sendJsonMessage]);
+  }, [lastJsonMessage, sendJsonMessage, targetStationCurrentPvs]);
 
   return (
     <div>
@@ -198,6 +219,7 @@ export default function InstrumentsDisplay({
               key={targetStation.targetStation}
               name={targetStation.targetStation}
               instruments={targetStation.instruments}
+              beamCurrent={targetStation.beamCurrent}
             />
           );
         })}
