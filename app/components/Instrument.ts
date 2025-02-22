@@ -1,4 +1,18 @@
-import { DashboardArr, IfcGroup, IfcPV } from "@/app/types";
+import {
+  ConfigOutput,
+  ConfigOutputBlock,
+  DashboardArr,
+  IfcBlock,
+  IfcGroup,
+  IfcPV,
+  IfcPVWSMessage,
+  IfcPVWSRequest,
+  PVWSRequestType,
+} from "@/app/types";
+import {
+  ExponentialOnThresholdFormat,
+  findPVByAddress,
+} from "@/app/components/PVutils";
 
 const DASHBOARD = "CS:DASHBOARD:TAB:";
 
@@ -72,25 +86,20 @@ export class Instrument {
         human_readable_name: "Run number",
       },
       {
-        pvaddress: `${this.prefix}DAE:STARTTIME`,
-        human_readable_name: "Start number",
-      },
-      { pvaddress: `${this.prefix}DAE:TITLE`, human_readable_name: "Title" },
-      {
-        pvaddress: `${this.prefix}DAE:_USERNAME`,
-        human_readable_name: "Users",
-      },
-      {
         pvaddress: `${this.prefix}DAE:GOODFRAMES`,
         human_readable_name: "Good frames",
       },
       {
         pvaddress: `${this.prefix}DAE:RAWFRAMES`,
-        human_readable_name: "Raw frames (Total)",
+        human_readable_name: "Raw frames",
       },
       {
-        pvaddress: `${this.prefix}DAE:RAWFRAMES_PD`,
-        human_readable_name: "Raw frames (Period)",
+        pvaddress: `${this.prefix}DAE:COUNTRATE`,
+        human_readable_name: "Count Rate",
+      },
+      {
+        pvaddress: `${this.prefix}DAE:_RBNUMBER`,
+        human_readable_name: "RB Number",
       },
       {
         pvaddress: `${this.prefix}DAE:BEAMCURRENT`,
@@ -117,7 +126,7 @@ export class Instrument {
         human_readable_name: "Monitor To",
       },
       {
-        pvaddress: `${this.prefix}DAE:SHUTTER`,
+        pvaddress: `${this.prefix}CS:SHUTTER`,
         human_readable_name: "Shutter Status",
       },
       {
@@ -133,7 +142,7 @@ export class Instrument {
         human_readable_name: "DAE Simulation Mode",
       },
       {
-        pvaddress: `${this.prefix}DAE:TIME_OF_DAY`,
+        pvaddress: `${this.prefix}TIME_OF_DAY`,
         human_readable_name: "Instrument Time",
       },
       {
@@ -141,33 +150,29 @@ export class Instrument {
         human_readable_name: "Start time",
       },
       {
-        pvaddress: `${this.prefix}DAE:RUNDURATION_PD`,
-        human_readable_name: "Run time",
+        pvaddress: `${this.prefix}DAE:RUNDURATION`,
+        human_readable_name: "Run time(s)",
       },
       { pvaddress: `${this.prefix}DAE:PERIOD`, human_readable_name: "Period" },
+      {
+        pvaddress: `${this.prefix}DAE:RAWFRAMES_PD`,
+        human_readable_name: "Period Raw frames",
+      },
       {
         pvaddress: `${this.prefix}DAE:NUMPERIODS`,
         human_readable_name: "Num periods",
       },
       {
-        pvaddress: `${this.prefix}DAE:COUNTRATE`,
-        human_readable_name: "Count Rate",
-      },
-      {
-        pvaddress: `${this.prefix}DAE:_RBNUMBER`,
-        human_readable_name: "RB Number",
-      },
-      {
-        pvaddress: `${this.prefix}DAE:RUNDURATION`,
-        human_readable_name: "Total Run Time",
-      },
-      {
         pvaddress: `${this.prefix}DAE:RUNDURATION_PD`,
-        human_readable_name: "Period Run Time",
+        human_readable_name: "Period Run Time(s)",
       },
       {
         pvaddress: `${this.prefix}DAE:PERIODSEQ`,
         human_readable_name: "Period Sequence",
+      },
+      {
+        pvaddress: `${this.prefix}DAE:GOODFRAMES_PD`,
+        human_readable_name: "Period Good Frames",
       },
       {
         pvaddress: `${this.prefix}DAE:DAEMEMORYUSED`,
@@ -177,6 +182,10 @@ export class Instrument {
         pvaddress: `${this.prefix}DAE:DAETIMINGSOURCE`,
         human_readable_name: "Timing Source",
       },
+      {
+        pvaddress: `${this.prefix}DAE:EVENTS`,
+        human_readable_name: "Total Counts",
+      },
     ];
   }
 }
@@ -185,5 +194,100 @@ export function findPVInDashboard(
   dashboard: DashboardArr,
   pvAddress: string,
 ): undefined | IfcPV {
-  return dashboard.flat(3).find((pv: IfcPV) => pv.pvaddress == pvAddress);
+  return findPVByAddress(dashboard.flat(3), pvAddress);
+}
+
+export const RC_ENABLE = ":RC:ENABLE";
+export const RC_INRANGE = ":RC:INRANGE";
+export const SP_RBV = ":SP:RBV";
+export const CSSB = "CS:SB:";
+
+export function toPrecision(
+  block: IfcPV,
+  pvVal: number | string,
+): string | number {
+  return block.precision
+    ? ExponentialOnThresholdFormat(pvVal, block.precision)
+    : pvVal;
+}
+
+export function storePrecision(updatedPV: IfcPVWSMessage, block: IfcBlock) {
+  const prec = updatedPV.precision;
+  if (prec != null && prec > 0 && !block.precision) {
+    // this is likely the first update, and contains precision information which is not repeated on a normal value update - store this in the block for later truncation (see below)
+    block.precision = prec;
+  }
+}
+
+export function yesToBoolean(pvVal: string | number) {
+  return pvVal == "YES";
+}
+
+export function subscribeToBlockPVs(
+  sendJsonMessage: (a: IfcPVWSRequest) => void,
+  block_address: string,
+) {
+  /**
+   * Subscribes to a block and its associated run control PVs
+   */
+  sendJsonMessage({
+    type: PVWSRequestType.subscribe,
+    pvs: [
+      block_address,
+      block_address + RC_ENABLE,
+      block_address + RC_INRANGE,
+      block_address + SP_RBV,
+    ],
+  });
+}
+
+/**
+ * Parse the blockserver's current configuration output
+ * and create an array of groups which contain blocks.
+ */
+export function getGroupsWithBlocksFromConfigOutput(
+  configOutput: ConfigOutput,
+  sendJsonMessage: (a: IfcPVWSRequest) => void,
+  prefix: string,
+): Array<IfcGroup> {
+  const groups = configOutput.groups;
+  let newGroups: Array<IfcGroup> = [];
+  for (const group of groups) {
+    const groupName = group.name;
+    let blocks: Array<IfcBlock> = [];
+    for (const block of group.blocks) {
+      const newBlock = configOutput.blocks.find(
+        (b: ConfigOutputBlock) => b.name === block,
+      );
+      if (newBlock) {
+        blocks.push({
+          pvaddress: newBlock.pv,
+          human_readable_name: newBlock.name,
+          low_rc: newBlock.lowlimit,
+          high_rc: newBlock.highlimit,
+          visible: newBlock.visible,
+        });
+        const fullyQualifiedBlockPVAddress = prefix + CSSB + newBlock.name;
+        subscribeToBlockPVs(sendJsonMessage, fullyQualifiedBlockPVAddress);
+      }
+    }
+    newGroups.push({
+      name: groupName,
+      blocks: blocks,
+    });
+  }
+  return newGroups;
+}
+
+export function findPVInGroups(
+  groups: Array<IfcGroup>,
+  prefix: string,
+  updatedPVName: string,
+): undefined | IfcBlock {
+  return groups
+    .flatMap((group: IfcGroup) => group.blocks)
+    .find(
+      (block: IfcBlock) =>
+        updatedPVName == prefix + CSSB + block.human_readable_name,
+    );
 }
