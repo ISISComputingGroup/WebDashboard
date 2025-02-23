@@ -39,7 +39,7 @@ export function updateTargetStationBeamCurrent(
 ) {
   const newData: Array<targetStation> = [...prev];
 
-  let foundTs = newData.find((ts) => ts.beamCurrentPv === updatedPVName);
+  const foundTs = newData.find((ts) => ts.beamCurrentPv === updatedPVName);
   if (foundTs) {
     foundTs.beamCurrent = updatedPVvalue;
   }

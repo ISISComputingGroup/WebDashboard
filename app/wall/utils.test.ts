@@ -29,6 +29,7 @@ test("updateTargetStationBeamCurrent returns new array with beam current of targ
     targetStation: "Target station 123",
     beamCurrentPv: beamCurrPv,
     beamCurrent: 0.0,
+    instruments: [],
   };
   const expectedValue = 3.14159265358979;
   expect(
