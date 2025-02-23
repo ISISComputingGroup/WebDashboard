@@ -149,6 +149,8 @@ export interface ConfigOutputIocMacro {
 
 export interface targetStation {
   targetStation: string;
+  beamCurrentPv?: string;
+  beamCurrent?: number | null;
   instruments: Array<IfcInstrumentStatus>;
 }
 

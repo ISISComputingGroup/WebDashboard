@@ -27,6 +27,26 @@ export function updateInstrumentRunstate(
 }
 
 /**
+ * Copy the original array, update the given target stations' beam current value, then return the copied array.
+ * @param prev the previous array of target stations, containing instruments.
+ * @param updatedPVName the runstate PV address
+ * @param updatedPVvalue the runstate
+ */
+export function updateTargetStationBeamCurrent(
+  prev: Array<targetStation>,
+  updatedPVName: string,
+  updatedPVvalue: number | null | undefined,
+) {
+  const newData: Array<targetStation> = [...prev];
+
+  const foundTs = newData.find((ts) => ts.beamCurrentPv === updatedPVName);
+  if (foundTs) {
+    foundTs.beamCurrent = updatedPVvalue;
+  }
+  return newData;
+}
+
+/**
  * Copy an original array then update an instrument's runstate PV, then subscribe to it. return the copied array.
  * @param prev the original array of target stations containing instrument runstate information
  * @param instListEntry the instrument to change

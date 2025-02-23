@@ -1,6 +1,7 @@
 import {
   updateInstrumentRunstate,
   updateInstrumentRunstatePV,
+  updateTargetStationBeamCurrent,
 } from "@/app/wall/utils";
 import { IfcInstrumentStatus, instListEntry, targetStation } from "@/app/types";
 
@@ -21,6 +22,22 @@ test("updateInstrumentRunstate returns new array with runstate of instrument cha
       .instruments[0].runstate,
   ).toBe(expectedValue);
 });
+
+test("updateTargetStationBeamCurrent returns new array with beam current of target station changed", () => {
+  const beamCurrPv = "AC:TS123:BEAM:CURR";
+  const original: targetStation = {
+    targetStation: "Target station 123",
+    beamCurrentPv: beamCurrPv,
+    beamCurrent: 0.0,
+    instruments: [],
+  };
+  const expectedValue = 3.14159265358979;
+  expect(
+    updateTargetStationBeamCurrent([original], beamCurrPv, expectedValue)[0]
+      .beamCurrent,
+  ).toBe(expectedValue);
+});
+
 test("updateInstrumentRunstate returns untouched array if runstate PV is not found", () => {
   const runStatePV = "AN:INST:DAE:RUNSTATE";
   const instrument: IfcInstrumentStatus = {

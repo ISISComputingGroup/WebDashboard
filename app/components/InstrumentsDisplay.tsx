@@ -4,6 +4,7 @@ import {
   IfcInstrumentStatus,
   IfcPVWSMessage,
   IfcPVWSRequest,
+  PVWSRequestType,
   targetStation,
 } from "@/app/types";
 import useWebSocket from "react-use-websocket";
@@ -12,6 +13,7 @@ import { instListFromBytes } from "@/app/components/dehex_and_decompress";
 import {
   updateInstrumentRunstate,
   updateInstrumentRunstatePV,
+  updateTargetStationBeamCurrent,
 } from "@/app/wall/utils";
 import TargetStation from "@/app/components/TargetStation";
 import ScienceGroup from "@/app/components/ScienceGroup";
@@ -49,9 +51,13 @@ export default function InstrumentsDisplay({
 }) {
   const runstatePV = "DAE:RUNSTATE_STR";
 
+  const ts1BeamCurrentPv = "AC:TS1:BEAM:CURR";
+  const ts2BeamCurrentPv = "AC:TS2:BEAM:CURR";
+
   const [data, setData] = useState<Array<targetStation>>([
     {
       targetStation: "Target Station 1",
+      beamCurrentPv: ts1BeamCurrentPv,
       instruments: [
         { name: "ALF" },
         { name: "ARGUS" },
@@ -86,6 +92,7 @@ export default function InstrumentsDisplay({
     },
     {
       targetStation: "Target Station 2",
+      beamCurrentPv: ts2BeamCurrentPv,
       instruments: [
         { name: "CHIPIR" },
         { name: "IMAT" },
@@ -149,6 +156,10 @@ export default function InstrumentsDisplay({
   useEffect(() => {
     // On page load, subscribe to the instrument list as it's required to get each instrument's PV prefix.
     sendJsonMessage(instListSubscription);
+    sendJsonMessage({
+      type: PVWSRequestType.subscribe,
+      pvs: [ts1BeamCurrentPv, ts2BeamCurrentPv],
+    });
   }, [sendJsonMessage]);
 
   useEffect(() => {
@@ -161,6 +172,7 @@ export default function InstrumentsDisplay({
     const updatedPVName: string = updatedPV.pv;
     const updatedPVbytes: string | null | undefined = updatedPV.b64byt;
     let updatedPVvalue: string | null | undefined = updatedPV.text;
+    let updatedPVnum: number | null | undefined = updatedPV.value;
 
     if (updatedPVName == instListPV && updatedPVbytes != null) {
       const instListDict = instListFromBytes(updatedPVbytes);
@@ -174,6 +186,17 @@ export default function InstrumentsDisplay({
           );
         });
       }
+    } else if (
+      updatedPVName == ts1BeamCurrentPv ||
+      updatedPVName == ts2BeamCurrentPv
+    ) {
+      setData((prev) => {
+        return updateTargetStationBeamCurrent(
+          prev,
+          updatedPVName,
+          updatedPVnum,
+        );
+      });
     } else if (updatedPVvalue) {
       setData((prev) => {
         return updateInstrumentRunstate(prev, updatedPVName, updatedPVvalue);
@@ -198,6 +221,7 @@ export default function InstrumentsDisplay({
               key={targetStation.targetStation}
               name={targetStation.targetStation}
               instruments={targetStation.instruments}
+              beamCurrent={targetStation.beamCurrent}
             />
           );
         })}

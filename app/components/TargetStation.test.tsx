@@ -5,6 +5,7 @@ it("renders targetstation unchanged", () => {
   const { container } = render(
     <TargetStation
       name={"TS5"}
+      beamCurrent={1234.5678}
       instruments={[
         { name: "Instrument", runstate: "RESUMING" },
         {
