@@ -1,5 +1,6 @@
 import {
   IfcPVWSRequest,
+  instList,
   instListEntry,
   PVWSRequestType,
   targetStation,
@@ -12,18 +13,15 @@ import {
  * @param updatedPVvalue the runstate
  */
 export function updateInstrumentRunstate(
-  prev: Array<targetStation>,
+  prev: instList,
   updatedPVName: string,
   updatedPVvalue: string,
 ) {
-  const newData: Array<targetStation> = [...prev];
-  newData.forEach((targetStation) => {
-    const foundInstrument = targetStation.instruments.find(
-      (instrument) => instrument.runstatePV === updatedPVName,
-    );
-    if (foundInstrument) foundInstrument.runstate = updatedPVvalue;
-  });
-  return newData;
+  const foundInstrument = prev.find(
+    (instrument) => instrument.runStatePV === updatedPVName,
+  );
+  if (foundInstrument) foundInstrument.runStateValue = updatedPVvalue;
+  return prev;
 }
 
 /**

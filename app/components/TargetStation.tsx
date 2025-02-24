@@ -1,6 +1,9 @@
 import InstrumentWallCard from "./InstrumentWallCard";
 
-import { IfcInstrumentStatus } from "@/app/types";
+import {
+  IfcInstrumentStatus,
+  instListEntryWithRunstatePVandValue,
+} from "@/app/types";
 
 export default function TargetStation({
   name,
@@ -8,7 +11,7 @@ export default function TargetStation({
   beamCurrent,
 }: {
   name: string;
-  instruments: Array<IfcInstrumentStatus>;
+  instruments: Array<instListEntryWithRunstatePVandValue>;
   beamCurrent: number | null | undefined;
 }) {
   return (

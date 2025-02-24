@@ -1,4 +1,4 @@
-import { IfcInstrumentStatus } from "@/app/types";
+import { instList, instListEntryWithRunstatePVandValue } from "@/app/types";
 import InstrumentWallCard from "@/app/components/InstrumentWallCard";
 
 export default function ScienceGroup({
@@ -6,7 +6,7 @@ export default function ScienceGroup({
   instruments,
 }: {
   name: string;
-  instruments: Array<IfcInstrumentStatus>;
+  instruments: instList;
 }) {
   return (
     <div
@@ -19,7 +19,7 @@ export default function ScienceGroup({
       <div className={"flex flex-wrap gap-1"}>
         {instruments
           .sort((a, b) => a.name.localeCompare(b.name))
-          .map((instrument: IfcInstrumentStatus) => {
+          .map((instrument: instListEntryWithRunstatePVandValue) => {
             return (
               <InstrumentWallCard
                 key={instrument.name}
