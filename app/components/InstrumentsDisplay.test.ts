@@ -1,5 +1,5 @@
 import { createInstrumentGroups } from "@/app/components/InstrumentsDisplay";
-import { targetStation } from "@/app/types";
+import { instList } from "@/app/types";
 
 test("createInstrumentGroups adds two instruments from different target stations to the same science group", () => {
   const instrument1Name = "INST1";
@@ -7,16 +7,27 @@ test("createInstrumentGroups adds two instruments from different target stations
   const commonScienceGroup = "MOLSPEC";
   const instrument1 = {
     name: instrument1Name,
-    scienceGroups: [commonScienceGroup],
+    groups: [commonScienceGroup],
+    targetStation: "TS0",
+    hostName: "",
+    pvPrefix: "",
+    isScheduled: true,
+    seci: false,
+    runStatePV: "",
+    runStateValue: "",
   };
   const instrument2 = {
     name: instrument2Name,
-    scienceGroups: [commonScienceGroup],
+    groups: [commonScienceGroup],
+    targetStation: "TS0",
+    hostName: "",
+    pvPrefix: "",
+    isScheduled: true,
+    seci: false,
+    runStatePV: "",
+    runStateValue: "",
   };
-  const targetStations: Array<targetStation> = [
-    { targetStation: "TS0", instruments: [instrument1] },
-    { targetStation: "TS3", instruments: [instrument2] },
-  ];
+  const targetStations: instList = [instrument1, instrument2];
   const result = createInstrumentGroups(targetStations);
 
   expect(result.get(commonScienceGroup)!.sort()).toStrictEqual(
@@ -29,13 +40,27 @@ test("createInstrumentGroups ignores instrument without any groups", () => {
   const commonScienceGroup = "MOLSPEC";
   const instrument1 = {
     name: instrument1Name,
-    scienceGroups: [commonScienceGroup],
+    groups: [commonScienceGroup],
+    targetStation: "TS0",
+    hostName: "",
+    pvPrefix: "",
+    isScheduled: true,
+    seci: false,
+    runStatePV: "",
+    runStateValue: "",
   };
-  const instrument2 = { name: "someinstrumentwithnogroups", scienceGroups: [] };
-  const targetStations: Array<targetStation> = [
-    { targetStation: "TS0", instruments: [instrument1] },
-    { targetStation: "TS3", instruments: [instrument2] },
-  ];
+  const instrument2 = {
+    name: "someinstrumentwithnogroups",
+    targetStation: "TS0",
+    hostName: "",
+    pvPrefix: "",
+    isScheduled: true,
+    seci: false,
+    runStatePV: "",
+    runStateValue: "",
+    groups: [],
+  };
+  const targetStations: instList = [instrument1, instrument2];
   const result = createInstrumentGroups(targetStations);
 
   expect(result.get(commonScienceGroup)!.sort()).toStrictEqual(
@@ -48,16 +73,27 @@ test("createInstrumentGroups ignores instrument which is a support machine", () 
   const commonScienceGroup = "MOLSPEC";
   const instrument1 = {
     name: instrument1Name,
-    scienceGroups: [commonScienceGroup],
+    groups: [commonScienceGroup],
+    targetStation: "TS0",
+    hostName: "",
+    pvPrefix: "",
+    isScheduled: true,
+    seci: false,
+    runStatePV: "",
+    runStateValue: "",
   };
   const instrument2 = {
     name: "someinstrumentwithnogroups",
-    scienceGroups: ["SUPPORT"],
+    groups: ["SUPPORT"],
+    targetStation: "TS3",
+    hostName: "",
+    pvPrefix: "",
+    isScheduled: true,
+    seci: false,
+    runStatePV: "",
+    runStateValue: "",
   };
-  const targetStations: Array<targetStation> = [
-    { targetStation: "TS0", instruments: [instrument1] },
-    { targetStation: "TS3", instruments: [instrument2] },
-  ];
+  const targetStations: instList = [instrument1, instrument2];
   const result = createInstrumentGroups(targetStations);
 
   expect(result.get(commonScienceGroup)!.sort()).toStrictEqual(

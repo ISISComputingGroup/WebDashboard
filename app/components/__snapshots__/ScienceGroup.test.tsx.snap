@@ -18,7 +18,7 @@ exports[`renders sciencegroup unchanged 1`] = `
       >
         <a
           class="flex items-center justify-center text-center p-3 w-36 max-h-12 rounded-lg shadow-sm border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
-      bg-[#90EE90] text-black"
+      bg-[#F08080] text-black"
           href="/instrument?name=Instrument"
           target="_blank"
         >
@@ -33,7 +33,7 @@ exports[`renders sciencegroup unchanged 1`] = `
             <span
               class="text-xs "
             >
-              RUNNING
+              UNKNOWN
             </span>
           </div>
         </a>
@@ -43,7 +43,7 @@ exports[`renders sciencegroup unchanged 1`] = `
       >
         <a
           class="flex items-center justify-center text-center p-3 w-36 max-h-12 rounded-lg shadow-sm border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
-      bg-[#DAA520] text-black"
+      bg-[#F08080] text-black"
           href="/instrument?name=Instrument2"
           target="_blank"
         >
@@ -58,7 +58,7 @@ exports[`renders sciencegroup unchanged 1`] = `
             <span
               class="text-xs "
             >
-              WAITING
+              UNKNOWN
             </span>
           </div>
         </a>

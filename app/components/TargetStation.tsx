@@ -1,9 +1,6 @@
 import InstrumentWallCard from "./InstrumentWallCard";
 
-import {
-  IfcInstrumentStatus,
-  instListEntryWithRunstatePVandValue,
-} from "@/app/types";
+import { instListEntryWithRunstatePVandValue } from "@/app/types";
 
 export default function TargetStation({
   name,

@@ -4,17 +4,11 @@ import {
   IfcPVWSMessage,
   IfcPVWSRequest,
   instList,
-  instListEntryWithRunstatePVandValue,
   PVWSRequestType,
 } from "@/app/types";
 import useWebSocket from "react-use-websocket";
 import { instListPV, instListSubscription, socketURL } from "@/app/commonVars";
 import { instListFromBytes } from "@/app/components/dehex_and_decompress";
-import {
-  updateInstrumentRunstate,
-  updateInstrumentRunstatePV,
-  updateTargetStationBeamCurrent,
-} from "@/app/wall/utils";
 import TargetStation from "@/app/components/TargetStation";
 import ScienceGroup from "@/app/components/ScienceGroup";
 
@@ -23,34 +17,10 @@ const instrumentsExcludeList = ["SUPPORT"];
 
 export function createInstrumentGroups(
   instruments: instList,
-): Map<string, Array<instListEntryWithRunstatePVandValue>> {
-  let newInstrumentGroups: Map<
-    string,
-    Array<instListEntryWithRunstatePVandValue>
-  > = new Map();
+): Map<string, instList> {
+  let newInstrumentGroups: Map<string, instList> = new Map();
   for (const inst of instruments) {
     for (const group of inst.groups) {
-      if (!instrumentsExcludeList.includes(group)) {
-        if (!newInstrumentGroups.has(group)) {
-          // This is a new science group so create a new entry
-          newInstrumentGroups.set(group, []);
-        }
-        newInstrumentGroups.get(group)!.push(inst);
-      }
-    }
-  }
-  return newInstrumentGroups;
-}
-
-export function createTargetStations(
-  instruments: instList,
-): Map<string, Array<instListEntryWithRunstatePVandValue>> {
-  let newInstrumentGroups: Map<
-    string,
-    Array<instListEntryWithRunstatePVandValue>
-  > = new Map();
-  for (const inst of instruments) {
-    for (const group of inst.targetStation) {
       if (!instrumentsExcludeList.includes(group)) {
         if (!newInstrumentGroups.has(group)) {
           // This is a new science group so create a new entry
@@ -73,7 +43,7 @@ export default function InstrumentsDisplay({
 
   const ts1BeamCurrentPv = "AC:TS1:BEAM:CURR";
   const ts2BeamCurrentPv = "AC:TS2:BEAM:CURR";
-  const muonTargetCurrentPv = "AC:MUON:BEAM:CURR"; //TODO make this exist
+  const muonTargetCurrentPv = "AC:MUON:BEAM:CURR";
 
   const [instList, setInstList] = useState<instList>([]);
 
@@ -140,7 +110,7 @@ export default function InstrumentsDisplay({
         setMuonCurrent(updatedPVnum);
       }
     }
-  }, [lastJsonMessage, sendJsonMessage]);
+  }, [lastJsonMessage, sendJsonMessage, instList]);
 
   return (
     <div>
@@ -152,17 +122,38 @@ export default function InstrumentsDisplay({
               <ScienceGroup key={name} name={name} instruments={instruments} />
             );
           })}
-      {!sortByGroups &&
-        instList.map((targetStation) => {
-          return (
-            <TargetStation
-              key={targetStation.targetStation}
-              name={targetStation.targetStation}
-              instruments={targetStation.instruments}
-              beamCurrent={targetStation.beamCurrent}
-            />
-          );
-        })}
+      {!sortByGroups && (
+        <>
+          <TargetStation
+            name={"TS1"}
+            instruments={instList.filter(
+              (instrument) => instrument.targetStation == "TS1",
+            )}
+            beamCurrent={ts1Current}
+          />
+          <TargetStation
+            name={"MUON"}
+            instruments={instList.filter(
+              (instrument) => instrument.targetStation == "MUON",
+            )}
+            beamCurrent={muonCurrent}
+          />
+          <TargetStation
+            name={"TS2"}
+            instruments={instList.filter(
+              (instrument) => instrument.targetStation == "TS2",
+            )}
+            beamCurrent={ts2Current}
+          />
+          <TargetStation
+            name={"MISC"}
+            instruments={instList.filter(
+              (instrument) => instrument.targetStation == "MISC",
+            )}
+            beamCurrent={undefined}
+          />
+        </>
+      )}
     </div>
   );
 }

@@ -20,7 +20,7 @@ exports[`renders targetstation unchanged 1`] = `
       >
         <a
           class="flex items-center justify-center text-center p-3 w-36 max-h-12 rounded-lg shadow-sm border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
-      bg-green-900 text-white"
+      bg-[#F08080] text-black"
           href="/instrument?name=Instrument"
           target="_blank"
         >
@@ -35,7 +35,7 @@ exports[`renders targetstation unchanged 1`] = `
             <span
               class="text-xs "
             >
-              RESUMING
+              UNKNOWN
             </span>
           </div>
         </a>
@@ -45,7 +45,7 @@ exports[`renders targetstation unchanged 1`] = `
       >
         <a
           class="flex items-center justify-center text-center p-3 w-36 max-h-12 rounded-lg shadow-sm border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
-      bg-[#FFFF00] text-black"
+      bg-[#F08080] text-black"
           href="/instrument?name=Instrument2"
           target="_blank"
         >
@@ -60,7 +60,7 @@ exports[`renders targetstation unchanged 1`] = `
             <span
               class="text-xs "
             >
-              VETOING
+              UNKNOWN
             </span>
           </div>
         </a>
