@@ -7,10 +7,27 @@ it("renders targetstation unchanged", () => {
       name={"TS5"}
       beamCurrent={1234.5678}
       instruments={[
-        { name: "Instrument", runstate: "RESUMING" },
+        {
+          name: "Instrument",
+          runStateValue: "RESUMING",
+          pvPrefix: "",
+          runStatePV: "",
+          groups: ["EXCITATIONS"],
+          isScheduled: true,
+          seci: false,
+          hostName: "",
+          targetStation: "TS5",
+        },
         {
           name: "Instrument2",
-          runstate: "VETOING",
+          runStateValue: "VETOING",
+          pvPrefix: "",
+          runStatePV: "",
+          groups: ["EXCITATIONS"],
+          isScheduled: true,
+          seci: false,
+          hostName: "",
+          targetStation: "TS5",
         },
       ]}
     />,

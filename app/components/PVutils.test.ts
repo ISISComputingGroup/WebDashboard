@@ -172,6 +172,7 @@ test("getPrefix returns an instrument prefix if instName is in instlist", () => 
       seci: false,
       groups: [],
       hostName: myInstName,
+      targetStation: "TS9",
     },
   ];
   expect(getPrefix(instList, myInstName)).toEqual(myInstPrefix);

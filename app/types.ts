@@ -75,17 +75,6 @@ export interface IfcPVWSRequest {
   pvs: Array<string>;
 }
 
-export interface IfcInstrumentStatus {
-  /**
-   * Instrument status used for the wall display. Contains runstate PV and current runstate.
-   */
-  name: string; // Name of the instrument
-  runstate?: string; // Runstate
-  runstatePV?: string; // Runstate PV address
-  scienceGroups?: Array<string>;
-}
-
-// Column[Row[labelPV, valuePV]]
 export type DashboardArr = Array<Array<Array<IfcPV>>>;
 
 export interface ConfigOutput {
@@ -147,23 +136,26 @@ export interface ConfigOutputIocMacro {
   value: string;
 }
 
-export interface targetStation {
-  targetStation: string;
-  beamCurrentPv?: string;
-  beamCurrent?: number | null;
-  instruments: Array<IfcInstrumentStatus>;
-}
-
 export interface instListEntry {
+  /**
+   * InstList entry ie. a single item in the instlist array created
+   * by https://github.com/ISISComputingGroup/EPICS-inst_servers/blob/master/scripts/set_instrument_list.py
+   */
   name: string;
   hostName: string;
   isScheduled: boolean;
   pvPrefix: string;
   seci: boolean;
   groups: Array<string>;
+  targetStation: string;
 }
 
-export type instList = Array<instListEntry>;
+export interface instListEntryWithRunstatePVandValue extends instListEntry {
+  runStatePV: string;
+  runStateValue: string;
+}
+
+export type instList = Array<instListEntryWithRunstatePVandValue>;
 
 export interface IfcWallDisplayJob {
   _class: string;
