@@ -6,10 +6,10 @@ it("renders sciencegroup unchanged", () => {
     <ScienceGroup
       name={"EXCITATIONS"}
       instruments={[
-        { name: "Instrument", runstate: "RUNNING" },
+        { name: "Instrument", runStateValue: "RUNNING", pvPrefix:"",runStatePV:"",groups:["EXCITATIONS"], isScheduled:true,seci:false,hostName:"",targetStation:"TS5" },
         {
           name: "Instrument2",
-          runstate: "WAITING",
+          runStateValue: "WAITING", pvPrefix:"",runStatePV:"",groups:["EXCITATIONS"], isScheduled:true,seci:false,hostName:"",targetStation:"TS5"
         },
       ]}
     />,
