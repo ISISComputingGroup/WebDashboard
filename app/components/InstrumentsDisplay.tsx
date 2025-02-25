@@ -19,17 +19,15 @@ export function createInstrumentGroups(
   instruments: instList,
 ): Map<string, instList> {
   let newInstrumentGroups: Map<string, instList> = new Map();
-  for (const inst of instruments) {
-    for (const group of inst.groups) {
-      if (!instrumentsExcludeList.includes(group)) {
-        if (!newInstrumentGroups.has(group)) {
-          // This is a new science group so create a new entry
-          newInstrumentGroups.set(group, []);
-        }
-        newInstrumentGroups.get(group)!.push(inst);
+  instruments.forEach((inst) => {
+    inst.groups.filter((group)=>!instrumentsExcludeList.includes(group)).forEach((group) => {
+      if (!newInstrumentGroups.has(group)) {
+        // This is a new science group so create a new entry
+        newInstrumentGroups.set(group, []);
       }
-    }
-  }
+      newInstrumentGroups.get(group)!.push(inst);
+    })
+  })
   return newInstrumentGroups;
 }
 
