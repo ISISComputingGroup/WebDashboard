@@ -6,7 +6,7 @@ exports[`renders instrumentwallcard unchanged 1`] = `
     class="flex"
   >
     <a
-      class="flex items-center justify-center text-center p-3 w-36 max-h-12 rounded-lg shadow-sm border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
+      class="flex items-center justify-center text-center py-1 w-28 max-h-12 rounded-lg shadow-sm border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
       bg-[#90EE90] text-black"
       href="/instrument?name=Instrument"
       target="_blank"
@@ -36,7 +36,7 @@ exports[`renders instrumentwallcard unchanged when runstate is unknown 1`] = `
     class="flex"
   >
     <a
-      class="flex items-center justify-center text-center p-3 w-36 max-h-12 rounded-lg shadow-sm border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
+      class="flex items-center justify-center text-center py-1 w-28 max-h-12 rounded-lg shadow-sm border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
       bg-[#F08080] text-black"
       href="/instrument?name=Instrument1"
       target="_blank"
