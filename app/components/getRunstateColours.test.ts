@@ -15,6 +15,12 @@ test("getForegroundColor when runstate requires black text returns black text", 
   expect(result).toBe("text-black");
 });
 
+test("getForegroundColor when runstate requires black text returns black text", () => {
+  const runstate = "BEGINNING";
+  const result = getForegroundColour(runstate);
+  expect(result).toBe("text-black");
+});
+
 test("getStatusColour when runstate unknown returns expected colour", () => {
   const result = getStatusColour("UNKNOWN");
   expect(result).toBe("bg-[#F08080]");
