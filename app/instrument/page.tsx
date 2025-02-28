@@ -17,7 +17,7 @@ export default function Instrument() {
       className={`flex min-h-screen bg-white flex-col items-center justify-start  ${inter.className}`}
     >
       <Suspense>
-        <GetInstrumentData />;
+        <GetInstrumentData />
       </Suspense>
     </main>
   );
