@@ -182,7 +182,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
         }
       }
     }
-  }, [lastJsonMessage, currentInstrument, sendJsonMessage]);
+  }, [lastJsonMessage, currentInstrument, sendJsonMessage, lastUpdate]);
 
   if (!instName || !currentInstrument) {
     return <h1>Loading...</h1>;
