@@ -40,7 +40,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
   const [currentInstrument, setCurrentInstrument] = useState<Instrument | null>(
     null,
   );
-  const [lastUpdate, setLastUpdate] = useState<str>("");
+  const [lastUpdate, setLastUpdate] = useState<string>("");
 
   const instName = instrumentName;
 
