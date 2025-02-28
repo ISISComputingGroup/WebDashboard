@@ -33,8 +33,6 @@ import TopBar from "@/app/components/TopBar";
 import CheckToggle from "@/app/components/CheckToggle";
 import Groups from "@/app/components/Groups";
 
-let lastUpdate: string = "";
-
 export function InstrumentData({ instrumentName }: { instrumentName: string }) {
   const [showHiddenBlocks, setShowHiddenBlocks] = useState(false);
   const CONFIG_DETAILS = "CS:BLOCKSERVER:WD_CONF_DETAILS";
@@ -42,6 +40,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
   const [currentInstrument, setCurrentInstrument] = useState<Instrument | null>(
     null,
   );
+  const [lastUpdate, setLastUpdate] = useState<str>("");
 
   const instName = instrumentName;
 
@@ -119,7 +118,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
         // config hasnt actually changed so do nothing
         return;
       }
-      lastUpdate = updatedPVbytes;
+      setLastUpdate(updatedPVbytes);
       const res = dehex_and_decompress(atob(updatedPVbytes));
       currentInstrument.groups = getGroupsWithBlocksFromConfigOutput(
         JSON.parse(res),
