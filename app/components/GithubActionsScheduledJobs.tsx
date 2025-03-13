@@ -43,6 +43,18 @@ export default function GithubActionsScheduledJobs() {
         repo={"EPICS-inst_servers"}
         workflowName={"lint-and-test-nightly.yml"}
       />
+      <GithubActionsJob
+        repo={"lewis"}
+        workflowName={"lint-and-test-nightly.yml"}
+      />
+      <GithubActionsJob
+        repo={"genie"}
+        workflowName={"lint-and-test-nightly.yml"}
+      />
+      <GithubActionsJob
+        repo={"ExperimentDatabasePopulator"}
+        workflowName={"lint-and-test-nightly.yml"}
+      />
     </div>
   );
 }
