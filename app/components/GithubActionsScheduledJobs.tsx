@@ -15,7 +15,7 @@ function GithubActionsJob({
           "flex-row flex items-center content-center h-10 w-full text-center rounded-lg bg-gray-800 border-2 border-black hover:border-white"
         }
       >
-        <h2 className={"text-center text-lg w-1/2"}>{repo}: </h2>
+        <h2 className={"text-center text-lg w-1/2"}>{repo} </h2>
         <Image
           src={`https://github.com/ISISComputingGroup/${repo}/actions/workflows/${workflowName}/badge.svg`}
           alt={"ibex_bluesky_core lint-and-test-nightly badge"}
@@ -57,6 +57,14 @@ export default function GithubActionsScheduledJobs() {
       />
       <GithubActionsJob
         repo={"ibex_utils"}
+        workflowName={"lint-and-test-nightly.yml"}
+      />
+      <GithubActionsJob
+        repo={"IBEX-device-generator"}
+        workflowName={"lint-and-test-nightly.yml"}
+      />
+      <GithubActionsJob
+        repo={"WebDashboard"}
         workflowName={"lint-and-test-nightly.yml"}
       />
     </div>
