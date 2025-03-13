@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 function GithubActionsJob({
   repo,
   workflowName,
@@ -14,10 +16,12 @@ function GithubActionsJob({
         }
       >
         <h2 className={"text-center text-lg w-1/2"}>{repo}: </h2>
-        <img
+        <Image
           src={`https://github.com/ISISComputingGroup/${repo}/actions/workflows/${workflowName}/badge.svg`}
           alt={"ibex_bluesky_core lint-and-test-nightly badge"}
           className={"w-1/2 pr-2"}
+          width={500}
+          height={500}
         />
       </a>
     </div>
