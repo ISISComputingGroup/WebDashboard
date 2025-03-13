@@ -1,5 +1,6 @@
 import JenkinsJobs from "../components/JenkinsJobs";
 import InstrumentsDisplay from "@/app/components/InstrumentsDisplay";
+import GithubActionsScheduledJobs from "@/app/components/GithubActionsScheduledJobs";
 
 export default function WallDisplay() {
   return (
@@ -16,10 +17,14 @@ export default function WallDisplay() {
               <InstrumentsDisplay />
             </div>
           </div>
-          <h1 className="w-full text-left text-black dark:text-white font-semibold text-2xl p-2 ">
+          <h1 className="w-full text-left text-black dark:text-white font-semibold text-2xl p-2">
             Jenkins jobs:
           </h1>
           <JenkinsJobs />
+          <h1 className="w-full text-left text-black dark:text-white font-semibold text-2xl p-2">
+            Github actions scheduled workflows:
+          </h1>
+          <GithubActionsScheduledJobs />
         </div>
       </section>
     </main>
