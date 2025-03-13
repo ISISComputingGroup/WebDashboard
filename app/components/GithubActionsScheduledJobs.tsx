@@ -55,6 +55,10 @@ export default function GithubActionsScheduledJobs() {
         repo={"ExperimentDatabasePopulator"}
         workflowName={"lint-and-test-nightly.yml"}
       />
+      <GithubActionsJob
+        repo={"ibex_utils"}
+        workflowName={"lint-and-test-nightly.yml"}
+      />
     </div>
   );
 }
