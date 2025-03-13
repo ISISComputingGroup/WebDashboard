@@ -65,7 +65,7 @@ export default function JenkinsJobs() {
   return (
     <div
       className={
-        "grid  md:grid-flow-row  md:grid-cols-3 items-center gap-1.5 grid-cols-1"
+        "grid md:grid-rows-7 md:grid-flow-col md:grid-cols-3 items-center gap-1.5 grid-cols-1"
       }
     >
       {data.map((job) => (

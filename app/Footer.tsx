@@ -36,9 +36,6 @@ export default function Footer() {
             Beam status
           </Link>
         </nav>
-        <p className="mt-8 text-base leading-6 text-center text-gray-400">
-          © 2024 Experiment Controls at ISIS. All rights reserved.
-        </p>
       </div>
     </footer>
   );

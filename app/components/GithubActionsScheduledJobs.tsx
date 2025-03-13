@@ -32,7 +32,7 @@ export default function GithubActionsScheduledJobs() {
   return (
     <div
       className={
-        "grid   md:grid-cols-3 items-center gap-1.5 grid-cols-1 dark:text-white"
+        "grid md:grid-cols-3 items-center gap-1.5 grid-cols-1 dark:text-white"
       }
     >
       <GithubActionsJob
