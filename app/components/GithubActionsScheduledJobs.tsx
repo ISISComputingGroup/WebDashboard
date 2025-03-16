@@ -67,6 +67,10 @@ export default function GithubActionsScheduledJobs() {
         repo={"WebDashboard"}
         workflowName={"lint-and-test-nightly.yml"}
       />
+      <GithubActionsJob
+        repo={"isis_css_top"}
+        workflowName={"build-nightly.yml"}
+      />
     </div>
   );
 }
