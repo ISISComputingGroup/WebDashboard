@@ -8,21 +8,23 @@ function GithubActionsJob({
   workflowName: string;
 }) {
   return (
-    <div>
+    <div className={"w-full"}>
       <a
         href={`https://github.com/ISISComputingGroup/${repo}/actions/workflows/${workflowName}`}
         className={
-          "flex-row flex items-center content-center h-10 w-full text-center rounded-lg bg-gray-800 border-2 border-black hover:border-white"
+          "flex flex-row h-10 w-full rounded-lg bg-gray-800 border-2 border-black hover:border-white"
         }
       >
-        <h2 className={"text-center text-lg w-1/2"}>{repo} </h2>
-        <Image
-          src={`https://github.com/ISISComputingGroup/${repo}/actions/workflows/${workflowName}/badge.svg`}
-          alt={"ibex_bluesky_core lint-and-test-nightly badge"}
-          className={"w-1/2 pr-2"}
-          width={500}
-          height={500}
-        />
+        <h2 className={"text-lg text-center w-2/5 mx-5"}>{repo}</h2>
+        <div className={"float-right w-3/5"}>
+          <Image
+            src={`https://github.com/ISISComputingGroup/${repo}/actions/workflows/${workflowName}/badge.svg`}
+            alt={"build status badge"}
+            className={"h-8 w-auto my-0.5 float-right"}
+            width={500}
+            height={500}
+          />
+        </div>
       </a>
     </div>
   );
