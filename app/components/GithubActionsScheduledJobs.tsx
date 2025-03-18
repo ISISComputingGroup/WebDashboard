@@ -14,6 +14,7 @@ function GithubActionsJob({
         className={
           "flex flex-row h-10 w-full rounded-lg bg-gray-800 border-2 border-black hover:border-white"
         }
+        target={"_blank"}
       >
         <h2 className={"text-lg text-center w-2/5 mx-5"}>{repo}</h2>
         <div className={"float-right w-3/5"}>
