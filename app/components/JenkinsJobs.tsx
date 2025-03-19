@@ -32,7 +32,6 @@ const jenkinsColourToStatus = new Map<string, string>([
   ["red", "fail"], // build broken
   ["blue", "success"], // build success
   ["aborted", "aborted"], // build aborted
-
   ["yellow", "unstable"],
   ["yellow_anime", "unstable-running"], // build running but was broken
   ["red_anime", "fail-running"], // build running but was broken
