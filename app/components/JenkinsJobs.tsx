@@ -28,6 +28,17 @@ const jenkinsColourToWebDashColour = new Map<string, string>([
   ], // build aborted but now running
 ]);
 
+const jenkinsColourToStatus = new Map<string, string>([
+  ["red", "failed"], // build broken
+  ["blue", "succeeded"], // build success
+  ["aborted", "aborted"], // build aborted
+  ["yellow", "unstable"],
+  ["yellow_anime", "running (unstable)"], // build running but was broken
+  ["red_anime", "running (failed)"], // build running but was broken
+  ["blue_anime", "running (succeeded)"], // build running but was successful
+  ["aborted_anime", "running (aborted)"], // build aborted but now running
+]);
+
 export default function JenkinsJobs() {
   const [data, setData] = useState<Array<IfcWallDisplayJob>>([]);
 
@@ -79,7 +90,7 @@ export default function JenkinsJobs() {
           }
           target={"_blank"}
         >
-          {job["name"]}
+          {job["name"]} {`(${jenkinsColourToStatus.get(job["color"])})`}
         </a>
       ))}
     </div>
