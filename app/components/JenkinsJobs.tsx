@@ -90,7 +90,7 @@ export default function JenkinsJobs() {
           }
           target={"_blank"}
         >
-          {job["name"]} {`(${jenkinsColourToStatus.get(job["color"])})`}
+          {job["name"]} {` - ${jenkinsColourToStatus.get(job["color"])}`}
         </a>
       ))}
     </div>
