@@ -74,6 +74,10 @@ export default function GithubActionsScheduledJobs() {
         repo={"isis_css_top"}
         workflowName={"build-nightly.yml"}
       />
+      <GithubActionsJob
+        repo={"IBEX"}
+        workflowName={"project_board_checks.yml"}
+      />
     </div>
   );
 }
