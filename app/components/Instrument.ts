@@ -34,11 +34,11 @@ export class Instrument {
       [
         [
           { pvaddress: "", value: "Title:" },
-          { pvaddress: `${this.prefix}DAE:TITLE` },
+          { pvaddress: `${this.prefix}DAE:WDTITLE` },
         ],
         [
           { pvaddress: "", value: "Users:" },
-          { pvaddress: `${this.prefix}DAE:_USERNAME` },
+          { pvaddress: `${this.prefix}DAE:WDUSERS` },
         ],
       ],
       //column 1
