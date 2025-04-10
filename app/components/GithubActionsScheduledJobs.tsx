@@ -78,6 +78,10 @@ export default function GithubActionsScheduledJobs() {
         repo={"IBEX"}
         workflowName={"project_board_checks.yml"}
       />
+      <GithubActionsJob
+        repo={"EPICS-refl"}
+        workflowName={"lint-and-test-nightly.yml"}
+      />
     </div>
   );
 }
