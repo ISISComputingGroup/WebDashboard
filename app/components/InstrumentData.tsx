@@ -36,11 +36,11 @@ import Groups from "@/app/components/Groups";
 export function InstrumentData({ instrumentName }: { instrumentName: string }) {
   const [showHiddenBlocks, setShowHiddenBlocks] = useState(false);
   const CONFIG_DETAILS = "CS:BLOCKSERVER:WD_CONF_DETAILS";
-  const [instlist, setInstlist] = useState<instList | null>(null);
   const [currentInstrument, setCurrentInstrument] = useState<Instrument | null>(
     null,
   );
   const [lastUpdate, setLastUpdate] = useState<string>("");
+  const [webSockErr, setWebSockErr] = useState("");
 
   const instName = instrumentName;
 
@@ -58,133 +58,120 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
     lastJsonMessage: IfcPVWSMessage;
   } = useWebSocket(socketURL, {
     shouldReconnect: (closeEvent) => true,
-  });
+    onOpen: () => {
+      sendJsonMessage(instListSubscription);
+    },
+    onMessage: (m) => {
+      const updatedPV: IfcPVWSMessage = JSON.parse(m.data);
+      const updatedPVName: string = updatedPV.pv;
+      const updatedPVbytes: string | null | undefined = updatedPV.b64byt;
 
-  useEffect(() => {
-    // This is an initial useEffect to subscribe to lots of PVs including the instlist.
-    sendJsonMessage(instListSubscription);
+      if (updatedPVName == instListPV && updatedPVbytes != null) {
+        const instlist = instListFromBytes(updatedPVbytes);
+        const prefix = getPrefix(instlist, instName);
+        const instrument = new Instrument(prefix);
+        setCurrentInstrument(instrument);
 
-    if (instName == "" || instName == null || instlist == null) {
-      return;
-    }
-
-    let prefix = getPrefix(instlist, instName);
-
-    if (!currentInstrument) {
-      let instrument = new Instrument(prefix);
-      setCurrentInstrument(instrument);
-
-      sendJsonMessage({
-        type: PVWSRequestType.subscribe,
-        pvs: [`${prefix}${CONFIG_DETAILS}`],
-      });
-
-      // subscribe to dashboard and run info PVs
-      for (const pv of instrument.runInfoPVs.concat(
-        instrument.dashboard.flat(3),
-      )) {
         sendJsonMessage({
           type: PVWSRequestType.subscribe,
-          pvs: [pv.pvaddress],
+          pvs: [`${prefix}${CONFIG_DETAILS}`],
         });
-      }
-    }
-  }, [instlist, instName, sendJsonMessage, currentInstrument]);
 
-  useEffect(() => {
-    // This gets run whenever there is a PV update ie. when lastJsonMessage changes.
-    if (!lastJsonMessage) {
-      return;
-    }
-    const updatedPV: IfcPVWSMessage = lastJsonMessage;
-    const updatedPVName: string = updatedPV.pv;
-    const updatedPVbytes: string | null | undefined = updatedPV.b64byt;
-
-    if (updatedPVName == instListPV && updatedPVbytes != null) {
-      setInstlist(instListFromBytes(updatedPVbytes));
-      return;
-    }
-
-    if (!currentInstrument) {
-      return;
-    }
-
-    if (
-      updatedPVName == `${currentInstrument.prefix}${CONFIG_DETAILS}` &&
-      updatedPVbytes != null
-    ) {
-      // config change, reset instrument groups
-      if (updatedPVbytes == lastUpdate) {
-        // config hasnt actually changed so do nothing
-        return;
-      }
-      setLastUpdate(updatedPVbytes);
-      const res = dehex_and_decompress(atob(updatedPVbytes));
-      currentInstrument.groups = getGroupsWithBlocksFromConfigOutput(
-        JSON.parse(res),
-        sendJsonMessage,
-        currentInstrument.prefix,
-      );
-    } else {
-      const pvVal = getPvValue(updatedPV);
-
-      if (pvVal == undefined) {
-        console.debug(`initial/blank message from ${updatedPVName}`);
+        // subscribe to dashboard and run info PVs
+        for (const pv of instrument.runInfoPVs.concat(
+          instrument.dashboard.flat(3),
+        )) {
+          sendJsonMessage({
+            type: PVWSRequestType.subscribe,
+            pvs: [pv.pvaddress],
+          });
+        }
         return;
       }
 
-      // Check if this is a dashboard, run info, or block PV update.
-      const pv =
-        findPVInDashboard(currentInstrument.dashboard, updatedPVName) ||
-        findPVByAddress(currentInstrument.runInfoPVs, updatedPVName) ||
-        findPVInGroups(
-          currentInstrument.groups,
+      if (!currentInstrument) {
+        return;
+      }
+
+      if (
+        updatedPVName == `${currentInstrument.prefix}${CONFIG_DETAILS}` &&
+        updatedPVbytes != null
+      ) {
+        // config change, reset instrument groups
+        if (updatedPVbytes == lastUpdate) {
+          // config hasnt actually changed so do nothing
+          return;
+        }
+        setLastUpdate(updatedPVbytes);
+        const res = dehex_and_decompress(atob(updatedPVbytes));
+        currentInstrument.groups = getGroupsWithBlocksFromConfigOutput(
+          JSON.parse(res),
+          sendJsonMessage,
           currentInstrument.prefix,
-          updatedPVName,
         );
-      if (pv) {
-        storePrecision(updatedPV, pv);
-        pv.value = toPrecision(pv, pvVal);
-        if (updatedPV.seconds) pv.updateSeconds = updatedPV.seconds;
-        if (updatedPV.units) pv.units = updatedPV.units;
-        if (updatedPV.severity) pv.severity = updatedPV.severity;
       } else {
-        // OK, we haven't found the block, but we may have an update for
-        // its object such as its run control status or SP:RBV
-        if (updatedPVName.endsWith(RC_INRANGE)) {
-          const underlyingBlock = findPVInGroups(
+        const pvVal = getPvValue(updatedPV);
+
+        if (pvVal == undefined) {
+          console.debug(`initial/blank message from ${updatedPVName}`);
+          return;
+        }
+
+        // Check if this is a dashboard, run info, or block PV update.
+        const pv =
+          findPVInDashboard(currentInstrument.dashboard, updatedPVName) ||
+          findPVByAddress(currentInstrument.runInfoPVs, updatedPVName) ||
+          findPVInGroups(
             currentInstrument.groups,
             currentInstrument.prefix,
-            updatedPVName.replace(RC_INRANGE, ""),
+            updatedPVName,
           );
-          if (underlyingBlock)
-            underlyingBlock.runcontrol_inrange = yesToBoolean(pvVal);
-        } else if (updatedPVName.endsWith(RC_ENABLE)) {
-          const underlyingBlock = findPVInGroups(
-            currentInstrument.groups,
-            currentInstrument.prefix,
-            updatedPVName.replace(RC_ENABLE, ""),
-          );
-          if (underlyingBlock)
-            underlyingBlock.runcontrol_enabled = yesToBoolean(pvVal);
-        } else if (updatedPVName.endsWith(SP_RBV)) {
-          const underlyingBlock = findPVInGroups(
-            currentInstrument.groups,
-            currentInstrument.prefix,
-            updatedPVName.replace(SP_RBV, ""),
-          );
-          if (underlyingBlock)
-            underlyingBlock.sp_value = toPrecision(underlyingBlock, pvVal);
+        if (pv) {
+          storePrecision(updatedPV, pv);
+          pv.value = toPrecision(pv, pvVal);
+          if (updatedPV.seconds) pv.updateSeconds = updatedPV.seconds;
+          if (updatedPV.units) pv.units = updatedPV.units;
+          if (updatedPV.severity) pv.severity = updatedPV.severity;
         } else {
-          console.warn(
-            `update from unknown PV: ${updatedPVName} with value ${pvVal}`,
-          );
+          // OK, we haven't found the block, but we may have an update for
+          // its object such as its run control status or SP:RBV
+          if (updatedPVName.endsWith(RC_INRANGE)) {
+            const underlyingBlock = findPVInGroups(
+              currentInstrument.groups,
+              currentInstrument.prefix,
+              updatedPVName.replace(RC_INRANGE, ""),
+            );
+            if (underlyingBlock)
+              underlyingBlock.runcontrol_inrange = yesToBoolean(pvVal);
+          } else if (updatedPVName.endsWith(RC_ENABLE)) {
+            const underlyingBlock = findPVInGroups(
+              currentInstrument.groups,
+              currentInstrument.prefix,
+              updatedPVName.replace(RC_ENABLE, ""),
+            );
+            if (underlyingBlock)
+              underlyingBlock.runcontrol_enabled = yesToBoolean(pvVal);
+          } else if (updatedPVName.endsWith(SP_RBV)) {
+            const underlyingBlock = findPVInGroups(
+              currentInstrument.groups,
+              currentInstrument.prefix,
+              updatedPVName.replace(SP_RBV, ""),
+            );
+            if (underlyingBlock)
+              underlyingBlock.sp_value = toPrecision(underlyingBlock, pvVal);
+          } else {
+            console.warn(
+              `update from unknown PV: ${updatedPVName} with value ${pvVal}`,
+            );
+          }
         }
       }
-    }
-  }, [lastJsonMessage, currentInstrument, sendJsonMessage, lastUpdate]);
+    },
+    share: true,
+    retryOnError: true,
+  });
 
-  if (!instName || !currentInstrument) {
+  if (!currentInstrument) {
     return <h1>Loading...</h1>;
   }
   return (
