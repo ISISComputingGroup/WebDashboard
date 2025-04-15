@@ -52,7 +52,7 @@ exports[`renders instrumentwallcard unchanged when runstate is unknown 1`] = `
         <span
           class="text-xs "
         >
-          UNKNOWN
+          UNREACHABLE
         </span>
       </div>
     </a>

@@ -1,5 +1,9 @@
 import Link from "next/link";
-import { getForegroundColour, getStatusColour } from "./getRunstateColours";
+import {
+  getForegroundColour,
+  getStatusColour,
+  UNREACHABLE,
+} from "./getRunstateColours";
 import { instListEntryWithRunstatePVandValue } from "@/app/types";
 
 export default function InstrumentWallCard({
@@ -13,8 +17,8 @@ export default function InstrumentWallCard({
         href={"/instrument?name=" + instrument.name}
         target="_blank"
         className={`flex items-center justify-center text-center py-1 w-28 max-h-12 rounded-lg shadow-sm border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
-      ${getStatusColour(instrument.runStateValue || "UNKNOWN")} ${getForegroundColour(
-        instrument.runStateValue || "UNKNOWN",
+      ${getStatusColour(instrument.runStateValue || UNREACHABLE)} ${getForegroundColour(
+        instrument.runStateValue || UNREACHABLE,
       )}`}
       >
         <div className="flex flex-col">
@@ -22,7 +26,7 @@ export default function InstrumentWallCard({
             {instrument.name}
           </span>
           <span className="text-xs ">
-            {instrument.runStateValue || "UNKNOWN"}
+            {instrument.runStateValue || UNREACHABLE}
           </span>
         </div>
       </Link>

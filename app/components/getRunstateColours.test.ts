@@ -1,6 +1,7 @@
 import {
   getForegroundColour,
   getStatusColour,
+  UNREACHABLE,
 } from "@/app/components/getRunstateColours";
 
 test("getForegroundColor when runstate requires white text returns white text", () => {
@@ -22,7 +23,7 @@ test("getForegroundColor when runstate requires black text returns black text", 
 });
 
 test("getStatusColour when runstate unknown returns expected colour", () => {
-  const result = getStatusColour("UNKNOWN");
+  const result = getStatusColour(UNREACHABLE);
   expect(result).toBe("bg-[#F08080]");
 });
 
