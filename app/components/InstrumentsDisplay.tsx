@@ -65,6 +65,7 @@ export default function InstrumentsDisplay({
     },
     onOpen: () => {
       setInstList([]); // if this is called on a reconnect, clear the instlist so we can re-subscribe to it and get its latest value
+      setWebSockErr("");
       sendJsonMessage(instListSubscription);
       // Subscribe to beam current PVs
       sendJsonMessage({
@@ -117,13 +118,9 @@ export default function InstrumentsDisplay({
     retryOnError: true,
   });
 
-  if (webSockErr) {
-    // The instlist isnt available yet so we should tell the user.
-    return <h1 className={"text-white"}>{webSockErr}</h1>;
-  }
-
   return (
     <div>
+      {webSockErr && <h1 className={"text-red-600"}>{webSockErr}</h1>}
       {sortByGroups &&
         Array.from(createInstrumentGroups(instList).entries())
           .sort((a, b) => b[1].length - a[1].length) // Sort to display the biggest group first

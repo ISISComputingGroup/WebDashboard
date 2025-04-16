@@ -59,6 +59,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
   } = useWebSocket(socketURL, {
     shouldReconnect: (closeEvent) => true,
     onOpen: () => {
+      setWebSockErr("");
       setLastUpdate(""); // if this is called on a reconnect, we want to clear the last update so we can re-subscribe to everything again
       sendJsonMessage(instListSubscription);
     },
@@ -168,6 +169,11 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
         }
       }
     },
+    onError: (err) => {
+      setWebSockErr(
+        "Failed to connect to websocket - please check your network connection and contact Experiment Controls if this persists.",
+      );
+    },
     share: true,
     retryOnError: true,
   });
@@ -182,6 +188,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
         instName={instName}
         runInfoPVs={currentInstrument.runInfoPVs}
       />
+      {webSockErr && <h1 className={"text-red-600"}>{webSockErr}</h1>}
       <div className="flex gap-2 ml-2 md:flex-row flex-col">
         <CheckToggle
           checked={showHiddenBlocks}
