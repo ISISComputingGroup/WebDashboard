@@ -59,6 +59,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
   } = useWebSocket(socketURL, {
     shouldReconnect: (closeEvent) => true,
     onOpen: () => {
+      setLastUpdate(""); // if this is called on a reconnect, we want to clear the last update so we can re-subscribe to everything again
       sendJsonMessage(instListSubscription);
     },
     onMessage: (m) => {

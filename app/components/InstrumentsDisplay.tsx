@@ -64,7 +64,9 @@ export default function InstrumentsDisplay({
       );
     },
     onOpen: () => {
+      setInstList([]); // if this is called on a reconnect, clear the instlist so we can re-subscribe to it and get its latest value
       sendJsonMessage(instListSubscription);
+      // Subscribe to beam current PVs
       sendJsonMessage({
         type: PVWSRequestType.subscribe,
         pvs: [ts1BeamCurrentPv, ts2BeamCurrentPv, muonTargetCurrentPv],
@@ -76,7 +78,12 @@ export default function InstrumentsDisplay({
       const updatedPVbytes: string | null | undefined = updatedPV.b64byt;
       const updatedPVvalue: string | null | undefined = updatedPV.text;
       const updatedPVnum: number | null | undefined = updatedPV.value;
-      if (updatedPVName == instListPV && updatedPVbytes != null) {
+      // PVWS seems to give 2 updates for the instlist, so just use the first one to avoid re-subscribing to all the runstate PVs.
+      if (
+        updatedPVName == instListPV &&
+        updatedPVbytes != null &&
+        instList.length == 0
+      ) {
         const instListDict = instListFromBytes(updatedPVbytes);
 
         for (const item of instListDict) {
