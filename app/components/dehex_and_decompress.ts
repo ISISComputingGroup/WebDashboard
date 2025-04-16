@@ -1,14 +1,5 @@
-import pako from "pako";
 import { instList } from "@/app/types";
-
-function unhexlify(str: string): string {
-  let result = "";
-  for (let i = 0, l = str.length; i < l; i += 2) {
-    result += String.fromCharCode(parseInt(str.slice(i, i + 2), 16));
-  }
-  return result;
-}
-
+import { unzipSync } from "zlib";
 /**
  * dehex_and_decompress
  * - synonymous to dehex_and_decompress in inst_servers
@@ -16,14 +7,7 @@ function unhexlify(str: string): string {
  * @returns dehexed and decompressed data (you can choose to JSON parse it or not afterwards)
  */
 export function dehex_and_decompress(input: string): string {
-  // DEHEX
-  const unhexed = unhexlify(input);
-  const charData = unhexed.split("").map(function (x) {
-    return x.charCodeAt(0);
-  });
-  // convert to binary
-  const binData = new Uint8Array(charData);
-  return pako.inflate(binData, { to: "string" });
+  return unzipSync(Buffer.from(input, "hex")).toString();
 }
 
 /**
