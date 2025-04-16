@@ -13,10 +13,8 @@
     "format_check": "prettier --check \"**/*.{ts,tsx,md,js,json,yml,yaml}\""
   },
   "dependencies": {
-    "@types/pako": "^2.0.3",
     "cross-env": "^7.0.3",
     "next": "^15.2.4",
-    "pako": "^2.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-use-websocket": "^4.8.1"
