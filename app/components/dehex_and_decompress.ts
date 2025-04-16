@@ -1,5 +1,5 @@
 import { instList } from "@/app/types";
-import {unzipSync} from "zlib";
+import { unzipSync } from "zlib";
 /**
  * dehex_and_decompress
  * - synonymous to dehex_and_decompress in inst_servers
@@ -7,7 +7,7 @@ import {unzipSync} from "zlib";
  * @returns dehexed and decompressed data (you can choose to JSON parse it or not afterwards)
  */
 export function dehex_and_decompress(input: string): string {
-  return unzipSync(Buffer.from(input, "hex")).toString()
+  return unzipSync(Buffer.from(input, "hex")).toString();
 }
 
 /**
