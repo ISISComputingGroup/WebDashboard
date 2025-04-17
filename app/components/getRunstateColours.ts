@@ -1,3 +1,5 @@
+export const UNREACHABLE = "UNREACHABLE";
+
 const statusColourLookup = new Map<string, string>([
   ["PAUSED", "bg-red-500"],
   ["PAUSING", "bg-red-950"],
@@ -13,7 +15,7 @@ const statusColourLookup = new Map<string, string>([
 
 export function getForegroundColour(status: string): string {
   const blackTextRunstates = [
-    "UNKNOWN",
+    UNREACHABLE,
     "RUNNING",
     "PROCESSING",
     "VETOING",
