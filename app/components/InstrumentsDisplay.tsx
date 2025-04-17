@@ -116,6 +116,8 @@ export default function InstrumentsDisplay({
     },
     share: true,
     retryOnError: true,
+    reconnectInterval: 5000,
+    reconnectAttempts: 1000,
   });
 
   return (

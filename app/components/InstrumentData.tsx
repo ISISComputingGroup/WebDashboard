@@ -176,6 +176,8 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
     },
     share: true,
     retryOnError: true,
+    reconnectInterval: 5000,
+    reconnectAttempts: 1000,
   });
 
   if (!currentInstrument) {
