@@ -8,7 +8,7 @@ Allows monitoring of instrument PVs via a web page.
 
 **Frontend:** [NextJS](https://nextjs.org/) using [React](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/)
 
-**Backend:** [pvws](https://github.com/ornl-epics/pvws)
+**Backend:** [pvws](https://github.com/ornl-epics/pvws) - with [our configuration here](https://github.com/ISISComputingGroup/pvws-config)
 
 ## Development
 

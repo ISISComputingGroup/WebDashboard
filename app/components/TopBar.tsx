@@ -1,4 +1,8 @@
-import { getForegroundColour, getStatusColour } from "./getRunstateColours";
+import {
+  getForegroundColour,
+  getStatusColour,
+  UNREACHABLE,
+} from "./getRunstateColours";
 
 import { DashboardArr, IfcPV } from "@/app/types";
 import { findPVByHumanReadableName } from "@/app/components/PVutils";
@@ -11,7 +15,7 @@ export function getRunstate(runInfoPVs: Array<IfcPV>): string {
   if (runStatePV && runStatePV.value && typeof runStatePV.value === "string") {
     return runStatePV.value;
   }
-  return "UNKNOWN";
+  return UNREACHABLE;
 }
 
 export default function TopBar({
