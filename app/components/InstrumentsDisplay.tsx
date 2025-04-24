@@ -7,7 +7,13 @@ import {
   PVWSRequestType,
 } from "@/app/types";
 import useWebSocket from "react-use-websocket";
-import { instListPV, instListSubscription, socketURL } from "@/app/commonVars";
+import {
+  instListPV,
+  instListSubscription,
+  socketURL,
+  webSocketReconnectAttempts,
+  webSocketReconnectInterval,
+} from "@/app/commonVars";
 import { instListFromBytes } from "@/app/components/dehex_and_decompress";
 import TargetStation from "@/app/components/TargetStation";
 import ScienceGroup from "@/app/components/ScienceGroup";
@@ -40,16 +46,15 @@ export default function InstrumentsDisplay({
   sortByGroups?: boolean;
 }) {
   const runstatePV = "DAE:RUNSTATE_STR";
-
   const ts1BeamCurrentPv = "AC:TS1:BEAM:CURR";
   const ts2BeamCurrentPv = "AC:TS2:BEAM:CURR";
   const muonTargetCurrentPv = "AC:MUON:BEAM:CURR";
 
   const [instList, setInstList] = useState<instList>([]);
-
   const [ts1Current, setTS1Current] = useState<number>(0.0);
   const [ts2Current, setTS2Current] = useState<number>(0.0);
   const [muonCurrent, setMuonCurrent] = useState<number>(0.0);
+  const [webSockErr, setWebSockErr] = useState("");
 
   const {
     sendJsonMessage,
@@ -59,61 +64,71 @@ export default function InstrumentsDisplay({
     lastJsonMessage: IfcPVWSMessage;
   } = useWebSocket(socketURL, {
     shouldReconnect: (closeEvent) => true,
-  });
-
-  useEffect(() => {
-    // On page load, subscribe to the instrument list as it's required to get each instrument's PV prefix.
-    sendJsonMessage(instListSubscription);
-    sendJsonMessage({
-      type: PVWSRequestType.subscribe,
-      pvs: [ts1BeamCurrentPv, ts2BeamCurrentPv, muonTargetCurrentPv],
-    });
-  }, [sendJsonMessage]);
-
-  useEffect(() => {
-    // This is a PV update, it could be either the instlist or an instrument's runstate that has changed
-    if (!lastJsonMessage) {
-      return;
-    }
-
-    const updatedPV: IfcPVWSMessage = lastJsonMessage;
-    const updatedPVName: string = updatedPV.pv;
-    const updatedPVbytes: string | null | undefined = updatedPV.b64byt;
-    let updatedPVvalue: string | null | undefined = updatedPV.text;
-    let updatedPVnum: number | null | undefined = updatedPV.value;
-    if (updatedPVName == instListPV && updatedPVbytes != null) {
-      const instListDict = instListFromBytes(updatedPVbytes);
-
-      for (const item of instListDict) {
-        item.runStatePV = item.pvPrefix + runstatePV;
-
-        sendJsonMessage({
-          type: PVWSRequestType.subscribe,
-          pvs: [item.runStatePV],
-        });
-      }
-      setInstList(instListDict);
-    } else if (updatedPVvalue) {
-      const foundInstrument = instList.find(
-        (instrument) => instrument.runStatePV === updatedPVName,
+    onError(err) {
+      setWebSockErr(
+        "Failed to connect to websocket - please check your network connection and contact Experiment Controls if this persists.",
       );
-      if (foundInstrument) foundInstrument.runStateValue = updatedPVvalue;
+    },
+    onOpen: () => {
+      setInstList([]); // if this is called on a reconnect, clear the instlist so we can re-subscribe to it and get its latest value
+      setWebSockErr("");
+      sendJsonMessage(instListSubscription);
+      // Subscribe to beam current PVs
+      sendJsonMessage({
+        type: PVWSRequestType.subscribe,
+        pvs: [ts1BeamCurrentPv, ts2BeamCurrentPv, muonTargetCurrentPv],
+      });
+    },
+    onMessage: (m) => {
+      const updatedPV: IfcPVWSMessage = JSON.parse(m.data);
+      const updatedPVName: string = updatedPV.pv;
+      const updatedPVbytes: string | null | undefined = updatedPV.b64byt;
+      const updatedPVvalue: string | null | undefined = updatedPV.text;
+      const updatedPVnum: number | null | undefined = updatedPV.value;
+      // PVWS seems to give 2 updates for the instlist, so just use the first one to avoid re-subscribing to all the runstate PVs.
+      if (
+        updatedPVName == instListPV &&
+        updatedPVbytes != null &&
+        instList.length == 0
+      ) {
+        const instListDict = instListFromBytes(updatedPVbytes);
 
-      setInstList(instList);
-    } else if (updatedPVnum) {
-      // beam current update
-      if (updatedPVName == ts1BeamCurrentPv) {
-        setTS1Current(updatedPVnum);
-      } else if (updatedPVName == ts2BeamCurrentPv) {
-        setTS2Current(updatedPVnum);
-      } else if (updatedPVName == muonTargetCurrentPv) {
-        setMuonCurrent(updatedPVnum);
+        for (const item of instListDict) {
+          item.runStatePV = item.pvPrefix + runstatePV;
+
+          sendJsonMessage({
+            type: PVWSRequestType.subscribe,
+            pvs: [item.runStatePV],
+          });
+        }
+        setInstList(instListDict);
+      } else if (updatedPVvalue) {
+        const foundInstrument = instList.find(
+          (instrument) => instrument.runStatePV === updatedPVName,
+        );
+        if (foundInstrument) foundInstrument.runStateValue = updatedPVvalue;
+
+        setInstList(instList);
+      } else if (updatedPVnum) {
+        // beam current update
+        if (updatedPVName == ts1BeamCurrentPv) {
+          setTS1Current(updatedPVnum);
+        } else if (updatedPVName == ts2BeamCurrentPv) {
+          setTS2Current(updatedPVnum);
+        } else if (updatedPVName == muonTargetCurrentPv) {
+          setMuonCurrent(updatedPVnum);
+        }
       }
-    }
-  }, [lastJsonMessage, sendJsonMessage, instList]);
+    },
+    share: true,
+    retryOnError: true,
+    reconnectInterval: webSocketReconnectInterval,
+    reconnectAttempts: webSocketReconnectAttempts,
+  });
 
   return (
     <div>
+      {webSockErr && <h1 className={"text-red-600"}>{webSockErr}</h1>}
       {sortByGroups &&
         Array.from(createInstrumentGroups(instList).entries())
           .sort((a, b) => b[1].length - a[1].length) // Sort to display the biggest group first
