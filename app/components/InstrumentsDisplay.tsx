@@ -7,7 +7,13 @@ import {
   PVWSRequestType,
 } from "@/app/types";
 import useWebSocket from "react-use-websocket";
-import { instListPV, instListSubscription, socketURL } from "@/app/commonVars";
+import {
+  instListPV,
+  instListSubscription,
+  socketURL,
+  webSocketReconnectAttempts,
+  webSocketReconnectInterval,
+} from "@/app/commonVars";
 import { instListFromBytes } from "@/app/components/dehex_and_decompress";
 import TargetStation from "@/app/components/TargetStation";
 import ScienceGroup from "@/app/components/ScienceGroup";
@@ -116,8 +122,8 @@ export default function InstrumentsDisplay({
     },
     share: true,
     retryOnError: true,
-    reconnectInterval: 5000,
-    reconnectAttempts: 1000,
+    reconnectInterval: webSocketReconnectInterval,
+    reconnectAttempts: webSocketReconnectAttempts,
   });
 
   return (

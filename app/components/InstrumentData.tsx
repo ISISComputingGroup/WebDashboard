@@ -19,7 +19,13 @@ import {
   yesToBoolean,
 } from "@/app/components/Instrument";
 import useWebSocket from "react-use-websocket";
-import { instListPV, instListSubscription, socketURL } from "@/app/commonVars";
+import {
+  instListPV,
+  instListSubscription,
+  socketURL,
+  webSocketReconnectAttempts,
+  webSocketReconnectInterval,
+} from "@/app/commonVars";
 import {
   dehex_and_decompress,
   instListFromBytes,
@@ -176,8 +182,8 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
     },
     share: true,
     retryOnError: true,
-    reconnectInterval: 5000,
-    reconnectAttempts: 1000,
+    reconnectInterval: webSocketReconnectInterval,
+    reconnectAttempts: webSocketReconnectAttempts,
   });
 
   if (!currentInstrument) {
