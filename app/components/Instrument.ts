@@ -151,7 +151,7 @@ export class Instrument {
       },
       {
         pvaddress: `${this.prefix}DAE:RUNDURATION_STR`,
-        human_readable_name: "Run time(s)",
+        human_readable_name: "Run time",
       },
       { pvaddress: `${this.prefix}DAE:PERIOD`, human_readable_name: "Period" },
       {
@@ -164,7 +164,7 @@ export class Instrument {
       },
       {
         pvaddress: `${this.prefix}DAE:RUNDURATION_PD_STR`,
-        human_readable_name: "Period Run Time(s)",
+        human_readable_name: "Period Run Time",
       },
       {
         pvaddress: `${this.prefix}DAE:PERIODSEQ`,
