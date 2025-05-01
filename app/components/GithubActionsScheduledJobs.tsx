@@ -82,6 +82,10 @@ export default function GithubActionsScheduledJobs() {
         repo={"EPICS-refl"}
         workflowName={"lint-and-test-nightly.yml"}
       />
+      <GithubActionsJob
+        repo={"ibex_developers_manual"}
+        workflowName={"nightly.yml"}
+      />
     </div>
   );
 }
