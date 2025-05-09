@@ -60,7 +60,7 @@ export function getPvValue(
     return updatedPV.text;
   } else if (updatedPV.b64byt != null) {
     // PV value is base64 encoded
-    return atob(updatedPV.b64byt);
+    return Buffer.from(updatedPV.b64byt, "base64").toString("utf-8");
   } else if (updatedPV.value != null) {
     // PV value is a number
     return updatedPV.value;
