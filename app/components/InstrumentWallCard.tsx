@@ -15,7 +15,6 @@ export default function InstrumentWallCard({
     <div className={"flex"}>
       <Link
         href={"/instrument?name=" + instrument.name}
-        target="_blank"
         className={`flex items-center justify-center text-center py-1 w-28 max-h-12 rounded-lg shadow-sm border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
       ${getStatusColour(instrument.runStateValue || UNREACHABLE)} ${getForegroundColour(
         instrument.runStateValue || UNREACHABLE,

@@ -22,7 +22,6 @@ exports[`renders targetstation unchanged 1`] = `
           class="flex items-center justify-center text-center py-1 w-28 max-h-12 rounded-lg shadow-sm border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
       bg-green-900 text-white"
           href="/instrument?name=Instrument"
-          target="_blank"
         >
           <div
             class="flex flex-col"
@@ -47,7 +46,6 @@ exports[`renders targetstation unchanged 1`] = `
           class="flex items-center justify-center text-center py-1 w-28 max-h-12 rounded-lg shadow-sm border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
       bg-[#FFFF00] text-black"
           href="/instrument?name=Instrument2"
-          target="_blank"
         >
           <div
             class="flex flex-col"
