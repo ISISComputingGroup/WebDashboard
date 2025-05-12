@@ -211,6 +211,13 @@ test("getPvValue decodes and returns base64 value when b64byt is provided", () =
   expect(result).toBe("Hello World");
 });
 
+test("getPvValue decodes and returns base64 value when b64byt is provided with null in the middle", () => {
+  // Base64 for 'Hello<null>World'. Everything after the null should be chopped out
+  const updatedPV = { type: "update", pv: "test", b64byt: "SGVsbG8Ad29ybGQ=" };
+  const result = getPvValue(updatedPV);
+  expect(result).toBe("Hello");
+});
+
 test("getPvValue returns the numeric value when value is provided", () => {
   const updatedPV = { type: "update", pv: "test", value: 123 };
   const result = getPvValue(updatedPV);
