@@ -197,7 +197,7 @@ test("getPvValue decodes and return the base64 value when b64byt is provided", (
     "¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ";
   const encoded = Buffer.from(original, "utf8").toString("base64");
 
-  const updatedPV = { type: "update", pv: "test", b64byt: encoded }; // Base64 for 'Hello World'
+  const updatedPV = { type: "update", pv: "test", b64byt: encoded };
   const result = getPvValue(updatedPV);
   expect(result).toBe(original);
 });
