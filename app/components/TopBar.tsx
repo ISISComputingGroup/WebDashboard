@@ -88,7 +88,7 @@ export default function TopBar({
                     </td>
                     <td className="py-1 px-4 flex justify-between items-center break-all">
                       <span className="font-light">
-                        {row[1].value != null ? row[1].value : "Hidden/unknown"}
+                        {row[1].value != null ? row[1].value : "Unknown"}
                       </span>
                     </td>
                   </tr>
