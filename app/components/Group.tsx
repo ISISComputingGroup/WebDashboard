@@ -1,4 +1,3 @@
-import React from "react";
 import Block from "./Block";
 import { checkIfAllBlocksInGroupAreHidden } from "./GroupUtils";
 

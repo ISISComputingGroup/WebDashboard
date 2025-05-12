@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   IfcPVWSMessage,
   IfcPVWSRequest,
@@ -58,13 +58,12 @@ export default function InstrumentsDisplay({
 
   const {
     sendJsonMessage,
-    lastJsonMessage,
   }: {
     sendJsonMessage: (a: IfcPVWSRequest) => void;
     lastJsonMessage: IfcPVWSMessage;
   } = useWebSocket(socketURL, {
-    shouldReconnect: (closeEvent) => true,
-    onError(err) {
+    shouldReconnect: () => true,
+    onError() {
       setWebSockErr(
         "Failed to connect to websocket - please check your network connection and contact Experiment Controls if this persists.",
       );

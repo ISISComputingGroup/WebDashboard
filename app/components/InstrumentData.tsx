@@ -1,11 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import {
-  IfcPVWSMessage,
-  IfcPVWSRequest,
-  instList,
-  PVWSRequestType,
-} from "@/app/types";
+import { useEffect, useState } from "react";
+import { IfcPVWSMessage, IfcPVWSRequest, PVWSRequestType } from "@/app/types";
 import {
   findPVInDashboard,
   findPVInGroups,
@@ -58,12 +53,11 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
 
   const {
     sendJsonMessage,
-    lastJsonMessage,
   }: {
     sendJsonMessage: (a: IfcPVWSRequest) => void;
     lastJsonMessage: IfcPVWSMessage;
   } = useWebSocket(socketURL, {
-    shouldReconnect: (closeEvent) => true,
+    shouldReconnect: () => true,
     onOpen: () => {
       setWebSockErr("");
       setLastUpdate(""); // if this is called on a reconnect, we want to clear the last update so we can re-subscribe to everything again
@@ -175,7 +169,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
         }
       }
     },
-    onError: (err) => {
+    onError: () => {
       setWebSockErr(
         "Failed to connect to websocket - please check your network connection and contact Experiment Controls if this persists.",
       );

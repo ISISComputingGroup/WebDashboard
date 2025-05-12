@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import type { Metadata, ResolvingMetadata } from "next";
 
 export const metadata = {
   // Default title, overridden later.
