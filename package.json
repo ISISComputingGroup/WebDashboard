@@ -7,13 +7,13 @@
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
-    "lint": "eslint ./",
+    "lint": "next lint",
     "test": "jest",
     "format": "prettier --write \"**/*.{ts,tsx,md,js,json,yml,yaml}\"",
     "format_check": "prettier --check \"**/*.{ts,tsx,md,js,json,yml,yaml}\""
   },
   "dependencies": {
-    "next": "^15.2.4",
+    "next": "^15.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-use-websocket": "^4.8.1"
@@ -24,8 +24,8 @@
     "@types/jest": "29.5.11",
     "@types/react": "18.2.45",
     "autoprefixer": "^10.0.1",
-    "eslint": "^8.0.0",
-    "eslint-config-next": "^15.2.4",
+    "eslint": "^9",
+    "eslint-config-next": "latest",
     "jest": "29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8",
