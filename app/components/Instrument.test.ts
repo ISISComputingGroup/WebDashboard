@@ -10,7 +10,6 @@ import {
   getExtraPVsForBlock,
   toPrecision,
   yesToBoolean,
-  getAllBlockPVs,
   Instrument,
 } from "@/app/components/Instrument";
 import {
@@ -239,7 +238,7 @@ test("getAllBlockPVs returns flat list of blocks, their RC and SPRBV pvs", () =>
     },
   ];
 
-  const res = getAllBlockPVs(inst);
+  const res = inst.getAllBlockPVs();
 
   expect(res.length).toBe(2 * 4); // 2 blocks, which means 4 PVs to subscribe to
 

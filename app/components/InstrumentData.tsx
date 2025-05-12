@@ -9,7 +9,6 @@ import {
 import {
   findPVInDashboard,
   findPVInGroups,
-  getAllBlockPVs,
   getGroupsWithBlocksFromConfigOutput,
   Instrument,
   RC_ENABLE,
@@ -110,7 +109,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
 
         sendJsonMessage({
           type: PVWSRequestType.subscribe,
-          pvs: getAllBlockPVs(currentInstrument),
+          pvs: currentInstrument.getAllBlockPVs(),
         });
       } else {
         const pvVal = getPvValue(updatedPV);

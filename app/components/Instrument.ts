@@ -186,6 +186,16 @@ export class Instrument {
       },
     ];
   }
+
+  getAllBlockPVs(): Array<string> {
+    return this.groups
+      .map((g: IfcGroup) => g.blocks)
+      .flat(1) // flatten to a big array of blocks
+      .map((b: IfcBlock) =>
+        getExtraPVsForBlock(this.prefix + CSSB + b.human_readable_name),
+      )
+      .flat(1); //flatten block, rc, sp_rbv pvs for every block to a 1d array
+  }
 }
 
 export function findPVInDashboard(
@@ -281,16 +291,4 @@ export function findPVInGroups(
       (block: IfcBlock) =>
         updatedPVName == prefix + CSSB + block.human_readable_name,
     );
-}
-
-export function getAllBlockPVs(currentInstrument: Instrument): Array<string> {
-  return currentInstrument.groups
-    .map((g: IfcGroup) => g.blocks)
-    .flat(1) // flatten to a big array of blocks
-    .map((b: IfcBlock) =>
-      getExtraPVsForBlock(
-        currentInstrument.prefix + CSSB + b.human_readable_name,
-      ),
-    )
-    .flat(1); //flatten block, rc, sp_rbv pvs for every block to a 1d array
 }
