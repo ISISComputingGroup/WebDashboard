@@ -1,6 +1,6 @@
 "use client";
 import { IfcBlock } from "@/app/types";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const grafana_stub =
   "https://shadow.nd.rl.ac.uk/grafana/d/wMlwwaHMk/block-history?viewPanel=2&orgId=1&var-block=";

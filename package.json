@@ -24,7 +24,7 @@
     "@types/jest": "29.5.11",
     "@types/react": "18.2.45",
     "autoprefixer": "^10.0.1",
-    "eslint": "^9",
+    "eslint": "latest",
     "eslint-config-next": "latest",
     "jest": "29.7.0",
     "jest-environment-jsdom": "^29.7.0",

@@ -1,4 +1,3 @@
-import React from "react";
 import Group from "./Group";
 
 import { IfcGroup } from "@/app/types";
