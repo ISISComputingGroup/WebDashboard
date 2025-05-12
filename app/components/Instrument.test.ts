@@ -10,6 +10,8 @@ import {
   getExtraPVsForBlock,
   toPrecision,
   yesToBoolean,
+  getAllBlockPVs,
+  Instrument,
 } from "@/app/components/Instrument";
 import {
   ConfigOutput,
@@ -180,16 +182,14 @@ test("getGroupsWithBlocksFromConfigOutput gets blocks from blockserver groups", 
     component_iocs: [],
     history: [],
   };
-  const groups = getGroupsWithBlocksFromConfigOutput(
-    configOutput,
-  );
+  const groups = getGroupsWithBlocksFromConfigOutput(configOutput);
   expect(groups[0].name).toBe(groupNameToTest);
   expect(groups[0].blocks[0].human_readable_name).toBe(blockNameToTest);
 });
 
 test("subscribeToBlockPVs subscribes to blocks, their run control and their SP:RBV PVs", () => {
   const blockAddress = "IN:INST:CS:SB:Block1";
-  expect(getExtraPVsForBlock( blockAddress)).toEqual(
+  expect(getExtraPVsForBlock(blockAddress)).toEqual(
     expect.arrayContaining([
       blockAddress,
       blockAddress + RC_ENABLE,
@@ -209,4 +209,50 @@ test("storePrecision adds precision to a block if it is the first update", () =>
   let blockWithoutPrecision: IfcBlock = { pvaddress: "" };
   storePrecision(message, blockWithoutPrecision);
   expect(blockWithoutPrecision.precision).toEqual(precision);
+});
+
+test("getAllBlockPVs returns flat list of blocks, their RC and SPRBV pvs", () => {
+  const block1Name = "blockName";
+  const block2Name = "block2Name";
+  const prefix = "IN:TEST:";
+
+  let inst = new Instrument(prefix);
+
+  inst.groups = [
+    {
+      name: "aGroup",
+      blocks: [
+        {
+          human_readable_name: block1Name,
+          pvaddress: "some:underlying:pv:name",
+        },
+      ],
+    },
+    {
+      name: "aDifferentGroup",
+      blocks: [
+        {
+          human_readable_name: block2Name,
+          pvaddress: "someother:underlying:pv:name",
+        },
+      ],
+    },
+  ];
+
+  const res = getAllBlockPVs(inst);
+
+  expect(res.length).toBe(2 * 4); // 2 blocks, which means 4 PVs to subscribe to
+
+  expect(res).toEqual(
+    expect.arrayContaining([
+      prefix + CSSB + block1Name,
+      prefix + CSSB + block1Name + RC_ENABLE,
+      prefix + CSSB + block1Name + RC_INRANGE,
+      prefix + CSSB + block1Name + SP_RBV,
+      prefix + CSSB + block2Name,
+      prefix + CSSB + block2Name + RC_ENABLE,
+      prefix + CSSB + block2Name + RC_INRANGE,
+      prefix + CSSB + block2Name + SP_RBV,
+    ]),
+  );
 });

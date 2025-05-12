@@ -1,17 +1,21 @@
 "use client";
 import { useEffect, useState } from "react";
-import {IfcBlock, IfcGroup, IfcPV, IfcPVWSMessage, IfcPVWSRequest, PVWSRequestType} from "@/app/types";
 import {
-  CSSB,
+  IfcPV,
+  IfcPVWSMessage,
+  IfcPVWSRequest,
+  PVWSRequestType,
+} from "@/app/types";
+import {
   findPVInDashboard,
   findPVInGroups,
+  getAllBlockPVs,
   getGroupsWithBlocksFromConfigOutput,
   Instrument,
   RC_ENABLE,
   RC_INRANGE,
   SP_RBV,
   storePrecision,
-  getExtraPVsForBlock,
   toPrecision,
   yesToBoolean,
 } from "@/app/components/Instrument";
@@ -100,22 +104,14 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
           return;
         }
         setLastUpdate(updatedPVbytes);
-        const res = dehex_and_decompress(atob(updatedPVbytes));
         currentInstrument.groups = getGroupsWithBlocksFromConfigOutput(
-          JSON.parse(res),
+          JSON.parse(dehex_and_decompress(atob(updatedPVbytes))),
         );
 
         sendJsonMessage({
           type: PVWSRequestType.subscribe,
-          pvs: currentInstrument.groups
-            .map((g: IfcGroup) => g.blocks)
-            .flat(1)  // flatten to a big array of blocks
-            .map((b: IfcBlock) =>
-              getExtraPVsForBlock(
-                  currentInstrument.prefix + CSSB + b.human_readable_name
-            )).flat(1), //flatten block, rc, sp_rbv pvs for every block to a 1d array
+          pvs: getAllBlockPVs(currentInstrument),
         });
-
       } else {
         const pvVal = getPvValue(updatedPV);
 

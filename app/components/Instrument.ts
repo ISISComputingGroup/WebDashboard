@@ -6,8 +6,6 @@ import {
   IfcGroup,
   IfcPV,
   IfcPVWSMessage,
-  IfcPVWSRequest,
-  PVWSRequestType,
 } from "@/app/types";
 import {
   ExponentialOnThresholdFormat,
@@ -226,18 +224,16 @@ export function yesToBoolean(pvVal: string | number): boolean {
   return pvVal == "YES";
 }
 
-export function getExtraPVsForBlock(
-  block_address: string,
-): Array<string> {
+export function getExtraPVsForBlock(block_address: string): Array<string> {
   /**
    * Given a block name, give the run control and sp_rbv PVs.
    */
   return [
-      block_address,
-      block_address + RC_ENABLE,
-      block_address + RC_INRANGE,
-      block_address + SP_RBV,
-    ];
+    block_address,
+    block_address + RC_ENABLE,
+    block_address + RC_INRANGE,
+    block_address + SP_RBV,
+  ];
 }
 
 /**
@@ -285,4 +281,16 @@ export function findPVInGroups(
       (block: IfcBlock) =>
         updatedPVName == prefix + CSSB + block.human_readable_name,
     );
+}
+
+export function getAllBlockPVs(currentInstrument: Instrument): Array<string> {
+  return currentInstrument.groups
+    .map((g: IfcGroup) => g.blocks)
+    .flat(1) // flatten to a big array of blocks
+    .map((b: IfcBlock) =>
+      getExtraPVsForBlock(
+        currentInstrument.prefix + CSSB + b.human_readable_name,
+      ),
+    )
+    .flat(1); //flatten block, rc, sp_rbv pvs for every block to a 1d array
 }
