@@ -193,6 +193,16 @@ test("getPvValue returns the text value when text is provided", () => {
 });
 
 test("getPvValue decodes and return the base64 value when b64byt is provided", () => {
+  const original =
+    "¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ";
+  const encoded = Buffer.from(original, "utf8").toString("base64");
+
+  const updatedPV = { type: "update", pv: "test", b64byt: encoded }; // Base64 for 'Hello World'
+  const result = getPvValue(updatedPV);
+  expect(result).toBe(original);
+});
+
+test("getPvValue decodes and returns base64 value with strange characters when b64byt is provided", () => {
   const updatedPV = { type: "update", pv: "test", b64byt: "SGVsbG8gV29ybGQ=" }; // Base64 for 'Hello World'
   const result = getPvValue(updatedPV);
   expect(result).toBe("Hello World");
