@@ -192,7 +192,20 @@ test("getPvValue returns the text value when text is provided", () => {
   expect(result).toBe("Hello World");
 });
 
-test("getPvValue decodes and return the base64 value when b64byt is provided", () => {
+test("getPvValue decodes and return the base64 value with strange characters when b64byt is provided", () => {
+  const updatedPV = {
+    type: "update",
+    pv: "test",
+    b64byt:
+      "wqHCosKjwqTCpcKmwqfCqMKpwqrCq8Kswq7Cr8KwwrHCssKzwrTCtcK2wrfCuMK5wrrCu8K8wr3CvsK/w4DDgcOCw4PDhMOFw4bDh8OIw4nDisOLw4zDjcOOw4/DkMORw5LDk8OUw5XDlsOXw5jDmcOaw5vDnMOdw57Dn8Ogw6HDosOjw6TDpcOmw6fDqMOpw6rDq8Osw63DrsOvw7DDscOyw7PDtMO1w7bDt8O4w7nDusO7w7zDvcO+w78=",
+  };
+  const result = getPvValue(updatedPV);
+  expect(result).toBe(
+    "¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ",
+  );
+});
+
+test("getPvValue decodes and returns base64 value when b64byt is provided", () => {
   const updatedPV = { type: "update", pv: "test", b64byt: "SGVsbG8gV29ybGQ=" }; // Base64 for 'Hello World'
   const result = getPvValue(updatedPV);
   expect(result).toBe("Hello World");
