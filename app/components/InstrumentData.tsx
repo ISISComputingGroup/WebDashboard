@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import { IfcPVWSMessage, IfcPVWSRequest, PVWSRequestType } from "@/app/types";
+import {IfcBlock, IfcGroup, IfcPV, IfcPVWSMessage, IfcPVWSRequest, PVWSRequestType} from "@/app/types";
 import {
+  CSSB,
   findPVInDashboard,
   findPVInGroups,
   getGroupsWithBlocksFromConfigOutput,
@@ -10,6 +11,7 @@ import {
   RC_INRANGE,
   SP_RBV,
   storePrecision,
+  getExtraPVsForBlock,
   toPrecision,
   yesToBoolean,
 } from "@/app/components/Instrument";
@@ -69,25 +71,18 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
       const updatedPVbytes: string | null | undefined = updatedPV.b64byt;
 
       if (updatedPVName == instListPV && updatedPVbytes != null) {
-        const instlist = instListFromBytes(updatedPVbytes);
-        const prefix = getPrefix(instlist, instName);
+        const prefix = getPrefix(instListFromBytes(updatedPVbytes), instName);
         const instrument = new Instrument(prefix);
         setCurrentInstrument(instrument);
 
+        // subscribe to dashboard and run info PVs
         sendJsonMessage({
           type: PVWSRequestType.subscribe,
-          pvs: [`${prefix}${CONFIG_DETAILS}`],
+          pvs: instrument.runInfoPVs
+            .concat(instrument.dashboard.flat(3))
+            .map((v: IfcPV) => v.pvaddress)
+            .concat([`${prefix}${CONFIG_DETAILS}`]),
         });
-
-        // subscribe to dashboard and run info PVs
-        for (const pv of instrument.runInfoPVs.concat(
-          instrument.dashboard.flat(3),
-        )) {
-          sendJsonMessage({
-            type: PVWSRequestType.subscribe,
-            pvs: [pv.pvaddress],
-          });
-        }
         return;
       }
 
@@ -108,9 +103,19 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
         const res = dehex_and_decompress(atob(updatedPVbytes));
         currentInstrument.groups = getGroupsWithBlocksFromConfigOutput(
           JSON.parse(res),
-          sendJsonMessage,
-          currentInstrument.prefix,
         );
+
+        sendJsonMessage({
+          type: PVWSRequestType.subscribe,
+          pvs: currentInstrument.groups
+            .map((g: IfcGroup) => g.blocks)
+            .flat(1)  // flatten to a big array of blocks
+            .map((b: IfcBlock) =>
+              getExtraPVsForBlock(
+                  currentInstrument.prefix + CSSB + b.human_readable_name
+            )).flat(1), //flatten block, rc, sp_rbv pvs for every block to a 1d array
+        });
+
       } else {
         const pvVal = getPvValue(updatedPV);
 

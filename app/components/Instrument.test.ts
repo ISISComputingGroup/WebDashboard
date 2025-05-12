@@ -7,7 +7,7 @@ import {
   RC_INRANGE,
   SP_RBV,
   storePrecision,
-  subscribeToBlockPVs,
+  getExtraPVsForBlock,
   toPrecision,
   yesToBoolean,
 } from "@/app/components/Instrument";
@@ -18,8 +18,6 @@ import {
   IfcGroup,
   IfcPV,
   IfcPVWSMessage,
-  IfcPVWSRequest,
-  PVWSRequestType,
 } from "@/app/types";
 
 test("findPVinDashboard finds a pv in the dashboard and returns it", () => {
@@ -109,20 +107,6 @@ test("findPVInGroups returns a block when it finds one", () => {
   findPVInGroups(groups, prefix, prefix + CSSB + blockName);
 });
 
-test("subscribeToBlockPVs subscribes to all run control PVs", () => {
-  const mockSendJsonMessage = jest.fn();
-  const aBlock = "INST:CS:SB:SomeBlock";
-  subscribeToBlockPVs(mockSendJsonMessage, aBlock);
-  expect(mockSendJsonMessage.mock.calls.length).toBe(1);
-  const expectedCall: IfcPVWSRequest = {
-    type: PVWSRequestType.subscribe,
-    pvs: [aBlock, aBlock + RC_ENABLE, aBlock + RC_INRANGE, aBlock + SP_RBV],
-  };
-  expect(JSON.stringify(mockSendJsonMessage.mock.calls[0][0])).toBe(
-    JSON.stringify(expectedCall),
-  );
-});
-
 test("toPrecision does nothing to string value ", () => {
   const expectedValue = "untouched";
   const aBlock: IfcBlock = {
@@ -165,8 +149,6 @@ test("yesToBoolean works with NO as value", () => {
 test("getGroupsWithBlocksFromConfigOutput gets blocks from blockserver groups", () => {
   const blockNameToTest = "aBlock";
   const groupNameToTest = "aGroup";
-  const prefix = "TESTING";
-  const mockSendJsonMessage = jest.fn();
 
   const configOutput: ConfigOutput = {
     groups: [{ blocks: [blockNameToTest], name: groupNameToTest }],
@@ -200,20 +182,14 @@ test("getGroupsWithBlocksFromConfigOutput gets blocks from blockserver groups", 
   };
   const groups = getGroupsWithBlocksFromConfigOutput(
     configOutput,
-    mockSendJsonMessage,
-    prefix,
   );
   expect(groups[0].name).toBe(groupNameToTest);
   expect(groups[0].blocks[0].human_readable_name).toBe(blockNameToTest);
 });
 
 test("subscribeToBlockPVs subscribes to blocks, their run control and their SP:RBV PVs", () => {
-  const mockSendJsonMessage = jest.fn();
   const blockAddress = "IN:INST:CS:SB:Block1";
-  subscribeToBlockPVs(mockSendJsonMessage, blockAddress);
-  expect(mockSendJsonMessage).toBeCalledTimes(1);
-  const call: Array<string> = mockSendJsonMessage.mock.calls[0][0].pvs;
-  expect(call).toEqual(
+  expect(getExtraPVsForBlock( blockAddress)).toEqual(
     expect.arrayContaining([
       blockAddress,
       blockAddress + RC_ENABLE,
