@@ -17,7 +17,7 @@ Allows monitoring of instrument PVs via a web page.
 To install all dependencies, use:
 
 ```bash
-  npm install
+  npm ci
 ```
 
 ### Running
