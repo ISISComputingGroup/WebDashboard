@@ -5,7 +5,7 @@
   "author": "ISIS Neutron and Muon Source - Experiment Controls",
   "description": "The web dashboard for instruments at the ISIS Neutron and Muon Source",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "lint": "eslint ./",
     "test": "jest",

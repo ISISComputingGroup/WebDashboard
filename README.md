@@ -58,7 +58,3 @@ To build and start in prod mode, use:
 
 > [!NOTE]  
 > Images will not work properly here as a basePath has not been injected (as per the CI actions)
-
-#### Container approach
-
-To run dev mode in containerd instead, run `nerdctl compose -f compose.yaml up`. This will mount your current directory as a volume in the container which means any changes will make nextjs re-compile pages. This also means that anything in the `dotenv` files are picked up, including the PVWS URL.
