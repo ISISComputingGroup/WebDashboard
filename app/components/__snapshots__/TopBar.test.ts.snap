@@ -62,7 +62,7 @@ exports[`renders topbar unchanged 1`] = `
                 <span
                   class="font-light"
                 >
-                  Hidden/unknown
+                  Unknown
                 </span>
               </td>
             </tr>
@@ -80,7 +80,7 @@ exports[`renders topbar unchanged 1`] = `
                 <span
                   class="font-light"
                 >
-                  Hidden/unknown
+                  Unknown
                 </span>
               </td>
             </tr>
@@ -101,7 +101,7 @@ exports[`renders topbar unchanged 1`] = `
                 <span
                   class="font-light"
                 >
-                  Hidden/unknown
+                  Unknown
                 </span>
               </td>
             </tr>
@@ -117,7 +117,7 @@ exports[`renders topbar unchanged 1`] = `
                 <span
                   class="font-light"
                 >
-                  Hidden/unknown
+                  Unknown
                 </span>
               </td>
             </tr>
@@ -133,7 +133,7 @@ exports[`renders topbar unchanged 1`] = `
                 <span
                   class="font-light"
                 >
-                  Hidden/unknown
+                  Unknown
                 </span>
               </td>
             </tr>
@@ -154,7 +154,7 @@ exports[`renders topbar unchanged 1`] = `
                 <span
                   class="font-light"
                 >
-                  Hidden/unknown
+                  Unknown
                 </span>
               </td>
             </tr>
@@ -170,7 +170,7 @@ exports[`renders topbar unchanged 1`] = `
                 <span
                   class="font-light"
                 >
-                  Hidden/unknown
+                  Unknown
                 </span>
               </td>
             </tr>
@@ -186,7 +186,7 @@ exports[`renders topbar unchanged 1`] = `
                 <span
                   class="font-light"
                 >
-                  Hidden/unknown
+                  Unknown
                 </span>
               </td>
             </tr>
