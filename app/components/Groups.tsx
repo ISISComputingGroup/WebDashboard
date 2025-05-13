@@ -1,23 +1,23 @@
 import Group from "./Group";
-
-import { IfcGroup } from "@/app/types";
+import { IfcBlock } from "@/app/types";
 
 export default function Groups({
   groupsMap,
   instName,
   showHiddenBlocks,
 }: {
-  groupsMap: Array<IfcGroup>;
+  groupsMap: Map<string, Array<IfcBlock>>;
   instName: string;
   showHiddenBlocks: boolean;
 }) {
   return (
     <div className="rounded-xl grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mt-2">
-      {groupsMap.map((group) => {
+      {Array.from(groupsMap.entries()).map(([group, blocks]) => {
         return (
           <Group
-            key={group.name}
+            key={group}
             group={group}
+            blocks={blocks}
             instName={instName}
             showHiddenBlocks={showHiddenBlocks}
           />

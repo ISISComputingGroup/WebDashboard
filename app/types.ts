@@ -31,14 +31,6 @@ export interface IfcBlock extends IfcPV {
   sp_value?: number | string;
 }
 
-export interface IfcGroup {
-  /**
-   * A group, contained within a configuration or component, containing blocks.
-   */
-  name: string;
-  blocks: Array<IfcBlock>;
-}
-
 export interface IfcPVWSMessage {
   /**
    * A message from PVWS.

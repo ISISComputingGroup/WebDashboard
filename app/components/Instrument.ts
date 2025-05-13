@@ -3,7 +3,6 @@ import {
   ConfigOutputBlock,
   DashboardArr,
   IfcBlock,
-  IfcGroup,
   IfcPV,
   IfcPVWSMessage,
 } from "@/app/types";
@@ -18,7 +17,7 @@ export class Instrument {
   prefix: string;
   dashboard_prefix: string;
 
-  groups: Array<IfcGroup> = [];
+  groups: Map<string, Array<IfcBlock>> = new Map();
   runInfoPVs: Array<IfcPV> = [];
 
   dashboard: DashboardArr = [];
@@ -188,8 +187,7 @@ export class Instrument {
   }
 
   getAllBlockPVs(): Array<string> {
-    return this.groups
-      .map((g: IfcGroup) => g.blocks)
+    return Array.from(this.groups.values())
       .flat(1) // flatten to a big array of blocks
       .map((b: IfcBlock) =>
         getExtraPVsForBlock(this.prefix + CSSB + b.human_readable_name),
@@ -252,9 +250,9 @@ export function getExtraPVsForBlock(block_address: string): Array<string> {
  */
 export function getGroupsWithBlocksFromConfigOutput(
   configOutput: ConfigOutput,
-): Array<IfcGroup> {
+): Map<string, Array<IfcBlock>> {
   const configOutputGroups = configOutput.groups;
-  let newGroups: Array<IfcGroup> = [];
+  let newGroups = new Map<string, Array<IfcBlock>>();
   for (const configOutputGroup of configOutputGroups) {
     const groupName = configOutputGroup.name;
     let blocks: Array<IfcBlock> = [];
@@ -272,21 +270,18 @@ export function getGroupsWithBlocksFromConfigOutput(
         });
       }
     }
-    newGroups.push({
-      name: groupName,
-      blocks: blocks,
-    });
+    newGroups.set(groupName, blocks);
   }
   return newGroups;
 }
 
 export function findPVInGroups(
-  groups: Array<IfcGroup>,
+  groups: Map<string, Array<IfcBlock>>,
   prefix: string,
   updatedPVName: string,
 ): undefined | IfcBlock {
-  return groups
-    .flatMap((group: IfcGroup) => group.blocks)
+  return Array.from(groups.values())
+    .flat()
     .find(
       (block: IfcBlock) =>
         updatedPVName == prefix + CSSB + block.human_readable_name,
