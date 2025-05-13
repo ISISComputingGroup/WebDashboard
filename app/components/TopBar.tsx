@@ -4,17 +4,13 @@ import {
   UNREACHABLE,
 } from "./getRunstateColours";
 
-import { DashboardArr, IfcPV } from "@/app/types";
-import { findPVByHumanReadableName } from "@/app/components/PVutils";
+import { tBlockMapping } from "@/app/types";
 import { DASHBOARD } from "@/app/components/Instrument";
 
 export const runStateStr = "Run state";
 export const configName = "Config name";
 
-export function getRunstate(
-  prefix: string,
-  runInfoPVs: Map<string, IfcPV>,
-): string {
+export function getRunstate(prefix: string, runInfoPVs: tBlockMapping): string {
   const runStatePV = runInfoPVs.get(`${prefix}DAE:RUNSTATE_STR`);
   if (runStatePV && runStatePV.value && typeof runStatePV.value === "string") {
     return runStatePV.value;
@@ -28,9 +24,9 @@ export default function TopBar({
   runInfoPVs,
   prefix,
 }: {
-  dashboard: Map<string, IfcPV>;
+  dashboard: tBlockMapping;
   instName: string;
-  runInfoPVs: Map<string, IfcPV>;
+  runInfoPVs: tBlockMapping;
   prefix: string;
 }) {
   if (!dashboard || !runInfoPVs || !instName) {
@@ -77,7 +73,7 @@ export default function TopBar({
             id={"dashboardTable"}
             className="text-sm max-w-full table-fixed flex divide-x divide-gray-200 text-wrap w-full "
           >
-            <tbody className="w=1/3">
+            <tbody className="w-1/3">
               <tr className="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white md:flex">
                 <td className="py-1 px-4 flex font-bold break-words">Title</td>
                 <td className="py-1 px-4 flex justify-between items-center break-all">

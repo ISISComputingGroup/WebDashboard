@@ -18,6 +18,11 @@ export interface IfcPV {
   updateSeconds?: number; // Seconds from epoch
 }
 
+// PV address to IfcBlock
+export type tBlockMapping = Map<string, IfcBlock>;
+// Group names to tBlockMapping
+export type tGroups = Map<string, tBlockMapping>;
+
 export interface IfcBlock extends IfcPV {
   /**
    * A block with run control and visibility additions to a regular PV.

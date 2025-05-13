@@ -1,7 +1,7 @@
 import Block from "./Block";
 import { checkIfAllBlocksInGroupAreHidden } from "./GroupUtils";
 
-import { IfcBlock } from "@/app/types";
+import { tBlockMapping } from "@/app/types";
 
 export default function Group({
   group,
@@ -10,7 +10,7 @@ export default function Group({
   showHiddenBlocks,
 }: {
   group: string;
-  blocks: Array<IfcBlock>;
+  blocks: tBlockMapping;
   instName: string;
   showHiddenBlocks: boolean;
 }) {
@@ -37,7 +37,7 @@ export default function Group({
           </tr>
         </thead>
         <tbody className="text-gray-200 sticky">
-          {blocks.map((pv) => {
+          {Array.from(blocks.values()).map((pv) => {
             return (
               <Block
                 key={pv.human_readable_name}

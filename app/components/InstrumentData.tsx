@@ -1,11 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import {
-  IfcPV,
-  IfcPVWSMessage,
-  IfcPVWSRequest,
-  PVWSRequestType,
-} from "@/app/types";
+import { IfcPVWSMessage, IfcPVWSRequest, PVWSRequestType } from "@/app/types";
 import {
   findPVInGroups,
   getGroupsWithBlocksFromConfigOutput,
@@ -29,11 +24,7 @@ import {
   dehex_and_decompress,
   instListFromBytes,
 } from "@/app/components/dehex_and_decompress";
-import {
-  findPVByAddress,
-  getPrefix,
-  getPvValue,
-} from "@/app/components/PVutils";
+import { getPrefix, getPvValue } from "@/app/components/PVutils";
 import TopBar from "@/app/components/TopBar";
 import CheckToggle from "@/app/components/CheckToggle";
 import Groups from "@/app/components/Groups";
@@ -102,6 +93,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
         }
         setLastUpdate(updatedPVbytes);
         currentInstrument.groups = getGroupsWithBlocksFromConfigOutput(
+          currentInstrument.prefix,
           JSON.parse(dehex_and_decompress(atob(updatedPVbytes))),
         );
 
@@ -121,11 +113,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
         const pv =
           currentInstrument.dashboard.get(updatedPVName) ||
           currentInstrument.runInfoPVs.get(updatedPVName) ||
-          findPVInGroups(
-            currentInstrument.groups,
-            currentInstrument.prefix,
-            updatedPVName,
-          );
+          findPVInGroups(currentInstrument.groups, updatedPVName);
         if (pv) {
           storePrecision(updatedPV, pv);
           pv.value = toPrecision(pv, pvVal);
@@ -138,7 +126,6 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
           if (updatedPVName.endsWith(RC_INRANGE)) {
             const underlyingBlock = findPVInGroups(
               currentInstrument.groups,
-              currentInstrument.prefix,
               updatedPVName.replace(RC_INRANGE, ""),
             );
             if (underlyingBlock)
@@ -146,7 +133,6 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
           } else if (updatedPVName.endsWith(RC_ENABLE)) {
             const underlyingBlock = findPVInGroups(
               currentInstrument.groups,
-              currentInstrument.prefix,
               updatedPVName.replace(RC_ENABLE, ""),
             );
             if (underlyingBlock)
@@ -154,7 +140,6 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
           } else if (updatedPVName.endsWith(SP_RBV)) {
             const underlyingBlock = findPVInGroups(
               currentInstrument.groups,
-              currentInstrument.prefix,
               updatedPVName.replace(SP_RBV, ""),
             );
             if (underlyingBlock)

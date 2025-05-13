@@ -1,7 +1,9 @@
-import { IfcBlock } from "@/app/types";
+import { tBlockMapping } from "@/app/types";
 
 export function checkIfAllBlocksInGroupAreHidden(
-  blocks: Array<IfcBlock>,
+  blocks: tBlockMapping,
 ): boolean {
-  return blocks.map((block) => block.visible).every((v) => v === false);
+  return Array.from(blocks.values())
+    .map((block) => block.visible)
+    .every((v) => v === false);
 }

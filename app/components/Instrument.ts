@@ -1,15 +1,13 @@
 import {
   ConfigOutput,
   ConfigOutputBlock,
-  DashboardArr,
   IfcBlock,
   IfcPV,
   IfcPVWSMessage,
+  tBlockMapping,
+  tGroups,
 } from "@/app/types";
-import {
-  ExponentialOnThresholdFormat,
-  findPVByAddress,
-} from "@/app/components/PVutils";
+import { ExponentialOnThresholdFormat } from "@/app/components/PVutils";
 
 export const DASHBOARD = "CS:DASHBOARD:TAB:";
 
@@ -17,10 +15,9 @@ export class Instrument {
   prefix: string;
   dashboard_prefix: string;
 
-  groups: Map<string, Array<IfcBlock>> = new Map();
-  runInfoPVs: Map<string, IfcPV> = new Map();
-
-  dashboard: Map<string, IfcPV> = new Map();
+  groups: tGroups = new Map();
+  runInfoPVs: tBlockMapping = new Map();
+  dashboard: tBlockMapping = new Map();
 
   constructor(prefix: string) {
     this.prefix = prefix;
@@ -165,12 +162,10 @@ export class Instrument {
   }
 
   getAllBlockPVs(): Array<string> {
-    return Array.from(this.groups.values())
-      .flat(1) // flatten to a big array of blocks
-      .map((b: IfcBlock) =>
-        getExtraPVsForBlock(this.prefix + CSSB + b.human_readable_name),
-      )
-      .flat(1); //flatten block, rc, sp_rbv pvs for every block to a 1d array
+    const blocksPerGroup = Array.from(this.groups.values());
+    return Array.from(blocksPerGroup)
+      .map((m) => Array.from(m.keys()))
+      .flat();
   }
 }
 
@@ -220,19 +215,20 @@ export function getExtraPVsForBlock(block_address: string): Array<string> {
  * and create an array of groups which contain blocks.
  */
 export function getGroupsWithBlocksFromConfigOutput(
+  prefix: string,
   configOutput: ConfigOutput,
-): Map<string, Array<IfcBlock>> {
+): tGroups {
   const configOutputGroups = configOutput.groups;
-  let newGroups = new Map<string, Array<IfcBlock>>();
+  let newGroups: tGroups = new Map();
   for (const configOutputGroup of configOutputGroups) {
     const groupName = configOutputGroup.name;
-    let blocks: Array<IfcBlock> = [];
+    let blocks: tBlockMapping = new Map();
     for (const configOutputBlock of configOutputGroup.blocks) {
       const newBlock = configOutput.blocks.find(
         (b: ConfigOutputBlock) => b.name === configOutputBlock,
       );
       if (newBlock) {
-        blocks.push({
+        blocks.set(prefix + CSSB + newBlock.name, {
           pvaddress: newBlock.pv,
           human_readable_name: newBlock.name,
           low_rc: newBlock.lowlimit,
@@ -247,14 +243,12 @@ export function getGroupsWithBlocksFromConfigOutput(
 }
 
 export function findPVInGroups(
-  groups: Map<string, Array<IfcBlock>>,
-  prefix: string,
+  groups: tGroups,
   updatedPVName: string,
 ): undefined | IfcBlock {
-  return Array.from(groups.values())
-    .flat()
-    .find(
-      (block: IfcBlock) =>
-        updatedPVName == prefix + CSSB + block.human_readable_name,
-    );
+  for (const blocksPerGroup of groups.values()) {
+    if (blocksPerGroup.has(updatedPVName)) {
+      return blocksPerGroup.get(updatedPVName);
+    }
+  }
 }

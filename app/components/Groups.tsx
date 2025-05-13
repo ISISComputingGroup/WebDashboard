@@ -1,12 +1,12 @@
 import Group from "./Group";
-import { IfcBlock } from "@/app/types";
+import { tGroups } from "@/app/types";
 
 export default function Groups({
   groupsMap,
   instName,
   showHiddenBlocks,
 }: {
-  groupsMap: Map<string, Array<IfcBlock>>;
+  groupsMap: tGroups;
   instName: string;
   showHiddenBlocks: boolean;
 }) {
