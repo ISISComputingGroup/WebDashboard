@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import { IfcPVWSMessage, IfcPVWSRequest, PVWSRequestType } from "@/app/types";
 import {
   findPVInGroups,
@@ -46,11 +46,12 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
     }
   }, [instName]);
 
+  let messageQueue = useRef([]);
+
   const {
     sendJsonMessage,
   }: {
     sendJsonMessage: (a: IfcPVWSRequest) => void;
-    lastJsonMessage: IfcPVWSMessage;
   } = useWebSocket(socketURL, {
     shouldReconnect: () => true,
     onOpen: () => {
@@ -62,7 +63,6 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
       const updatedPV: IfcPVWSMessage = JSON.parse(m.data);
       const updatedPVName: string = updatedPV.pv;
       const updatedPVbytes: string | null | undefined = updatedPV.b64byt;
-
       if (updatedPVName == instListPV && updatedPVbytes != null) {
         const prefix = getPrefix(instListFromBytes(updatedPVbytes), instName);
         const instrument = new Instrument(prefix);
@@ -102,6 +102,31 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
           pvs: currentInstrument.getAllBlockPVs(),
         });
       } else {
+        messageQueue.current.push(m);
+      }
+    },
+    onError: () => {
+      setWebSockErr(
+        "Failed to connect to websocket - please check your network connection and contact Experiment Controls if this persists.",
+      );
+    },
+    share: true,
+    retryOnError: true,
+    reconnectInterval: webSocketReconnectInterval,
+    reconnectAttempts: webSocketReconnectAttempts,
+  });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log("Process " + messageQueue.current.length + " queued messages");
+      while (true) {
+        const m = messageQueue.current.pop();
+        if (m === undefined) {
+          break;
+        }
+        const updatedPV: IfcPVWSMessage = JSON.parse(m.data);
+        const updatedPVName: string = updatedPV.pv;
+
         const pvVal = getPvValue(updatedPV);
 
         if (pvVal == undefined) {
@@ -151,17 +176,9 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
           }
         }
       }
-    },
-    onError: () => {
-      setWebSockErr(
-        "Failed to connect to websocket - please check your network connection and contact Experiment Controls if this persists.",
-      );
-    },
-    share: true,
-    retryOnError: true,
-    reconnectInterval: webSocketReconnectInterval,
-    reconnectAttempts: webSocketReconnectAttempts,
-  });
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [currentInstrument]);
 
   if (!currentInstrument) {
     return <h1>Loading...</h1>;
