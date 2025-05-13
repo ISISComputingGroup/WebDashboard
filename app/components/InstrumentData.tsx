@@ -7,7 +7,6 @@ import {
   PVWSRequestType,
 } from "@/app/types";
 import {
-  findPVInDashboard,
   findPVInGroups,
   getGroupsWithBlocksFromConfigOutput,
   Instrument,
@@ -81,9 +80,8 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
         // subscribe to dashboard and run info PVs
         sendJsonMessage({
           type: PVWSRequestType.subscribe,
-          pvs: instrument.runInfoPVs
-            .concat(instrument.dashboard.flat(3))
-            .map((v: IfcPV) => v.pvaddress)
+          pvs: Array.from(instrument.runInfoPVs.keys())
+            .concat(Array.from(instrument.dashboard.keys()))
             .concat([`${prefix}${CONFIG_DETAILS}`]),
         });
         return;
@@ -121,8 +119,8 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
 
         // Check if this is a dashboard, run info, or block PV update.
         const pv =
-          findPVInDashboard(currentInstrument.dashboard, updatedPVName) ||
-          findPVByAddress(currentInstrument.runInfoPVs, updatedPVName) ||
+          currentInstrument.dashboard.get(updatedPVName) ||
+          currentInstrument.runInfoPVs.get(updatedPVName) ||
           findPVInGroups(
             currentInstrument.groups,
             currentInstrument.prefix,
@@ -189,6 +187,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
         dashboard={currentInstrument.dashboard}
         instName={instName}
         runInfoPVs={currentInstrument.runInfoPVs}
+        prefix={currentInstrument.prefix}
       />
       {webSockErr && <h1 className={"text-red-600"}>{webSockErr}</h1>}
       <div className="flex gap-2 ml-2 md:flex-row flex-col">

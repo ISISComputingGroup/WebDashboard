@@ -6,12 +6,16 @@ import {
 
 import { DashboardArr, IfcPV } from "@/app/types";
 import { findPVByHumanReadableName } from "@/app/components/PVutils";
+import { DASHBOARD } from "@/app/components/Instrument";
 
 export const runStateStr = "Run state";
 export const configName = "Config name";
 
-export function getRunstate(runInfoPVs: Array<IfcPV>): string {
-  const runStatePV = findPVByHumanReadableName(runInfoPVs, runStateStr);
+export function getRunstate(
+  prefix: string,
+  runInfoPVs: Map<string, IfcPV>,
+): string {
+  const runStatePV = runInfoPVs.get(`${prefix}DAE:RUNSTATE_STR`);
   if (runStatePV && runStatePV.value && typeof runStatePV.value === "string") {
     return runStatePV.value;
   }
@@ -22,18 +26,14 @@ export default function TopBar({
   dashboard,
   instName,
   runInfoPVs,
+  prefix,
 }: {
-  dashboard: DashboardArr;
+  dashboard: Map<string, IfcPV>;
   instName: string;
-  runInfoPVs: Array<IfcPV>;
+  runInfoPVs: Map<string, IfcPV>;
+  prefix: string;
 }) {
-  if (
-    !dashboard ||
-    !dashboard.flat().length ||
-    !runInfoPVs ||
-    !runInfoPVs.length ||
-    !instName
-  ) {
+  if (!dashboard || !runInfoPVs || !instName) {
     return (
       <h1 className="text-lg w-full text-white bg-gray-400 border-gray-500 border-2 p-3 font-semibold px-7 animate-pulse">
         Loading...
@@ -52,21 +52,22 @@ export default function TopBar({
       >
         <h2
           className={`text-center p-4 text-xl rounded-t-lg w-full 
-          ${getStatusColour(getRunstate(runInfoPVs))}
+          ${getStatusColour(getRunstate(prefix, runInfoPVs))}
            
-           ${getForegroundColour(getRunstate(runInfoPVs))}
+           ${getForegroundColour(getRunstate(prefix, runInfoPVs))}
           
           `}
           id={"instNameLabel"}
         >
           {instName.toUpperCase()} is{" "}
-          <span id={"runStateSpan"}>{getRunstate(runInfoPVs)}</span>
+          <span id={"runStateSpan"}>{getRunstate(prefix, runInfoPVs)}</span>
         </h2>
         <h3 className="text-black text-wrap max-w-full break-all py-2 font-semibold">
           Config:{" "}
           <span id={"configNameSpan"}>
-            {findPVByHumanReadableName(runInfoPVs, configName)
-              ? findPVByHumanReadableName(runInfoPVs, configName)!.value
+            {runInfoPVs.get(`${prefix}CS:BLOCKSERVER:CURR_CONFIG_NAME`)
+              ? runInfoPVs.get(`${prefix}CS:BLOCKSERVER:CURR_CONFIG_NAME`)!
+                  .value
               : "UNKNOWN"}
           </span>
         </h3>
@@ -74,21 +75,55 @@ export default function TopBar({
         <div className="bg-gray-50 border-2 border-gray-200 flex flex-col max-w-full w-full">
           <table
             id={"dashboardTable"}
-            className="text-sm max-w-full table-fixed flex divide-x divide-gray-200 text-wrap "
+            className="text-sm max-w-full table-fixed flex divide-x divide-gray-200 text-wrap w-full "
           >
-            {dashboard.map((column: Array<Array<IfcPV>>, index: number) => (
-              <tbody key={index} id={index.toString()} className="w-1/3">
-                {column.map((row: Array<IfcPV>, index: number) => (
+            <tbody className="w=1/3">
+              <tr className="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white md:flex">
+                <td className="py-1 px-4 flex font-bold break-words">Title</td>
+                <td className="py-1 px-4 flex justify-between items-center break-all">
+                  <span className="font-light">
+                    {dashboard.get(`${prefix}DAE:WDTITLE`)?.value
+                      ? dashboard.get(`${prefix}DAE:WDTITLE`)!.value
+                      : "Unknown"}
+                  </span>
+                </td>
+              </tr>
+
+              <tr className="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white md:flex">
+                <td className="py-1 px-4 flex font-bold break-words">Users</td>
+                <td className="py-1 px-4 flex justify-between items-center break-all">
+                  <span className="font-light">
+                    {dashboard.get(`${prefix}DAE:WDUSERS`)?.value
+                      ? dashboard.get(`${prefix}DAE:WDUSERS`)!.value
+                      : "Unknown"}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+
+            {[1, 2].map((col: number) => (
+              <tbody key={col} id={col.toString()} className="w-1/3">
+                {[1, 2, 3].map((row: number) => (
                   <tr
-                    key={index}
+                    key={row}
                     className="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white md:flex"
                   >
                     <td className="py-1 px-4 flex font-bold break-words">
-                      {row[0].value}
+                      {
+                        dashboard.get(
+                          `${prefix}${DASHBOARD}${row}:${col}:LABEL`,
+                        )!.value
+                      }
                     </td>
                     <td className="py-1 px-4 flex justify-between items-center break-all">
                       <span className="font-light">
-                        {row[1].value != null ? row[1].value : "Unknown"}
+                        {dashboard.get(
+                          `${prefix}${DASHBOARD}${row}:${col}:VALUE`,
+                        )?.value
+                          ? dashboard.get(
+                              `${prefix}${DASHBOARD}${row}:${col}:VALUE`,
+                            )!.value
+                          : "Unknown"}
                       </span>
                     </td>
                   </tr>
@@ -105,7 +140,7 @@ export default function TopBar({
               Show/hide all run information
             </h3>
             <div className="grid md:grid-cols-5 gap-2">
-              {runInfoPVs.map((runInfoPV) => (
+              {Array.from(runInfoPVs.values()).map((runInfoPV) => (
                 <div
                   className="mb-2 shadow-sm rounded-md"
                   key={runInfoPV.human_readable_name}
