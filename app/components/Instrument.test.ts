@@ -7,9 +7,10 @@ import {
   RC_INRANGE,
   SP_RBV,
   storePrecision,
-  subscribeToBlockPVs,
+  getExtraPVsForBlock,
   toPrecision,
   yesToBoolean,
+  Instrument,
 } from "@/app/components/Instrument";
 import {
   ConfigOutput,
@@ -18,8 +19,6 @@ import {
   IfcGroup,
   IfcPV,
   IfcPVWSMessage,
-  IfcPVWSRequest,
-  PVWSRequestType,
 } from "@/app/types";
 
 test("findPVinDashboard finds a pv in the dashboard and returns it", () => {
@@ -109,20 +108,6 @@ test("findPVInGroups returns a block when it finds one", () => {
   findPVInGroups(groups, prefix, prefix + CSSB + blockName);
 });
 
-test("subscribeToBlockPVs subscribes to all run control PVs", () => {
-  const mockSendJsonMessage = jest.fn();
-  const aBlock = "INST:CS:SB:SomeBlock";
-  subscribeToBlockPVs(mockSendJsonMessage, aBlock);
-  expect(mockSendJsonMessage.mock.calls.length).toBe(1);
-  const expectedCall: IfcPVWSRequest = {
-    type: PVWSRequestType.subscribe,
-    pvs: [aBlock, aBlock + RC_ENABLE, aBlock + RC_INRANGE, aBlock + SP_RBV],
-  };
-  expect(JSON.stringify(mockSendJsonMessage.mock.calls[0][0])).toBe(
-    JSON.stringify(expectedCall),
-  );
-});
-
 test("toPrecision does nothing to string value ", () => {
   const expectedValue = "untouched";
   const aBlock: IfcBlock = {
@@ -165,8 +150,6 @@ test("yesToBoolean works with NO as value", () => {
 test("getGroupsWithBlocksFromConfigOutput gets blocks from blockserver groups", () => {
   const blockNameToTest = "aBlock";
   const groupNameToTest = "aGroup";
-  const prefix = "TESTING";
-  const mockSendJsonMessage = jest.fn();
 
   const configOutput: ConfigOutput = {
     groups: [{ blocks: [blockNameToTest], name: groupNameToTest }],
@@ -198,22 +181,14 @@ test("getGroupsWithBlocksFromConfigOutput gets blocks from blockserver groups", 
     component_iocs: [],
     history: [],
   };
-  const groups = getGroupsWithBlocksFromConfigOutput(
-    configOutput,
-    mockSendJsonMessage,
-    prefix,
-  );
+  const groups = getGroupsWithBlocksFromConfigOutput(configOutput);
   expect(groups[0].name).toBe(groupNameToTest);
   expect(groups[0].blocks[0].human_readable_name).toBe(blockNameToTest);
 });
 
 test("subscribeToBlockPVs subscribes to blocks, their run control and their SP:RBV PVs", () => {
-  const mockSendJsonMessage = jest.fn();
   const blockAddress = "IN:INST:CS:SB:Block1";
-  subscribeToBlockPVs(mockSendJsonMessage, blockAddress);
-  expect(mockSendJsonMessage).toBeCalledTimes(1);
-  const call: Array<string> = mockSendJsonMessage.mock.calls[0][0].pvs;
-  expect(call).toEqual(
+  expect(getExtraPVsForBlock(blockAddress)).toEqual(
     expect.arrayContaining([
       blockAddress,
       blockAddress + RC_ENABLE,
@@ -233,4 +208,50 @@ test("storePrecision adds precision to a block if it is the first update", () =>
   let blockWithoutPrecision: IfcBlock = { pvaddress: "" };
   storePrecision(message, blockWithoutPrecision);
   expect(blockWithoutPrecision.precision).toEqual(precision);
+});
+
+test("getAllBlockPVs returns flat list of blocks, their RC and SPRBV pvs", () => {
+  const block1Name = "blockName";
+  const block2Name = "block2Name";
+  const prefix = "IN:TEST:";
+
+  let inst = new Instrument(prefix);
+
+  inst.groups = [
+    {
+      name: "aGroup",
+      blocks: [
+        {
+          human_readable_name: block1Name,
+          pvaddress: "some:underlying:pv:name",
+        },
+      ],
+    },
+    {
+      name: "aDifferentGroup",
+      blocks: [
+        {
+          human_readable_name: block2Name,
+          pvaddress: "someother:underlying:pv:name",
+        },
+      ],
+    },
+  ];
+
+  const res = inst.getAllBlockPVs();
+
+  expect(res.length).toBe(2 * 4); // 2 blocks, which means 4 PVs to subscribe to
+
+  expect(res).toEqual(
+    expect.arrayContaining([
+      prefix + CSSB + block1Name,
+      prefix + CSSB + block1Name + RC_ENABLE,
+      prefix + CSSB + block1Name + RC_INRANGE,
+      prefix + CSSB + block1Name + SP_RBV,
+      prefix + CSSB + block2Name,
+      prefix + CSSB + block2Name + RC_ENABLE,
+      prefix + CSSB + block2Name + RC_INRANGE,
+      prefix + CSSB + block2Name + SP_RBV,
+    ]),
+  );
 });

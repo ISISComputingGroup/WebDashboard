@@ -6,8 +6,6 @@ import {
   IfcGroup,
   IfcPV,
   IfcPVWSMessage,
-  IfcPVWSRequest,
-  PVWSRequestType,
 } from "@/app/types";
 import {
   ExponentialOnThresholdFormat,
@@ -188,6 +186,16 @@ export class Instrument {
       },
     ];
   }
+
+  getAllBlockPVs(): Array<string> {
+    return this.groups
+      .map((g: IfcGroup) => g.blocks)
+      .flat(1) // flatten to a big array of blocks
+      .map((b: IfcBlock) =>
+        getExtraPVsForBlock(this.prefix + CSSB + b.human_readable_name),
+      )
+      .flat(1); //flatten block, rc, sp_rbv pvs for every block to a 1d array
+  }
 }
 
 export function findPVInDashboard(
@@ -211,7 +219,10 @@ export function toPrecision(
     : pvVal;
 }
 
-export function storePrecision(updatedPV: IfcPVWSMessage, block: IfcBlock) {
+export function storePrecision(
+  updatedPV: IfcPVWSMessage,
+  block: IfcBlock,
+): void {
   const prec = updatedPV.precision;
   if (prec != null && prec > 0 && !block.precision) {
     // this is likely the first update, and contains precision information which is not repeated on a normal value update - store this in the block for later truncation (see below)
@@ -219,26 +230,20 @@ export function storePrecision(updatedPV: IfcPVWSMessage, block: IfcBlock) {
   }
 }
 
-export function yesToBoolean(pvVal: string | number) {
+export function yesToBoolean(pvVal: string | number): boolean {
   return pvVal == "YES";
 }
 
-export function subscribeToBlockPVs(
-  sendJsonMessage: (a: IfcPVWSRequest) => void,
-  block_address: string,
-) {
+export function getExtraPVsForBlock(block_address: string): Array<string> {
   /**
-   * Subscribes to a block and its associated run control PVs
+   * Given a block name, give the run control and sp_rbv PVs.
    */
-  sendJsonMessage({
-    type: PVWSRequestType.subscribe,
-    pvs: [
-      block_address,
-      block_address + RC_ENABLE,
-      block_address + RC_INRANGE,
-      block_address + SP_RBV,
-    ],
-  });
+  return [
+    block_address,
+    block_address + RC_ENABLE,
+    block_address + RC_INRANGE,
+    block_address + SP_RBV,
+  ];
 }
 
 /**
@@ -247,17 +252,15 @@ export function subscribeToBlockPVs(
  */
 export function getGroupsWithBlocksFromConfigOutput(
   configOutput: ConfigOutput,
-  sendJsonMessage: (a: IfcPVWSRequest) => void,
-  prefix: string,
 ): Array<IfcGroup> {
-  const groups = configOutput.groups;
+  const configOutputGroups = configOutput.groups;
   let newGroups: Array<IfcGroup> = [];
-  for (const group of groups) {
-    const groupName = group.name;
+  for (const configOutputGroup of configOutputGroups) {
+    const groupName = configOutputGroup.name;
     let blocks: Array<IfcBlock> = [];
-    for (const block of group.blocks) {
+    for (const configOutputBlock of configOutputGroup.blocks) {
       const newBlock = configOutput.blocks.find(
-        (b: ConfigOutputBlock) => b.name === block,
+        (b: ConfigOutputBlock) => b.name === configOutputBlock,
       );
       if (newBlock) {
         blocks.push({
@@ -267,8 +270,6 @@ export function getGroupsWithBlocksFromConfigOutput(
           high_rc: newBlock.highlimit,
           visible: newBlock.visible,
         });
-        const fullyQualifiedBlockPVAddress = prefix + CSSB + newBlock.name;
-        subscribeToBlockPVs(sendJsonMessage, fullyQualifiedBlockPVAddress);
       }
     }
     newGroups.push({

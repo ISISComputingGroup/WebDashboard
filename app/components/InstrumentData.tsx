@@ -1,6 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import { IfcPVWSMessage, IfcPVWSRequest, PVWSRequestType } from "@/app/types";
+import {
+  IfcPV,
+  IfcPVWSMessage,
+  IfcPVWSRequest,
+  PVWSRequestType,
+} from "@/app/types";
 import {
   findPVInDashboard,
   findPVInGroups,
@@ -69,25 +74,18 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
       const updatedPVbytes: string | null | undefined = updatedPV.b64byt;
 
       if (updatedPVName == instListPV && updatedPVbytes != null) {
-        const instlist = instListFromBytes(updatedPVbytes);
-        const prefix = getPrefix(instlist, instName);
+        const prefix = getPrefix(instListFromBytes(updatedPVbytes), instName);
         const instrument = new Instrument(prefix);
         setCurrentInstrument(instrument);
 
+        // subscribe to dashboard and run info PVs
         sendJsonMessage({
           type: PVWSRequestType.subscribe,
-          pvs: [`${prefix}${CONFIG_DETAILS}`],
+          pvs: instrument.runInfoPVs
+            .concat(instrument.dashboard.flat(3))
+            .map((v: IfcPV) => v.pvaddress)
+            .concat([`${prefix}${CONFIG_DETAILS}`]),
         });
-
-        // subscribe to dashboard and run info PVs
-        for (const pv of instrument.runInfoPVs.concat(
-          instrument.dashboard.flat(3),
-        )) {
-          sendJsonMessage({
-            type: PVWSRequestType.subscribe,
-            pvs: [pv.pvaddress],
-          });
-        }
         return;
       }
 
@@ -105,12 +103,14 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
           return;
         }
         setLastUpdate(updatedPVbytes);
-        const res = dehex_and_decompress(atob(updatedPVbytes));
         currentInstrument.groups = getGroupsWithBlocksFromConfigOutput(
-          JSON.parse(res),
-          sendJsonMessage,
-          currentInstrument.prefix,
+          JSON.parse(dehex_and_decompress(atob(updatedPVbytes))),
         );
+
+        sendJsonMessage({
+          type: PVWSRequestType.subscribe,
+          pvs: currentInstrument.getAllBlockPVs(),
+        });
       } else {
         const pvVal = getPvValue(updatedPV);
 
