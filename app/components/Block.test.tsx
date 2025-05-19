@@ -171,7 +171,7 @@ it("renders block with timestamp and shows timestamp value", () => {
   expect(
     container.querySelector(`#${aBlock.human_readable_name}_TIMESTAMP`)!
       .innerHTML,
-  ).toContain(new Date(expectedTimeStamp * 1000).toLocaleString());
+  ).toContain("11 Nov 2024, 16:20:22");
 });
 
 it("renders block without SP and hides SP value", () => {
