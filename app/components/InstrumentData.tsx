@@ -1,5 +1,5 @@
 "use client";
-import {useEffect, useRef, useState} from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { IfcPVWSMessage, IfcPVWSRequest, PVWSRequestType } from "@/app/types";
 import {
   findPVInGroups,
@@ -46,7 +46,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
     }
   }, [instName]);
 
-  let messageQueue = useRef([]);
+  let messageQueue: RefObject<Array<IfcPVWSMessage>> = useRef([]);
 
   const {
     sendJsonMessage,
@@ -67,6 +67,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
         const prefix = getPrefix(instListFromBytes(updatedPVbytes), instName);
         const instrument = new Instrument(prefix);
         setCurrentInstrument(instrument);
+        messageQueue.current = [];
 
         // subscribe to dashboard and run info PVs
         sendJsonMessage({
@@ -75,14 +76,10 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
             .concat(Array.from(instrument.dashboard.keys()))
             .concat([`${prefix}${CONFIG_DETAILS}`]),
         });
-        return;
-      }
-
-      if (!currentInstrument) {
-        return;
       }
 
       if (
+        currentInstrument &&
         updatedPVName == `${currentInstrument.prefix}${CONFIG_DETAILS}` &&
         updatedPVbytes != null
       ) {
@@ -91,18 +88,22 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
           // config hasnt actually changed so do nothing
           return;
         }
-        setLastUpdate(updatedPVbytes);
-        currentInstrument.groups = getGroupsWithBlocksFromConfigOutput(
-          currentInstrument.prefix,
+        let newInstrument = currentInstrument.clone();
+        newInstrument.groups = getGroupsWithBlocksFromConfigOutput(
+          newInstrument.prefix,
           JSON.parse(dehex_and_decompress(atob(updatedPVbytes))),
         );
 
         sendJsonMessage({
           type: PVWSRequestType.subscribe,
-          pvs: currentInstrument.getAllBlockPVs(),
+          pvs: newInstrument.getAllBlockPVs(),
         });
+
+        setLastUpdate(updatedPVbytes);
+        setCurrentInstrument(newInstrument);
       } else {
-        messageQueue.current.push(m);
+        console.log(updatedPV.b64byt);
+        messageQueue.current.push(updatedPV);
       }
     },
     onError: () => {
@@ -118,27 +119,37 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log("Process " + messageQueue.current.length + " queued messages");
+      if (currentInstrument == null) {
+        return;
+      }
+      console.log(
+        "Process " + messageQueue.current.length + " queued messages",
+      );
+
+      let newInstrument = currentInstrument.clone();
+
       while (true) {
-        const m = messageQueue.current.pop();
-        if (m === undefined) {
+        const updatedPV = messageQueue.current.shift();
+        if (updatedPV === undefined) {
           break;
         }
-        const updatedPV: IfcPVWSMessage = JSON.parse(m.data);
         const updatedPVName: string = updatedPV.pv;
 
         const pvVal = getPvValue(updatedPV);
 
         if (pvVal == undefined) {
-          console.debug(`initial/blank message from ${updatedPVName}`);
-          return;
+          console.debug(
+            `initial/blank message from ${updatedPVName}: ${updatedPV.b64byt}}`,
+          );
+          continue;
         }
 
         // Check if this is a dashboard, run info, or block PV update.
         const pv =
-          currentInstrument.dashboard.get(updatedPVName) ||
-          currentInstrument.runInfoPVs.get(updatedPVName) ||
-          findPVInGroups(currentInstrument.groups, updatedPVName);
+          newInstrument.dashboard.get(updatedPVName) ||
+          newInstrument.runInfoPVs.get(updatedPVName) ||
+          findPVInGroups(newInstrument.groups, updatedPVName);
+
         if (pv) {
           storePrecision(updatedPV, pv);
           pv.value = toPrecision(pv, pvVal);
@@ -150,21 +161,21 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
           // its object such as its run control status or SP:RBV
           if (updatedPVName.endsWith(RC_INRANGE)) {
             const underlyingBlock = findPVInGroups(
-              currentInstrument.groups,
+              newInstrument.groups,
               updatedPVName.replace(RC_INRANGE, ""),
             );
             if (underlyingBlock)
               underlyingBlock.runcontrol_inrange = yesToBoolean(pvVal);
           } else if (updatedPVName.endsWith(RC_ENABLE)) {
             const underlyingBlock = findPVInGroups(
-              currentInstrument.groups,
+              newInstrument.groups,
               updatedPVName.replace(RC_ENABLE, ""),
             );
             if (underlyingBlock)
               underlyingBlock.runcontrol_enabled = yesToBoolean(pvVal);
           } else if (updatedPVName.endsWith(SP_RBV)) {
             const underlyingBlock = findPVInGroups(
-              currentInstrument.groups,
+              newInstrument.groups,
               updatedPVName.replace(SP_RBV, ""),
             );
             if (underlyingBlock)
@@ -176,7 +187,8 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
           }
         }
       }
-    }, 5000);
+      setCurrentInstrument(newInstrument);
+    }, 1000);
     return () => clearInterval(interval);
   }, [currentInstrument]);
 

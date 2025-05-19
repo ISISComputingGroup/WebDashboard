@@ -23,7 +23,7 @@ export class Instrument {
     this.prefix = prefix;
     this.dashboard_prefix = `${this.prefix}${DASHBOARD}`;
 
-    this.dashboard.set(`${this.prefix}DAE:WD_TITLE`, {
+    this.dashboard.set(`${this.prefix}DAE:WDTITLE`, {
       pvaddress: `${this.prefix}DAE:WDTITLE`,
     });
     this.dashboard.set(`${this.prefix}DAE:WDUSERS`, {
@@ -159,6 +159,14 @@ export class Instrument {
         },
       ].map((i: IfcPV) => [i.pvaddress, i]),
     );
+  }
+
+  clone(): Instrument {
+    let cloned = new Instrument(this.prefix);
+    cloned.groups = structuredClone(this.groups);
+    cloned.runInfoPVs = structuredClone(this.runInfoPVs);
+    cloned.dashboard = structuredClone(this.dashboard);
+    return cloned;
   }
 
   getAllBlockPVs(): Array<string> {

@@ -2,8 +2,9 @@ import Block from "./Block";
 import { checkIfAllBlocksInGroupAreHidden } from "./GroupUtils";
 
 import { tBlockMapping } from "@/app/types";
+import { memo } from "react";
 
-export default function Group({
+const Group = memo(function Group({
   group,
   blocks,
   instName,
@@ -51,4 +52,6 @@ export default function Group({
       </table>
     </div>
   );
-}
+});
+
+export default Group;
