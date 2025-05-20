@@ -1,14 +1,17 @@
 import Block from "./Block";
 import { checkIfAllBlocksInGroupAreHidden } from "./GroupUtils";
 
-import { IfcGroup } from "@/app/types";
+import { tBlockMapping } from "@/app/types";
+import { memo } from "react";
 
-export default function Group({
+const Group = memo(function Group({
   group,
+  blocks,
   instName,
   showHiddenBlocks,
 }: {
-  group: IfcGroup;
+  group: string;
+  blocks: tBlockMapping;
   instName: string;
   showHiddenBlocks: boolean;
 }) {
@@ -17,14 +20,14 @@ export default function Group({
   }
 
   // Check if all the blocks in this group are hidden. If so, hide the group.
-  if (checkIfAllBlocksInGroupAreHidden(group) && !showHiddenBlocks) {
+  if (checkIfAllBlocksInGroupAreHidden(blocks) && !showHiddenBlocks) {
     return null;
   }
 
   return (
     <div className="w-full bg-gray-700 shadow-md rounded-xl flex flex-col overflow-x-auto">
       <h1 className="p-4 bg-gray-600 rounded-t-lg min-w-full text-white">
-        {group.name}
+        {group}
       </h1>
       <table className="text-sm table-fixed">
         <thead className="sticky">
@@ -35,7 +38,7 @@ export default function Group({
           </tr>
         </thead>
         <tbody className="text-gray-200 sticky">
-          {group.blocks.map((pv) => {
+          {Array.from(blocks.values()).map((pv) => {
             return (
               <Block
                 key={pv.human_readable_name}
@@ -49,4 +52,6 @@ export default function Group({
       </table>
     </div>
   );
-}
+});
+
+export default Group;
