@@ -171,9 +171,9 @@ export class Instrument {
 
   getAllBlockPVs(): Array<string> {
     const blocksPerGroup = Array.from(this.groups.values());
-    return Array.from(blocksPerGroup)
-      .map((m) => Array.from(m.keys()))
-      .flat();
+    return Array.from(blocksPerGroup).flatMap((m) =>
+      Array.from(m.keys()).flatMap((k) => getExtraPVsForBlock(k)),
+    );
   }
 }
 

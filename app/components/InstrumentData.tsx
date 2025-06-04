@@ -102,7 +102,6 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
         setLastUpdate(updatedPVbytes);
         setCurrentInstrument(newInstrument);
       } else {
-        console.log(updatedPV.b64byt);
         messageQueue.current.push(updatedPV);
       }
     },
