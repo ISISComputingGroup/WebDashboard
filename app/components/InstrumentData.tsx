@@ -102,6 +102,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
         setLastUpdate(updatedPVbytes);
         setCurrentInstrument(newInstrument);
       } else {
+        // Unless this is an instlist or config details update, push any messages into the queue so they can be processed later.
         messageQueue.current.push(updatedPV);
       }
     },
@@ -117,23 +118,29 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
   });
 
   useEffect(() => {
+    // Previously we have hit into performance issues when trying to render each time a PV update is published by the websocket.
+    // This processes any updates in the queue so we can "batch" updates and just re-render every second (as specified by the interval duration)
+    // Obviously this has the trade-off of not being "real-time" but for a web dashboard real-time isn't really required.
     const interval = setInterval(() => {
       if (currentInstrument == null) {
         return;
       }
-      console.log(
-        "Process " + messageQueue.current.length + " queued messages",
+      console.debug(
+        "Processing " + messageQueue.current.length + " queued messages",
       );
 
+      // Clone the instrument object here to avoid mutating the state without calling setState()
       let newInstrument = currentInstrument.clone();
 
       while (true) {
         const updatedPV = messageQueue.current.shift();
+
+        // Process until the end of the queue, which will give an undefined value
         if (updatedPV === undefined) {
           break;
         }
-        const updatedPVName: string = updatedPV.pv;
 
+        const updatedPVName: string = updatedPV.pv;
         const pvVal = getPvValue(updatedPV);
 
         if (pvVal == undefined) {
@@ -152,6 +159,8 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
         if (pv) {
           storePrecision(updatedPV, pv);
           pv.value = toPrecision(pv, pvVal);
+
+          // Things like units and severity aren't guaranteed on every PV update so cache them if they are available as this means there has been an update.
           if (updatedPV.seconds) pv.updateSeconds = updatedPV.seconds;
           if (updatedPV.units) pv.units = updatedPV.units;
           if (updatedPV.severity) pv.severity = updatedPV.severity;
@@ -180,12 +189,14 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
             if (underlyingBlock)
               underlyingBlock.sp_value = toPrecision(underlyingBlock, pvVal);
           } else {
-            console.warn(
+            console.debug(
               `update from unknown PV: ${updatedPVName} with value ${pvVal}`,
             );
           }
         }
       }
+
+      // Update the state only when we have finished processing all the updates.
       setCurrentInstrument(newInstrument);
     }, 1000);
     return () => clearInterval(interval);

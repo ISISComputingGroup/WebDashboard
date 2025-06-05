@@ -18,11 +18,16 @@ export default function Block({
     string | number | undefined
   >();
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [justChanged, setJustChanged] = useState(false);
   if (!pv.visible && !showHiddenBlocks) {
     return null;
   }
   if (pv.value != currentValue) {
     setCurrentValue(pv.value);
+    setJustChanged(true);
+    setTimeout(() => {
+      setJustChanged(false);
+    }, 1000);
   }
 
   const minimum_date_to_be_shown = 631152000; // This is what PVWS thinks epoch time is for some reason. don't bother showing it as the instrument wasn't running EPICS on 01/01/1990
@@ -59,6 +64,18 @@ export default function Block({
               {showAdvanced && "Readback: "}
               {pv.value} {pv.units != null && pv.units}
             </span>
+            <svg
+              id={pv.human_readable_name + "_CIRCLE"}
+              className={
+                "min-w-2 min-h-2 max-w-2 max-h-2 transition-opacity text-green-500 " +
+                (justChanged ? "opacity-100" : "opacity-0")
+              }
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <circle cx="12" cy="12" r="12" />
+            </svg>
           </div>
 
           {showAdvanced && (
