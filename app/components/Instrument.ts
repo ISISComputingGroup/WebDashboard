@@ -29,6 +29,16 @@ export class Instrument {
     this.dashboard.set(`${this.prefix}DAE:WDUSERS`, {
       pvaddress: `${this.prefix}DAE:WDUSERS`,
     });
+
+    for (const place of ["LEFT", "MIDDLE", "RIGHT"]) {
+      this.dashboard.set(`${this.prefix}CS:DASHBOARD:BANNER:${place}:LABEL`, {
+        pvaddress: `${this.prefix}CS:DASHBOARD:BANNER:${place}:LABEL`,
+      });
+      this.dashboard.set(`${this.prefix}CS:DASHBOARD:BANNER:${place}:VALUE`, {
+        pvaddress: `${this.prefix}CS:DASHBOARD:BANNER:${place}:VALUE`,
+      });
+    }
+
     for (const col of [1, 2]) {
       for (const row of [1, 2, 3]) {
         this.dashboard.set(`${this.dashboard_prefix}${row}:${col}:LABEL`, {
