@@ -1,31 +1,25 @@
 import { checkIfAllBlocksInGroupAreHidden } from "./GroupUtils";
 
-import { IfcBlock, IfcGroup } from "@/app/types";
+import { tBlockMapping } from "@/app/types";
 
 test("group with all hidden blocks returns true", () => {
-  const aHiddenBlock: IfcBlock = { pvaddress: "", visible: false };
-  let group: IfcGroup = { name: "testing", blocks: [aHiddenBlock] };
-  const result = checkIfAllBlocksInGroupAreHidden(group);
+  let blocks: tBlockMapping = new Map();
+  blocks.set("testing", { pvaddress: "", visible: false });
+  const result = checkIfAllBlocksInGroupAreHidden(blocks);
   expect(result).toBe(true);
 });
 
-test("group with all visible blocks returns true", () => {
-  let group: IfcGroup = {
-    name: "testing",
-    blocks: [{ pvaddress: "", visible: true }],
-  };
-  const result = checkIfAllBlocksInGroupAreHidden(group);
+test("group with all visible blocks returns false", () => {
+  let blocks: tBlockMapping = new Map();
+  blocks.set("testing", { pvaddress: "testing", visible: true });
+  const result = checkIfAllBlocksInGroupAreHidden(blocks);
   expect(result).toBe(false);
 });
 
-test("group with mixed visible blocks returns true", () => {
-  let group: IfcGroup = {
-    name: "testing",
-    blocks: [
-      { pvaddress: "", visible: false },
-      { pvaddress: "", visible: true },
-    ],
-  };
-  const result = checkIfAllBlocksInGroupAreHidden(group);
+test("group with mixed visible blocks returns false", () => {
+  let blocks: tBlockMapping = new Map();
+  blocks.set("block1", { pvaddress: "block1", visible: false });
+  blocks.set("block2", { pvaddress: "block2", visible: true });
+  const result = checkIfAllBlocksInGroupAreHidden(blocks);
   expect(result).toBe(false);
 });
