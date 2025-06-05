@@ -5,6 +5,12 @@ import { useState } from "react";
 const grafana_stub =
   "https://shadow.nd.rl.ac.uk/grafana/d/wMlwwaHMk/block-history?viewPanel=2&orgId=1&var-block=";
 
+const date_format = new Intl.DateTimeFormat("en-GB", {
+  dateStyle: "medium",
+  timeStyle: "medium",
+  timeZone: "Europe/London",
+});
+
 export default function Block({
   pv,
   instName,
@@ -101,7 +107,7 @@ export default function Block({
               pv.updateSeconds > minimum_date_to_be_shown ? (
                 <span id={pv.human_readable_name + "_TIMESTAMP"}>
                   {/*Multiply by 1000 here as Date() expects milliseconds*/}
-                  {`Last update: ${new Date(pv.updateSeconds * 1000).toLocaleString()}`}
+                  {`Last update: ${date_format.format(pv.updateSeconds * 1000)}`}
                 </span>
               ) : null}
             </div>
