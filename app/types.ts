@@ -72,8 +72,6 @@ export interface IfcPVWSRequest {
   pvs: Array<string>;
 }
 
-export type DashboardArr = Array<Array<Array<IfcPV>>>;
-
 export interface ConfigOutput {
   blocks: Array<ConfigOutputBlock>;
   component_iocs: Array<ConfigOutputIOCs>;

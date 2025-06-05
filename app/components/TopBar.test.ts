@@ -1,4 +1,4 @@
-import TopBar, { getRunstate, runStateStr } from "@/app/components/TopBar";
+import { exportedForTesting, getRunstate } from "@/app/components/TopBar";
 import { tBlockMapping } from "@/app/types";
 import { render } from "@testing-library/react";
 import { Instrument } from "@/app/components/Instrument";
@@ -11,7 +11,7 @@ test("GetRunstate returns the runstate when it exists and is of string type", ()
   blocks.set(prefix + "DAE:RUNSTATE_STR", {
     pvaddress: prefix + "DAE:RUNSTATE_STR",
     value: expected,
-    human_readable_name: runStateStr,
+    human_readable_name: "Run state",
   });
   expect(getRunstate(prefix, blocks)).toBe(expected);
 });
@@ -26,7 +26,7 @@ it("renders topbar unchanged", () => {
   let instrument = new Instrument(prefix);
   const instName = "Instrument";
   const { container } = render(
-    TopBar({
+    exportedForTesting({
       dashboard: instrument.dashboard,
       instName: instName,
       runInfoPVs: instrument.runInfoPVs,
@@ -42,7 +42,7 @@ it("draws instName expectedly", () => {
   let instrument = new Instrument(prefix);
   const instName = "Instrument";
   const { container } = render(
-    TopBar({
+    exportedForTesting({
       dashboard: instrument.dashboard,
       instName: instName,
       runInfoPVs: instrument.runInfoPVs,
@@ -63,7 +63,7 @@ it("draws configName expectedly", () => {
   const expectedConfigName = "Aconfig";
   configNamePV!.value = expectedConfigName;
   const { container } = render(
-    TopBar({
+    exportedForTesting({
       dashboard: instrument.dashboard,
       instName: "Instrument",
       runInfoPVs: instrument.runInfoPVs,

@@ -8,9 +8,6 @@ import { tBlockMapping } from "@/app/types";
 import { DASHBOARD } from "@/app/components/Instrument";
 import { memo } from "react";
 
-export const runStateStr = "Run state";
-export const configName = "Config name";
-
 export function getRunstate(prefix: string, runInfoPVs: tBlockMapping): string {
   const runStatePV = runInfoPVs.get(`${prefix}DAE:RUNSTATE_STR`);
   if (runStatePV && runStatePV.value && typeof runStatePV.value === "string") {
@@ -19,7 +16,7 @@ export function getRunstate(prefix: string, runInfoPVs: tBlockMapping): string {
   return UNREACHABLE;
 }
 
-const TopBar = memo(function TopBar({
+const TopBar = function TopBar({
   dashboard,
   instName,
   runInfoPVs,
@@ -152,6 +149,7 @@ const TopBar = memo(function TopBar({
       </div>
     </div>
   );
-});
+};
 
-export default TopBar;
+export default memo(TopBar);
+export const exportedForTesting = TopBar;

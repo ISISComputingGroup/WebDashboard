@@ -1,6 +1,5 @@
 import {
   CSSB,
-  findPVInDashboard,
   findPVInGroups,
   getGroupsWithBlocksFromConfigOutput,
   RC_ENABLE,
@@ -14,98 +13,23 @@ import {
 } from "@/app/components/Instrument";
 import {
   ConfigOutput,
-  DashboardArr,
   IfcBlock,
-  IfcGroup,
-  IfcPV,
   IfcPVWSMessage,
+  tBlockMapping,
+  tGroups,
 } from "@/app/types";
-
-test("findPVinDashboard finds a pv in the dashboard and returns it", () => {
-  const prefix = "UNITTESTING";
-  const pvToTestFor: IfcPV = { pvaddress: `${prefix}1:1:LABEL` };
-  let dashboard: DashboardArr = [
-    //column 0
-    [
-      [{ pvaddress: "", value: "Title:" }, { pvaddress: `${prefix}DAE:TITLE` }],
-      [
-        { pvaddress: "", value: "Users:" },
-        { pvaddress: `${prefix}DAE:_USERNAME` },
-      ],
-    ],
-    //column 1
-    [
-      [pvToTestFor, { pvaddress: `${prefix}1:1:VALUE` }],
-      [
-        { pvaddress: `${prefix}2:1:LABEL` },
-        { pvaddress: `${prefix}2:1:VALUE` },
-      ],
-      [
-        { pvaddress: `${prefix}3:1:LABEL` },
-        { pvaddress: `${prefix}3:1:VALUE` },
-      ],
-    ],
-    //column 2
-    [
-      [
-        { pvaddress: `${prefix}1:2:LABEL` },
-        { pvaddress: `${prefix}1:2:VALUE` },
-      ],
-      [
-        { pvaddress: `${prefix}2:2:LABEL` },
-        { pvaddress: `${prefix}2:2:VALUE` },
-      ],
-      [
-        { pvaddress: `${prefix}3:2:LABEL` },
-        { pvaddress: `${prefix}3:2:VALUE` },
-      ],
-    ],
-  ];
-
-  const result = findPVInDashboard(dashboard, pvToTestFor.pvaddress);
-  expect(result).toBe(pvToTestFor);
-});
-
-test("findPVinDashboard does not find a PV in the dashboard and returns undefined", () => {
-  const prefix = "UNITTESTING";
-  const pvToTestFor: IfcPV = { pvaddress: `${prefix}1:4:LABEL` };
-  let dashboard: DashboardArr = [
-    [
-      [
-        { pvaddress: `${prefix}1:2:LABEL` },
-        { pvaddress: `${prefix}1:2:VALUE` },
-      ],
-      [
-        { pvaddress: `${prefix}2:2:LABEL` },
-        { pvaddress: `${prefix}2:2:VALUE` },
-      ],
-      [
-        { pvaddress: `${prefix}3:2:LABEL` },
-        { pvaddress: `${prefix}3:2:VALUE` },
-      ],
-    ],
-  ];
-
-  const result = findPVInDashboard(dashboard, pvToTestFor.pvaddress);
-  expect(result).toBe(undefined);
-});
 
 test("findPVInGroups returns a block when it finds one", () => {
   const blockName = "blockName";
   const prefix = "IN:INSTRUMENT";
-  const groups: Array<IfcGroup> = [
-    {
-      name: "aGroup",
-      blocks: [
-        {
-          human_readable_name: blockName,
-          pvaddress: "some:underlying:pv:name",
-        },
-      ],
-    },
-  ];
-
-  findPVInGroups(groups, prefix, prefix + CSSB + blockName);
+  let groups: tGroups = new Map();
+  let group1Blocks: tBlockMapping = new Map();
+  group1Blocks.set(blockName, {
+    human_readable_name: blockName,
+    pvaddress: "some:underlying:pv:name",
+  });
+  groups.set("aGroup", group1Blocks);
+  findPVInGroups(groups, prefix + CSSB + blockName);
 });
 
 test("toPrecision does nothing to string value ", () => {
@@ -150,6 +74,7 @@ test("yesToBoolean works with NO as value", () => {
 test("getGroupsWithBlocksFromConfigOutput gets blocks from blockserver groups", () => {
   const blockNameToTest = "aBlock";
   const groupNameToTest = "aGroup";
+  const prefix = "TESTING:";
 
   const configOutput: ConfigOutput = {
     groups: [{ blocks: [blockNameToTest], name: groupNameToTest }],
@@ -158,7 +83,7 @@ test("getGroupsWithBlocksFromConfigOutput gets blocks from blockserver groups", 
         name: blockNameToTest,
         component: "",
         local: true,
-        pv: "A:BLOCK",
+        pv: prefix + "A:BLOCK",
         set_block: false,
         highlimit: 0,
         lowlimit: 0,
@@ -181,9 +106,11 @@ test("getGroupsWithBlocksFromConfigOutput gets blocks from blockserver groups", 
     component_iocs: [],
     history: [],
   };
-  const groups = getGroupsWithBlocksFromConfigOutput(configOutput);
-  expect(groups[0].name).toBe(groupNameToTest);
-  expect(groups[0].blocks[0].human_readable_name).toBe(blockNameToTest);
+  const groups = getGroupsWithBlocksFromConfigOutput(prefix, configOutput);
+  expect(Array.from(groups.keys())[0]).toBe(groupNameToTest);
+  expect(
+    Array.from(Array.from(groups.values())[0].values())[0].human_readable_name,
+  ).toBe(blockNameToTest);
 });
 
 test("subscribeToBlockPVs subscribes to blocks, their run control and their SP:RBV PVs", () => {
@@ -211,32 +138,25 @@ test("storePrecision adds precision to a block if it is the first update", () =>
 });
 
 test("getAllBlockPVs returns flat list of blocks, their RC and SPRBV pvs", () => {
-  const block1Name = "blockName";
-  const block2Name = "block2Name";
   const prefix = "IN:TEST:";
+  const block1Name = prefix + CSSB + "blockName";
+  const block2Name = prefix + CSSB + "block2Name";
 
   let inst = new Instrument(prefix);
 
-  inst.groups = [
-    {
-      name: "aGroup",
-      blocks: [
-        {
-          human_readable_name: block1Name,
-          pvaddress: "some:underlying:pv:name",
-        },
-      ],
-    },
-    {
-      name: "aDifferentGroup",
-      blocks: [
-        {
-          human_readable_name: block2Name,
-          pvaddress: "someother:underlying:pv:name",
-        },
-      ],
-    },
-  ];
+  let group1Blocks: tBlockMapping = new Map();
+  group1Blocks.set(block1Name, {
+    human_readable_name: block1Name,
+    pvaddress: "some:underlying:pv:name",
+  });
+  inst.groups.set("aGroup", group1Blocks);
+
+  let group2Blocks: tBlockMapping = new Map();
+  group2Blocks.set(block2Name, {
+    human_readable_name: block2Name,
+    pvaddress: "someother:underlying:pv:name",
+  });
+  inst.groups.set("aDifferentGroup", group2Blocks);
 
   const res = inst.getAllBlockPVs();
 
@@ -244,14 +164,14 @@ test("getAllBlockPVs returns flat list of blocks, their RC and SPRBV pvs", () =>
 
   expect(res).toEqual(
     expect.arrayContaining([
-      prefix + CSSB + block1Name,
-      prefix + CSSB + block1Name + RC_ENABLE,
-      prefix + CSSB + block1Name + RC_INRANGE,
-      prefix + CSSB + block1Name + SP_RBV,
-      prefix + CSSB + block2Name,
-      prefix + CSSB + block2Name + RC_ENABLE,
-      prefix + CSSB + block2Name + RC_INRANGE,
-      prefix + CSSB + block2Name + SP_RBV,
+      block1Name,
+      block1Name + RC_ENABLE,
+      block1Name + RC_INRANGE,
+      block1Name + SP_RBV,
+      block2Name,
+      block2Name + RC_ENABLE,
+      block2Name + RC_INRANGE,
+      block2Name + SP_RBV,
     ]),
   );
 });
