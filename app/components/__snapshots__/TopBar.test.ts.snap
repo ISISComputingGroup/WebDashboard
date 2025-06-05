@@ -41,12 +41,11 @@ exports[`renders topbar unchanged 1`] = `
         class="bg-gray-50 border-2 border-gray-200 flex flex-col max-w-full w-full"
       >
         <table
-          class="text-sm max-w-full table-fixed flex divide-x divide-gray-200 text-wrap "
+          class="text-sm max-w-full table-fixed flex divide-x divide-gray-200 text-wrap w-full "
           id="dashboardTable"
         >
           <tbody
             class="w-1/3"
-            id="0"
           >
             <tr
               class="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white md:flex"
@@ -54,7 +53,7 @@ exports[`renders topbar unchanged 1`] = `
               <td
                 class="py-1 px-4 flex font-bold break-words"
               >
-                Title:
+                Title
               </td>
               <td
                 class="py-1 px-4 flex justify-between items-center break-all"
@@ -72,7 +71,7 @@ exports[`renders topbar unchanged 1`] = `
               <td
                 class="py-1 px-4 flex font-bold break-words"
               >
-                Users:
+                Users
               </td>
               <td
                 class="py-1 px-4 flex justify-between items-center break-all"

@@ -18,6 +18,11 @@ export interface IfcPV {
   updateSeconds?: number; // Seconds from epoch
 }
 
+// PV address to IfcBlock
+export type tBlockMapping = Map<string, IfcBlock>;
+// Group names to tBlockMapping
+export type tGroups = Map<string, tBlockMapping>;
+
 export interface IfcBlock extends IfcPV {
   /**
    * A block with run control and visibility additions to a regular PV.
@@ -29,14 +34,6 @@ export interface IfcBlock extends IfcPV {
   low_rc?: number;
   high_rc?: number;
   sp_value?: number | string;
-}
-
-export interface IfcGroup {
-  /**
-   * A group, contained within a configuration or component, containing blocks.
-   */
-  name: string;
-  blocks: Array<IfcBlock>;
 }
 
 export interface IfcPVWSMessage {
@@ -74,8 +71,6 @@ export interface IfcPVWSRequest {
   type: PVWSRequestType;
   pvs: Array<string>;
 }
-
-export type DashboardArr = Array<Array<Array<IfcPV>>>;
 
 export interface ConfigOutput {
   blocks: Array<ConfigOutputBlock>;

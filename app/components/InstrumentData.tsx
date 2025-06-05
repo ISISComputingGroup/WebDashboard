@@ -1,13 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
+import { IfcPVWSMessage, IfcPVWSRequest, PVWSRequestType } from "@/app/types";
 import {
-  IfcPV,
-  IfcPVWSMessage,
-  IfcPVWSRequest,
-  PVWSRequestType,
-} from "@/app/types";
-import {
-  findPVInDashboard,
   findPVInGroups,
   getGroupsWithBlocksFromConfigOutput,
   Instrument,
@@ -30,11 +24,7 @@ import {
   dehex_and_decompress,
   instListFromBytes,
 } from "@/app/components/dehex_and_decompress";
-import {
-  findPVByAddress,
-  getPrefix,
-  getPvValue,
-} from "@/app/components/PVutils";
+import { getPrefix, getPvValue } from "@/app/components/PVutils";
 import TopBar from "@/app/components/TopBar";
 import CheckToggle from "@/app/components/CheckToggle";
 import Groups from "@/app/components/Groups";
@@ -56,11 +46,12 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
     }
   }, [instName]);
 
+  let messageQueue: RefObject<Array<IfcPVWSMessage>> = useRef([]);
+
   const {
     sendJsonMessage,
   }: {
     sendJsonMessage: (a: IfcPVWSRequest) => void;
-    lastJsonMessage: IfcPVWSMessage;
   } = useWebSocket(socketURL, {
     shouldReconnect: () => true,
     onOpen: () => {
@@ -72,28 +63,23 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
       const updatedPV: IfcPVWSMessage = JSON.parse(m.data);
       const updatedPVName: string = updatedPV.pv;
       const updatedPVbytes: string | null | undefined = updatedPV.b64byt;
-
       if (updatedPVName == instListPV && updatedPVbytes != null) {
         const prefix = getPrefix(instListFromBytes(updatedPVbytes), instName);
         const instrument = new Instrument(prefix);
         setCurrentInstrument(instrument);
+        messageQueue.current = [];
 
         // subscribe to dashboard and run info PVs
         sendJsonMessage({
           type: PVWSRequestType.subscribe,
-          pvs: instrument.runInfoPVs
-            .concat(instrument.dashboard.flat(3))
-            .map((v: IfcPV) => v.pvaddress)
+          pvs: Array.from(instrument.runInfoPVs.keys())
+            .concat(Array.from(instrument.dashboard.keys()))
             .concat([`${prefix}${CONFIG_DETAILS}`]),
         });
-        return;
-      }
-
-      if (!currentInstrument) {
-        return;
       }
 
       if (
+        currentInstrument &&
         updatedPVName == `${currentInstrument.prefix}${CONFIG_DETAILS}` &&
         updatedPVbytes != null
       ) {
@@ -102,71 +88,22 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
           // config hasnt actually changed so do nothing
           return;
         }
-        setLastUpdate(updatedPVbytes);
-        currentInstrument.groups = getGroupsWithBlocksFromConfigOutput(
+        let newInstrument = currentInstrument.clone();
+        newInstrument.groups = getGroupsWithBlocksFromConfigOutput(
+          newInstrument.prefix,
           JSON.parse(dehex_and_decompress(atob(updatedPVbytes))),
         );
 
         sendJsonMessage({
           type: PVWSRequestType.subscribe,
-          pvs: currentInstrument.getAllBlockPVs(),
+          pvs: newInstrument.getAllBlockPVs(),
         });
+
+        setLastUpdate(updatedPVbytes);
+        setCurrentInstrument(newInstrument);
       } else {
-        const pvVal = getPvValue(updatedPV);
-
-        if (pvVal == undefined) {
-          console.debug(`initial/blank message from ${updatedPVName}`);
-          return;
-        }
-
-        // Check if this is a dashboard, run info, or block PV update.
-        const pv =
-          findPVInDashboard(currentInstrument.dashboard, updatedPVName) ||
-          findPVByAddress(currentInstrument.runInfoPVs, updatedPVName) ||
-          findPVInGroups(
-            currentInstrument.groups,
-            currentInstrument.prefix,
-            updatedPVName,
-          );
-        if (pv) {
-          storePrecision(updatedPV, pv);
-          pv.value = toPrecision(pv, pvVal);
-          if (updatedPV.seconds) pv.updateSeconds = updatedPV.seconds;
-          if (updatedPV.units) pv.units = updatedPV.units;
-          if (updatedPV.severity) pv.severity = updatedPV.severity;
-        } else {
-          // OK, we haven't found the block, but we may have an update for
-          // its object such as its run control status or SP:RBV
-          if (updatedPVName.endsWith(RC_INRANGE)) {
-            const underlyingBlock = findPVInGroups(
-              currentInstrument.groups,
-              currentInstrument.prefix,
-              updatedPVName.replace(RC_INRANGE, ""),
-            );
-            if (underlyingBlock)
-              underlyingBlock.runcontrol_inrange = yesToBoolean(pvVal);
-          } else if (updatedPVName.endsWith(RC_ENABLE)) {
-            const underlyingBlock = findPVInGroups(
-              currentInstrument.groups,
-              currentInstrument.prefix,
-              updatedPVName.replace(RC_ENABLE, ""),
-            );
-            if (underlyingBlock)
-              underlyingBlock.runcontrol_enabled = yesToBoolean(pvVal);
-          } else if (updatedPVName.endsWith(SP_RBV)) {
-            const underlyingBlock = findPVInGroups(
-              currentInstrument.groups,
-              currentInstrument.prefix,
-              updatedPVName.replace(SP_RBV, ""),
-            );
-            if (underlyingBlock)
-              underlyingBlock.sp_value = toPrecision(underlyingBlock, pvVal);
-          } else {
-            console.warn(
-              `update from unknown PV: ${updatedPVName} with value ${pvVal}`,
-            );
-          }
-        }
+        // Unless this is an instlist or config details update, push any messages into the queue so they can be processed later.
+        messageQueue.current.push(updatedPV);
       }
     },
     onError: () => {
@@ -180,6 +117,91 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
     reconnectAttempts: webSocketReconnectAttempts,
   });
 
+  useEffect(() => {
+    // Previously we have hit into performance issues when trying to render each time a PV update is published by the websocket.
+    // This processes any updates in the queue so we can "batch" updates and just re-render every second (as specified by the interval duration)
+    // Obviously this has the trade-off of not being "real-time" but for a web dashboard real-time isn't really required.
+    const interval = setInterval(() => {
+      if (currentInstrument == null) {
+        return;
+      }
+      console.debug(
+        "Processing " + messageQueue.current.length + " queued messages",
+      );
+
+      // Clone the instrument object here to avoid mutating the state without calling setState()
+      let newInstrument = currentInstrument.clone();
+
+      while (true) {
+        const updatedPV = messageQueue.current.shift();
+
+        // Process until the end of the queue, which will give an undefined value
+        if (updatedPV === undefined) {
+          break;
+        }
+
+        const updatedPVName: string = updatedPV.pv;
+        const pvVal = getPvValue(updatedPV);
+
+        if (pvVal == undefined) {
+          console.debug(
+            `initial/blank message from ${updatedPVName}: ${updatedPV.b64byt}}`,
+          );
+          continue;
+        }
+
+        // Check if this is a dashboard, run info, or block PV update.
+        const pv =
+          newInstrument.dashboard.get(updatedPVName) ||
+          newInstrument.runInfoPVs.get(updatedPVName) ||
+          findPVInGroups(newInstrument.groups, updatedPVName);
+
+        if (pv) {
+          storePrecision(updatedPV, pv);
+          pv.value = toPrecision(pv, pvVal);
+
+          // Things like units and severity aren't guaranteed on every PV update so cache them if they are available as this means there has been an update.
+          if (updatedPV.seconds) pv.updateSeconds = updatedPV.seconds;
+          if (updatedPV.units) pv.units = updatedPV.units;
+          if (updatedPV.severity) pv.severity = updatedPV.severity;
+        } else {
+          // OK, we haven't found the block, but we may have an update for
+          // its object such as its run control status or SP:RBV
+          if (updatedPVName.endsWith(RC_INRANGE)) {
+            const underlyingBlock = findPVInGroups(
+              newInstrument.groups,
+              updatedPVName.replace(RC_INRANGE, ""),
+            );
+            if (underlyingBlock)
+              underlyingBlock.runcontrol_inrange = yesToBoolean(pvVal);
+          } else if (updatedPVName.endsWith(RC_ENABLE)) {
+            const underlyingBlock = findPVInGroups(
+              newInstrument.groups,
+              updatedPVName.replace(RC_ENABLE, ""),
+            );
+            if (underlyingBlock)
+              underlyingBlock.runcontrol_enabled = yesToBoolean(pvVal);
+          } else if (updatedPVName.endsWith(SP_RBV)) {
+            const underlyingBlock = findPVInGroups(
+              newInstrument.groups,
+              updatedPVName.replace(SP_RBV, ""),
+            );
+            if (underlyingBlock)
+              underlyingBlock.sp_value = toPrecision(underlyingBlock, pvVal);
+          } else {
+            console.debug(
+              `update from unknown PV: ${updatedPVName} with value ${pvVal}`,
+            );
+          }
+        }
+      }
+
+      // Update the state only when we have finished processing all the updates.
+      setCurrentInstrument(newInstrument);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [currentInstrument]);
+
   if (!currentInstrument) {
     return <h1>Loading...</h1>;
   }
@@ -189,6 +211,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
         dashboard={currentInstrument.dashboard}
         instName={instName}
         runInfoPVs={currentInstrument.runInfoPVs}
+        prefix={currentInstrument.prefix}
       />
       {webSockErr && <h1 className={"text-red-600"}>{webSockErr}</h1>}
       <div className="flex gap-2 ml-2 md:flex-row flex-col">

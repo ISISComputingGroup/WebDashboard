@@ -13,6 +13,7 @@
     "jsx": "preserve",
     "incremental": true,
     "target": "ES2023",
+    "downlevelIteration": true,
     "plugins": [
       {
         "name": "next"

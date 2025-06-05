@@ -71,7 +71,7 @@ exports[`renders groups correctly with hidden and non hidden groups 1`] = `
                      
                   </span>
                   <svg
-                    class="min-w-2 min-h-2 max-w-2 max-h-2 transition-all text-transparent"
+                    class="min-w-2 min-h-2 max-w-2 max-h-2 transition-opacity text-green-500 opacity-100"
                     fill="currentColor"
                     id="aShownBlock_CIRCLE"
                     viewBox="0 0 24 24"
@@ -132,7 +132,7 @@ exports[`renders groups correctly with hidden and non hidden groups 1`] = `
                      
                   </span>
                   <svg
-                    class="min-w-2 min-h-2 max-w-2 max-h-2 transition-all text-transparent"
+                    class="min-w-2 min-h-2 max-w-2 max-h-2 transition-opacity text-green-500 opacity-100"
                     fill="currentColor"
                     id="aDifferentShownBlock_CIRCLE"
                     viewBox="0 0 24 24"

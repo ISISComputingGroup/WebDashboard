@@ -24,23 +24,16 @@ export default function Block({
     string | number | undefined
   >();
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [justChanged, setJustChanged] = useState(false);
   if (!pv.visible && !showHiddenBlocks) {
     return null;
   }
   if (pv.value != currentValue) {
     setCurrentValue(pv.value);
-    // Let the user know a change has occurred by lighting up the green dot next to the value
-    const pvChangedIndicator = document.getElementById(
-      pv.human_readable_name + "_CIRCLE",
-    );
-    if (!pvChangedIndicator) return;
-    if (pvChangedIndicator.classList.contains("text-green-500")) return;
-    pvChangedIndicator.classList.remove("text-transparent");
-    pvChangedIndicator.classList.add("text-green-500");
+    setJustChanged(true);
     setTimeout(() => {
-      pvChangedIndicator.classList.remove("text-green-500");
-      pvChangedIndicator.classList.add("text-transparent");
-    }, 2000);
+      setJustChanged(false);
+    }, 1000);
   }
 
   const minimum_date_to_be_shown = 631152000; // This is what PVWS thinks epoch time is for some reason. don't bother showing it as the instrument wasn't running EPICS on 01/01/1990
@@ -79,7 +72,10 @@ export default function Block({
             </span>
             <svg
               id={pv.human_readable_name + "_CIRCLE"}
-              className="min-w-2 min-h-2 max-w-2 max-h-2 transition-all text-transparent"
+              className={
+                "min-w-2 min-h-2 max-w-2 max-h-2 transition-opacity text-green-500 " +
+                (justChanged ? "opacity-100" : "opacity-0")
+              }
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
               viewBox="0 0 24 24"
