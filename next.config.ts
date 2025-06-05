@@ -6,15 +6,6 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  // compress: false,
-  // webpack(webpackConfig) {
-  //   return {
-  //     ...webpackConfig,
-  //     optimization: {
-  //       minimize: false,
-  //     },
-  //   };
-  // },
 };
 
 module.exports = nextConfig;
