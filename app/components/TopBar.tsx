@@ -44,18 +44,32 @@ const TopBar = function TopBar({
         id="instNameDiv"
         className="w-full flex justify-center items-center flex-col"
       >
-        <h2
-          className={`text-center p-4 text-xl rounded-t-lg w-full 
-          ${getStatusColour(getRunstate(prefix, runInfoPVs))}
-           
-           ${getForegroundColour(getRunstate(prefix, runInfoPVs))}
-          
-          `}
-          id={"instNameLabel"}
+        <div
+          id={"runstateDiv"}
+          className={`p-2 rounded-t-lg w-full flex-col justify-center items-center text-center ${getStatusColour(getRunstate(prefix, runInfoPVs))} ${getForegroundColour(getRunstate(prefix, runInfoPVs))}`}
         >
-          {instName.toUpperCase()} is{" "}
-          <span id={"runStateSpan"}>{getRunstate(prefix, runInfoPVs)}</span>
-        </h2>
+          <h2 className={"text-xl"} id={"instNameLabel"}>
+            {instName.toUpperCase()} is{" "}
+            <span id={"runStateSpan"}>{getRunstate(prefix, runInfoPVs)}</span>
+          </h2>
+          <div
+            id={"banner"}
+            className={"flex flex-col md:flex-row text-center w-full"}
+          >
+            {["LEFT", "MIDDLE", "RIGHT"].map((place) => (
+              <div key={place} className={"flex-row md:w-1/3"}>
+                {
+                  dashboard.get(`${prefix}CS:DASHBOARD:BANNER:${place}:LABEL`)!
+                    .value
+                }{" "}
+                {
+                  dashboard.get(`${prefix}CS:DASHBOARD:BANNER:${place}:VALUE`)!
+                    .value
+                }
+              </div>
+            ))}
+          </div>
+        </div>
         <h3 className="text-black text-wrap max-w-full break-all py-2 font-semibold">
           Config:{" "}
           <span id={"configNameSpan"}>

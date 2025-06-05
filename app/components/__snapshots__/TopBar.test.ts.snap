@@ -10,24 +10,44 @@ exports[`renders topbar unchanged 1`] = `
       class="w-full flex justify-center items-center flex-col"
       id="instNameDiv"
     >
-      <h2
-        class="text-center p-4 text-xl rounded-t-lg w-full 
-          bg-[#F08080]
-           
-           text-black
-          
-          "
-        id="instNameLabel"
+      <div
+        class="p-2 rounded-t-lg w-full flex-col justify-center items-center text-center bg-[#F08080] text-black"
+        id="runstateDiv"
       >
-        INSTRUMENT
-         is
-         
-        <span
-          id="runStateSpan"
+        <h2
+          class="text-xl"
+          id="instNameLabel"
         >
-          UNREACHABLE
-        </span>
-      </h2>
+          INSTRUMENT
+           is
+           
+          <span
+            id="runStateSpan"
+          >
+            UNREACHABLE
+          </span>
+        </h2>
+        <div
+          class="flex flex-col md:flex-row text-center w-full"
+          id="banner"
+        >
+          <div
+            class="flex-row md:w-1/3"
+          >
+             
+          </div>
+          <div
+            class="flex-row md:w-1/3"
+          >
+             
+          </div>
+          <div
+            class="flex-row md:w-1/3"
+          >
+             
+          </div>
+        </div>
+      </div>
       <h3
         class="text-black text-wrap max-w-full break-all py-2 font-semibold"
       >
