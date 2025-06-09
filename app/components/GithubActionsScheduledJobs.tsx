@@ -86,6 +86,10 @@ export default function GithubActionsScheduledJobs() {
         repo={"ibex_developers_manual"}
         workflowName={"nightly.yml"}
       />
+      <GithubActionsJob
+        repo={"ibex_user_manual"}
+        workflowName={"nightly.yml"}
+      />
     </div>
   );
 }
