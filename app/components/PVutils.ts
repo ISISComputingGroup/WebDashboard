@@ -8,7 +8,7 @@ export function ExponentialOnThresholdFormat(
   value: string | number,
   precision: number = 3,
 ) {
-  const nValue: number = value == undefined ? NaN : +value;
+  const nValue: number = (value == undefined || val == null) ? NaN : +value;
   if (isNaN(nValue)) {
     return value;
   } else {
