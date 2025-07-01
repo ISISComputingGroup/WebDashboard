@@ -90,6 +90,10 @@ export default function GithubActionsScheduledJobs() {
         repo={"ibex_user_manual"}
         workflowName={"nightly.yml"}
       />
+      <GithubActionsJob
+          repo={"saluki"}
+          workflowName={"lint-and-test-nightly.yml"}
+      />
     </div>
   );
 }
