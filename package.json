@@ -13,7 +13,7 @@
     "format_check": "prettier --check \"**/*.{ts,tsx,md,js,json,yml,yaml}\""
   },
   "dependencies": {
-    "next": "^15.3.2",
+    "next": "^15.3.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-use-websocket": "^4.13.0"
