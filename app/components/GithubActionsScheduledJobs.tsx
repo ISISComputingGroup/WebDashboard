@@ -43,6 +43,10 @@ export default function GithubActionsScheduledJobs() {
         workflowName={"lint-and-test-nightly.yml"}
       />
       <GithubActionsJob
+        repo={"ibex_bluesky_core"}
+        workflowName={"test-against-main.yml"}
+      />
+      <GithubActionsJob
         repo={"EPICS-inst_servers"}
         workflowName={"lint-and-test-nightly.yml"}
       />
