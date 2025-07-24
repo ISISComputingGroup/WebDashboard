@@ -86,7 +86,7 @@ const TopBar = function TopBar({
             className="text-sm max-w-full table-fixed flex divide-x divide-gray-200 text-wrap w-full "
           >
             <tbody className="w-1/3">
-              <tr className="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white md:flex">
+              <tr className="not-last:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white md:flex">
                 <td className="py-1 px-4 flex font-bold break-words">Title</td>
                 <td className="py-1 px-4 flex justify-between items-center break-all">
                   <span className="font-light">
@@ -97,7 +97,7 @@ const TopBar = function TopBar({
                 </td>
               </tr>
 
-              <tr className="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white md:flex">
+              <tr className="not-last:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white md:flex">
                 <td className="py-1 px-4 flex font-bold break-words">Users</td>
                 <td className="py-1 px-4 flex justify-between items-center break-all">
                   <span className="font-light">
@@ -114,7 +114,7 @@ const TopBar = function TopBar({
                 {[1, 2, 3].map((row: number) => (
                   <tr
                     key={row}
-                    className="[&:not(:last-child)]:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white md:flex"
+                    className="not-last:border-b border-gray-300 text-black transition duration-100 hover:bg-gray-700 hover:text-white md:flex"
                   >
                     <td className="py-1 px-4 flex font-bold break-words">
                       {
@@ -150,7 +150,7 @@ const TopBar = function TopBar({
             <div className="grid md:grid-cols-5 gap-2">
               {Array.from(runInfoPVs.values()).map((runInfoPV) => (
                 <div
-                  className="mb-2 shadow-sm rounded-md"
+                  className="mb-2 shadow-xs rounded-md"
                   key={runInfoPV.human_readable_name}
                 >
                   <p className="font-bold">{runInfoPV.human_readable_name}:</p>{" "}

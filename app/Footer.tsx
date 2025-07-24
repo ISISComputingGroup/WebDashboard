@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <footer className="bg-white dark:bg-zinc-900  ">
-      <div className="max-w-screen-xl p-4 mx-auto space-y-8 overflow-hidden sm:px-6 lg:px-8 w-full flex flex-col justify-center items-center ">
+      <div className="max-w-(--breakpoint-xl) p-4 mx-auto space-y-8 overflow-hidden sm:px-6 lg:px-8 w-full flex flex-col justify-center items-center ">
         <nav className="flex flex-wrap justify-center -mx-5 -my-2">
           <Link
             href="/"
@@ -25,7 +25,7 @@ export default function Footer() {
             Beam status
           </Link>
           <Link
-            className="block py-2 px-3 rounded text-black dark:text-white hover:text-white hover:bg-zinc-800"
+            className="block py-2 px-3 rounded-sm text-black dark:text-white hover:text-white hover:bg-zinc-800"
             href="https://github.com/ISISComputingGroup/WebDashboard"
           >
             <svg
