@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`renders main page unchanged 1`] = `
 <div>
@@ -22,7 +22,7 @@ exports[`renders main page unchanged 1`] = `
             </h1>
              
             <h1
-              class="block w-full mt-2 py-2 text-transparent bg-clip-text leading-12 bg-gradient-to-r from-green-400 to-purple-500 lg:inline"
+              class="block w-full mt-2 py-2 text-transparent bg-clip-text leading-12 bg-linear-to-r from-green-400 to-purple-500 lg:inline"
             >
               Web Dashboard
             </h1>
@@ -35,10 +35,10 @@ exports[`renders main page unchanged 1`] = `
               class="relative inline-flex  group"
             >
               <div
-                class="absolute transition-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt"
+                class="absolute transition-all duration-1000 opacity-70 -inset-px bg-linear-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt"
               />
               <a
-                class="relative inline-flex gap-4 items-center justify-center px-8 py-4 text-lg font-bold text-gray-900 dark:text-white transition-all duration-200 bg-white dark:bg-gray-900 font-pj rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 dark:focus:ring-gray-900"
+                class="relative inline-flex gap-4 items-center justify-center px-8 py-4 text-lg font-bold text-gray-900 dark:text-white transition-all duration-200 bg-white dark:bg-gray-900 font-pj rounded-xl focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 dark:focus:ring-gray-900"
                 href="/instruments"
                 role="button"
                 target="_self"

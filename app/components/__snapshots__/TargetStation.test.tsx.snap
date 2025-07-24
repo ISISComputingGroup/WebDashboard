@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`renders targetstation unchanged 1`] = `
 <div>
@@ -19,7 +19,7 @@ exports[`renders targetstation unchanged 1`] = `
         class="flex"
       >
         <a
-          class="flex items-center justify-center text-center py-1 w-28 max-h-12 rounded-lg shadow-sm border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
+          class="flex items-center justify-center text-center py-1 w-28 max-h-12 rounded-lg shadow-xs border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
       bg-green-900 text-white"
           href="/instrument?name=Instrument"
         >
@@ -43,7 +43,7 @@ exports[`renders targetstation unchanged 1`] = `
         class="flex"
       >
         <a
-          class="flex items-center justify-center text-center py-1 w-28 max-h-12 rounded-lg shadow-sm border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
+          class="flex items-center justify-center text-center py-1 w-28 max-h-12 rounded-lg shadow-xs border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200
       bg-[#FFFF00] text-black"
           href="/instrument?name=Instrument2"
         >
