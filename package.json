@@ -13,24 +13,25 @@
     "format_check": "prettier --check \"**/*.{ts,tsx,md,js,json,yml,yaml}\""
   },
   "dependencies": {
-    "next": "^15.3.3",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "next": "^15.4.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-use-websocket": "^4.13.0"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "latest",
+    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
-    "@types/jest": "latest",
-    "@types/react": "^19.1.3",
-    "@types/react-dom": "^19.1.3",
+    "@types/jest": "^30.0.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
     "autoprefixer": "^10.4.21",
-    "eslint": "latest",
-    "eslint-config-next": "latest",
-    "jest": "latest",
-    "jest-environment-jsdom": "latest",
-    "postcss": "^8",
-    "prettier": "latest",
-    "tailwindcss": "^3.3.0"
+    "eslint": "^9.31.0",
+    "eslint-config-next": "^15.4.3",
+    "jest": "^30.0.5",
+    "jest-environment-jsdom": "^30.0.5",
+    "postcss": "^8.5.6",
+    "prettier": "^3.6.2",
+    "tailwindcss": "^3.4.17",
+    "ts-node": "^10.9.2"
   }
 }
