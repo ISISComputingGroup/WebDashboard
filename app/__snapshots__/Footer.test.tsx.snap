@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`renders footer unchanged 1`] = `
 <div>
@@ -6,7 +6,7 @@ exports[`renders footer unchanged 1`] = `
     class="bg-white dark:bg-zinc-900  "
   >
     <div
-      class="max-w-screen-xl p-4 mx-auto space-y-8 overflow-hidden sm:px-6 lg:px-8 w-full flex flex-col justify-center items-center "
+      class="max-w-(--breakpoint-xl) p-4 mx-auto space-y-8 overflow-hidden sm:px-6 lg:px-8 w-full flex flex-col justify-center items-center "
     >
       <nav
         class="flex flex-wrap justify-center -mx-5 -my-2"
@@ -31,7 +31,7 @@ exports[`renders footer unchanged 1`] = `
           Beam status
         </a>
         <a
-          class="block py-2 px-3 rounded text-black dark:text-white hover:text-white hover:bg-zinc-800"
+          class="block py-2 px-3 rounded-sm text-black dark:text-white hover:text-white hover:bg-zinc-800"
           href="https://github.com/ISISComputingGroup/WebDashboard"
         >
           <svg

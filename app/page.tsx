@@ -17,17 +17,17 @@ export default function Home() {
           <div className="w-full  mx-auto md:w-11/12 xl:w-9/12 text-center">
             <div className="mb-8 flex flex-col text-4xl font-extrabold leading-none tracking-normal text-gray-900 dark:text-white md:text-6xl md:tracking-tight">
               <h1>Experiment Controls</h1>{" "}
-              <h1 className="block w-full mt-2 py-2 text-transparent bg-clip-text leading-12 bg-gradient-to-r from-green-400 to-purple-500 lg:inline">
+              <h1 className="block w-full mt-2 py-2 text-transparent bg-clip-text leading-12 bg-linear-to-r from-green-400 to-purple-500 lg:inline">
                 Web Dashboard
               </h1>{" "}
             </div>
             <div className="mb-4 space-x-0 md:space-x-2 md:mb-8">
               <div className="relative inline-flex  group">
-                <div className="absolute transition-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt"></div>
+                <div className="absolute transition-all duration-1000 opacity-70 -inset-px bg-linear-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt"></div>
 
                 <Link
                   href="/instruments/"
-                  className="relative inline-flex gap-4 items-center justify-center px-8 py-4 text-lg font-bold text-gray-900 dark:text-white transition-all duration-200 bg-white dark:bg-gray-900 font-pj rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 dark:focus:ring-gray-900"
+                  className="relative inline-flex gap-4 items-center justify-center px-8 py-4 text-lg font-bold text-gray-900 dark:text-white transition-all duration-200 bg-white dark:bg-gray-900 font-pj rounded-xl focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 dark:focus:ring-gray-900"
                   target="_self"
                   role="button"
                 >
