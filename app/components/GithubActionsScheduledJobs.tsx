@@ -1,4 +1,6 @@
+"use client";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 function GithubActionsJob({
   repo,
@@ -7,6 +9,17 @@ function GithubActionsJob({
   repo: string;
   workflowName: string;
 }) {
+  const imageUrl = `https://github.com/ISISComputingGroup/${repo}/actions/workflows/${workflowName}/badge.svg`;
+
+  // Update the badges every 60 seconds by adding the date as a query parameter.
+  const [src, setSrc] = useState(imageUrl);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSrc(imageUrl + "?refresh=" + Date.now());
+    }, 60000);
+    return () => clearInterval(interval);
+  });
+
   return (
     <div className={"w-full"}>
       <a
@@ -19,7 +32,7 @@ function GithubActionsJob({
         <h2 className={"text-lg text-center w-2/5 mx-5"}>{repo}</h2>
         <div className={"float-right w-3/5"}>
           <Image
-            src={`https://github.com/ISISComputingGroup/${repo}/actions/workflows/${workflowName}/badge.svg`}
+            src={src}
             alt={"build status badge"}
             className={"h-8 w-auto my-0.5 float-right"}
             width={500}
