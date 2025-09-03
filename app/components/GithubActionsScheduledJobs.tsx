@@ -112,6 +112,10 @@ export default function GithubActionsScheduledJobs() {
         workflowName={"lint-and-test-nightly.yml"}
       />
       <GithubActionsJob repo={"ick"} workflowName={"build-nightly.yml"} />
+      <GithubActionsJob
+        repo={"ibex-non-ca-helpers"}
+        workflowName={"lint-and-test-nightly.yml"}
+      />
     </div>
   );
 }
