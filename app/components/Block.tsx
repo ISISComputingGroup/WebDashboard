@@ -52,7 +52,7 @@ export default function Block({
             grafana_stub +
             pv.human_readable_name +
             "&var-inst=" +
-            instName.toUpperCase()
+            instName.toUpperCase().replace("-", "_")
           }
           target="_blank"
         >
