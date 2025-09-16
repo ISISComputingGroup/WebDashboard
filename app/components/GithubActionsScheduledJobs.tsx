@@ -117,7 +117,7 @@ export default function GithubActionsScheduledJobs() {
         workflowName={"lint-and-test-nightly.yml"}
       />
       <GithubActionsJob
-        repo={"server-common"}
+        repo={"server_common"}
         workflowName={"lint-and-test-nightly.yml"}
       />
     </div>
