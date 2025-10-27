@@ -1,11 +1,5 @@
 "use client";
 import { useState } from "react";
-import {
-  IfcPVWSMessage,
-  IfcPVWSRequest,
-  instList,
-  PVWSRequestType,
-} from "@/app/types";
 import useWebSocket from "react-use-websocket";
 import {
   instListPV,
@@ -15,8 +9,14 @@ import {
   webSocketReconnectInterval,
 } from "@/app/commonVars";
 import { instListFromBytes } from "@/app/components/dehex_and_decompress";
-import TargetStation from "@/app/components/TargetStation";
 import ScienceGroup from "@/app/components/ScienceGroup";
+import TargetStation from "@/app/components/TargetStation";
+import {
+  IfcPVWSMessage,
+  IfcPVWSRequest,
+  instList,
+  PVWSRequestType,
+} from "@/app/types";
 
 // Ignore support machines for the instruments page.
 const instrumentsExcludeList = ["SUPPORT"];

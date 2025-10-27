@@ -1,5 +1,5 @@
-import Group from "./Group";
 import { tGroups } from "@/app/types";
+import Group from "./Group";
 
 export default function Groups({
   groupsMap,

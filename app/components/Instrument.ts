@@ -1,3 +1,4 @@
+import { ExponentialOnThresholdFormat } from "@/app/components/PVutils";
 import {
   ConfigOutput,
   ConfigOutputBlock,
@@ -7,7 +8,6 @@ import {
   tBlockMapping,
   tGroups,
 } from "@/app/types";
-import { ExponentialOnThresholdFormat } from "@/app/components/PVutils";
 
 export const DASHBOARD = "CS:DASHBOARD:TAB:";
 

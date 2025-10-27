@@ -1,10 +1,10 @@
 import Link from "next/link";
+import { instListEntryWithRunstatePVandValue } from "@/app/types";
 import {
   getForegroundColour,
   getStatusColour,
   UNREACHABLE,
 } from "./getRunstateColours";
-import { instListEntryWithRunstatePVandValue } from "@/app/types";
 
 export default function InstrumentWallCard({
   instrument,

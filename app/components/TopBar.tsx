@@ -1,12 +1,11 @@
+import { memo } from "react";
+import { DASHBOARD } from "@/app/components/Instrument";
+import { tBlockMapping } from "@/app/types";
 import {
   getForegroundColour,
   getStatusColour,
   UNREACHABLE,
 } from "./getRunstateColours";
-
-import { tBlockMapping } from "@/app/types";
-import { DASHBOARD } from "@/app/components/Instrument";
-import { memo } from "react";
 
 export function getRunstate(prefix: string, runInfoPVs: tBlockMapping): string {
   const runStatePV = runInfoPVs.get(`${prefix}DAE:RUNSTATE_STR`);

@@ -1,9 +1,11 @@
 "use client";
 import { Inter } from "next/font/google";
+
 const inter = Inter({ subsets: ["latin"] });
+
+import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { InstrumentData } from "@/app/components/InstrumentData";
-import { useSearchParams } from "next/navigation";
 
 function GetInstrumentData() {
   const searchParams = useSearchParams();

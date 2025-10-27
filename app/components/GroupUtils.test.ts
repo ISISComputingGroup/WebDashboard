@@ -1,6 +1,5 @@
-import { checkIfAllBlocksInGroupAreHidden } from "./GroupUtils";
-
 import { tBlockMapping } from "@/app/types";
+import { checkIfAllBlocksInGroupAreHidden } from "./GroupUtils";
 
 test("group with all hidden blocks returns true", () => {
   let blocks: tBlockMapping = new Map();

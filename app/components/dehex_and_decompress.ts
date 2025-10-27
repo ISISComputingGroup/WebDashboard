@@ -1,5 +1,5 @@
-import { instList } from "@/app/types";
 import { unzipSync } from "zlib";
+import { instList } from "@/app/types";
 /**
  * dehex_and_decompress
  * - synonymous to dehex_and_decompress in inst_servers

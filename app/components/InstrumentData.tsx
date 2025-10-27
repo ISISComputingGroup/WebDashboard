@@ -1,6 +1,19 @@
 "use client";
 import { RefObject, useEffect, useRef, useState } from "react";
-import { IfcPVWSMessage, IfcPVWSRequest, PVWSRequestType } from "@/app/types";
+import useWebSocket from "react-use-websocket";
+import {
+  instListPV,
+  instListSubscription,
+  socketURL,
+  webSocketReconnectAttempts,
+  webSocketReconnectInterval,
+} from "@/app/commonVars";
+import CheckToggle from "@/app/components/CheckToggle";
+import {
+  dehex_and_decompress,
+  instListFromBytes,
+} from "@/app/components/dehex_and_decompress";
+import Groups from "@/app/components/Groups";
 import {
   findPVInGroups,
   getGroupsWithBlocksFromConfigOutput,
@@ -12,22 +25,9 @@ import {
   toPrecision,
   yesToBoolean,
 } from "@/app/components/Instrument";
-import useWebSocket from "react-use-websocket";
-import {
-  instListPV,
-  instListSubscription,
-  socketURL,
-  webSocketReconnectAttempts,
-  webSocketReconnectInterval,
-} from "@/app/commonVars";
-import {
-  dehex_and_decompress,
-  instListFromBytes,
-} from "@/app/components/dehex_and_decompress";
 import { getPrefix, getPvValue } from "@/app/components/PVutils";
 import TopBar from "@/app/components/TopBar";
-import CheckToggle from "@/app/components/CheckToggle";
-import Groups from "@/app/components/Groups";
+import { IfcPVWSMessage, IfcPVWSRequest, PVWSRequestType } from "@/app/types";
 
 export function InstrumentData({ instrumentName }: { instrumentName: string }) {
   const [showHiddenBlocks, setShowHiddenBlocks] = useState(false);

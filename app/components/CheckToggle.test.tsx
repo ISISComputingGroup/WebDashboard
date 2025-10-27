@@ -1,5 +1,5 @@
-import CheckToggle from "@/app/components/CheckToggle";
 import { fireEvent, render } from "@testing-library/react";
+import CheckToggle from "@/app/components/CheckToggle";
 
 it.each([true, false])(
   "CheckToggle acts on checked variable on a toggle when the initial state is %s",

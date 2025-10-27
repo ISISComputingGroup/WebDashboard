@@ -1,7 +1,7 @@
-import { exportedForTesting, getRunstate } from "@/app/components/TopBar";
-import { tBlockMapping } from "@/app/types";
 import { render } from "@testing-library/react";
 import { Instrument } from "@/app/components/Instrument";
+import { exportedForTesting, getRunstate } from "@/app/components/TopBar";
+import { tBlockMapping } from "@/app/types";
 
 test("GetRunstate returns the runstate when it exists and is of string type", () => {
   const prefix = "TESTING:";

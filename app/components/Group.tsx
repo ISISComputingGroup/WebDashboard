@@ -1,8 +1,7 @@
+import { memo } from "react";
+import { tBlockMapping } from "@/app/types";
 import Block from "./Block";
 import { checkIfAllBlocksInGroupAreHidden } from "./GroupUtils";
-
-import { tBlockMapping } from "@/app/types";
-import { memo } from "react";
 
 const Group = memo(function Group({
   group,

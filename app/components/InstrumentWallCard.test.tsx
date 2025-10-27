@@ -1,6 +1,6 @@
-import { instListEntryWithRunstatePVandValue } from "@/app/types";
 import { render } from "@testing-library/react";
 import InstrumentWallCard from "@/app/components/InstrumentWallCard";
+import { instListEntryWithRunstatePVandValue } from "@/app/types";
 
 it("renders instrumentwallcard unchanged", () => {
   const instrument: instListEntryWithRunstatePVandValue = {

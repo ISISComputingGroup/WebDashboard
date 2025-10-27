@@ -1,15 +1,15 @@
 import {
   CSSB,
   findPVInGroups,
+  getExtraPVsForBlock,
   getGroupsWithBlocksFromConfigOutput,
+  Instrument,
   RC_ENABLE,
   RC_INRANGE,
   SP_RBV,
   storePrecision,
-  getExtraPVsForBlock,
   toPrecision,
   yesToBoolean,
-  Instrument,
 } from "@/app/components/Instrument";
 import {
   ConfigOutput,

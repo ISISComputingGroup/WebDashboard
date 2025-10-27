@@ -1,6 +1,6 @@
-import JenkinsJobs from "../components/JenkinsJobs";
-import InstrumentsDisplay from "@/app/components/InstrumentsDisplay";
 import GithubActionsScheduledJobs from "@/app/components/GithubActionsScheduledJobs";
+import InstrumentsDisplay from "@/app/components/InstrumentsDisplay";
+import JenkinsJobs from "../components/JenkinsJobs";
 
 export default function WallDisplay() {
   return (
