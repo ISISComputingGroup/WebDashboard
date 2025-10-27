@@ -13,7 +13,7 @@
     "format_check": "prettier --check \"**/*.{ts,tsx,md,js,json,yml,yaml}\""
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.1.13",
+    "@tailwindcss/postcss": "^4.1.16",
     "next": "^15.5.6",
     "postcss": "^8.5.6",
     "react": "^19.2.0",
