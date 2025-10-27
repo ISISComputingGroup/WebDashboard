@@ -7,7 +7,7 @@ import { instList } from "@/app/types";
  * @returns dehexed and decompressed data (you can choose to JSON parse it or not afterwards)
  */
 export function dehex_and_decompress(input: string): string {
-	return unzipSync(Buffer.from(input, "hex")).toString();
+  return unzipSync(Buffer.from(input, "hex")).toString();
 }
 
 /**
@@ -17,6 +17,6 @@ export function dehex_and_decompress(input: string): string {
  * @param input raw unconverted bytes from the CS:INSTLIST PV.
  */
 export function instListFromBytes(input: string): instList {
-	const dehexedInstList = dehex_and_decompress(atob(input));
-	return JSON.parse(dehexedInstList);
+  const dehexedInstList = dehex_and_decompress(atob(input));
+  return JSON.parse(dehexedInstList);
 }

@@ -8,19 +8,19 @@ import { Suspense } from "react";
 import { InstrumentData } from "@/app/components/InstrumentData";
 
 function GetInstrumentData() {
-	const searchParams = useSearchParams();
-	const instrument = searchParams.get("name")!;
-	return <InstrumentData instrumentName={instrument} />;
+  const searchParams = useSearchParams();
+  const instrument = searchParams.get("name")!;
+  return <InstrumentData instrumentName={instrument} />;
 }
 
 export default function Instrument() {
-	return (
-		<main
-			className={`flex min-h-screen bg-white flex-col items-center justify-start  ${inter.className}`}
-		>
-			<Suspense>
-				<GetInstrumentData />
-			</Suspense>
-		</main>
-	);
+  return (
+    <main
+      className={`flex min-h-screen bg-white flex-col items-center justify-start  ${inter.className}`}
+    >
+      <Suspense>
+        <GetInstrumentData />
+      </Suspense>
+    </main>
+  );
 }
