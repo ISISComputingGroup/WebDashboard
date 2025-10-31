@@ -7,13 +7,6 @@ export default function WallDisplay() {
     <main
       className={`flex min-h-screen bg-white dark:bg-zinc-800 flex-col items-center justify-between`}
     >
-      {[...Array(10).keys()].map((key) => (
-        <script
-          defer
-          src="https://cdn.delphitools.info/wp-content/uploads/2013/10/jsbat.js?1.2"
-          key={key}
-        />
-      ))}
       <section className="rounded-xl w-full md:px-0 md:w-11/12 my-2">
         <div className="mx-auto  ">
           <div className="w-full mx-auto text-left flex justify-center items-center pb-8 px-8 dark:bg-zinc-900 rounded-xl">
