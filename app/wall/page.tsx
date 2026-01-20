@@ -16,7 +16,10 @@ export default function WallDisplay() {
               <InstrumentsDisplay />
             </div>
           </div>
-          <a href="https://epics-jenkins.isis.rl.ac.uk/view/WallDisplay/">
+          <a
+            href="https://epics-jenkins.isis.rl.ac.uk/view/WallDisplay/"
+            target="_blank"
+          >
             <h1 className="w-full text-left text-black dark:text-white font-semibold text-2xl p-2 underline">
               Jenkins jobs (external)
             </h1>
