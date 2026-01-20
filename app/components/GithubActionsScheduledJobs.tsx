@@ -120,6 +120,10 @@ export default function GithubActionsScheduledJobs() {
         repo={"server_common"}
         workflowName={"lint-and-test-nightly.yml"}
       />
+      <GithubActionsJob
+        repo={"fastcs-secop"}
+        workflowName={"lint-and-test-nightly.yml"}
+      />
     </div>
   );
 }
