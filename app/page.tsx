@@ -177,7 +177,7 @@ export default function Home() {
                     </p>
 
                     <a
-                      href="https://www.isis.stfc.ac.uk/Pages/Beam-Status.aspx"
+                      href="https://www.isis.stfc.ac.uk/beam-status/"
                       className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:bg-blue-400 dark:hover:bg-blue-400"
                       target="_blank"
                     >

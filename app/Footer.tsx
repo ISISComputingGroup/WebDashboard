@@ -18,7 +18,7 @@ export default function Footer() {
             Instrument statuses
           </Link>
           <Link
-            href="https://www.isis.stfc.ac.uk/Pages/Beam-Status.aspx"
+            href="https://www.isis.stfc.ac.uk/beam-status/"
             className="text-base leading-6 text-gray-500 hover:text-gray-900  dark:text-white dark:hover:text-gray-400 transition-color duration-100 px-5 py-2"
             target="_blank"
           >
