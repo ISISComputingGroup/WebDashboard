@@ -22,7 +22,7 @@
     "react": "^19.2.3",
     "react-dom": "^19.2.4",
     "react-use-websocket": "^4.13.0",
-    "tailwindcss": "^4.1.18",
+    "tailwindcss": "^4.2.0",
     "ts-node": "^10.9.2",
     "typescript": "5.9.3"
   },
