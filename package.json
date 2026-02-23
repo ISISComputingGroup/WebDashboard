@@ -14,7 +14,7 @@
     "format_check": "biome format"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.1.18",
+    "@tailwindcss/postcss": "^4.2.0",
     "@types/react": "19.2.14",
     "@types/react-dom": "^19.2.3",
     "next": "^16.1.6",
