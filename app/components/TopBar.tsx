@@ -140,13 +140,11 @@ const TopBar = function TopBar({
           </table>
         </div>
 
-        <label id={"runInfoLabel"} className="p-2 w-full">
-          <input className="peer/showLabel absolute scale-0" type="checkbox" />
-          <span className="block max-h-14 overflow-hidden rounded-lg bg-gray-600 hover:bg-gray-800 text-white px-4 py-0 mb-2 transition-all duration-300 peer-checked/showLabel:max-h-fit cursor-pointer items-center">
-            <h3 className="flex h-14 cursor-pointer font-bold text-center items-center justify-center">
+          <details className="w-full rounded-lg  bg-gray-600 text-white px-0 py-0 mb-2 items-center mt-2">
+            <summary className="flex h-14 font-bold text-center items-center cursor-pointer justify-center rounded-lg w-full bg-gray-800 hover:bg-black">
               Show/hide all run information
-            </h3>
-            <div className="grid md:grid-cols-5 gap-2">
+            </summary>
+            <div className="grid md:grid-cols-5 gap-2 px-4 pt-4">
               {Array.from(runInfoPVs.values()).map((runInfoPV) => (
                 <div
                   className="mb-2 shadow-xs rounded-md"
@@ -157,8 +155,7 @@ const TopBar = function TopBar({
                 </div>
               ))}
             </div>
-          </span>
-        </label>
+          </details>
       </div>
     </div>
   );
