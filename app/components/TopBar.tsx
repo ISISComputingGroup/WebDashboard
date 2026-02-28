@@ -140,22 +140,22 @@ const TopBar = function TopBar({
           </table>
         </div>
 
-          <details className="w-full rounded-lg  bg-gray-600 text-white px-0 py-0 mb-2 items-center mt-2">
-            <summary className="flex h-14 font-bold text-center items-center cursor-pointer justify-center rounded-lg w-full bg-gray-800 hover:bg-black">
-              Show/hide all run information
-            </summary>
-            <div className="grid md:grid-cols-5 gap-2 px-4 pt-4">
-              {Array.from(runInfoPVs.values()).map((runInfoPV) => (
-                <div
-                  className="mb-2 shadow-xs rounded-md"
-                  key={runInfoPV.human_readable_name}
-                >
-                  <p className="font-bold">{runInfoPV.human_readable_name}:</p>{" "}
-                  <p className="break-all">{runInfoPV.value}</p>
-                </div>
-              ))}
-            </div>
-          </details>
+        <details className="w-full rounded-lg  bg-gray-600 text-white px-0 py-0 mb-2 items-center mt-2">
+          <summary className="flex h-14 font-bold text-center items-center cursor-pointer justify-center rounded-lg w-full bg-gray-800 hover:bg-black">
+            Show/hide all run information
+          </summary>
+          <div className="grid md:grid-cols-5 gap-2 px-4 pt-4">
+            {Array.from(runInfoPVs.values()).map((runInfoPV) => (
+              <div
+                className="mb-2 shadow-xs rounded-md"
+                key={runInfoPV.human_readable_name}
+              >
+                <p className="font-bold">{runInfoPV.human_readable_name}:</p>{" "}
+                <p className="break-all">{runInfoPV.value}</p>
+              </div>
+            ))}
+          </div>
+        </details>
       </div>
     </div>
   );
