@@ -17,8 +17,7 @@ exports[`renders navbar unchanged 1`] = `
         decoding="async"
         height="100"
         loading="lazy"
-        src="/_next/image?url=%2FWebDashboard%2FIBEX_logo.png&w=256&q=75"
-        srcset="/_next/image?url=%2FWebDashboard%2FIBEX_logo.png&w=128&q=75 1x, /_next/image?url=%2FWebDashboard%2FIBEX_logo.png&w=256&q=75 2x"
+        src="/WebDashboard/IBEX_logo.png"
         style="color: transparent;"
         width="100"
       />
