@@ -107,10 +107,7 @@ export default function GithubActionsScheduledJobs() {
         repo={"ibex_user_manual"}
         workflowName={"nightly.yml"}
       />
-      <GithubActionsJob
-        repo={"saluki"}
-        workflowName={"lint-and-test-nightly.yml"}
-      />
+      <GithubActionsJob repo={"saluki"} workflowName={"build-nightly.yml"} />
       <GithubActionsJob repo={"ick"} workflowName={"build-nightly.yml"} />
       <GithubActionsJob
         repo={"ibex-non-ca-helpers"}
