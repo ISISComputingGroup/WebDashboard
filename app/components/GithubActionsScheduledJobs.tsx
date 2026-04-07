@@ -109,7 +109,7 @@ export default function GithubActionsScheduledJobs() {
       />
       <GithubActionsJob
         repo={"saluki"}
-        workflowName={"lint-and-test-nightly.yml"}
+        workflowName={"build-nightly.yml"}
       />
       <GithubActionsJob repo={"ick"} workflowName={"build-nightly.yml"} />
       <GithubActionsJob
