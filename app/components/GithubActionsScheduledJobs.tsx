@@ -121,6 +121,22 @@ export default function GithubActionsScheduledJobs() {
         repo={"fastcs-secop"}
         workflowName={"lint-and-test-nightly.yml"}
       />
+      <GithubActionsJob
+        repo={"kafka_dae_control"}
+        workflowName={"lint-and-test-nightly.yml"}
+      />
+      <GithubActionsJob
+        repo={"event_udp_to_kafka"}
+        workflowName={"build-nightly.yml"}
+      />
+      <GithubActionsJob
+        repo={"kafka_event_aggregator"}
+        workflowName={"build-nightly.yml"}
+      />
+      <GithubActionsJob
+        repo={"kafka_dae_diagnostics"}
+        workflowName={"lint-and-test-nightly.yml"}
+      />
     </div>
   );
 }
