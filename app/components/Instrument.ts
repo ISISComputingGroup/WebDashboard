@@ -152,6 +152,10 @@ export class Instrument {
           human_readable_name: "Period Sequence",
         },
         {
+          pvaddress: `${this.prefix}DAE:PERIODTYPE`,
+          human_readable_name: "Period Type",
+        },
+        {
           pvaddress: `${this.prefix}DAE:GOODFRAMES_PD`,
           human_readable_name: "Period Good Frames",
         },

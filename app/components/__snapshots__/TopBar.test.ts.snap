@@ -579,6 +579,20 @@ exports[`renders topbar unchanged 1`] = `
             <p
               class="font-bold"
             >
+              Period Type
+              :
+            </p>
+             
+            <p
+              class="break-all"
+            />
+          </div>
+          <div
+            class="mb-2 shadow-xs rounded-md"
+          >
+            <p
+              class="font-bold"
+            >
               Period Good Frames
               :
             </p>
