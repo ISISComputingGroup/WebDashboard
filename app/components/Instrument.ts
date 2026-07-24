@@ -136,6 +136,10 @@ export class Instrument {
           human_readable_name: "Period",
         },
         {
+          pvaddress: `${this.prefix}DAE:PERIODTYPE`,
+          human_readable_name: "Period type",
+        },
+        {
           pvaddress: `${this.prefix}DAE:RAWFRAMES_PD`,
           human_readable_name: "Period Raw frames",
         },
