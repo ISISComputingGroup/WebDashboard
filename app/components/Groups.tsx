@@ -1,4 +1,4 @@
-import { tGroups } from "@/app/types";
+import type { tGroups } from "@/app/types";
 import Group from "./Group";
 
 export default function Groups({

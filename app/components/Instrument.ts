@@ -1,5 +1,5 @@
 import { ExponentialOnThresholdFormat } from "@/app/components/PVutils";
-import {
+import type {
   ConfigOutput,
   ConfigOutputBlock,
   IfcBlock,
@@ -176,7 +176,7 @@ export class Instrument {
   }
 
   clone(): Instrument {
-    let cloned = new Instrument(this.prefix);
+    const cloned = new Instrument(this.prefix);
     cloned.groups = structuredClone(this.groups);
     cloned.runInfoPVs = structuredClone(this.runInfoPVs);
     cloned.dashboard = structuredClone(this.dashboard);
@@ -241,10 +241,10 @@ export function getGroupsWithBlocksFromConfigOutput(
   configOutput: ConfigOutput,
 ): tGroups {
   const configOutputGroups = configOutput.groups;
-  let newGroups: tGroups = new Map();
+  const newGroups: tGroups = new Map();
   for (const configOutputGroup of configOutputGroups) {
     const groupName = configOutputGroup.name;
-    let blocks: tBlockMapping = new Map();
+    const blocks: tBlockMapping = new Map();
     for (const configOutputBlock of configOutputGroup.blocks) {
       const newBlock = configOutput.blocks.find(
         (b: ConfigOutputBlock) => b.name === configOutputBlock,

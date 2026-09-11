@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { DASHBOARD } from "@/app/components/Instrument";
-import { tBlockMapping } from "@/app/types";
+import type { tBlockMapping } from "@/app/types";
 import {
   getForegroundColour,
   getStatusColour,

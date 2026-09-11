@@ -1,13 +1,13 @@
 import { render } from "@testing-library/react";
 import { Instrument } from "@/app/components/Instrument";
 import { exportedForTesting, getRunstate } from "@/app/components/TopBar";
-import { tBlockMapping } from "@/app/types";
+import type { tBlockMapping } from "@/app/types";
 
 test("GetRunstate returns the runstate when it exists and is of string type", () => {
   const prefix = "TESTING:";
 
   const expected = "SETUP";
-  let blocks: tBlockMapping = new Map();
+  const blocks: tBlockMapping = new Map();
   blocks.set(prefix + "DAE:RUNSTATE_STR", {
     pvaddress: prefix + "DAE:RUNSTATE_STR",
     value: expected,
@@ -23,7 +23,7 @@ test("GetRunstate returns unknown when no runstate PV in array", () => {
 it("renders topbar unchanged", () => {
   const prefix = "TESTING:";
 
-  let instrument = new Instrument(prefix);
+  const instrument = new Instrument(prefix);
   const instName = "Instrument";
   const { container } = render(
     exportedForTesting({
@@ -39,7 +39,7 @@ it("renders topbar unchanged", () => {
 it("draws instName expectedly", () => {
   const prefix = "TESTING:";
 
-  let instrument = new Instrument(prefix);
+  const instrument = new Instrument(prefix);
   const instName = "Instrument";
   const { container } = render(
     exportedForTesting({
@@ -56,8 +56,8 @@ it("draws instName expectedly", () => {
 
 it("draws configName expectedly", () => {
   const prefix = "TESTING:";
-  let instrument = new Instrument(prefix);
-  let configNamePV = instrument.runInfoPVs.get(
+  const instrument = new Instrument(prefix);
+  const configNamePV = instrument.runInfoPVs.get(
     prefix + "CS:BLOCKSERVER:CURR_CONFIG_NAME",
   );
   const expectedConfigName = "Aconfig";

@@ -1,6 +1,6 @@
 import { fireEvent, render } from "@testing-library/react";
 import Block from "@/app/components/Block";
-import { IfcBlock } from "@/app/types";
+import type { IfcBlock } from "@/app/types";
 
 let tableBody: HTMLTableSectionElement;
 beforeEach(() => {

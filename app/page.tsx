@@ -84,6 +84,7 @@ export default function Home() {
                       href="https://stfc365.sharepoint.com/sites/isis-hub/SitePages/Instrument-Quick-Links.aspx"
                       className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:bg-blue-400 dark:hover:bg-blue-400"
                       target="_blank"
+                      rel="noopener"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -132,6 +133,7 @@ export default function Home() {
                       href="https://shadow.nd.rl.ac.uk/journals/"
                       className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:bg-blue-400 dark:hover:bg-blue-400"
                       target="_blank"
+                      rel="noopener"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -180,6 +182,7 @@ export default function Home() {
                       href="https://www.isis.stfc.ac.uk/beam-status/"
                       className="inline-flex p-2 text-blue-500 capitalize transition-colors duration-200 transform bg-blue-100 rounded-full dark:bg-blue-500 dark:text-white hover:underline hover:bg-blue-400 dark:hover:bg-blue-400"
                       target="_blank"
+                      rel="noopener"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

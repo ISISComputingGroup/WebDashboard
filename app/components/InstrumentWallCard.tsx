@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { instListEntryWithRunstatePVandValue } from "@/app/types";
+import type { instListEntryWithRunstatePVandValue } from "@/app/types";
 import {
   getForegroundColour,
   getStatusColour,

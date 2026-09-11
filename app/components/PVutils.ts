@@ -1,4 +1,4 @@
-import { IfcPVWSMessage, instListEntry } from "@/app/types";
+import type { IfcPVWSMessage, instListEntry } from "@/app/types";
 
 /**
  * Formats a given PV value input such that above or below a threshold value,

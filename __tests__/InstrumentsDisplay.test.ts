@@ -1,5 +1,5 @@
 import { createInstrumentGroups } from "@/app/components/InstrumentsDisplay";
-import { instList } from "@/app/types";
+import type { instList } from "@/app/types";
 
 test("createInstrumentGroups adds two instruments from different target stations to the same science group", () => {
   const instrument1Name = "INST1";
