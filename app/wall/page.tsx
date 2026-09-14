@@ -19,6 +19,7 @@ export default function WallDisplay() {
           <a
             href="https://epics-jenkins.isis.rl.ac.uk/view/WallDisplay/"
             target="_blank"
+            rel="noopener"
           >
             <h1 className="w-full text-left text-black dark:text-white font-semibold text-2xl p-2 underline">
               Jenkins jobs (external)

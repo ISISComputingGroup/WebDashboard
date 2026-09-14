@@ -1,5 +1,8 @@
 import InstrumentWallCard from "@/app/components/InstrumentWallCard";
-import { instList, instListEntryWithRunstatePVandValue } from "@/app/types";
+import type {
+  instList,
+  instListEntryWithRunstatePVandValue,
+} from "@/app/types";
 
 export default function ScienceGroup({
   name,

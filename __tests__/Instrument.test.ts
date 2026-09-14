@@ -11,7 +11,7 @@ import {
   toPrecision,
   yesToBoolean,
 } from "@/app/components/Instrument";
-import {
+import type {
   ConfigOutput,
   IfcBlock,
   IfcPVWSMessage,
@@ -22,8 +22,8 @@ import {
 test("findPVInGroups returns a block when it finds one", () => {
   const blockName = "blockName";
   const prefix = "IN:INSTRUMENT";
-  let groups: tGroups = new Map();
-  let group1Blocks: tBlockMapping = new Map();
+  const groups: tGroups = new Map();
+  const group1Blocks: tBlockMapping = new Map();
   group1Blocks.set(blockName, {
     human_readable_name: blockName,
     pvaddress: "some:underlying:pv:name",
@@ -132,7 +132,7 @@ test("storePrecision adds precision to a block if it is the first update", () =>
     pv: "",
     precision: precision,
   };
-  let blockWithoutPrecision: IfcBlock = { pvaddress: "" };
+  const blockWithoutPrecision: IfcBlock = { pvaddress: "" };
   storePrecision(message, blockWithoutPrecision);
   expect(blockWithoutPrecision.precision).toEqual(precision);
 });
@@ -142,16 +142,16 @@ test("getAllBlockPVs returns flat list of blocks, their RC and SPRBV pvs", () =>
   const block1Name = prefix + CSSB + "blockName";
   const block2Name = prefix + CSSB + "block2Name";
 
-  let inst = new Instrument(prefix);
+  const inst = new Instrument(prefix);
 
-  let group1Blocks: tBlockMapping = new Map();
+  const group1Blocks: tBlockMapping = new Map();
   group1Blocks.set(block1Name, {
     human_readable_name: block1Name,
     pvaddress: "some:underlying:pv:name",
   });
   inst.groups.set("aGroup", group1Blocks);
 
-  let group2Blocks: tBlockMapping = new Map();
+  const group2Blocks: tBlockMapping = new Map();
   group2Blocks.set(block2Name, {
     human_readable_name: block2Name,
     pvaddress: "someother:underlying:pv:name",

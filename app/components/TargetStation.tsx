@@ -1,4 +1,4 @@
-import { instListEntryWithRunstatePVandValue } from "@/app/types";
+import type { instListEntryWithRunstatePVandValue } from "@/app/types";
 import InstrumentWallCard from "./InstrumentWallCard";
 
 export default function TargetStation({

@@ -1,4 +1,4 @@
-import { IfcPVWSRequest, PVWSRequestType } from "@/app/types";
+import { type IfcPVWSRequest, PVWSRequestType } from "@/app/types";
 
 export const instListPV = "CS:INSTLIST";
 export const socketURL =

@@ -12,9 +12,9 @@ import { instListFromBytes } from "@/app/components/dehex_and_decompress";
 import ScienceGroup from "@/app/components/ScienceGroup";
 import TargetStation from "@/app/components/TargetStation";
 import {
-  IfcPVWSMessage,
-  IfcPVWSRequest,
-  instList,
+  type IfcPVWSMessage,
+  type IfcPVWSRequest,
+  type instList,
   PVWSRequestType,
 } from "@/app/types";
 
@@ -24,7 +24,7 @@ const instrumentsExcludeList = ["SUPPORT"];
 export function createInstrumentGroups(
   instruments: instList,
 ): Map<string, instList> {
-  let newInstrumentGroups: Map<string, instList> = new Map();
+  const newInstrumentGroups: Map<string, instList> = new Map();
   instruments.forEach((inst) => {
     inst.groups
       .filter((group) => !instrumentsExcludeList.includes(group))

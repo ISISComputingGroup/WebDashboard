@@ -1,4 +1,4 @@
-import { tBlockMapping } from "@/app/types";
+import type { tBlockMapping } from "@/app/types";
 
 export function checkIfAllBlocksInGroupAreHidden(
   blocks: tBlockMapping,

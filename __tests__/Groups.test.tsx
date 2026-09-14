@@ -1,10 +1,10 @@
 import { render } from "@testing-library/react";
 import Groups from "@/app/components/Groups";
-import { tBlockMapping, tGroups } from "@/app/types";
+import type { tBlockMapping, tGroups } from "@/app/types";
 
 it("renders groups correctly with hidden and non hidden groups", () => {
-  let groups: tGroups = new Map();
-  let blocksForGroup1: tBlockMapping = new Map();
+  const groups: tGroups = new Map();
+  const blocksForGroup1: tBlockMapping = new Map();
   blocksForGroup1.set("A:SHOWN:BLOCK", {
     pvaddress: "A:SHOWN:BLOCK",
     human_readable_name: "aShownBlock",
@@ -19,7 +19,7 @@ it("renders groups correctly with hidden and non hidden groups", () => {
   });
   groups.set("group1", blocksForGroup1);
 
-  let blocksForGroup2: tBlockMapping = new Map();
+  const blocksForGroup2: tBlockMapping = new Map();
   blocksForGroup2.set("A:HIDDEN:BLOCK", {
     pvaddress: "A:HIDDEN:BLOCK",
     human_readable_name: "aHiddenBlock",

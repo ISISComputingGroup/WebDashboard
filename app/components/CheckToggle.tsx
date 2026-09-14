@@ -1,4 +1,4 @@
-import { Dispatch, memo, SetStateAction, useCallback } from "react";
+import { type Dispatch, memo, type SetStateAction, useCallback } from "react";
 
 const CheckToggle = memo(function CheckToggle({
   checked,

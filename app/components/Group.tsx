@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { tBlockMapping } from "@/app/types";
+import type { tBlockMapping } from "@/app/types";
 import Block from "./Block";
 import { checkIfAllBlocksInGroupAreHidden } from "./GroupUtils";
 

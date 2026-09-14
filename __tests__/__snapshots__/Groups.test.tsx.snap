@@ -49,6 +49,7 @@ exports[`renders groups correctly with hidden and non hidden groups 1`] = `
               <a
                 class="underline"
                 href="https://shadow.nd.rl.ac.uk/grafana/d/wMlwwaHMk/block-history?viewPanel=2&orgId=1&var-block=aShownBlock&var-inst=TESTING"
+                rel="noopener"
                 target="_blank"
               >
                 aShownBlock
@@ -110,6 +111,7 @@ exports[`renders groups correctly with hidden and non hidden groups 1`] = `
               <a
                 class="underline"
                 href="https://shadow.nd.rl.ac.uk/grafana/d/wMlwwaHMk/block-history?viewPanel=2&orgId=1&var-block=aDifferentShownBlock&var-inst=TESTING"
+                rel="noopener"
                 target="_blank"
               >
                 aDifferentShownBlock

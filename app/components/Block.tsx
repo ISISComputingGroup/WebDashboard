@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { IfcBlock } from "@/app/types";
+import type { IfcBlock } from "@/app/types";
 
 const grafana_stub =
   "https://shadow.nd.rl.ac.uk/grafana/d/wMlwwaHMk/block-history?viewPanel=2&orgId=1&var-block=";
@@ -55,6 +55,7 @@ export default function Block({
             instName.toUpperCase().replace("-", "_")
           }
           target="_blank"
+          rel="noopener"
         >
           {pv.human_readable_name}
         </a>
@@ -92,6 +93,7 @@ export default function Block({
                   href="https://github.com/ISISComputingGroup/ibex_user_manual/wiki/Blocks#alarms"
                   className="text-red-400"
                   target="_blank"
+                  rel="noopener"
                 >
                   Alarm: {pv.severity}
                 </a>

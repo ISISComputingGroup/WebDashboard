@@ -3,7 +3,7 @@ import {
   getPrefix,
   getPvValue,
 } from "@/app/components/PVutils";
-import { IfcPVWSMessage, instListEntry } from "@/app/types";
+import type { IfcPVWSMessage, instListEntry } from "@/app/types";
 
 // Test of ExponentialOnThresholdFormat ported from ibex_gui Java code
 test("GIVEN value 0.1 which is above lower threshold WHEN formatting with precision 3 THEN no exponential notation used", () => {

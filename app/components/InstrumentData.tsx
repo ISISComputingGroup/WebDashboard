@@ -1,5 +1,5 @@
 "use client";
-import { RefObject, useEffect, useRef, useState } from "react";
+import { type RefObject, useEffect, useRef, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import {
   instListPV,
@@ -27,7 +27,11 @@ import {
 } from "@/app/components/Instrument";
 import { getPrefix, getPvValue } from "@/app/components/PVutils";
 import TopBar from "@/app/components/TopBar";
-import { IfcPVWSMessage, IfcPVWSRequest, PVWSRequestType } from "@/app/types";
+import {
+  type IfcPVWSMessage,
+  type IfcPVWSRequest,
+  PVWSRequestType,
+} from "@/app/types";
 
 export function InstrumentData({ instrumentName }: { instrumentName: string }) {
   const [showHiddenBlocks, setShowHiddenBlocks] = useState(false);
@@ -46,7 +50,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
     }
   }, [instName]);
 
-  let messageQueue: RefObject<Array<IfcPVWSMessage>> = useRef([]);
+  const messageQueue: RefObject<Array<IfcPVWSMessage>> = useRef([]);
 
   const {
     sendJsonMessage,
@@ -88,7 +92,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
           // config hasnt actually changed so do nothing
           return;
         }
-        let newInstrument = currentInstrument.clone();
+        const newInstrument = currentInstrument.clone();
         newInstrument.groups = getGroupsWithBlocksFromConfigOutput(
           newInstrument.prefix,
           JSON.parse(dehex_and_decompress(atob(updatedPVbytes))),
@@ -130,7 +134,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
       );
 
       // Clone the instrument object here to avoid mutating the state without calling setState()
-      let newInstrument = currentInstrument.clone();
+      const newInstrument = currentInstrument.clone();
 
       while (true) {
         const updatedPV = messageQueue.current.shift();
