@@ -18,7 +18,11 @@ function GithubActionsJob({
       setSrc(imageUrl + "?refresh=" + Date.now());
     }, 60000);
     return () => clearInterval(interval);
-  });
+  }, []);
+
+  useEffect(() => {
+    setSrc(imageUrl + "?refresh=" + Date.now());
+  }, []);
 
   return (
     <div className={"w-full"}>
