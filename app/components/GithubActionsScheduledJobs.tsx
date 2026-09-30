@@ -14,11 +14,12 @@ function GithubActionsJob({
   // Update the badges every 60 seconds by adding the date as a query parameter.
   const [src, setSrc] = useState(imageUrl);
   useEffect(() => {
+    setSrc(imageUrl + "?refresh=" + Date.now());
     const interval = setInterval(() => {
       setSrc(imageUrl + "?refresh=" + Date.now());
     }, 60000);
     return () => clearInterval(interval);
-  });
+  }, []);
 
   return (
     <div className={"w-full"}>
