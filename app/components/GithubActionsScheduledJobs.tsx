@@ -137,7 +137,7 @@ export default function GithubActionsScheduledJobs() {
       />
       <GithubActionsJob
         repo={"kafka_file_writer"}
-        workflowName={"lint-and-test-nightly.yml"}
+        workflowName={"build-nightly.yml"}
       />
     </div>
   );
