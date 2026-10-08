@@ -135,6 +135,10 @@ export default function GithubActionsScheduledJobs() {
         repo={"kafka_dae_diagnostics"}
         workflowName={"lint-and-test-nightly.yml"}
       />
+      <GithubActionsJob
+        repo={"kafka_file_writer"}
+        workflowName={"lint-and-test-nightly.yml"}
+      />
     </div>
   );
 }
