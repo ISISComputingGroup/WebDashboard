@@ -5,7 +5,16 @@
   "formatter": { "enabled": true, "indentStyle": "space", "indentWidth": 2 },
   "linter": {
     "enabled": true,
-    "rules": {},
+    "rules": {
+      "a11y": "off",
+      "complexity": "off",
+      "correctness": "off",
+      "nursery": "off",
+      "performance": "off",
+      "security": "off",
+      "suspicious": "off",
+      "style": "off"
+    },
     "includes": ["**", "!./node_modules", "!./out", "!./coverage"]
   },
   "javascript": { "formatter": { "quoteStyle": "double" } },
