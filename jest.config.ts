@@ -21,6 +21,7 @@ const config: Config = {
     "!app/wall/page.tsx", // don't need to test the wall display
     "!app/instruments/page.tsx", // no logic here
     "!app/instrument/page.tsx", // no logic here - all in instrumentdata / instrument.ts
+    "!app/beam_status/page.tsx", // no logic here - all in BeamStatusDisplay / BeamStatusPVs.ts
   ],
 };
 

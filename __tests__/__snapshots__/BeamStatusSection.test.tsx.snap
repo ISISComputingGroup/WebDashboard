@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`renders beam status section unchanged 1`] = `
+<div>
+  <div
+    class="flex flex-col w-full rounded-xl bg-white dark:bg-zinc-900 text-black dark:text-white shadow-md p-4"
+  >
+    <h1
+      class="w-full text-left text-gray-600 dark:text-gray-200 font-semibold text-lg pb-2"
+    >
+      TS1
+    </h1>
+    <table
+      class="text-sm table-fixed w-full"
+    >
+      <tbody>
+        <tr
+          class="border-b border-blue-gray-200 transition duration-100 hover:bg-gray-100 hover:text-black"
+          title="AC:TS1:BEAM:CURR"
+        >
+          <td
+            class="py-1 px-2 w-7/12"
+          >
+            <a
+              class="underline"
+              href="https://shadow.nd.rl.ac.uk/grafana/d/xWibHehGk/value-history?viewPanel=2&orgId=1&var-metric=ACCEL_ts1_beam_curr"
+              rel="noopener"
+              target="_blank"
+            >
+              Beam Current
+            </a>
+          </td>
+          <td
+            class="py-1 px-2 "
+            id="AC:TS1:BEAM:CURR_VALUE"
+          >
+            123.456
+             uA
+          </td>
+        </tr>
+        <tr
+          class="border-b border-blue-gray-200 transition duration-100 hover:bg-gray-100 hover:text-black"
+          title="TG:TS1:MOD:METH:TEMP"
+        >
+          <td
+            class="py-1 px-2 w-7/12"
+          >
+            Methane Moderator Temp
+          </td>
+          <td
+            class="py-1 px-2 text-red-400 font-bold"
+            id="TG:TS1:MOD:METH:TEMP_VALUE"
+          >
+            151.000
+             K
+          </td>
+        </tr>
+        <tr
+          class="border-b border-blue-gray-200 transition duration-100 hover:bg-gray-100 hover:text-black"
+          title="SOME:MISSING:PV"
+        >
+          <td
+            class="py-1 px-2 w-7/12"
+          >
+            Not connected
+          </td>
+          <td
+            class="py-1 px-2 "
+            id="SOME:MISSING:PV_VALUE"
+          >
+            -
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
