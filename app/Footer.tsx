@@ -15,14 +15,20 @@ export default function Footer() {
             href="/instruments"
             className="text-base leading-6 text-gray-500 hover:text-gray-900  dark:text-white dark:hover:text-gray-400 transition-color duration-100 px-5 py-2"
           >
-            Instrument statuses
+            Instrument Status
+          </Link>
+          <Link
+            href="/beam_status"
+            className="text-base leading-6 text-gray-500 hover:text-gray-900  dark:text-white dark:hover:text-gray-400 transition-color duration-100 px-5 py-2"
+          >
+            Accelerator Status
           </Link>
           <Link
             href="https://www.isis.stfc.ac.uk/beam-status/"
             className="text-base leading-6 text-gray-500 hover:text-gray-900  dark:text-white dark:hover:text-gray-400 transition-color duration-100 px-5 py-2"
             target="_blank"
           >
-            Beam status
+            Beam Status (external)
           </Link>
           <Link
             className="block py-2 px-3 rounded-sm text-black dark:text-white hover:text-white hover:bg-zinc-800"
