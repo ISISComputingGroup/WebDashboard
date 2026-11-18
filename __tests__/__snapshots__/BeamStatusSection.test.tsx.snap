@@ -31,11 +31,32 @@ exports[`renders beam status section unchanged 1`] = `
             </a>
           </td>
           <td
-            class="py-1 px-2 "
-            id="AC:TS1:BEAM:CURR_VALUE"
+            class="py-1 px-2"
           >
-            123.456
-             uA
+            <div
+              class="flex justify-between items-center"
+            >
+              <span
+                class=""
+                id="AC:TS1:BEAM:CURR_VALUE"
+              >
+                123.456
+                 uA
+              </span>
+              <svg
+                class="min-w-2 min-h-2 max-w-2 max-h-2 transition-opacity text-green-500 opacity-100"
+                fill="currentColor"
+                id="AC:TS1:BEAM:CURR_CIRCLE"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="12"
+                />
+              </svg>
+            </div>
           </td>
         </tr>
         <tr
@@ -48,11 +69,32 @@ exports[`renders beam status section unchanged 1`] = `
             Methane Moderator Temp
           </td>
           <td
-            class="py-1 px-2 text-red-400 font-bold"
-            id="TG:TS1:MOD:METH:TEMP_VALUE"
+            class="py-1 px-2"
           >
-            151.000
-             K
+            <div
+              class="flex justify-between items-center"
+            >
+              <span
+                class="text-red-400 font-bold"
+                id="TG:TS1:MOD:METH:TEMP_VALUE"
+              >
+                151.000
+                 K
+              </span>
+              <svg
+                class="min-w-2 min-h-2 max-w-2 max-h-2 transition-opacity text-green-500 opacity-100"
+                fill="currentColor"
+                id="TG:TS1:MOD:METH:TEMP_CIRCLE"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="12"
+                />
+              </svg>
+            </div>
           </td>
         </tr>
         <tr
@@ -65,10 +107,31 @@ exports[`renders beam status section unchanged 1`] = `
             Not connected
           </td>
           <td
-            class="py-1 px-2 "
-            id="SOME:MISSING:PV_VALUE"
+            class="py-1 px-2"
           >
-            -
+            <div
+              class="flex justify-between items-center"
+            >
+              <span
+                class=""
+                id="SOME:MISSING:PV_VALUE"
+              >
+                -
+              </span>
+              <svg
+                class="min-w-2 min-h-2 max-w-2 max-h-2 transition-opacity text-green-500 opacity-0"
+                fill="currentColor"
+                id="SOME:MISSING:PV_CIRCLE"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="12"
+                />
+              </svg>
+            </div>
           </td>
         </tr>
       </tbody>

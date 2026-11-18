@@ -37,10 +37,16 @@ export default function NavBar() {
         </Link>
         <Link
           className="block py-2 px-3 rounded-sm text-black dark:text-white hover:text-white hover:bg-zinc-800"
+          href="/beam_status"
+        >
+          Accelerator Status
+        </Link>
+        <Link
+          className="block py-2 px-3 rounded-sm text-black dark:text-white hover:text-white hover:bg-zinc-800"
           href="https://www.isis.stfc.ac.uk/beam-status/"
           target="_blank"
         >
-          Beam status
+          Beam status (external)
         </Link>
         <Link
           className="block py-2 px-3 rounded-sm text-black dark:text-white hover:text-white hover:bg-zinc-800"

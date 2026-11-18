@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { act, render } from "@testing-library/react";
 import BeamStatusSection, {
   getSeverityClass,
 } from "@/app/components/BeamStatusSection";
@@ -82,6 +82,61 @@ it("renders a grafana link only for rows with a grafana metric", () => {
   expect(links[0].getAttribute("href")).toBe(
     "https://shadow.nd.rl.ac.uk/grafana/d/xWibHehGk/value-history?viewPanel=2&orgId=1&var-metric=ACCEL_ts1_beam_curr",
   );
+});
+
+describe("update indicator", () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  const circle = (container: HTMLElement, pv: string) =>
+    container.querySelector(`[id='${pv}_CIRCLE']`)!;
+
+  it("is hidden for a PV which has never had a value", () => {
+    const { container } = render(
+      <BeamStatusSection title={"TS1"} rows={rows} pvs={pvs} />,
+    );
+    expect(
+      circle(container, "SOME:MISSING:PV").getAttribute("class"),
+    ).toContain("opacity-0");
+  });
+
+  it("is shown when a value changes and hidden again after a second", () => {
+    const { container, rerender } = render(
+      <BeamStatusSection title={"TS1"} rows={rows} pvs={pvs} />,
+    );
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+    expect(
+      circle(container, "AC:TS1:BEAM:CURR").getAttribute("class"),
+    ).toContain("opacity-0");
+
+    const newPvs = new Map(pvs);
+    newPvs.set("AC:TS1:BEAM:CURR", {
+      ...pvs.get("AC:TS1:BEAM:CURR")!,
+      value: "200.000",
+    });
+    rerender(<BeamStatusSection title={"TS1"} rows={rows} pvs={newPvs} />);
+
+    expect(
+      circle(container, "AC:TS1:BEAM:CURR").getAttribute("class"),
+    ).toContain("opacity-100");
+    // Other PVs which have not changed should not show the indicator
+    expect(
+      circle(container, "TG:TS1:MOD:METH:TEMP").getAttribute("class"),
+    ).toContain("opacity-0");
+
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+    expect(
+      circle(container, "AC:TS1:BEAM:CURR").getAttribute("class"),
+    ).toContain("opacity-0");
+  });
 });
 
 test.each([
