@@ -1,11 +1,18 @@
+"use client";
+import { useState } from "react";
+import Snowfall from "react-snowfall";
 import GithubActionsScheduledJobs from "@/app/components/GithubActionsScheduledJobs";
 import InstrumentsDisplay from "@/app/components/InstrumentsDisplay";
+import CheckToggle from "../components/CheckToggle";
 
 export default function WallDisplay() {
+  const [festive, setFestive] = useState(true);
+
   return (
     <main
       className={`flex min-h-screen bg-white dark:bg-zinc-800 flex-col items-center justify-between`}
     >
+      {festive && <Snowfall />}
       <section className="rounded-xl w-full md:px-0 md:w-11/12 my-2">
         <div className="mx-auto  ">
           <div className="w-full mx-auto text-left flex justify-center items-center pb-8 px-8 dark:bg-zinc-900 rounded-xl">
@@ -29,6 +36,12 @@ export default function WallDisplay() {
             Github actions scheduled workflows:
           </h1>
           <GithubActionsScheduledJobs />
+          <CheckToggle
+            checked={festive}
+            setChecked={setFestive}
+            text={"Show festivities"}
+            textColour="white"
+          />
         </div>
       </section>
     </main>
