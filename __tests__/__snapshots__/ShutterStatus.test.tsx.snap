@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`renders TS1 shutter status unchanged 1`] = `
+<div>
+  <div
+    class="flex flex-col w-full rounded-xl bg-white dark:bg-zinc-900 text-black dark:text-white shadow-md p-4"
+  >
+    <h1
+      class="w-full text-left text-gray-600 dark:text-gray-200 font-semibold text-lg pb-2"
+    >
+      TS1 Shutters
+    </h1>
+    <div
+      class="flex flex-wrap gap-1"
+    >
+      <a
+        class="flex flex-col items-center justify-center text-center py-1 w-28 rounded-lg shadow-xs border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200 bg-red-500 text-white"
+        href="/instrument?name=ALF"
+        id="ALF_SHUTTER"
+        title="IN:ALF:SHTR:STAT"
+      >
+        <span
+          class="text-sm font-bold line-clamp-1 w-full"
+        >
+          ALF
+        </span>
+        <span
+          class="text-xs"
+        >
+          CLOSED
+        </span>
+      </a>
+      <a
+        class="flex flex-col items-center justify-center text-center py-1 w-28 rounded-lg shadow-xs border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200 bg-[#90EE90] text-black"
+        href="/instrument?name=SANDALS"
+        id="SANDALS_SHUTTER"
+        title="IN:SANDALS:SHTR:STAT"
+      >
+        <span
+          class="text-sm font-bold line-clamp-1 w-full"
+        >
+          SANDALS
+        </span>
+        <span
+          class="text-xs"
+        >
+          OPEN
+        </span>
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders TS2 shutter status with VAT and mode unchanged 1`] = `
+<div>
+  <div
+    class="flex flex-col w-full rounded-xl bg-white dark:bg-zinc-900 text-black dark:text-white shadow-md p-4"
+  >
+    <h1
+      class="w-full text-left text-gray-600 dark:text-gray-200 font-semibold text-lg pb-2"
+    >
+      TS2 Shutters
+    </h1>
+    <div
+      class="flex flex-wrap gap-1"
+    >
+      <a
+        class="flex flex-col items-center justify-center text-center py-1 w-28 rounded-lg shadow-xs border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200 bg-gray-200 text-black"
+        href="/instrument?name=POLREF"
+        id="POLREF_SHUTTER"
+        title="IN:POLREF:SHTR:STAT"
+      >
+        <span
+          class="text-sm font-bold line-clamp-1 w-full"
+        >
+          POLREF
+        </span>
+        <span
+          class="text-xs"
+        >
+          -
+        </span>
+        <span
+          class="text-xs w-11/12 rounded-sm mt-1 bg-gray-200 text-black"
+          id="POLREF_VAT"
+        >
+          VAT: 
+          -
+        </span>
+        <span
+          class="text-xs w-11/12 rounded-sm mt-1 bg-white text-black"
+          id="POLREF_MODE"
+        >
+          -
+        </span>
+      </a>
+      <a
+        class="flex flex-col items-center justify-center text-center py-1 w-28 rounded-lg shadow-xs border-2 border-gray-700 dark:border-gray-200 hover:shadow-lg hover:border-black dark:hover:border-gray-700 transition-all duration-200 bg-orange-500 text-black"
+        href="/instrument?name=ZOOM"
+        id="ZOOM_SHUTTER"
+        title="IN:ZOOM:SHTR:STAT"
+      >
+        <span
+          class="text-sm font-bold line-clamp-1 w-full"
+        >
+          ZOOM
+        </span>
+        <span
+          class="text-xs"
+        >
+          FAULT
+        </span>
+        <span
+          class="text-xs w-11/12 rounded-sm mt-1 bg-[#90EE90] text-black"
+          id="ZOOM_VAT"
+        >
+          VAT: 
+          OPEN
+        </span>
+        <span
+          class="text-xs w-11/12 rounded-sm mt-1 bg-white text-black"
+          id="ZOOM_MODE"
+        >
+          BEAMLINE
+        </span>
+      </a>
+    </div>
+  </div>
+</div>
+`;

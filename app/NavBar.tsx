@@ -40,7 +40,7 @@ export default function NavBar() {
           href="https://www.isis.stfc.ac.uk/beam-status/"
           target="_blank"
         >
-          Beam status
+          Beam Status
         </Link>
         <Link
           className="block py-2 px-3 rounded-sm text-black dark:text-white hover:text-white hover:bg-zinc-800"
