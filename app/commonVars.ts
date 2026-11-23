@@ -9,6 +9,3 @@ export const instListSubscription: IfcPVWSRequest = {
   type: PVWSRequestType.subscribe,
   pvs: [instListPV],
 };
-
-export const webSocketReconnectInterval = 5000; // ms
-export const webSocketReconnectAttempts = 100000;
