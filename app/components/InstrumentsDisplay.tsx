@@ -1,13 +1,7 @@
 "use client";
+import useWebSocket from "partysocket/use-ws";
 import { useState } from "react";
-import useWebSocket from "react-use-websocket";
-import {
-  instListPV,
-  instListSubscription,
-  socketURL,
-  webSocketReconnectAttempts,
-  webSocketReconnectInterval,
-} from "@/app/commonVars";
+import { instListPV, instListSubscription, socketURL } from "@/app/commonVars";
 import { instListFromBytes } from "@/app/components/dehex_and_decompress";
 import ScienceGroup from "@/app/components/ScienceGroup";
 import TargetStation from "@/app/components/TargetStation";
@@ -56,13 +50,10 @@ export default function InstrumentsDisplay({
   const [muonCurrent, setMuonCurrent] = useState<number>(0.0);
   const [webSockErr, setWebSockErr] = useState("");
 
-  const {
-    sendJsonMessage,
-  }: {
-    sendJsonMessage: (a: IfcPVWSRequest) => void;
-    lastJsonMessage: IfcPVWSMessage;
-  } = useWebSocket(socketURL, {
-    shouldReconnect: () => true,
+  const sendJsonMessage = (message: IfcPVWSRequest) =>
+    socket.send(JSON.stringify(message));
+
+  const socket = useWebSocket(socketURL, undefined, {
     onError() {
       setWebSockErr(
         "Failed to connect to websocket - please check your network connection and contact Experiment Controls if this persists.",
@@ -107,7 +98,7 @@ export default function InstrumentsDisplay({
         );
         if (foundInstrument) foundInstrument.runStateValue = updatedPVvalue;
 
-        setInstList(instList);
+        setInstList([...instList]);
       } else if (updatedPVnum) {
         // beam current update
         if (updatedPVName == ts1BeamCurrentPv) {
@@ -119,10 +110,6 @@ export default function InstrumentsDisplay({
         }
       }
     },
-    share: true,
-    retryOnError: true,
-    reconnectInterval: webSocketReconnectInterval,
-    reconnectAttempts: webSocketReconnectAttempts,
   });
 
   return (

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { memo, useState } from "react";
 import type { IfcBlock } from "@/app/types";
 
 const grafana_stub =
@@ -11,7 +11,7 @@ const date_format = new Intl.DateTimeFormat("en-GB", {
   timeZone: "Europe/London",
 });
 
-export default function Block({
+const Block = memo(function Block({
   pv,
   instName,
   showHiddenBlocks,
@@ -133,4 +133,6 @@ export default function Block({
       </td>
     </tr>
   );
-}
+});
+
+export default Block;

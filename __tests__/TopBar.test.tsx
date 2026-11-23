@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import { Instrument } from "@/app/components/Instrument";
-import { exportedForTesting, getRunstate } from "@/app/components/TopBar";
+import TopBar, { getRunstate } from "@/app/components/TopBar";
 import type { tBlockMapping } from "@/app/types";
 
 test("GetRunstate returns the runstate when it exists and is of string type", () => {
@@ -26,12 +26,12 @@ it("renders topbar unchanged", () => {
   const instrument = new Instrument(prefix);
   const instName = "Instrument";
   const { container } = render(
-    exportedForTesting({
-      dashboard: instrument.dashboard,
-      instName: instName,
-      runInfoPVs: instrument.runInfoPVs,
-      prefix: prefix,
-    }),
+    <TopBar
+      dashboard={instrument.dashboard}
+      instName={instName}
+      runInfoPVs={instrument.runInfoPVs}
+      prefix={prefix}
+    />,
   );
   expect(container).toMatchSnapshot();
 });
@@ -42,12 +42,12 @@ it("draws instName expectedly", () => {
   const instrument = new Instrument(prefix);
   const instName = "Instrument";
   const { container } = render(
-    exportedForTesting({
-      dashboard: instrument.dashboard,
-      instName: instName,
-      runInfoPVs: instrument.runInfoPVs,
-      prefix: prefix,
-    }),
+    <TopBar
+      dashboard={instrument.dashboard}
+      instName={instName}
+      runInfoPVs={instrument.runInfoPVs}
+      prefix={prefix}
+    />,
   );
   expect(container.querySelector("#instNameLabel")!.innerHTML).toContain(
     instName.toUpperCase(),
@@ -63,12 +63,12 @@ it("draws configName expectedly", () => {
   const expectedConfigName = "Aconfig";
   configNamePV!.value = expectedConfigName;
   const { container } = render(
-    exportedForTesting({
-      dashboard: instrument.dashboard,
-      instName: "Instrument",
-      runInfoPVs: instrument.runInfoPVs,
-      prefix: prefix,
-    }),
+    <TopBar
+      dashboard={instrument.dashboard}
+      instName={"Instrument"}
+      runInfoPVs={instrument.runInfoPVs}
+      prefix={prefix}
+    />,
   );
   expect(container.querySelector("#configNameSpan")!.innerHTML).toBe(
     expectedConfigName,

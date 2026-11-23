@@ -1,13 +1,7 @@
 "use client";
-import { type RefObject, useEffect, useRef, useState } from "react";
-import useWebSocket from "react-use-websocket";
-import {
-  instListPV,
-  instListSubscription,
-  socketURL,
-  webSocketReconnectAttempts,
-  webSocketReconnectInterval,
-} from "@/app/commonVars";
+import useWebSocket from "partysocket/use-ws";
+import { type RefObject, useRef, useState } from "react";
+import { instListPV, instListSubscription, socketURL } from "@/app/commonVars";
 import {
   BEAM_STATUS_SECTIONS,
   getBeamStatusPVs,
@@ -34,21 +28,17 @@ export default function BeamStatusDisplay() {
   const [instList, setInstList] = useState<Array<instListEntry>>([]);
   const [webSockErr, setWebSockErr] = useState("");
 
-  const messageQueue: RefObject<Array<IfcPVWSMessage>> = useRef([]);
   // Raw value of the last instlist we subscribed to shutter PVs for,
   // so that we only re-subscribe if the instlist actually changes.
   const lastInstList: RefObject<string | null> = useRef(null);
 
-  const {
-    sendJsonMessage,
-  }: {
-    sendJsonMessage: (a: IfcPVWSRequest) => void;
-  } = useWebSocket(socketURL, {
-    shouldReconnect: () => true,
+  const sendJsonMessage = (message: IfcPVWSRequest) =>
+    socket.send(JSON.stringify(message));
+
+  const socket = useWebSocket(socketURL, undefined, {
     onOpen: () => {
       // if this is called on a reconnect, clear any old values and re-subscribe to everything
       setWebSockErr("");
-      messageQueue.current = [];
       lastInstList.current = null;
       setPvs(new Map());
       setInstList([]);
@@ -74,55 +64,31 @@ export default function BeamStatusDisplay() {
         }
         return;
       }
-      messageQueue.current.push(updatedPV);
+      setPvs((oldPvs) => {
+        const pvName = updatedPV.pv;
+        const pv: IfcPV = {
+          ...(oldPvs.get(pvName) ?? { pvaddress: pvName }),
+        };
+
+        storePrecision(updatedPV, pv);
+        // Things like units and severity aren't guaranteed on every PV update so cache them if they are available.
+        if (updatedPV.units) pv.units = updatedPV.units;
+        if (updatedPV.severity) pv.severity = updatedPV.severity;
+        if (updatedPV.seconds) pv.updateSeconds = updatedPV.seconds;
+
+        const pvVal = getPvValue(updatedPV);
+        if (pvVal != undefined) {
+          pv.value = toPrecision(pv, pvVal);
+        }
+        return new Map(oldPvs).set(pvName, pv);
+      });
     },
     onError: () => {
       setWebSockErr(
         "Failed to connect to websocket - please check your network connection and contact Experiment Controls if this persists.",
       );
     },
-    share: true,
-    retryOnError: true,
-    reconnectInterval: webSocketReconnectInterval,
-    reconnectAttempts: webSocketReconnectAttempts,
   });
-
-  useEffect(() => {
-    // Batch PV updates and only re-render once per interval, to avoid performance issues
-    // from re-rendering on every single websocket message.
-    const interval = setInterval(() => {
-      if (messageQueue.current.length == 0) {
-        return;
-      }
-      const updates = messageQueue.current;
-      messageQueue.current = [];
-
-      setPvs((oldPvs) => {
-        const newPvs = new Map(oldPvs);
-        for (const updatedPV of updates) {
-          const pvName = updatedPV.pv;
-          // Copy the existing entry so that we don't mutate the previous state
-          const pv: IfcPV = {
-            ...(newPvs.get(pvName) ?? { pvaddress: pvName }),
-          };
-
-          storePrecision(updatedPV, pv);
-          // Things like units and severity aren't guaranteed on every PV update so cache them if they are available.
-          if (updatedPV.units) pv.units = updatedPV.units;
-          if (updatedPV.severity) pv.severity = updatedPV.severity;
-          if (updatedPV.seconds) pv.updateSeconds = updatedPV.seconds;
-
-          const pvVal = getPvValue(updatedPV);
-          if (pvVal != undefined) {
-            pv.value = toPrecision(pv, pvVal);
-          }
-          newPvs.set(pvName, pv);
-        }
-        return newPvs;
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div className="w-full flex flex-col gap-4">

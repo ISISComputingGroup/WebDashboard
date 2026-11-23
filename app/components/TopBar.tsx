@@ -26,7 +26,7 @@ const TopBar = function TopBar({
   runInfoPVs: tBlockMapping;
   prefix: string;
 }) {
-  if (!dashboard || !runInfoPVs || !instName) {
+  if (!instName) {
     return (
       <h1 className="text-lg w-full text-white bg-gray-400 border-gray-500 border-2 p-3 font-semibold px-7 animate-pulse">
         Loading...
@@ -162,4 +162,3 @@ const TopBar = function TopBar({
 };
 
 export default memo(TopBar);
-export const exportedForTesting = TopBar;
