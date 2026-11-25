@@ -1,6 +1,6 @@
 "use client";
 import useWebSocket from "partysocket/use-ws";
-import { useEffect, useRef, useState } from "react";
+import { type RefObject, useEffect, useRef, useState } from "react";
 import { instListPV, instListSubscription, socketURL } from "@/app/commonVars";
 import CheckToggle from "@/app/components/CheckToggle";
 import {
@@ -37,6 +37,33 @@ function copyInstrument(instrument: Instrument): Instrument {
   );
 }
 
+/** Apply an update to the named dashboard, run info or block PV, returning a new instrument if it was found. */
+function applyUpdate(
+  prev: Instrument,
+  name: string,
+  update: (pv: IfcBlock) => IfcBlock,
+): Instrument {
+  const next = copyInstrument(prev);
+  for (const key of ["dashboard", "runInfoPVs"] as const) {
+    const existing = prev[key].get(name);
+    if (existing) {
+      next[key] = new Map(prev[key]).set(name, update({ ...existing }));
+      return next;
+    }
+  }
+  for (const [groupName, blocks] of prev.groups) {
+    const existing = blocks.get(name);
+    if (existing) {
+      next.groups = new Map(prev.groups).set(
+        groupName,
+        new Map(blocks).set(name, update({ ...existing })),
+      );
+      return next;
+    }
+  }
+  return prev;
+}
+
 export function InstrumentData({ instrumentName }: { instrumentName: string }) {
   const [showHiddenBlocks, setShowHiddenBlocks] = useState(false);
   const CONFIG_DETAILS = "CS:BLOCKSERVER:WD_CONF_DETAILS";
@@ -56,6 +83,10 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
       document.title = instName.toUpperCase() + " | IBEX Web Dashboard";
     }
   }, [instName]);
+
+  const messageQueue: RefObject<
+    Array<{ name: string; update: (pv: IfcBlock) => IfcBlock }>
+  > = useRef([]);
 
   const sendJsonMessage = (message: IfcPVWSRequest) =>
     socket.send(JSON.stringify(message));
@@ -80,6 +111,7 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
           prefixRef.current = prefix;
           lastConfigRef.current = null;
           setCurrentInstrument(instrument);
+          messageQueue.current = [];
         }
 
         // subscribe to dashboard and run info PVs
@@ -152,28 +184,8 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
           name = name.replace(SP_RBV, "");
           update = (pv) => ({ ...pv, sp_value: toPrecision(pv, pvVal) });
         }
-        setCurrentInstrument((prev) => {
-          if (!prev) return prev;
-          const next = copyInstrument(prev);
-          for (const key of ["dashboard", "runInfoPVs"] as const) {
-            const existing = prev[key].get(name);
-            if (existing) {
-              next[key] = new Map(prev[key]).set(name, update({ ...existing }));
-              return next;
-            }
-          }
-          for (const [groupName, blocks] of prev.groups) {
-            const existing = blocks.get(name);
-            if (existing) {
-              next.groups = new Map(prev.groups).set(
-                groupName,
-                new Map(blocks).set(name, update({ ...existing })),
-              );
-              return next;
-            }
-          }
-          return prev;
-        });
+        // Push into the queue so the update can be processed later in a batch.
+        messageQueue.current.push({ name, update });
       }
     },
     onError: () => {
@@ -182,6 +194,31 @@ export function InstrumentData({ instrumentName }: { instrumentName: string }) {
       );
     },
   });
+
+  useEffect(() => {
+    // Previously we have hit into performance issues when trying to render each time a PV update is published by the websocket.
+    // This processes any updates in the queue so we can "batch" updates and just re-render every second (as specified by the interval duration)
+    // Obviously this has the trade-off of not being "real-time" but for a web dashboard real-time isn't really required.
+    const interval = setInterval(() => {
+      if (messageQueue.current.length == 0) {
+        return;
+      }
+      const updates = messageQueue.current;
+      messageQueue.current = [];
+
+      // Update the state once for all queued updates.
+      setCurrentInstrument(
+        (prev) =>
+          prev &&
+          updates.reduce(
+            (instrument, { name, update }) =>
+              applyUpdate(instrument, name, update),
+            prev,
+          ),
+      );
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   if (!currentInstrument) {
     return <h1>Loading...</h1>;
